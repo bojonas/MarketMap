@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import Toolbar from './Toolbar';
+import MapEditor from './MapEditor';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <div className="flex">
+      <MapEditor/>
+      <Toolbar/>
+    </div>
   </React.StrictMode>
 );
 
