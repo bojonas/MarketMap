@@ -1,6 +1,6 @@
 import Layout from "./Layout";
 
-const mockData = [
+const data = [
     [
       { type: 'aisle' },
       { type: 'empty' },
@@ -58,7 +58,7 @@ function MapEditor() {
     <div className="flex-grow text-center justify-center items-center bg-slate-700 h-screen">
         <p className="text-white ">This is the map editor</p>
         <br/>
-        <Layout data={mockData}/>
+        <Layout data={ data }/>
     </div>
     );
 }
