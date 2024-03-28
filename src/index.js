@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Toolbar from './Toolbar';
-import MapEditor from './MapEditor';
+import Map from './Map';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <div className="flex">
-      <MapEditor/>
+    <div className='flex'>
+      <div className='flex justify-center bg-slate-600 min-w-[80vw]'>
+        <Map/>
+      </div>
       <Toolbar/>
     </div>
   </React.StrictMode>
