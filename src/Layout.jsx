@@ -21,7 +21,7 @@ function Layout({layout, height, width}) {
   const scale = Math.round(Math.min(width / columns, height / rows));
 
   const [{ canDrop, isOver }, drop] = useDrop({
-    accept: 'your-draggable-type',
+    accept: 'image',
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
