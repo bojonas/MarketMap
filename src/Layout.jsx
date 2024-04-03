@@ -19,17 +19,18 @@ const Cell = ({type}) => {
   return <img src={source} alt={type}/>
 };
 
-function Layout({layout}) {
-  const width = layout[0].length;
-  const height = layout.length;
+function Layout({layout, height, width}) {
+  const columns = layout[0].length;
+  const rows = layout.length;
 
-  // Calculate the scale based on the window size
-  const scale = Math.min(window.innerWidth / width, window.innerHeight / height);
+  // calculate the scale based on the window size and the number of columns
+  const scale = Math.round(Math.min(width / columns, height / rows));
+  console.log(width, columns, height, rows)
 
   return (
     <div style={{ 
       display: 'grid', 
-      gridTemplateColumns: `repeat(${width}, 1fr)`, 
+      gridTemplateColumns: `repeat(${columns}, ${scale}px)`, 
       maxWidth: '100vw',
       maxHeight: '100vh',
       overflow: 'auto',
