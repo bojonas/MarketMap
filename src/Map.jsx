@@ -28,7 +28,6 @@ function Map() {
   const ref = useRef(null);
 
   useEffect(() => {
-    // This effect runs only once after the initial render
     setHeight(ref.current.clientHeight);
     setWidth(ref.current.clientWidth);
   }, []);
