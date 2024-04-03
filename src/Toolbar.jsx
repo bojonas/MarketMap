@@ -1,5 +1,3 @@
-import Draggable from "react-draggable";
-
 export function getImages() {
     const imageContext = require.context('./images', false, /\.png$/);
 
@@ -14,13 +12,10 @@ export function getImages() {
 
 function Toolbar() {
     return (
-    <div className="text-center justify-center bg-slate-500 w-full">
-        <p className="text-white">This is a toolbar</p>
+    <div className="flex flex-col items-center text-center bg-slate-500 w-full">
         {Object.entries(getImages()).map(([type, source]) => (
             <div className='w-[5rem] h-[5rem]'>
-                <Draggable>
-                    <img src={source} alt={type}/>
-                </Draggable>
+                <img src={source} alt={type}/>
             </div>
         ))}
     </div>

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getImages } from './Toolbar';
+import { useDrop } from 'react-dnd';
 
 const Cell = ({ type }) => {
   if (type === 'empty') return null;
@@ -19,6 +20,19 @@ function Layout({layout, height, width}) {
   // calculate the scale based on the window size and the number of columns
   const scale = Math.round(Math.min(width / columns, height / rows));
 
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: 'your-draggable-type',
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
+  let backgroundColor = '#ffffff';
+  if (canDrop) backgroundColor = '#4a4aff';
+  if (isOver) backgroundColor = '#3db897';
+
+
   return (
     <div style={{ 
       display: 'grid', 
@@ -29,7 +43,7 @@ function Layout({layout, height, width}) {
     }}>
       {layout.map((row, i) => (
         row.map((cell, j) => (
-          <div key={`${i}-${j}`} style={{
+          <div ref={drop} key={`${i}-${j}`} style={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
