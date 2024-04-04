@@ -1,7 +1,7 @@
 import Layout from "./Layout";
 import React, { useState, useEffect, useRef } from 'react'
 
-const rows = 13;
+const rows = 12;
 const columns = 20;
 
 const data = [];
@@ -22,7 +22,8 @@ for (let i = 0; i < rows; i++) {
   }
 }
 
-function Map() {
+
+export default function Map() {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const ref = useRef(null);
@@ -38,5 +39,3 @@ function Map() {
     </div>
   );
 }
-
-export default Map

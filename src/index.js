@@ -4,16 +4,20 @@ import './index.css';
 import Toolbar from './Toolbar';
 import Map from './Map';
 import reportWebVitals from './reportWebVitals';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <div className='flex bg-slate-600'>
-      <div className='flex justify-center bg-slate-600'>
-        <Map/>
+    <DndProvider backend={HTML5Backend}>
+      <div className='flex bg-slate-600'>
+        <div className='flex justify-center bg-slate-600'>
+          <Map/>
+        </div>
+        <Toolbar/>
       </div>
-      <Toolbar/>
-    </div>
+    </DndProvider>
   </React.StrictMode>
 );
 

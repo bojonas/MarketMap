@@ -23,9 +23,10 @@ function DraggableImage({ type, source }) {
   );
 }
 
-function Toolbar() {
+export default function Toolbar() {
   return (
     <div className="flex flex-col items-center text-center bg-slate-500 w-full">
+        <p className=''>Toolbar</p>
         {Object.entries(getImages()).map(([type, source]) => (
             <div className='w-[5rem] h-[5rem]'>
                 <DraggableImage type={type} source={source} />
@@ -34,5 +35,3 @@ function Toolbar() {
     </div>
   );
 }
-
-export default Toolbar;
