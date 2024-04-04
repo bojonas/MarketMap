@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { getImages, DraggableImage } from './Toolbar';
+import { getImages } from './Toolbar';
+import DraggableImage from './helper/DraggableImage';
 
 const LoadImage = ({ type }) => {
     const images = getImages();
     const source = images[type];
 
     return type === 'empty' ? null :(
-        <img src={source} alt={type} />
+        <DraggableImage source={source} alt={type} />
     );
 };
   
@@ -27,7 +28,7 @@ export default function Cell ({ type, scale }) {
     });
 
     let backgroundColor;
-    if (canDrop) backgroundColor = '#4a4aff';
+    if (canDrop) 
     if (isOver) backgroundColor = '#3db897';
 
     return (
@@ -41,7 +42,7 @@ export default function Cell ({ type, scale }) {
         backgroundColor: backgroundColor,
         }}>
         {droppedItem
-            ? <img src={droppedItem.source} alt={droppedItem.type} />
+            ? <DraggableImage source={droppedItem.source} alt={droppedItem.type}/>
             : <LoadImage type={type} />
         }
         </div>

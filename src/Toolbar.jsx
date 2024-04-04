@@ -1,4 +1,4 @@
-import { useDrag } from 'react-dnd';
+import DraggableImage from "./helper/DraggableImage";
 
 export function getImages() {
     const imageContext = require.context('./images', false, /\.png$/);
@@ -12,24 +12,13 @@ export function getImages() {
     return images;
 }
 
-export function DraggableImage({ alt, source }) {
-  const [, drag] = useDrag({
-    type: 'image',
-    item: { alt, source },
-  });
-
-  return (
-    <img ref={drag} src={source} alt={alt} />
-  );
-}
-
 export default function Toolbar() {
   return (
     <div className="flex flex-col items-center text-center bg-slate-500 w-full">
-        <p className=''>Toolbar</p>
+        <p className='text-white text-xl'>Toolbar</p>
         {Object.entries(getImages()).map(([type, source]) => (
-            <div className='w-[5rem] h-[5rem]'>
-                <DraggableImage alt={type} source={source} />
+            <div className='w-[7rem] mt-10'>
+                <DraggableImage alt={type} source={source} duplicate={true}/>
             </div>
         ))}
     </div>
