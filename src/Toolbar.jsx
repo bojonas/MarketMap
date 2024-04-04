@@ -12,14 +12,14 @@ export function getImages() {
     return images;
 }
 
-function DraggableImage({ type, source }) {
+export function DraggableImage({ alt, source }) {
   const [, drag] = useDrag({
     type: 'image',
-    item: { type, source },
+    item: { alt, source },
   });
 
   return (
-    <img ref={drag} src={source} alt={type} />
+    <img ref={drag} src={source} alt={alt} />
   );
 }
 
@@ -29,7 +29,7 @@ export default function Toolbar() {
         <p className=''>Toolbar</p>
         {Object.entries(getImages()).map(([type, source]) => (
             <div className='w-[5rem] h-[5rem]'>
-                <DraggableImage type={type} source={source} />
+                <DraggableImage alt={type} source={source} />
             </div>
         ))}
     </div>
