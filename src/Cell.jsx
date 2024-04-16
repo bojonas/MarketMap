@@ -11,40 +11,40 @@ const LoadImage = ({ type }) => {
         <DraggableImage source={source} alt={type} />
     );
 };
-  
-export default function Cell ({ type, scale }) {
-    const [droppedItem, setDroppedItem] = useState(null);
 
-    const [{ canDrop, isOver }, drop] = useDrop({
-        accept: 'image',
-        drop: (item) => {
-        setDroppedItem(item);
-        return { name: type };
-        },
-        collect: (monitor) => ({
-        isOver: monitor.isOver(),
-        canDrop: monitor.canDrop(),
-        }),
-    });
+export default function Cell({ type, scale }) {
+  const [droppedItem, setDroppedItem] = useState(null);
 
-    let backgroundColor;
-    if (canDrop) 
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: 'image',
+    drop: (item) => {
+      setDroppedItem(item);
+      return { name: type };
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
+  let backgroundColor;
+  if (canDrop) 
     if (isOver) backgroundColor = '#3db897';
 
-    return (
-        <div ref={drop} style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: `${scale}px`,
-        width: `${scale}px`,
-        border: '2px rgb(30 41 59) solid',
-        backgroundColor: backgroundColor,
-        }}>
-        {droppedItem
-            ? <DraggableImage source={droppedItem.source} alt={droppedItem.type}/>
-            : <LoadImage type={type} />
-        }
-        </div>
-    );
+  return (
+    <div ref={drop} style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: `${scale}px`,
+      width: `${scale}px`,
+      border: '2px rgb(30 41 59) solid',
+      backgroundColor: backgroundColor,
+    }}>
+      {droppedItem
+        ? <DraggableImage source={droppedItem.source} alt={droppedItem.type} onDragEnd={() => setDroppedItem(null)} />
+        : <LoadImage type={type} />
+      }
+    </div>
+  );
 }
