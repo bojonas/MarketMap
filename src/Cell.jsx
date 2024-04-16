@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { getImages } from './Toolbar';
-import DraggableImage from './helper/DraggableImage';
+import DraggableImage from "./helper/DraggableImage";
 
 const LoadImage = ({ type }) => {
     const images = getImages();

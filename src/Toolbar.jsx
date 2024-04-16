@@ -1,4 +1,4 @@
-import DraggableImage from "./helper/DraggableImage";
+import DuplicateImage from "./helper/DuplicateImage";
 
 export function getImages() {
     const imageContext = require.context('./images', false, /\.png$/);
@@ -18,7 +18,7 @@ export default function Toolbar() {
         <p className='text-white text-xl'>Toolbar</p>
         {Object.entries(getImages()).map(([type, source]) => (
             <div className='w-[7rem] mt-10'>
-                <DraggableImage alt={type} source={source} duplicate={true}/>
+                <DuplicateImage alt={type} source={source}/>
             </div>
         ))}
     </div>
