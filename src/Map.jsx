@@ -1,8 +1,8 @@
 import Layout from "./Layout";
 import React, { useState, useEffect, useRef } from 'react'
 
-const rows = 12;
-const columns = 20;
+const rows = 20;
+const columns = 30;
 
 const data = [];
 for (let i = 0; i < rows; i++) {
@@ -34,7 +34,7 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="bg-slate-700 h-[100vh] max-h-[100vh] w-[75vw] max-w-[75vw] content-center justify-center" ref={ref}>
+    <div className="bg-slate-700 h-[100vh] max-h-[100vh] w-[75vw] max-w-[75vw] content-center justify-center text-center" ref={ref}>
       <Layout layout={data} height={height} width={width} />
     </div>
   );

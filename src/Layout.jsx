@@ -7,7 +7,6 @@ export default function Layout({layout, height, width}) {
 
   const scale = Math.round(Math.min(width / columns, height / rows));
 
-  // New state to keep track of the cell coordinate that currently has a dropped image
   const [droppedCell, setDroppedCell] = useState(null);
 
   return (
