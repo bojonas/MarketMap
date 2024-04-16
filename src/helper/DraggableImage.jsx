@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function DraggableImage({ alt, source }) {
   const [isVisible, setIsVisible] = useState(true);
 
-  const [, drag, preview] = useDrag({
+  const [, drag] = useDrag({
     type: 'image',
     item: { alt, source },
     end: (item, monitor) => {
