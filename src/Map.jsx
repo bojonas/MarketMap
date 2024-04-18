@@ -1,8 +1,8 @@
 import Layout from "./Layout";
 import React, { useState, useEffect, useRef } from 'react'
 
-const rows = 5;
-const columns = 5;
+const rows = 20;
+const columns = 30;
 
 const data = [];
 for (let i = 0; i < rows; i++) {
@@ -30,7 +30,7 @@ export default function Map() {
     setHeight(ref.current.clientHeight);
     setWidth(ref.current.clientWidth);
   }, []);
-
+  
   return (
     <div className="bg-slate-700">
       <div className="bg-slate-700 w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] content-center justify-center text-center" ref={ref}>
