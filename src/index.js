@@ -6,18 +6,20 @@ import Map from './Map';
 import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import Navigation from './Navigation';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <DndProvider backend={HTML5Backend}>
-      <div className='flex bg-slate-600'>
-        <div className='flex justify-center bg-slate-600'>
+    <div className='flex flex-col h-screen'>
+      <Navigation/>
+      <DndProvider backend={HTML5Backend}>
+        <div className='flex bg-slate-600'>
           <Map/>
+          <Toolbar/>
         </div>
-        <Toolbar/>
-      </div>
-    </DndProvider>
+      </DndProvider>
+    </div>
   </React.StrictMode>
 );
 

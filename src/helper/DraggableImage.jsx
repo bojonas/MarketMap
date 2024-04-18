@@ -1,7 +1,7 @@
 import { useDrag } from 'react-dnd';
 import { useState } from 'react';
 
-export default function DraggableImage({ alt, source, onDragEnd }) {
+export default function DraggableImage({ alt, source, onDragEnd, cellCoordinates }) {
   const [isVisible, setIsVisible] = useState(true);
 
   const [, drag] = useDrag({
@@ -12,7 +12,7 @@ export default function DraggableImage({ alt, source, onDragEnd }) {
       if (dropResult) {
         setIsVisible(false);
         if (typeof onDragEnd === 'function') {
-          onDragEnd();
+          onDragEnd(cellCoordinates);
         }
       }
     },

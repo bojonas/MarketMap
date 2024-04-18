@@ -1,27 +1,25 @@
 import Layout from "./Layout";
 import React, { useState, useEffect, useRef } from 'react'
 
-const rows = 13;
-const columns = 20;
+const rows = 15;
+const columns = 22;
 
 const data = [];
 for (let i = 0; i < rows; i++) {
   data.push([]);
   for (let j = 0; j < columns; j++) {
+    data[i].push({'type': 'empty'});
+    data[i][j]['id'] = `${i}-${j}`;
+
     if (i === 0 && j === 1) {
-      data[i].push('checkout');
-      continue;
+      data[i][j]['type'] = 'checkout';
     }
 
     if (j === 3 && i < 7) {
-      data[i].push('shelf');
-      continue;
+      data[i][j]['type'] = 'shelf';
     }
-
-    data[i].push('empty');
   }
 }
-
 
 export default function Map() {
   const [height, setHeight] = useState(0);
@@ -34,8 +32,10 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="bg-slate-700 h-[100vh] max-h-[100vh] w-[75vw] max-w-[75vw] content-center justify-center text-center" ref={ref}>
-      <Layout layout={data} height={height} width={width} />
+    <div className="bg-slate-700">
+      <div className="bg-slate-700 w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] content-center justify-center text-center" ref={ref}>
+        <Layout layout={data} height={height} width={width}/>
+      </div>
     </div>
   );
 }
