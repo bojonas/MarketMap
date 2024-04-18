@@ -15,7 +15,6 @@ function LoadImage({ type }) {
 
 export default function Cell({ type, scale, layout, cellCoordinates }) {
   const [droppedItem, setDroppedItem] = useState(null);
-  
   // on drop
   const [{ isOver }, drop] = useDrop({
     accept: 'image',
@@ -28,32 +27,33 @@ export default function Cell({ type, scale, layout, cellCoordinates }) {
     }),
   });
 
-  let backgroundColor;
-  if (isOver) backgroundColor = '#3db897';
+  let divStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: `${scale}px`,
+    width: `${scale}px`,
+    border: '2px rgb(30 41 59) solid',
+  };
+  if (isOver) divStyle['backgroundColor'] = '#3db897';
 
+  // add image type to layout array
   if (droppedItem) {
     const cord = cellCoordinates.split('-');
     layout[cord[0]][cord[1]]['type'] = droppedItem.alt;
+    console.log(layout)
   }
 
   return (
-    <div ref={drop} style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: `${scale}px`,
-      width: `${scale}px`,
-      border: '2px rgb(30 41 59) solid',
-      backgroundColor: backgroundColor,
-    }}>
+    <div ref={drop} style={divStyle}>
       {droppedItem
         ?<DraggableImage source={droppedItem.source} alt={droppedItem.alt} cellCoordinates={cellCoordinates} 
           onDragEnd={(cords) => {
             // remove item from cell
             const cord = cords.split('-');
             layout[cord[0]][cord[1]]['type'] = 'empty';
-            console.log(layout)
-
+            
+            // reset dropped item
             setDroppedItem(null);
           }}/>
         : <LoadImage type={type} />

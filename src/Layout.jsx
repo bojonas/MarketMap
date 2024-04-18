@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Cell from './Cell';
 
+var scale;
 export default function Layout({layout, height, width}) {
+  const [droppedCell, setDroppedCell] = useState(null);
+
   const columns = layout[0].length;
   const rows = layout.length;
-
-  const scale = Math.round(Math.min(width / columns, height / rows));
-  console.log(width/columns, height/rows)
-  const [droppedCell, setDroppedCell] = useState(null);
+  scale = Math.round(Math.min(width / columns, height / rows));
 
   return (
     <div style={{ 
@@ -18,8 +18,8 @@ export default function Layout({layout, height, width}) {
       overflow: 'auto',
       justifyContent: 'center',
     }}>
-      {layout.map((row, i) => (
-        row.map((cell, j) => (
+      {layout.map((row) => (
+        row.map((cell) => (
           <Cell key={cell['id']} type={cell['type']} scale={scale} layout={layout} cellCoordinates={cell['id']}
             droppedCell={droppedCell} setDroppedCell={setDroppedCell} 
           /> 
@@ -27,4 +27,8 @@ export default function Layout({layout, height, width}) {
       ))}
     </div>
   );
+}
+
+export function getScale() {
+  return scale;
 }

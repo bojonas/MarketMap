@@ -1,8 +1,8 @@
 import Layout from "./Layout";
 import React, { useState, useEffect, useRef } from 'react'
 
-const rows = 15;
-const columns = 22;
+const rows = 5;
+const columns = 5;
 
 const data = [];
 for (let i = 0; i < rows; i++) {
