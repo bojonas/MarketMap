@@ -5,10 +5,12 @@ import DraggableImage from "./helper/DraggableImage";
 
 // loads an image from image folder
 function LoadImage({ type, cellCoordinates, setRootCord}) {
+  if (type === 'empty') return null;
+
   const images = getImages();
   const source = images[type];
 
-  return type === 'empty' ? null :(
+  return (
       <DraggableImage 
         source={source} 
         alt={type} 
@@ -23,15 +25,15 @@ function LoadImage({ type, cellCoordinates, setRootCord}) {
 export default function Cell({ type, scale, layout, cellCoordinates }) {
   const [droppedItem, setDroppedItem] = useState(null);
   const [, setNewLayout] = useState(layout);
-  const [rootCord, setRootCord] = useState(null)
+  const [rootCord, setRootCord] = useState(null);
+  const [cord, ] = useState(cellCoordinates.split('-'))
   const [initialRender, setInititalRender] = useState(false);
 
   // on drop
   const [{ isOver }, drop] = useDrop({
     accept: 'image',
     drop: (item) => {
-      const c = cellCoordinates.split('-');
-      if (layout[c[0]][c[1]] !== 'empty') setInititalRender(true);
+      if (layout[cord[0]][cord[1]] !== 'empty') setInititalRender(true);
 
       setDroppedItem(item);
       return { name: type };
@@ -54,22 +56,20 @@ export default function Cell({ type, scale, layout, cellCoordinates }) {
   // add image type to layout array
   useEffect(() => {
     if (droppedItem) {
-      const cord = cellCoordinates.split('-');
       setNewLayout(prevLayout => {
         const newLayout = [...prevLayout]; 
         newLayout[cord[0]][cord[1]]['type'] = droppedItem.alt;
         return newLayout;
       }); 
     }
-  }, [droppedItem, cellCoordinates]);  
+  }, [droppedItem, cord]);  
 
   // remove item from cell
   useEffect(() => {
     if (rootCord) {
-      const cord = rootCord.split('-');
       setNewLayout(prevLayout => {
         const newLayout = [...prevLayout]; 
-        newLayout[cord[0]][cord[1]]['type'] = 'empty';
+        newLayout[rootCord[0]][rootCord[1]]['type'] = 'empty';
         return newLayout;
       }); 
     }

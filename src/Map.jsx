@@ -2,7 +2,7 @@ import Layout from "./Layout";
 import React, { useState, useEffect, useRef } from 'react'
 
 const rows = 20;
-const columns = 30;
+const columns = 25;
 
 const data = [];
 for (let i = 0; i < rows; i++) {
