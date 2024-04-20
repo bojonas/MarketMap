@@ -21,7 +21,7 @@ for (let i = 0; i < rows; i++) {
   }
 }
 
-export default function Map() {
+export default function MapEditor() {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const ref = useRef(null);

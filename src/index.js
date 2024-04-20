@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Toolbar from './Toolbar';
-import Map from './Map';
+import MapEditor from './MapEditor';
 import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -15,7 +15,7 @@ root.render(
       <Navigation/>
       <DndProvider backend={HTML5Backend}>
         <div className='flex bg-slate-600'>
-          <Map/>
+          <MapEditor/>
           <Toolbar/>
         </div>
       </DndProvider>
