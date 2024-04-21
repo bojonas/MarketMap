@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
-import { getImages } from "./helper/getImages";
-import DraggableImage from "./helper/DraggableImage";
+import { getImages } from "../helper/getImages";
+import DraggableImage from "../helper/DraggableImage";
 
 // loads an image from image folder
 function LoadImage({ type, cellCoordinates, setRootCord}) {

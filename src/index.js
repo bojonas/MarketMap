@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Toolbar from './Toolbar';
-import MapEditor from './MapEditor';
+import Toolbar from './MapEditor/Toolbar';
+import MapEditor from './MapEditor/MapEditor';
 import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';

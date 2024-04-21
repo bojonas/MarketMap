@@ -1,5 +1,5 @@
-import DuplicateImage from "./helper/DuplicateImage";
-import { getImages } from "./helper/getImages";
+import DuplicateImage from "../helper/DuplicateImage";
+import { getImages } from "../helper/getImages";
 
 export default function Toolbar() {
   return (
