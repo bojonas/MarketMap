@@ -1,11 +1,8 @@
+import reportWebVitals from './reportWebVitals';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Toolbar from './MapEditor/Toolbar';
 import MapEditor from './MapEditor/MapEditor';
-import reportWebVitals from './reportWebVitals';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import Navigation from './Navigation';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,12 +10,7 @@ root.render(
   <React.StrictMode>
     <div className='flex flex-col h-screen'>
       <Navigation/>
-      <DndProvider backend={HTML5Backend}>
-        <div className='flex bg-slate-600'>
-          <MapEditor/>
-          <Toolbar/>
-        </div>
-      </DndProvider>
+      <MapEditor/>
     </div>
   </React.StrictMode>
 );

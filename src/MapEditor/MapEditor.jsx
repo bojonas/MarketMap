@@ -1,5 +1,8 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import Layout from "./Layout";
-import React, { useState, useEffect, useRef } from 'react'
+import Toolbar from './Toolbar';
 
 const rows = 20;
 const columns = 25;
@@ -32,10 +35,15 @@ export default function MapEditor() {
   }, []);
   
   return (
-    <div className="bg-slate-700">
-      <div className="bg-slate-700 w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] content-center justify-center text-center" ref={ref}>
-        <Layout layout={data} height={height} width={width}/>
-      </div>
-    </div>
+     <DndProvider backend={HTML5Backend}>
+     <div className='flex bg-slate-600'>
+        <div className="bg-slate-700">
+          <div className="bg-slate-700 w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] content-center justify-center text-center" ref={ref}>
+            <Layout layout={data} height={height} width={width}/>
+          </div>
+        </div>
+       <Toolbar/>
+     </div>
+   </DndProvider>
   );
 }
