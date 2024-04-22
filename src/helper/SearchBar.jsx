@@ -10,7 +10,7 @@ export default function SearchBar({ onSearch }) {
 
     return (
         <input
-            className="rounded-2xl bg-sky-950 w-full h-12 text-white indent-5 mb-1"
+            className="rounded-full bg-sky-950 w-[25rem] h-12 text-white indent-5 mb-1"
             type="text"
             value={search}
             onChange={handleSearch}

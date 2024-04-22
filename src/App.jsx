@@ -1,23 +1,23 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { getRoutes } from './helper/getRoutes';
-import { sortObjects } from './helper/sortObjects';
+import { sortObject } from './helper/sortObject';
 
-// custom navigation order
-const order = ['Home', 'MapViewer', 'MapEditor'];
-var routes = sortObjects(getRoutes(), order);
+// custom navigation order (!whitespaces important!)
+const order = ['Home', 'Map Viewer', 'Map Editor'];
+const routes = sortObject(getRoutes(), order);
 
 export default function App() {
   return (
     <div className='flex flex-col h-screen w-screen'>
       <Router>
-        <div className="flex-grow grid grid-flow-col gap-4 items-center justify-center bg-slate-600">
-          {routes.map(({ route }) => 
-            <Tab key={route} tab={route}/>
+        <div className="flex-grow grid grid-flow-col gap-4 items-center justify-center bg-slate-900 h-full">
+          {routes.map(({ name, route }) => 
+            <Tab key={route} tab={route} name={name}/>
           )}
         </div>
         <Routes>
           {routes.map(({ route, Component }) => 
-            <Route key={route} path={`/${route}`} element={<Component />} />
+            <Route key={route} path={`/${route}`} element={<Component/>} />
           )}
         </Routes>
       </Router>
@@ -25,8 +25,8 @@ export default function App() {
   );
 }
 
-function Tab({tab}) {
+function Tab({ name, tab }) {
   return (
-    <Link to={`/${tab}`} className="w-fit h-fit p-5 rounded-2xl bg-sky-950 text-white">{tab}</Link>
+    <Link to={`/${tab}`} className="bg-sky-950 text-white w-fit rounded-xl p-4 text-xl font-bold">{name}</Link>
   );
 }

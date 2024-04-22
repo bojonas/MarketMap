@@ -29,7 +29,7 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
   const [cord, ] = useState(cellCoordinates.split('-'))
   const [initialRender, setInititalRender] = useState(false);
   const [isCommandKey, setIsCommandKey] = useState(false);
-  const [cells, setCells] = useState(new Set());
+  const [, setCells] = useState(new Set());
 
   // on drop
   const [{ isOver }, drop] = useDrop({
@@ -39,7 +39,7 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
 
       setDroppedItem(item);
 
-      // Set cells on drop here
+      // set cells on drop here
       if (isCommandKey) {
         setCells(prevCells => {
           const newCells = new Set(prevCells);
@@ -105,10 +105,6 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
       }); 
     }
   }, [rootCord, setLayout]);
-
-  useEffect(() => {
-    if (cells.length > 0) console.log(cells);
-  });
 
   return (
     <div ref={drop} style={divStyle}>

@@ -18,9 +18,9 @@ export default function MapEditor() {
 
   return (
      <DndProvider backend={HTML5Backend}>
-     <div className='flex bg-slate-600'>
-        <div className='bg-slate-700'>
-          <div className='bg-slate-700 w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] content-center justify-center text-center' ref={ref}>
+     <div className='flex h-full bg-slate-900'>
+        <div>
+          <div className='bg-slate-700 w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] content-center justify-center text-center p-1' ref={ref}>
             <Layout layout={layout} height={height} width={width} setLayout={setLayout}/>
           </div>
         </div>

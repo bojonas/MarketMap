@@ -16,7 +16,7 @@ export default function Layout({layout, height, width, setLayout}) {
       maxWidth: '100vw',
       maxHeight: '100vh',
       overflow: 'auto',
-      justifyContent: 'center',
+      justifyContent: 'center'
     }}>
       {layout.map((row) => (
         row.map((cell) => (

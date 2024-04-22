@@ -10,6 +10,7 @@ export function getRoutes() {
         }).map(key => {
         const Component = routes(key).default;
         const route = key.replace(/(\.\/|\/[A-Za-z0-9-_,\s]+\.jsx)/g, '');
-        return { route, Component };
+        const name = route.replace(/([A-Z])/g, ' $1').trim();
+        return { name, route, Component };
     });
 }

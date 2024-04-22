@@ -13,7 +13,7 @@
       "id": "0-2"
     },
     {
-      "type": "shelf",
+      "type": "empty",
       "id": "0-3"
     },
     {
@@ -75,7 +75,7 @@
       "id": "1-2"
     },
     {
-      "type": "shelf",
+      "type": "empty",
       "id": "1-3"
     },
     {
@@ -447,7 +447,7 @@
       "id": "7-2"
     },
     {
-      "type": "empty",
+      "type": "shelf",
       "id": "7-3"
     },
     {
@@ -509,7 +509,7 @@
       "id": "8-2"
     },
     {
-      "type": "empty",
+      "type": "shelf",
       "id": "8-3"
     },
     {
