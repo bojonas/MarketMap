@@ -1,5 +1,5 @@
 import { useDragLayer } from 'react-dnd';
-import { getScale } from '../MapEditor/Layout';
+import { getScale } from '../routes/MapEditor/Layout';
 
 export default function CustomDragLayer() {
   const { isDragging, item, currentOffset } = useDragLayer((monitor) => ({

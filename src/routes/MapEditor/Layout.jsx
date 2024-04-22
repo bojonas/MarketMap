@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Cell from './Cell';
 
 var scale;
-export default function Layout({layout, height, width}) {
+export default function Layout({layout, height, width, setLayout}) {
   const [droppedCell, setDroppedCell] = useState(null);
 
   const columns = layout[0].length;
@@ -21,7 +21,7 @@ export default function Layout({layout, height, width}) {
       {layout.map((row) => (
         row.map((cell) => (
           <Cell key={cell['id']} type={cell['type']} scale={scale} layout={layout} cellCoordinates={cell['id']}
-            droppedCell={droppedCell} setDroppedCell={setDroppedCell} 
+            droppedCell={droppedCell} setDroppedCell={setDroppedCell} setLayout={setLayout}
           /> 
         ))
       ))}

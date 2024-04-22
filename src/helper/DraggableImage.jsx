@@ -1,23 +1,17 @@
 import { useDrag } from 'react-dnd';
-import { useState, useEffect } from 'react';
-import { handleCommandAndDrag } from './handleCommandAndDrag';
+import { useState } from 'react';
 
-export default function DraggableImage({ alt, source, onDragEnd, cellCoordinates}) {
+export default function DraggableImage({ alt, source, onDragEnd, cellCoordinates, setCells, isCommandKey}) {
   const [isVisible, setIsVisible] = useState(true);
-  const [isCommandKey, setIsCommandKey] = useState(false);
-
-  // check for command or ctrl keydown
-  useEffect(() => {
-    const handleCommandAndDragWithState = (e) => handleCommandAndDrag(e, setIsCommandKey);
-    window.addEventListener('keydown', handleCommandAndDragWithState);
-    return () => window.removeEventListener('keydown', handleCommandAndDragWithState);
-  }, []);
-
-  if (isCommandKey) console.log(isCommandKey);
 
   const [, drag] = useDrag({
     type: 'image',
     item: { alt, source },
+    hover: (item, monitor) => {
+      if (isCommandKey) {
+        setCells(prevCells => [...prevCells, cellCoordinates]);
+      }
+    },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (dropResult) {

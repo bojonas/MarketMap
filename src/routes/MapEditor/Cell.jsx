@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
-import { getImages } from "../helper/getImages";
-import DraggableImage from "../helper/DraggableImage";
+import { getImages } from "../../helper/getImages";
+import DraggableImage from "../../helper/DraggableImage";
+import { handleCommandAndDrag } from "../../helper/handleCommandAndDrag";
 
 // loads an image from image folder
 function LoadImage({ type, cellCoordinates, setRootCord}) {
@@ -22,12 +23,13 @@ function LoadImage({ type, cellCoordinates, setRootCord}) {
   );
 }
 
-export default function Cell({ type, scale, layout, cellCoordinates }) {
+export default function Cell({ type, scale, layout, cellCoordinates, setLayout }) {
   const [droppedItem, setDroppedItem] = useState(null);
-  const [, setNewLayout] = useState(layout);
   const [rootCord, setRootCord] = useState(null);
   const [cord, ] = useState(cellCoordinates.split('-'))
   const [initialRender, setInititalRender] = useState(false);
+  const [isCommandKey, setIsCommandKey] = useState(false);
+  const [cells, setCells] = useState(new Set());
 
   // on drop
   const [{ isOver }, drop] = useDrop({
@@ -36,12 +38,41 @@ export default function Cell({ type, scale, layout, cellCoordinates }) {
       if (layout[cord[0]][cord[1]] !== 'empty') setInititalRender(true);
 
       setDroppedItem(item);
+
+      // Set cells on drop here
+      if (isCommandKey) {
+        setCells(prevCells => {
+          const newCells = new Set(prevCells);
+          newCells.add(cellCoordinates);
+          return newCells;
+        }); 
+      }
+
       return { name: type };
     },
     collect: (monitor) => ({
       isOver: monitor.isOver()
     }),
   });
+
+  // check for command or ctrl keydown
+  useEffect(() => {
+    const handleCommandAndDragWithState = (e) => {
+      // ignore keydown and keyup events from input fields
+      if (e.target.tagName.toLowerCase() === 'input') {
+        return;
+      }
+    
+      handleCommandAndDrag(e, setIsCommandKey);
+    };
+    
+    window.addEventListener('keydown', handleCommandAndDragWithState);
+    window.addEventListener('keyup', handleCommandAndDragWithState);
+    return () => {
+      window.removeEventListener('keydown', handleCommandAndDragWithState);
+      window.removeEventListener('keyup', handleCommandAndDragWithState);
+    };
+  }, []);
 
   let divStyle = {
     display: 'flex',
@@ -55,25 +86,29 @@ export default function Cell({ type, scale, layout, cellCoordinates }) {
 
   // add image type to layout array
   useEffect(() => {
-    if (droppedItem) {
-      setNewLayout(prevLayout => {
+    if (droppedItem && typeof setLayout === 'function') {
+      setLayout(prevLayout => {
         const newLayout = [...prevLayout]; 
         newLayout[cord[0]][cord[1]]['type'] = droppedItem.alt;
         return newLayout;
       }); 
     }
-  }, [droppedItem, cord]);  
+  }, [droppedItem, cord, setLayout]);  
 
   // remove item from cell
   useEffect(() => {
-    if (rootCord) {
-      setNewLayout(prevLayout => {
+    if (rootCord && typeof setLayout === 'function') {
+      setLayout(prevLayout => {
         const newLayout = [...prevLayout]; 
         newLayout[rootCord[0]][rootCord[1]]['type'] = 'empty';
         return newLayout;
       }); 
     }
-  }, [rootCord]);
+  }, [rootCord, setLayout]);
+
+  useEffect(() => {
+    if (cells.length > 0) console.log(cells);
+  });
 
   return (
     <div ref={drop} style={divStyle}>
@@ -88,6 +123,8 @@ export default function Cell({ type, scale, layout, cellCoordinates }) {
             // reset dropped item
             setDroppedItem(null);
           }} 
+          setCells={setCells}
+          isCommandKey={isCommandKey}
         />
         : initialRender
         ? null
