@@ -13,14 +13,20 @@ export default function Toolbar({ layout }) {
     saveLayout(layout);
   }
 
+  const imageSize = 5;
+
   return (
-    <div className='flex flex-col items-center text-center bg-slate-900 w-full rounded-2xl max-h-full'>
+    <div className='flex flex-col items-center text-center bg-slate-900 w-full'>
       <SearchBar onSearch={setSearch}/>
-      <p className='text-white text-xl'>Toolbar</p>
-      <div className='flex flex-col items-center text-center w-[22rem] h-[] bg-slate-800 rounded-xl m-4'>
-        <div className='flex flex-col items-center text-center w-[20rem] h-[65vh] overflow-y-auto bg-slate-700 rounded-xl m-4'>
+      <div className='flex flex-col items-center text-center overflow-y-auto bg-slate-800 rounded-lg m-8'>
+        <div className='flex flex-col items-center text-center bg-slate-700 rounded-lg m-2'
+          style={{width: `${imageSize*3}rem`}}
+        >
           {images.map(([type, source], index) => (
-              <div key={index} className='w-[5rem] mt-7'>
+              <div key={index} style={{
+                width: `${imageSize}rem`,
+                margin: `${imageSize/5}rem`,
+              }}>
                   <DuplicateImage alt={type} source={source}/>
               </div>
           ))}

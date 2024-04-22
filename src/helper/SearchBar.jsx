@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ButtonStyle } from './style';
 
 export default function SearchBar({ onSearch }) {
     const [search, setSearch] = useState('');
@@ -10,7 +11,7 @@ export default function SearchBar({ onSearch }) {
 
     return (
         <input
-            className="rounded-full bg-sky-950 w-[25rem] h-12 text-white indent-5 mb-1"
+            className={`${ButtonStyle} w-[20rem] h-12 indent-2 text-lg`}
             type="text"
             value={search}
             onChange={handleSearch}

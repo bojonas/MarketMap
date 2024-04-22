@@ -1,5 +1,7 @@
+import { ButtonStyle } from "./style";
+
 export default function CustomButton({ onClick }) {
     return (
-        <button className='bg-sky-950 text-white w-28 h-fit rounded-full p-4 text-xl font-bold' onClick={onClick}>Save</button>
+        <button className={`${ButtonStyle} w-[7rem] text-xl `} onClick={onClick}>Save</button>
     );
 }
