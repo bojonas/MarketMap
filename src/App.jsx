@@ -28,8 +28,12 @@ export default function App() {
 function Tab({ name, tab }) {
   return (
     <NavLink to={`/${tab}`} 
-        className='custom-button w-fit rounded-xl ml-3 bg-gray-button font-medium border-none hover:border-none hover:bg-gray-button-hover'
-        activeClassName='bg-purple-custom'
+        className='custom-button w-fit rounded-xl ml-3 font-medium border-none hover:border-none hover:bg-gray-button-hover'
+        style={({ isActive }) => {
+            return {
+                backgroundColor: isActive ? '#715DF2' : '#303030'
+            }
+        }}
     >{name}</NavLink>
   );
 }

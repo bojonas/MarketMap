@@ -36,7 +36,7 @@ export default function Toolbar({ layout }) {
           ))}
         </div>
       </div>
-      <div className='bg-gray-custom w-full h-20 content-center'>
+      <div className='bg-gray-custom w-full h-full content-center'>
         <CustomButton onClick={handleSave}/>
       </div>
     </div>

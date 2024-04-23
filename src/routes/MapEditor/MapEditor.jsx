@@ -1,25 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Layout from './Layout';
 import Toolbar from './Toolbar';
 import data from './data.json';
+import { useAdjustScale } from '../../helper/useAdjustScale';
 
 export default function MapEditor() {
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
   const [layout, setLayout] = useState(data);
   const ref = useRef(null);
 
-  useEffect(() => {
-    function updateSize() {
-      setHeight(ref.current.clientHeight);
-      setWidth(ref.current.clientWidth);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    return () => window.removeEventListener('resize', updateSize);
-  }, [ref]);
+  const { width, height } = useAdjustScale(ref);
 
   return (
      <DndProvider backend={HTML5Backend}>
