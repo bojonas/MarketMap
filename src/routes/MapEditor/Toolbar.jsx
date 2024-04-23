@@ -13,7 +13,7 @@ export default function Toolbar({ layout }) {
     saveLayout(layout);
   }
 
-  const imageSize = 5;
+  const imageSize = 4;
 
   return (
     <div className='flex flex-col items-center text-center bg-black-custom w-full shadow-xl shadow-black mt-4'>
