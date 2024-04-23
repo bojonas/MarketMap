@@ -4,7 +4,7 @@
 
 @layer components {
     .custom-button {
-        @apply bg-purple-custom text-white rounded-full p-3 text-xl font-bold
+        @apply content-center bg-purple-custom text-white rounded-full p-3 text-xl font-bold
         border-purple-custom border-2 hover:border-white hover:border-2 shadow-md shadow-black-custom;
     }
 }

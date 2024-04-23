@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom';
 import { getRoutes } from './helper/getRoutes';
 import { sortObject } from './helper/sortObject';
 
@@ -10,7 +10,7 @@ export default function App() {
   return (
     <div className='flex flex-col h-screen w-screen bg-black-custom'>
       <Router>
-        <div className="flex-grow grid grid-flow-col items-center justify-start w-full h-full bg-gray-custom">
+        <div className="flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-[100vw] max-w-[100vw] h-[10vh] max-h-[10vh]">
           {routes.map(({ name, route }) => 
             <Tab key={route} tab={route} name={name}/>
           )}
@@ -27,6 +27,9 @@ export default function App() {
 
 function Tab({ name, tab }) {
   return (
-    <Link to={`/${tab}`} className={'custom-button w-fit rounded-xl ml-3 bg-gray-button font-medium border-none hover:border-none hover:bg-gray-button-hover'}>{name}</Link>
+    <NavLink to={`/${tab}`} 
+        className='custom-button w-fit rounded-xl ml-3 bg-gray-button font-medium border-none hover:border-none hover:bg-gray-button-hover'
+        activeClassName='bg-purple-custom'
+    >{name}</NavLink>
   );
 }

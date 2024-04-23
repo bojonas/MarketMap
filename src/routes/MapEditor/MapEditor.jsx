@@ -12,15 +12,20 @@ export default function MapEditor() {
   const ref = useRef(null);
 
   useEffect(() => {
-    setHeight(ref.current.clientHeight);
-    setWidth(ref.current.clientWidth);
-  }, []);
+    function updateSize() {
+      setHeight(ref.current.clientHeight);
+      setWidth(ref.current.clientWidth);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, [ref]);
 
   return (
      <DndProvider backend={HTML5Backend}>
      <div className='flex h-full w-full'>
         <div>
-          <div className='bg-slate-700 w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] content-center justify-center text-center' ref={ref}>
+          <div className='bg-slate-700 w-[75vw] max-w-[75vw] h-full content-center justify-center text-center' ref={ref}>
             <Layout layout={layout} height={height} width={width} setLayout={setLayout}/>
           </div>
         </div>
