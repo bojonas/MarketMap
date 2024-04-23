@@ -8,9 +8,9 @@ const routes = sortObject(getRoutes(), order);
 
 export default function App() {
   return (
-    <div className='flex flex-col h-screen w-screen'>
+    <div className='flex flex-col h-screen w-screen bg-black-custom'>
       <Router>
-        <div className="flex-grow grid grid-flow-col items-center justify-start bg-slate-900 w-full h-full">
+        <div className="flex-grow grid grid-flow-col items-center justify-start w-full h-full bg-gray-custom">
           {routes.map(({ name, route }) => 
             <Tab key={route} tab={route} name={name}/>
           )}
@@ -27,6 +27,6 @@ export default function App() {
 
 function Tab({ name, tab }) {
   return (
-    <Link to={`/${tab}`} className={'custom-button w-fit rounded-xl ml-3'}>{name}</Link>
+    <Link to={`/${tab}`} className={'custom-button w-fit rounded-xl ml-3 bg-gray-button font-medium border-none hover:border-none hover:bg-gray-button-hover'}>{name}</Link>
   );
 }

@@ -81,6 +81,7 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
     height: `${scale}px`,
     width: `${scale}px`,
     border: '2px rgb(30 41 59) solid',
+    borderRadius: '5px',
   };
   if (isOver) divStyle['backgroundColor'] = '#3db897';
 

@@ -31,6 +31,6 @@ export default function DraggableImage({ alt, source, onDragEnd, cellCoordinates
   }
 
   return (
-    <img ref={drag} src={source} alt={alt} />
+    <img ref={drag} src={source} alt={alt}/>
   );
 }

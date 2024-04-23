@@ -20,7 +20,7 @@ export default function DuplicateImage({ alt, source }) {
   return (
     <>
       <CustomDragLayer/>
-      <img ref={drag} src={source} alt={alt} />
+      <img ref={drag} src={source} alt={alt}/>
     </>
   );
 }

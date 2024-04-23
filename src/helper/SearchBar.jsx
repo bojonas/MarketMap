@@ -10,11 +10,11 @@ export default function SearchBar({ onSearch }) {
 
     return (
         <input
-            className={'custom-button w-[20rem] h-12 indent-2 text-lg'}
+            className={'custom-button w-[20rem] h-12 indent-2 text-base placeholder-slate-200 shadow-slate-700'}
             type="text"
             value={search}
             onChange={handleSearch}
-            placeholder="Search..."
+            placeholder="Search tools..."
         />
     );
 }
