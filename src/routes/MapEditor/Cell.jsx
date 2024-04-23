@@ -83,7 +83,7 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
     border: '2px rgb(30 41 59) solid',
     borderRadius: '5px',
   };
-  if (isOver) divStyle['backgroundColor'] = '#3db897';
+  if (isOver) divStyle['backgroundColor'] = '#715DF2';
 
   // add image type to layout array
   useEffect(() => {

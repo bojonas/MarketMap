@@ -31,7 +31,8 @@ function Tab({ name, tab }) {
         className='custom-button w-fit rounded-xl ml-3 font-medium border-none hover:border-none hover:bg-gray-button-hover'
         style={({ isActive }) => {
             return {
-                backgroundColor: isActive ? '#715DF2' : '#303030'
+                backgroundColor: isActive ? '#715DF2' : '#303030',
+                boxShadow: isActive ? '0 4px 6px -1px #334155, 0 2px 4px -2px #334155' : '',
             }
         }}
     >{name}</NavLink>
