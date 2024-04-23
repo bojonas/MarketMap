@@ -35,7 +35,8 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
   const [{ isOver }, drop] = useDrop({
     accept: 'image',
     drop: (item) => {
-      if (layout[cord[0]][cord[1]] !== 'empty') setInititalRender(true);
+      const c = cellCoordinates.split('-');
+      if (layout[c[0]][c[1]]['type'] !== 'empty') setInititalRender(true);
 
       setDroppedItem(item);
 
