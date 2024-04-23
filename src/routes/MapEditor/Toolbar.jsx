@@ -16,7 +16,7 @@ export default function Toolbar({ layout }) {
   const imageSize = 5;
 
   return (
-    <div className='flex flex-col items-center text-center bg-slate-900 w-full'>
+    <div className='flex flex-col items-center text-center bg-slate-900 w-full shadow-xl shadow-black'>
       <SearchBar onSearch={setSearch}/>
       <div className='flex flex-col items-center text-center overflow-y-auto bg-slate-800 rounded-lg m-8'>
         <div className='flex flex-col items-center text-center bg-slate-700 rounded-lg m-2'

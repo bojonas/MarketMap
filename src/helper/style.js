@@ -1,1 +1,0 @@
-export const ButtonStyle = 'bg-sky-950 text-white rounded-full p-3 text-xl font-bold border-sky-950 border-2 hover:border-white hover:border-2';

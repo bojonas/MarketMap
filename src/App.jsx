@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { getRoutes } from './helper/getRoutes';
 import { sortObject } from './helper/sortObject';
-import { ButtonStyle } from './helper/style';
 
 // custom navigation order (!whitespaces important!)
 const order = ['Home', 'Map Viewer', 'Map Editor'];
@@ -28,6 +27,6 @@ export default function App() {
 
 function Tab({ name, tab }) {
   return (
-    <Link to={`/${tab}`} className={`${ButtonStyle} 'w-fit rounded-xl ml-3`}>{name}</Link>
+    <Link to={`/${tab}`} className={'custom-button w-fit rounded-xl ml-3'}>{name}</Link>
   );
 }
