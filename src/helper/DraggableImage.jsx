@@ -29,10 +29,10 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
     preview(getEmptyImage(), { captureDraggingState: true });
   }, [preview]);
 
-  return isVisible ?(
+  return !isVisible ? null :(
     <>
       <CustomDragLayer/>
       <img ref={drag} src={source} alt={alt}/>
     </>
-  ): null;
+  );
 }

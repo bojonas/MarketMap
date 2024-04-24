@@ -22,7 +22,7 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
       setLayout(prevLayout => {
         const newLayout = [...prevLayout];
         // remove item previous cell
-        if (!isCommandKey) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty'
+        if (!isCommandKey && rootCoordinates) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty'
         else {
            // add item for tracked cells if command key is pressed
           for (const cell of new Set(trackedCells)) {
@@ -43,6 +43,7 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
       trackedCells = [];
 
       // check item alignment
+      if (isVertical) setIsVertical(true);
 
       return { name: type };
     },
@@ -50,9 +51,6 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
       isOver: monitor.isOver()
     }),
   });
-
-  // track if command key is pressed
-  useTrackCommand(setIsCommandKey);
 
   let divStyle = {
     display: 'flex',
@@ -64,6 +62,9 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
     borderRadius: '5px',
   };
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
+
+  // track if command key is pressed
+  useTrackCommand(setIsCommandKey);
 
   useEffect(() => {
     if (isCommandKey && isOver) trackedCells.push(cellCoordinates);
@@ -77,9 +78,8 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
           alt={droppedItem.alt} 
           cellCoordinates={cellCoordinates} 
           setDroppedItem={setDroppedItem}
-          isCommandKey={isCommandKey}
-        />
-        : <LoadImage type={type} cellCoordinates={cellCoordinates} setDroppedItem={setDroppedItem}/>
+          isCommandKey={isCommandKey}/>
+        : <LoadImage type={type} cellCoordinates={cellCoordinates} setDroppedItem={setDroppedItem} isCommandKey={isCommandKey}/>
       }
     </div>
   );

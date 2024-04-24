@@ -7,7 +7,8 @@ function handleCommandAndDrag (e, setIsCommandPressed) {
 export function useTrackCommand(setIsCommandKey) {
   // check for command or ctrl keydown
   useEffect(() => {
-    const handleCommandAndDragWithState = (e) => {
+    const handleKeyPress = (e) => {
+      e.preventDefault();
       // ignore keydown and keyup events from input fields
       if (e.target.tagName.toLowerCase() === 'input') {
         return;
@@ -16,11 +17,11 @@ export function useTrackCommand(setIsCommandKey) {
       handleCommandAndDrag(e, setIsCommandKey);
     };
     
-    window.addEventListener('keydown', handleCommandAndDragWithState);
-    window.addEventListener('keyup', handleCommandAndDragWithState);
+    window.addEventListener('keydown', handleKeyPress);
+    window.addEventListener('keyup', handleKeyPress);
     return () => {
-      window.removeEventListener('keydown', handleCommandAndDragWithState);
-      window.removeEventListener('keyup', handleCommandAndDragWithState);
+      window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener('keyup', handleKeyPress);
     };
   }, [setIsCommandKey]);
 }

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import DuplicateImage from "../../helper/DuplicateImage";
 import { getImages } from "../../helper/getImages";
 import SearchBar from "../../helper/SearchBar";
 import { saveLayout } from '../../helper/saveLayout';
 import CustomButton from '../../helper/CustomButton';
+import DuplicateImage from '../../helper/DuplicateImage';
 
-export default function Toolbar({ layout }) {
+export default function Toolbar({ layout, scale }) {
   const [search, setSearch] = useState('');
   const images = Object.entries(getImages()).filter(([type]) => type.includes(search));
 
