@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 import { getImages } from "../../helper/getImages";
 import DraggableImage from "../../helper/DraggableImage";
-import { handleCommandAndDrag } from "../../helper/handleCommandAndDrag";
+import { useTrackCommand } from "../../helper/useTrackCommand";
 
 // loads an image from image folder
 function LoadImage({ type, cellCoordinates, setRootCord}) {
@@ -23,21 +23,17 @@ function LoadImage({ type, cellCoordinates, setRootCord}) {
   );
 }
 
-export default function Cell({ type, scale, layout, cellCoordinates, setLayout }) {
+export default function Cell({ type, scale, cellCoordinates, setLayout }) {
   const [droppedItem, setDroppedItem] = useState(null);
   const [rootCord, setRootCord] = useState(null);
   const [cord, ] = useState(cellCoordinates.split('-'))
-  const [initialRender, setInititalRender] = useState(false);
   const [isCommandKey, setIsCommandKey] = useState(false);
-  const [, setCells] = useState(new Set());
+  const [cells, setCells] = useState([]);
 
   // on drop
   const [{ isOver }, drop] = useDrop({
     accept: 'image',
     drop: (item) => {
-      const c = cellCoordinates.split('-');
-      if (layout[c[0]][c[1]]['type'] !== 'empty') setInititalRender(true);
-
       setDroppedItem(item);
 
       // set cells on drop here
@@ -56,24 +52,8 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
     }),
   });
 
-  // check for command or ctrl keydown
-  useEffect(() => {
-    const handleCommandAndDragWithState = (e) => {
-      // ignore keydown and keyup events from input fields
-      if (e.target.tagName.toLowerCase() === 'input') {
-        return;
-      }
-    
-      handleCommandAndDrag(e, setIsCommandKey);
-    };
-    
-    window.addEventListener('keydown', handleCommandAndDragWithState);
-    window.addEventListener('keyup', handleCommandAndDragWithState);
-    return () => {
-      window.removeEventListener('keydown', handleCommandAndDragWithState);
-      window.removeEventListener('keyup', handleCommandAndDragWithState);
-    };
-  }, []);
+  // track if command key is pressed
+  useTrackCommand(setIsCommandKey);
 
   let divStyle = {
     display: 'flex',
@@ -88,7 +68,7 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
 
   // add image type to layout array
   useEffect(() => {
-    if (droppedItem && typeof setLayout === 'function') {
+    if (droppedItem) {
       setLayout(prevLayout => {
         const newLayout = [...prevLayout]; 
         newLayout[cord[0]][cord[1]]['type'] = droppedItem.alt;
@@ -108,11 +88,20 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
     }
   }, [rootCord, setLayout]);
 
+  // track command and drag cells
+  useEffect(() => {
+    if (isOver && isCommandKey) {
+      // add new cells
+      setCells(prevCells => [...prevCells, cellCoordinates]); 
+    }
+  }, [isOver, isCommandKey, cellCoordinates]);
+
+  if (cells.length > 0) console.log(new Set(cells))
+
   return (
     <div ref={drop} style={divStyle}>
-      {droppedItem
-        ? 
-        <DraggableImage 
+      {droppedItem && cord && rootCord && cord[0] !== rootCord[0] && cord[0] !== rootCord[0]
+        ? <DraggableImage 
           source={droppedItem.source} 
           alt={droppedItem.alt} 
           cellCoordinates={cellCoordinates} 
@@ -121,13 +110,8 @@ export default function Cell({ type, scale, layout, cellCoordinates, setLayout }
             // reset dropped item
             setDroppedItem(null);
           }} 
-          setCells={setCells}
-          isCommandKey={isCommandKey}
         />
-        : initialRender
-        ? null
-        :
-        <LoadImage 
+        : <LoadImage 
           type={type} 
           cellCoordinates={cellCoordinates} 
           setRootCord={setRootCord} 
