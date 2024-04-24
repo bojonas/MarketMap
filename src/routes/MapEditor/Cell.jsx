@@ -7,9 +7,10 @@ import LoadImage from "../../helper/LoadImage"
 var trackedCells = [];
 export default function Cell({ type, scale, cellCoordinates, setLayout }) {
   const [droppedItem, setDroppedItem] = useState(null);
-  const [cord, ] = useState(cellCoordinates.split('-'))
   const [isCommandKey, setIsCommandKey] = useState(false);
+  const [isVertical, setIsVertical] = useState(false);
 
+  const cord = cellCoordinates.split('-')
   // on drop
   const [{ isOver }, drop] = useDrop({
     accept: 'image',
@@ -17,30 +18,31 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
       setDroppedItem(item);
 
       const { rootCoordinates } = item;
+      // update layout
       setLayout(prevLayout => {
         const newLayout = [...prevLayout];
         // remove item previous cell
         if (!isCommandKey) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty'
+        else {
+           // add item for tracked cells if command key is pressed
+          for (const cell of new Set(trackedCells)) {
+            // ignore current cell
+            if (cell === cellCoordinates) continue;
 
+            const c = cell.split('-');
+            // ignore root cell
+            if (c[0] === rootCoordinates[0] && c[1] === rootCoordinates[1]) continue;
+        
+            newLayout[c[0]][c[1]]['type'] = item.alt;
+          }
+        }
         // add item to cell 
         newLayout[cord[0]][cord[1]]['type'] = item.alt;
-
-        if (!isCommandKey) return newLayout;
-
-        // add item for tracked cells if command key is pressed
-        for (const cell of new Set(trackedCells)) {
-          // ignore current cell
-          if (cell === cellCoordinates) continue;
-
-          const c = cell.split('-');
-          // ignore root cell
-          if (c[0] === rootCoordinates[0] && c[1] === rootCoordinates[1]) continue;
-      
-          newLayout[c[0]][c[1]]['type'] = item.alt;
-        }
         return newLayout;
       });
       trackedCells = [];
+
+      // check item alignment
 
       return { name: type };
     },
