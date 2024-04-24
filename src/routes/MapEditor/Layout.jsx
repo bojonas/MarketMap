@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Cell from './Cell';
 
 var scale;
 export default function Layout({layout, height, width, setLayout}) {
-  const [droppedCell, setDroppedCell] = useState(null);
-
   const columns = layout[0].length;
   const rows = layout.length;
   scale = Math.round(Math.min(width / columns, height / rows));
@@ -20,8 +18,13 @@ export default function Layout({layout, height, width, setLayout}) {
     }}>
       {layout.map((row) => (
         row.map((cell) => (
-          <Cell key={cell['id']} type={cell['type']} scale={scale} layout={layout} cellCoordinates={cell['id']}
-            droppedCell={droppedCell} setDroppedCell={setDroppedCell} setLayout={setLayout}
+          <Cell 
+            key={cell['id']} 
+            type={cell['type']} 
+            scale={scale} 
+            layout={layout} 
+            cellCoordinates={cell['id']}
+            setLayout={setLayout}
           /> 
         ))
       ))}

@@ -1,19 +1,20 @@
-import { useDrag } from 'react-dnd';
-import { useState } from 'react';
+import { useState } from "react";
+import { useDrag } from "react-dnd";
 
-export default function DraggableImage({ alt, source, onDragEnd, cellCoordinates}) {
+export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey }) {
   const [isVisible, setIsVisible] = useState(true);
 
   const [, drag] = useDrag({
     type: 'image',
-    item: { alt, source },
+    item: () => {
+      const rootCoordinates = cellCoordinates.split('-')
+      return { alt, source, rootCoordinates };
+    },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (dropResult) {
-        setIsVisible(false);
-        if (typeof onDragEnd === 'function') {
-          onDragEnd(cellCoordinates.split('-'));
-        }
+        setIsVisible(!isCommandKey);
+        setDroppedItem(null);
       }
     },
     collect: (monitor) => ({
