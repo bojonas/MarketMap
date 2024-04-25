@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import CustomDragLayer from './CustomDragLayer';
 
-export default function DuplicateImage({ alt, source }) {
+export default function DuplicateImage({ alt, source, scale }) {
   const [, drag, preview] = useDrag({
     type: 'image',
     item: { alt, source },
@@ -19,7 +19,7 @@ export default function DuplicateImage({ alt, source }) {
 
   return (
     <>
-      <CustomDragLayer/>
+      <CustomDragLayer scale={scale}/>
       <img ref={drag} src={source} alt={alt}/>
     </>
   );

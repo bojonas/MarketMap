@@ -3,7 +3,7 @@ import { useDrag } from "react-dnd";
 import CustomDragLayer from "./CustomDragLayer";
 import { getEmptyImage } from "react-dnd-html5-backend";
 
-export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey }) {
+export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, scale }) {
   const [isVisible, setIsVisible] = useState(true);
 
   const [, drag, preview] = useDrag({
@@ -31,7 +31,7 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
 
   return !isVisible ? null :(
     <>
-      <CustomDragLayer/>
+      <CustomDragLayer scale={scale}/>
       <img ref={drag} src={source} alt={alt}/>
     </>
   );

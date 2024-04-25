@@ -8,7 +8,6 @@ export function useTrackCommand(setIsCommandKey) {
   // check for command or ctrl keydown
   useEffect(() => {
     const handleKeyPress = (e) => {
-      e.preventDefault();
       // ignore keydown and keyup events from input fields
       if (e.target.tagName.toLowerCase() === 'input') {
         return;

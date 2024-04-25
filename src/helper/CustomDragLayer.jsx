@@ -1,7 +1,6 @@
 import { useDragLayer } from 'react-dnd';
-import { getScale } from '../routes/MapEditor/Layout';
 
-export default function CustomDragLayer() {
+export default function CustomDragLayer({ scale }) {
   const { isDragging, item, currentOffset } = useDragLayer((monitor) => ({
     item: monitor.getItem(),
     currentOffset: monitor.getSourceClientOffset(),
@@ -13,8 +12,7 @@ export default function CustomDragLayer() {
   }
 
   const { x, y } = currentOffset;
-  const scale = getScale();
-
+  
   return (
     <div style={{ position: 'fixed', pointerEvents: 'none', zIndex: 100, left: 0, top: 0 }}>
       <div style={{ 

@@ -24,7 +24,8 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
         // remove item previous cell
         if (!isCommandKey && rootCoordinates) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty'
         else {
-           // add item for tracked cells if command key is pressed
+          // add item for tracked cells if command key is pressed
+          console.log(new Set(trackedCells))
           for (const cell of new Set(trackedCells)) {
             // ignore current cell
             if (cell === cellCoordinates) continue;
@@ -78,8 +79,9 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
           alt={droppedItem.alt} 
           cellCoordinates={cellCoordinates} 
           setDroppedItem={setDroppedItem}
-          isCommandKey={isCommandKey}/>
-        : <LoadImage type={type} cellCoordinates={cellCoordinates} setDroppedItem={setDroppedItem} isCommandKey={isCommandKey}/>
+          isCommandKey={isCommandKey}
+          scale={scale}/>
+        : <LoadImage type={type} cellCoordinates={cellCoordinates} setDroppedItem={setDroppedItem} isCommandKey={isCommandKey} scale={scale}/>
       }
     </div>
   );
