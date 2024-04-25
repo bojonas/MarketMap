@@ -1,7 +1,9 @@
 import React from 'react';
 import Cell from './Cell';
 
-export default function Layout({layout, scale, setLayout}) {
+export default function Layout({ layout, width, height, setLayout }) {
+  const scale = Math.round(Math.min(width / layout[0].length, height / layout.length));
+
   return (
     <div style={{ 
       display: 'grid', 
