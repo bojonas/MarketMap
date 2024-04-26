@@ -7,4 +7,8 @@
         @apply flex items-center content-center justify-center bg-purple-custom text-white rounded-full p-3 text-xl font-bold
         border-purple-custom border-2 hover:border-white hover:border-2 shadow-md shadow-black-custom;
     }
+
+    .custom-input {
+        @apply rounded-full w-64 px-4 py-2 placeholder-white bg-blue-400
+    }
 }
