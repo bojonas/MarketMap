@@ -12,7 +12,6 @@ export default function CustomDragLayer({ scale }) {
   }
 
   const { x, y } = currentOffset;
-  
   return (
     <div style={{ position: 'fixed', pointerEvents: 'none', zIndex: 100, left: 0, top: 0 }}>
       <div style={{ 

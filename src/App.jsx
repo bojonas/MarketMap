@@ -25,7 +25,7 @@ export default function App() {
           </div>
           <Routes>
             {routes.map(({ route, Component }, index) => 
-              <Route key={index} path={`/${route}`} element={<Component width={width} height={height}/>} />
+              <Route key={index} path={`/${route}`} element={<Component/>} />
             )}
           </Routes>
         </Router>

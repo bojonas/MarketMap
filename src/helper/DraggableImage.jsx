@@ -1,22 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDrag } from "react-dnd";
-import CustomDragLayer from "./CustomDragLayer";
-import { getEmptyImage } from "react-dnd-html5-backend";
 
-export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, scale }) {
+export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, duplicate }) {
   const [isVisible, setIsVisible] = useState(true);
 
-  const [, drag, preview] = useDrag({
+  const [, drag] = useDrag({
     type: 'image',
     item: () => {
-      const rootCoordinates = cellCoordinates.split('-')
+      const rootCoordinates = duplicate ? null : cellCoordinates.split('-');
       return { alt, source, rootCoordinates };
     },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (dropResult) {
-        setIsVisible(!isCommandKey);
-        setDroppedItem(null);
+        setIsVisible(!isCommandKey || duplicate);
+        if (!duplicate) setDroppedItem(null);
       }
     },
     collect: (monitor) => ({
@@ -24,15 +22,7 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
     }),
   });
 
-  // remove drag preview
-  useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true });
-  }, [preview]);
-
   return !isVisible ? null :(
-    <>
-      <CustomDragLayer scale={scale}/>
-      <img ref={drag} src={source} alt={alt}/>
-    </>
+    <img ref={drag} src={source} alt={alt}/>
   );
 }

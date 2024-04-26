@@ -12,7 +12,7 @@ export default function MapEditor({ width, height }) {
      <div className='flex h-full w-full'>
         <div>
           <div className='bg-slate-700 w-[75vw] max-w-[75vw] h-full content-center justify-center text-center'>
-            <Layout layout={layout} width={width/1.1} height={height/1.1} setLayout={setLayout}/>
+            <Layout layout={layout} width={width/1.2} height={height/1.2} setLayout={setLayout}/>
           </div>
         </div>
         <Toolbar layout={layout} width={width/1.1} height={height/1.1}/>

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Cell from './Cell';
+import { DimensionContext } from '../../DimensionContext';
 
-export default function Layout({ layout, width, height, setLayout }) {
-  const scale = Math.round(Math.min(width / layout[0].length, height / layout.length));
+export default function Layout({ layout, setLayout }) {
+  const { height, width } = useContext(DimensionContext);
+  const scale = Math.round(Math.min(width*0.9 / layout[0].length, height*0.9 / layout.length));
   return (
     <div style={{ 
       display: 'grid', 
       gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
-      maxWidth: '100vw',
-      maxHeight: '100vh',
       overflow: 'auto',
       justifyContent: 'center'
     }}>

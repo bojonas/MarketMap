@@ -10,7 +10,7 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
   const [isCommandKey, setIsCommandKey] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
 
-  const cord = cellCoordinates.split('-')
+  const cord = cellCoordinates.split('-');
   // on drop
   const [{ isOver }, drop] = useDrop({
     accept: 'image',
@@ -22,10 +22,9 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
       setLayout(prevLayout => {
         const newLayout = [...prevLayout];
         // remove item previous cell
-        if (!isCommandKey && rootCoordinates) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty'
+        if (!isCommandKey && rootCoordinates) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty';
         else {
           // add item for tracked cells if command key is pressed
-          console.log(new Set(trackedCells))
           for (const cell of new Set(trackedCells)) {
             // ignore current cell
             if (cell === cellCoordinates) continue;
@@ -81,7 +80,12 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
           setDroppedItem={setDroppedItem}
           isCommandKey={isCommandKey}
           scale={scale}/>
-        : <LoadImage type={type} cellCoordinates={cellCoordinates} setDroppedItem={setDroppedItem} isCommandKey={isCommandKey} scale={scale}/>
+        : <LoadImage 
+          type={type} 
+          cellCoordinates={cellCoordinates} 
+          setDroppedItem={setDroppedItem} 
+          isCommandKey={isCommandKey} 
+          scale={scale}/>
       }
     </div>
   );
