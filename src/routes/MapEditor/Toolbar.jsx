@@ -40,7 +40,7 @@ export default function Toolbar({ layout, width, height }) {
         </div>
       </div>
       <div className='bg-gray-custom w-full h-full content-center float-end end-full'>
-        <CustomButton onClick={handleSave} ToolbarHeight={ToolbarHeight} ToolbarWidth={ToolbarWidth}/>
+        <CustomButton action={'save'} onClick={handleSave} width={ToolbarWidth} height={ToolbarHeight}/>
       </div>
     </div>
   );

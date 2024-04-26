@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom
 import { getRoutes } from './helper/getRoutes';
 import { sortObject } from './helper/sortObject';
 import { useAdjustScale } from './helper/useAdjustScale';
+import { FaHouse } from "react-icons/fa6";
+import { FaMapMarkedAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 
 // custom navigation order (!whitespaces important!)
 const order = ['Home', 'Map Viewer', 'Map Editor', 'Login'];
