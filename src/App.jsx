@@ -5,7 +5,7 @@ import { sortObject } from './helper/sortObject';
 import { useAdjustScale } from './helper/useAdjustScale';
 
 // custom navigation order (!whitespaces important!)
-const order = ['Home', 'Map Viewer', 'Map Editor'];
+const order = ['Home', 'Map Viewer', 'Map Editor', 'Login'];
 const routes = sortObject(getRoutes(), order);
 
 export default function App() {
