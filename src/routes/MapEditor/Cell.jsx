@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import DraggableImage from "../../helper/DraggableImage";
-import { useTrackCommand } from "../../helper/useTrackCommand";
 import LoadImage from "../../helper/LoadImage"
+import { DimensionContext } from '../../DimensionContext';
 
 var trackedCells = [];
 export default function Cell({ type, scale, cellCoordinates, setLayout }) {
   const [droppedItem, setDroppedItem] = useState(null);
-  const [isCommandKey, setIsCommandKey] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
 
   const cord = cellCoordinates.split('-');
+  const {isCommandKey} = useContext(DimensionContext);
   // on drop
   const [{ isOver }, drop] = useDrop({
     accept: 'image',
@@ -62,9 +62,6 @@ export default function Cell({ type, scale, cellCoordinates, setLayout }) {
     borderRadius: '5px',
   };
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
-
-  // track if command key is pressed
-  useTrackCommand(setIsCommandKey);
 
   useEffect(() => {
     if (isCommandKey && isOver) trackedCells.push(cellCoordinates);

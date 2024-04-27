@@ -1,9 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom';
 import { getRoutes } from './helper/getRoutes';
 import { sortObject } from './helper/sortObject';
 import { useAdjustScale } from './helper/useAdjustScale';
 import { DimensionContext } from './DimensionContext';
+import { useTrackCommand } from './helper/useTrackCommand';
 
 // custom navigation order (!whitespaces important!)
 const order = ['Home', 'Map Viewer', 'Map Editor', 'Login'];
@@ -12,8 +13,12 @@ const routes = sortObject(getRoutes(), order);
 export default function App() {
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
+
+  // track if command key is pressed
+  const [isCommandKey, setIsCommandKey] = useState(false);
+  useTrackCommand(setIsCommandKey);
   return (
-    <DimensionContext.Provider value={{ width, height }}>
+    <DimensionContext.Provider value={{ width, height, isCommandKey }}>
       <div className='flex flex-col h-screen w-screen bg-black-custom' ref={ref}>
         <Router>
           <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-[100vw] max-w-[100vw]'

@@ -14,20 +14,20 @@ export default function Toolbar({ layout }) {
     saveLayout(layout);
   }
 
-  // custom sizes
   const { width, height } = useContext(DimensionContext);
-
   const scale = Math.round(Math.min(width/layout[0].length, height/layout.length));
-  const ToolbarWidth = width/6.5;
-  const ToolbarHeight = height/1.7;
+  const ToolbarScale = Math.min(width, height);
   return (
-    <div className='flex flex-col items-center text-center bg-black-custom w-full shadow-xl shadow-black mt-4'>
-      <SearchBar onSearch={setSearch} scale={scale} width={width}/>
-      <div className='flex flex-col items-center text-center bg-slate-800 rounded-lg mt-8 mb-4'>
-        <div className='flex flex-col content-center items-center text-center bg-slate-700 rounded-lg m-2 overflow-y-auto' 
-          style={{height: `${ToolbarHeight}px`, width: `${ToolbarWidth}px`}}>
+    <div className='flex flex-col items-center text-center bg-black-custom w-full shadow-xl shadow-black'>
+      <SearchBar onSearch={setSearch} scale={ToolbarScale} width={width} height={height}/>
+      <div className='bg-slate-800 flex flex-col items-center text-center h-full rounded-lg'
+        style={{margin: `${height/30}px`}}>
+        <div className='flex flex-col content-center items-center text-center bg-slate-800 rounded-lg m-2 overflow-y-scroll' 
+          style={{maxHeight: `${height/1.7}px`, width: `${width/6}px`}}>
           {images.map(([type, source], index) => (
-            <div key={index} style={{margin: `${ToolbarHeight/30}px`, display: 'flex', flexDirection: 'column', alignItems: 'center'}}> 
+            <div key={index} 
+              className={`bg-slate-700 w-full flex items-center flex-col border-slate-800 ${index === 0 ? 'border-b-2' : index === images.length - 1 ? 'border-t-2' : 'border-t-2 border-b-2'} rounded-lg`}
+              style={{padding: `${ToolbarScale/50}px`}}> 
               <span className='text-slate-400' style={{fontSize: `${scale/4}px`}}>{type.replace('_', ' ')}</span>
               <div className='hover:border-[0.2rem] hover:border-slate-800 shadow-xl shadow-slate-800 rounded-[5px]'
                 style={{
@@ -42,7 +42,7 @@ export default function Toolbar({ layout }) {
         </div>
       </div>
       <div className='bg-gray-custom w-full h-full flex items-center justify-center content-center float-end end-full'>
-        <CustomButton action={'Save'} onClick={handleSave} width={ToolbarWidth} height={ToolbarHeight}/>
+        <CustomButton action={'Save'} onClick={handleSave} scale={ToolbarScale}/>
       </div>
     </div>
   );

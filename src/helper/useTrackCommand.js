@@ -1,24 +1,23 @@
-import { useEffect } from "react";
-
-function handleCommandAndDrag (e, setIsCommandPressed) {
-    if (typeof setIsCommandPressed === 'function') setIsCommandPressed(e.ctrlKey || e.metaKey);
-}
+import { useEffect, useCallback } from "react";
 
 export function useTrackCommand(setIsCommandKey) {
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.target.tagName.toLowerCase() === 'input') {
-        return;
-      }
-    
-      handleCommandAndDrag(e, setIsCommandKey);
-    };
-    
-    window.addEventListener('keydown', handleKeyPress);
-    window.addEventListener('keyup', handleKeyPress);
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-      window.removeEventListener('keyup', handleKeyPress);
-    };
+  const handleKeyDown = useCallback((e) => {
+    if (e.target.tagName.toLowerCase() === 'input') {
+      return;
+    }
+    setIsCommandKey(e.ctrlKey || e.metaKey);
   }, [setIsCommandKey]);
+
+  const handleMouseMove = useCallback((e) => {
+    setIsCommandKey(e.ctrlKey || e.metaKey);
+  }, [setIsCommandKey]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [handleKeyDown, handleMouseMove]);
 }

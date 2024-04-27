@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 
-export default function SearchBar({ onSearch, scale, width}) {
+export default function SearchBar({ onSearch, scale, height, width }) {
     const [search, setSearch] = useState('');
 
     const handleSearch = (e) => {
@@ -10,11 +10,11 @@ export default function SearchBar({ onSearch, scale, width}) {
     };
 
     return (
-        <div className='relative inline-block'>
+        <div className='relative inline-block' style={{marginTop: `${scale/35}px`}}>
             <FaSearch style={{ 
                 position: 'absolute', 
-                width: `${scale/1.6}px`,
-                height: `${scale/4.5}px`, 
+                width: `${scale/15}px`,
+                height: `${scale/42}px`,
                 top: '50%', 
                 transform: 'translateY(-50%)', 
                 color: 'white' }} />
@@ -23,12 +23,12 @@ export default function SearchBar({ onSearch, scale, width}) {
                 type="text"
                 value={search}
                 onChange={handleSearch}
-                placeholder="Search tools..."
+                placeholder="Search items..."
                 style={{
                     width: `${width/5}px`,
-                    height: `${scale/1.7}px`,
-                    fontSize: `${scale/5}px`,
-                    paddingLeft: `${scale/2.2}px`
+                    height: `${scale/17.5}px`,
+                    fontSize: `${scale/45}px`,
+                    paddingLeft: `${scale/22}px`
                 }}
             />
         </div>
