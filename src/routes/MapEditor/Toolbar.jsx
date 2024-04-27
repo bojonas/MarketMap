@@ -14,7 +14,7 @@ export default function Toolbar({ layout }) {
     saveLayout(layout);
   }
 
-  const { width, height } = useContext(DimensionContext);
+  const { width, height, isCommandKey } = useContext(DimensionContext);
   const scale = Math.round(Math.min(width/layout[0].length, height/layout.length));
   const ToolbarScale = Math.min(width, height);
   return (
@@ -22,20 +22,20 @@ export default function Toolbar({ layout }) {
       <SearchBar onSearch={setSearch} scale={ToolbarScale} width={width} height={height}/>
       <div className='bg-slate-800 flex flex-col items-center text-center h-full rounded-lg'
         style={{margin: `${height/30}px`}}>
-        <div className='flex flex-col content-center items-center text-center bg-slate-800 rounded-lg m-2 overflow-y-scroll' 
-          style={{maxHeight: `${height/1.7}px`, width: `${width/6}px`}}>
+        <div className='flex flex-col content-center items-center text-center rounded-lg m-2 overflow-y-scroll' 
+          style={{maxHeight: `${height/1.7}px`}}>
           {images.map(([type, source], index) => (
             <div key={index} 
-              className={`bg-slate-700 w-full flex items-center flex-col border-slate-800 ${index === 0 ? 'border-b-2' : index === images.length - 1 ? 'border-t-2' : 'border-t-2 border-b-2'} rounded-lg`}
-              style={{padding: `${ToolbarScale/50}px`}}> 
-              <span className='text-slate-400' style={{fontSize: `${scale/4}px`}}>{type.replace('_', ' ')}</span>
+              className={`bg-slate-700 w-full flex items-center flex-col border-slate-800 ${index === 0 ? 'border-b-2' : index === images.length-1 ? 'border-t-2' : 'border-t-2 border-b-2'} rounded-lg`}
+              style={{paddingTop: `${ToolbarScale/50}px`, paddingBottom: `${ToolbarScale/50}px`, paddingLeft: `${width/25}px`, paddingRight: `${width/25}px`}}> 
+              <span className='text-slate-400' style={{fontSize: `${ToolbarScale/50}px`}}>{type.replace('_', ' ')}</span>
               <div className='hover:border-[0.2rem] hover:border-slate-800 shadow-xl shadow-slate-800 rounded-[5px]'
                 style={{
                   width: `${scale}px`,
                   boxShadow: '0 5px 2px -1px rgb(35 45 65)',
                 }}
               >
-                <DraggableImage alt={type} source={source} scale={scale} duplicate={true}/>
+                <DraggableImage alt={type} source={source} scale={scale} isCommandKey={isCommandKey} duplicate={true}/>
               </div>
             </div>
           ))}

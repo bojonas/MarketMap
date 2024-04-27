@@ -2,18 +2,19 @@ import { useState } from "react";
 import { useDrag } from "react-dnd";
 
 export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, duplicate }) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isDuplicating, setisDuplicating] = useState(true);
 
   const [, drag] = useDrag({
     type: 'image',
     item: () => {
-      const rootCoordinates = duplicate ? null : cellCoordinates.split('-');
-      return { alt, source, rootCoordinates };
+      const trackedCells = [];
+      const rootCoordinates = duplicate ? null : cellCoordinates;
+      return { alt, source, rootCoordinates, trackedCells };
     },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (dropResult) {
-        setIsVisible(!isCommandKey || duplicate);
+        setisDuplicating(!isCommandKey || duplicate);
         if (!duplicate) setDroppedItem(null);
       }
     },
@@ -22,7 +23,7 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
     }),
   });
 
-  return !isVisible ? null :(
+  return !isDuplicating ? null :(
     <img ref={drag} src={source} alt={alt}/>
   );
 }

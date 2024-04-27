@@ -21,7 +21,7 @@ export default function App() {
     <DimensionContext.Provider value={{ width, height, isCommandKey }}>
       <div className='flex flex-col h-screen w-screen bg-black-custom' ref={ref}>
         <Router>
-          <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-[100vw] max-w-[100vw]'
+          <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full'
             style={{ height: `${height/10}px` }}
           >
             {routes.map(({ name, Icon, route }) => 
@@ -46,8 +46,8 @@ function Tab({ name, Icon, route, width, height }) {
         className='custom-button rounded-xl ml-3 border-none'
         style={({ isActive }) => {
             return {
-              height: `${height/13}px`,
-              width: `${width/20}px`,
+              height: `${scale/13}px`,
+              width: `${scale/10}px`,
               fontSize: `${scale/35}px`,
               padding: `${scale/50}px`,
               backgroundColor: isActive ? '#715DF2' : '#303030',
