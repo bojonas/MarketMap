@@ -12,3 +12,23 @@
         @apply rounded-full w-64 px-4 py-2 placeholder-white bg-blue-400
     }
 }
+
+/* scrollbar */
+::-webkit-scrollbar {
+    display: none;
+    width: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+    background: rgb(30, 41, 59);
+    border-radius: 5px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: rgba(113, 93, 242, 0.747);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(125, 107, 243, 0.747);
+}
