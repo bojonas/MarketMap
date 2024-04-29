@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import Cell from './Cell';
 import { DimensionContext } from '../../DimensionContext';
-import { alignVertical } from '../../helper/alignVertical';
 
 export default function Layout({ layout, setLayout }) {
   const { height, width } = useContext(DimensionContext);
@@ -22,7 +21,6 @@ export default function Layout({ layout, setLayout }) {
             layout={layout} 
             cellCoordinates={cell['id']}
             setLayout={setLayout}
-            isVertical={alignVertical(layout, cell['id'])}
           /> 
         ))
       ))}
