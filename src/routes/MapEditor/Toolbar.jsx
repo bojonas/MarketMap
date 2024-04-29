@@ -10,6 +10,7 @@ export default function Toolbar({ layout }) {
   const [search, setSearch] = useState('');
   const images = Object.entries(getItemImages()).filter(([type]) => type.includes(search));
 
+
   const handleSave = () => {
     saveLayout(layout);
   }

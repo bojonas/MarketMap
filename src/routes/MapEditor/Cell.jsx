@@ -59,8 +59,9 @@ export default function Cell({ type, scale, cellCoordinates, setLayout, isVertic
     alignItems: 'center',
     height: `${scale}px`,
     width: `${scale}px`,
-    border: '2px rgb(30 41 59) solid',
+    border: '2px #171717 solid',
     borderRadius: '5px',
+    backgroundColor: '#383838'
   };
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
   if (isVertical) divStyle['transform'] = 'rotate(90deg)';
