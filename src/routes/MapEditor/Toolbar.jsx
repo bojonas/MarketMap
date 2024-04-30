@@ -19,7 +19,7 @@ export default function Toolbar({ layout }) {
   const scale = Math.round(Math.min(width/layout[0].length, height/layout.length));
   const ToolbarScale = Math.min(width, height);
   return (
-    <div className='flex flex-col items-center text-center bg-black-custom w-full shadow-xl shadow-black'>
+    <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full shadow-xl shadow-slate-700'>
       <SearchBar onSearch={setSearch} scale={ToolbarScale} width={width} height={height}/>
       <div className='bg-slate-800 flex flex-col items-center text-center h-full rounded-lg'
         style={{margin: `${height/30}px`}}>

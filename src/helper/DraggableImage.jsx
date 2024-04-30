@@ -4,7 +4,7 @@ import { useDrag } from "react-dnd";
 export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, duplicate }) {
   const [isDuplicating, setisDuplicating] = useState(true);
 
-  const [, drag] = useDrag({
+  const [isDragging, drag] = useDrag({
     type: 'image',
     item: () => {
       const trackedCells = [];
@@ -22,6 +22,8 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
       isDragging: monitor.isDragging(),
     }),
   });
+
+  if (!isDragging) return null;
 
   return !isDuplicating ? null :(
     <img ref={drag} src={source} alt={alt}/>

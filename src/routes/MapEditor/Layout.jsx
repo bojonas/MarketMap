@@ -4,7 +4,7 @@ import { DimensionContext } from '../../DimensionContext';
 
 export default function Layout({ layout, setLayout }) {
   const { height, width } = useContext(DimensionContext);
-  const scale = Math.round(Math.min(width*0.9 / layout[0].length, height*0.9 / layout.length));
+  const scale = Math.round(Math.min(width*0.8 / layout[0].length, height*0.8 / layout.length));
   return (
     <div style={{ 
       display: 'grid', 

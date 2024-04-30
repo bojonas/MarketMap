@@ -14,7 +14,8 @@ module.exports = {
         'gray-custom': '#242424',
         'gray-button': '#303030',
         'gray-button-hover': '#353535',
-        'black-custom': '#171717'
+        'darkgray-custom': '#171717',
+        'black-custom': '#101010',
       }
     },
   },

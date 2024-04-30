@@ -42,8 +42,7 @@ export default function App() {
 function Tab({ name, Icon, route, width, height }) {
   const scale = Math.min(width, height);
   return (
-    <NavLink to={`/${route}`} 
-        className='custom-button rounded-xl ml-3 border-none'
+    <NavLink to={`/${route}`} className='custom-button rounded-xl ml-3 border-none'
         style={({ isActive }) => {
             return {
               height: `${scale/13}px`,
