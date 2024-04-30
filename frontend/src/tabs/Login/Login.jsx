@@ -42,7 +42,7 @@ export default function Login() {
           <p id="reset_pw" onClick={forgotPassword}>
             Forgot Password?
           </p>
-          <p className="text-red-700">{errorMessage}</p>
+          {errorMessage?<p className="text-red-700">{errorMessage}</p>:null}
         </div>
       </div>
     </div>
