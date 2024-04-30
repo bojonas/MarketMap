@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom';
-import { getRoutes } from './helper/getRoutes';
+import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
 import { useAdjustScale } from './helper/useAdjustScale';
 import { DimensionContext } from './DimensionContext';
@@ -8,7 +8,7 @@ import { useTrackCommand } from './helper/useTrackCommand';
 
 // custom navigation order (!whitespaces important!)
 const order = ['Home', 'Map Viewer', 'Map Editor', 'Login'];
-const routes = sortObject(getRoutes(), order);
+const routes = sortObject(getTabs(), order);
 
 export default function App() {
   const ref = useRef(null);
