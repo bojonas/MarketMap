@@ -19,13 +19,11 @@ export default function App() {
   useTrackCommand(setIsCommandKey);
   return (
     <DimensionContext.Provider value={{ width, height, isCommandKey }}>
-      <div className='flex flex-col h-screen w-screen bg-black-custom' ref={ref}>
+      <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom' ref={ref}>
         <Router>
-          <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full'
-            style={{ height: `${height/10}px` }}
-          >
+          <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>
             {routes.map(({ name, Icon, route }) => 
-              <Tab key={name} route={route} name={name} Icon={Icon} width={width} height={height}/>
+              <Tab key={name} route={route} name={name} Icon={Icon}/>
             )}
           </div>
           <Routes>
@@ -39,16 +37,11 @@ export default function App() {
   );
 }
 
-function Tab({ name, Icon, route, width, height }) {
-  const scale = Math.min(width, height);
+function Tab({ name, Icon, route }) {
   return (
-    <NavLink to={`/${route}`} className='custom-button rounded-xl ml-3 border-none'
+    <NavLink to={`/${route}`} className='custom-button rounded-xl ml-3 border-none w-fit h-[6svh] '
         style={({ isActive }) => {
             return {
-              height: `${scale/13}px`,
-              width: `${scale/10}px`,
-              fontSize: `${scale/35}px`,
-              padding: `${scale/50}px`,
               backgroundColor: isActive ? '#715DF2' : '#303030',
               boxShadow: isActive ? '0 4px 6px -1px #334155, 0 2px 4px -2px #334155' : '',
             }

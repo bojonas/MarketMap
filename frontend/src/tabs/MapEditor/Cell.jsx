@@ -52,22 +52,15 @@ export default function Cell({ type, scale, cellCoordinates, setLayout, isVertic
       isOver: monitor.isOver()
     }),
   });
-
   let divStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
     height: `${scale}px`,
     width: `${scale}px`,
-    border: '2px #171717 solid',
-    borderRadius: '5px',
-    backgroundColor: 'rgb(70 70 70)'
   };
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
   if (isVertical) divStyle['transform'] = 'rotate(90deg)';
 
   return (
-    <div ref={drop} style={divStyle}>
+    <div ref={drop} className='flex justifycenter items-center border-2 border-slate-800 rounded-sm bg-slate-700' style={divStyle}>
       {droppedItem 
         ? <DraggableImage 
           source={droppedItem.source} 

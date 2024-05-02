@@ -3,7 +3,6 @@ import { useDrag } from "react-dnd";
 
 export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, duplicate }) {
   const [isDuplicating, setisDuplicating] = useState(true);
-
   const [isDragging, drag] = useDrag({
     type: 'image',
     item: () => {

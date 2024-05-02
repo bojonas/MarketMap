@@ -5,17 +5,17 @@ import Layout from './Layout';
 import Toolbar from './Toolbar';
 import data from './data.json';
 
-export default function MapEditor({ width, height }) {
+export default function MapEditor() {
   const [layout, setLayout] = useState(data);
   return (
      <DndProvider backend={HTML5Backend}>
      <div className='flex h-full w-full'>
         <div>
-          <div className='bg-black-custom w-[75vw] max-w-[75vw] h-full content-center justify-center text-center'>
-            <Layout layout={layout} width={width/1.2} height={height/1.2} setLayout={setLayout}/>
+          <div className='bg-black-custom w-[80svw] max-w-[80svw] h-full flex content-center justify-center items-center text-center'>
+            <Layout layout={layout} setLayout={setLayout}/>
           </div>
         </div>
-        <Toolbar layout={layout} width={width/1.1} height={height/1.1}/>
+        <Toolbar layout={layout} />
      </div>
    </DndProvider>
   );

@@ -1,11 +1,5 @@
 export default function CustomButton({ action, onClick, scale }) {
     return (
-        <button className='custom-button w-[7rem] shadow-slate-700' 
-        style={{
-            width: `${scale/6.5}px`,
-            height: `${scale/12.5}px`,
-            fontSize: `${scale/33}px`,
-        }}
-        onClick={onClick}>{action}</button>
+        <button className='custom-button shadow-slate-700 w-[6svw] h-[6svh]' style={{fontSize: `${scale/3}px`}} onClick={onClick}>{action}</button>
     );
 }
