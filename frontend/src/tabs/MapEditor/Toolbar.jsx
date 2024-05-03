@@ -17,7 +17,7 @@ export default function Toolbar({ layout }) {
   const { width, height, isCommandKey } = useContext(DimensionContext);
   const scale = Math.round(Math.min(width*0.8 / layout[0].length, height*0.8 / layout.length));
   return (
-    <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full shadow-xl shadow-slate-700'>
+    <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full'>
       <SearchBar onSearch={setSearch} scale={scale}/>
       <div className='bg-slate-800 flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
         <div className='flex flex-col content-center items-center text-center rounded-lg m-2 overflow-y-scroll min-h-[58svh] max-h-[58svh] w-[11svw]'>
