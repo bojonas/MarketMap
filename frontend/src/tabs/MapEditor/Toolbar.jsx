@@ -1,17 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { getItemImages } from "../../helper/getItemImages";
 import SearchBar from "../../helper/SearchBar";
-import { saveLayout } from '../../helper/saveLayout';
 import CustomButton from '../../helper/CustomButton';
 import DraggableImage from '../../helper/DraggableImage';
 import { DimensionContext } from '../../DimensionContext';
+import { createUser } from '../../requests/userRequests';
 
 export default function Toolbar({ layout }) {
   const [search, setSearch] = useState('');
   const images = Object.entries(getItemImages()).filter(([type]) => type.includes(search));
 
   const handleSave = () => {
-    saveLayout(layout);
+    createUser();
   }
 
   const { width, height, isCommandKey } = useContext(DimensionContext);
