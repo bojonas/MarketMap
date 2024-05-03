@@ -1,17 +1,22 @@
-const axios = require('axios');
+import { axiosInstance } from "./axiosInstance";
 
-export async function createUser(username, email, password, permission_id) {
+export async function createUser(username, email, password, permission) {
+  if (!username || !email || !password || !permission) {
+    console.error('Invalid parameters');
+    return;
+  }
+
   const data = {
     username: username,
     email: email,
     password: password,
-    permission_id: permission_id
+    permission: permission
   };
 
   try {
-    const response = await axios.post('http://localhost:3001/post_users', data);
+    const response = await axiosInstance.post('/post_users', data);
     console.log('User created successfully:', response.data);
   } catch (error) {
-    console.error('Error creating user:', error.response.data);
+    console.error('Error creating user:', error);
   }
 }
