@@ -16,6 +16,16 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.json());
 
+
+// create schemas to validate body
+const Joi = require('joi');
+const User = Joi.object({
+  username: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+  permission: Joi.string().valid('admin', 'market', 'user').required()
+});
+
 // server can be run with 'node server.js'
 // on startup
 var postgres_pool;
@@ -35,10 +45,6 @@ process.on('SIGINT', async () => {
 });
 
 // route endpoints
-app.get('/', (req, res) => {     
-    res.send('Welcome to MarketMap backend'); 
-});
-
 /**** Home Routes ****/
 
 /**** Login Routes ****/
@@ -51,6 +57,18 @@ app.post('/post_users', async (req, res) => {
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+// get permission with user id 
+app.get('/get_permission', async (req, res) => {
+    const { user_id } = req.body;
+    try {
+        const result = await getPermission(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
     }
 });
 
