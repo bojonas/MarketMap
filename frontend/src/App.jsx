@@ -6,8 +6,7 @@ import { useAdjustScale } from './helper/useAdjustScale';
 import { DimensionContext } from './DimensionContext';
 import { useTrackCommand } from './helper/useTrackCommand';
 
-
-// logic for permission based rendering to be added
+// define permission for tabs
 const tabPermission = [
   { name: 'Home', permission: 'all' },
   { name: 'Map Viewer', permission: 'all' },
@@ -28,21 +27,21 @@ export default function App() {
   const [isCommandKey, setIsCommandKey] = useState(false);
   useTrackCommand(setIsCommandKey);
 
-  const permission = 'market';
-  
-  const tabs = sortObject(getTabs(), order);
+  const userPermission = 'admin';
+
+  const tabs = sortObject(getTabs(tabPermission), order);
   return (
     <DimensionContext.Provider value={{ width, height, isCommandKey }}>
       <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom' ref={ref}>
         <Router>
           <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>
-            {tabs.map(({ name, tab, Icon }) => 
-              tab === 'MapEditor' && permission === 'user' ? null : <Tab key={name} tab={tab} name={name} Icon={Icon}/>
+            {tabs.map(({ name, tab, Icon, permission }) => 
+              (permission === 'all' || userPermission === 'admin' || userPermission === permission) ? <Tab key={name} tab={tab} name={name} Icon={Icon}/> : null
             )}
           </div>
           <Routes>
-            {tabs.map(({ tab, Component }, index) => 
-              <Route key={index} path={`/${tab}`} element={<Component/>} />
+            {tabs.map(({ tab, Component, permission }, index) => 
+              (permission === 'all' || userPermission === 'admin' || userPermission === permission) ? <Route key={index} path={`/${tab}`} element={<Component/>} /> : null
             )}
           </Routes>
         </Router>

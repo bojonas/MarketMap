@@ -4,13 +4,15 @@ import SearchBar from "../../helper/SearchBar";
 import CustomButton from '../../helper/CustomButton';
 import DraggableImage from '../../helper/DraggableImage';
 import { DimensionContext } from '../../DimensionContext';
+import { requestUpdateMapLayout } from '../../requests/mapEditorRequests';
 
 export default function Toolbar({ layout }) {
   const [search, setSearch] = useState('');
   const images = Object.entries(getItemImages()).filter(([type]) => type.includes(search));
 
   const handleSave = async () => {
-    console.log(layout);
+    alert('Saved');
+    await requestUpdateMapLayout(2, layout);
   }
 
   const { width, height, isCommandKey } = useContext(DimensionContext);

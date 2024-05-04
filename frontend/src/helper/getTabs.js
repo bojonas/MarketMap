@@ -1,4 +1,4 @@
-export function getTabs() {    
+export function getTabs(tabPermission) {    
     // get all components from tabs folder
     const tabs = require.context('../tabs', true, /\/[A-Za-z0-9-_,\s]+\/[A-Za-z0-9-_,\s]+\.jsx$/);
     const icons = require.context('../icons', true, /\/[A-Za-z0-9-_,\s]+Icon\.jsx$/);
@@ -18,8 +18,11 @@ export function getTabs() {
         const iconKey = icons.keys().find(iconKey => iconKey.includes(`${tab}Icon`));
         const Icon = iconKey ? icons(iconKey).default : null;
 
-        // change Home tab to /
+        // set permission
+        const permission = tabPermission.find(item => item.name === name).permission;
+
+        // change Home route to /
         if (tab === 'Home') tab = '';
-        return { name, tab, Component, Icon };
+        return { name, tab, Component, Icon, permission };
     });
 }

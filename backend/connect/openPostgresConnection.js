@@ -1,3 +1,6 @@
+const getConfig = require('./getConfig');
+const { Pool } = require('pg');
+
 async function getVersion(pool) {
     try {
         const result = await pool.query('SELECT VERSION()');
@@ -7,11 +10,10 @@ async function getVersion(pool) {
     }
 }
 
-const { Pool } = require('pg')
 async function openPostgresConnection() {
-    const getConfig = require('./getConfig');
+    const config = getConfig('postgres');
 
-    const pool = new Pool(getConfig('postgres'));
+    const pool = new Pool(config);
     try {
         console.log(await getVersion(pool));
         return pool;
@@ -19,4 +21,5 @@ async function openPostgresConnection() {
         console.error(err.message);
     }
 }
+
 module.exports = openPostgresConnection;

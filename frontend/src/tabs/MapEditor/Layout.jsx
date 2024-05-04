@@ -10,11 +10,11 @@ export default function Layout({ layout, setLayout }) {
       {layout.map((row) => (
         row.map((cell) => (
           <Cell 
-            key={cell['id']} 
+            key={cell['coordinates']} 
             type={cell['type']} 
             scale={scale} 
             layout={layout} 
-            cellCoordinates={cell['id']}
+            cellCoordinates={cell['coordinates']}
             setLayout={setLayout}
           /> 
         ))
