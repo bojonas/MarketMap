@@ -16,7 +16,7 @@ export default function Toolbar({ layout }) {
   }
 
   const { width, height, isCommandKey } = useContext(DimensionContext);
-  const scale = Math.round(Math.min(width*0.8 / layout[0].length, height*0.8 / layout.length));
+  const scale = Math.round(Math.min(width*0.08, height*0.08));
   return (
     <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full'>
       <SearchBar onSearch={setSearch} scale={scale}/>
@@ -25,7 +25,7 @@ export default function Toolbar({ layout }) {
           {images.map(([type, source], index) => (
             <div key={index} className={`bg-slate-700 w-full flex items-center flex-col border-slate-800 rounded-lg p-[1.6svh] 
               ${index === 0 ? 'border-b-2' : index === images.length-1 ? 'border-t-2' : 'border-2'}`}> 
-              <span className='text-white' style={{fontSize: `${scale/4}px`}}>{type.replace('_', ' ')}</span>
+              <span style={{fontSize: `${scale/4}px`}}>{type.replace('_', ' ')}</span>
               <div className='rounded-md hover:border-[0.2rem] hover:border-purple-custom hover:shadow-purple-custom'
                 style={{ width: `${scale}px`, boxShadow: '0 5px 2px -1px rgb(35 45 65)' }}>
                 <DraggableImage alt={type} source={source} isCommandKey={isCommandKey} duplicate={true}/>

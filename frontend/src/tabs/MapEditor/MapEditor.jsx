@@ -6,28 +6,30 @@ import Toolbar from './Toolbar';
 import { requestGetMapLayout } from '../../requests/mapEditorRequests';
 
 export default function MapEditor() {
-  const [layout, setLayout] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [layout, setLayout] = useState(null);
 
   useEffect(() => {
     const getLayout = async () => {
       const data = await requestGetMapLayout(2);
-      setLayout(data);
-      setIsLoading(false);
+      if (data) setLayout(data);
     }
     getLayout();
   }, []);
-
+  
   return (
-     <DndProvider backend={HTML5Backend}>
-     <div className='flex h-full w-full'>
-        <div>
-          <div className='w-[80svw] max-w-[80svw] h-full flex content-center justify-center items-center text-center'>
-            {isLoading ? 'Loading...' : <Layout layout={layout} setLayout={setLayout}/>}
-          </div>
-        </div>
-        {isLoading ? 'Loading...' :  <Toolbar layout={layout}/>}
-     </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className='flex h-full w-full'>
+        {layout
+        ? <React.Fragment>
+              <div>
+              <div className='w-[80svw] max-w-[80svw] h-full flex content-center justify-center items-center text-center'>
+                <Layout layout={layout} setLayout={setLayout}/>
+              </div>
+            </div>
+            <Toolbar layout={layout}/>
+          </React.Fragment>
+        : null}
+      </div>
    </DndProvider>
   );
 }
