@@ -11,8 +11,7 @@ export default function Toolbar({ layout }) {
   const images = Object.entries(getItemImages()).filter(([type]) => type.includes(search));
 
   const handleSave = async () => {
-    alert('Saved');
-    await requestUpdateMapLayout(2, layout);
+    alert(await requestUpdateMapLayout(2, layout));
   }
 
   const { width, height, isCommandKey } = useContext(DimensionContext);
