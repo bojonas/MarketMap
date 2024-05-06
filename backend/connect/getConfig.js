@@ -9,7 +9,7 @@ function getConfig(db='postgres') {
             port: process.env.POSTGRES_PORT,
             database: process.env.POSTGRES_DATABASE,
             ssl: {
-                rejectUnauthorized: false, // set to true when certificate
+                rejectUnauthorized: true,
                 ca: process.env.POSTGRES_SSL_CA,
             },
         });
