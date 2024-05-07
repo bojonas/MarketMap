@@ -38,3 +38,23 @@ export async function requestGetPermission(user_id) {
     console.error('Error querying permission:', error);
   }
 }
+
+//request to /check_credentials
+export async function requestCheckCredentials(username, password) {
+  if (!username || !password) {
+    return console.error('Invalid parameters');
+  }
+
+  const data = {
+   username: username,
+   password: password
+  };
+
+  try {
+    const response = await axiosInstance.post('/check_credentials', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error querying permission:', error);
+  }
+}
+

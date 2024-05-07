@@ -1,17 +1,19 @@
 import { useState } from "react";
+import {requestCheckCredentials} from '../../requests/loginRequests';
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const login = () => {
-    if (password === "1234") {
-      // Führe den Login durch
-      setErrorMessage("");
-    } else {
-      setErrorMessage("Invalid Credentials");
+  const login = async() => {
+    const result = await requestCheckCredentials(username, password)
+    try{
+      setErrorMessage(result.message);
     }
+    catch(error){
+      setErrorMessage("")
+    };
   };
 
   const forgotPassword = () => {
