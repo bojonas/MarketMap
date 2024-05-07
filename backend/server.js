@@ -40,7 +40,7 @@ process.on('SIGINT', async () => {
 /**** Login Routes ****/
 
 // import login routes
-const { postUser, getPermission } = require('./routes/loginRoutes');
+const { postUser, getPermission, checkUserLogin } = require('./routes/loginRoutes');
 
 // shemas to validate login jsons 
 const User = Joi.object({
@@ -52,6 +52,11 @@ const User = Joi.object({
 
 const UserId = Joi.object({
     user_id: Joi.number().required()
+})
+
+const LoginUser = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required()
 })
 
 // create a new user
@@ -89,6 +94,25 @@ app.post('/get_permissions', async (req, res) => {
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
 });
+
+// check user input
+app.post("/check_credentials", async (req, res)=>{
+    const {error} = LoginUser.validate(req.body);
+    if(error){
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    const{username, password} = req.body
+
+    try {
+        const result = await checkUserLogin(username, password, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+
+})
 
 /**** MapViewer Routes ****/
 
