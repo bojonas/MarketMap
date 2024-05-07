@@ -11,6 +11,11 @@
     .custom-input {
         @apply rounded-full w-64 px-4 py-2 placeholder-white bg-blue-400
     }
+
+    .add_remove_button {
+        @apply hover:bg-gray-custom hover:rounded-3xl w-[2svw] h-[4svh] text-xl font-bold;
+        @apply flex items-center justify-center;
+    }    
 }
 
 :root {

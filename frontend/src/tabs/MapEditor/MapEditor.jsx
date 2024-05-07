@@ -15,7 +15,7 @@ export default function MapEditor() {
     }
     getLayout();
   }, []);
-  
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className='flex h-full w-full'>

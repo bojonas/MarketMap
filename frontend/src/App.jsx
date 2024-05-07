@@ -41,7 +41,7 @@ export default function App() {
           </div>
           <Routes>
             {tabs.map(({ tab, Component, permission }, index) => 
-              (permission === 'all' || userPermission === 'admin' || userPermission === permission) ? <Route key={index} path={`/${tab}`} element={<Component/>} /> : null
+              (permission === 'all' || userPermission === 'admin' || userPermission === permission) ? <Route key={index} path={`/${tab}`} element={<Component/>}/> : null
             )}
           </Routes>
         </Router>
