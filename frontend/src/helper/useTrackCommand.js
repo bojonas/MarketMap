@@ -13,8 +13,8 @@ export function useTrackCommand(setIsCommandKey) {
   }, [setIsCommandKey]);
 
   const handleDragStart = useCallback((e) => {
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
+    if (e.metaKey) {
+      e.stopPropagation();
     }
   }, []);
 
