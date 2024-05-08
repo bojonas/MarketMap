@@ -1,5 +1,3 @@
-//const transformLayout = require('../helper/transformLayout')
-
 // get market id with user id
 async function getMarketId(user_id, postgres_pool) {
     const query = `
@@ -12,13 +10,14 @@ async function getMarketId(user_id, postgres_pool) {
 }
 
 // logic for endpoint /put_map_layouts
-async function putMapLayouts(user_id, layout, postgres_pool) {
-    const client = await postgres_pool.connect();
-
+async function putMapLayout(user_id, layout, postgres_pool) {
+    const StringifiedLayout = JSON.stringify(layout);
     try {
-        await client.query('BEGIN;');
-
-        const market_id = await getMarketId(user_id, client);
+        // check if layout changed
+        const dbLayout = JSON.stringify(await getMapLayout(user_id, postgres_pool));
+        if (StringifiedLayout === dbLayout) return { message : 'Saved' };
+        
+        const market_id = await getMarketId(user_id, postgres_pool);
         if (!market_id) {
             throw new Error('Market ID not found');
         }
@@ -28,21 +27,15 @@ async function putMapLayouts(user_id, layout, postgres_pool) {
             SET map_layout = $1
             WHERE market_id = $2;`;
 
-        await client.query(query, [JSON.stringify(layout), market_id]);
-
-        await client.query('COMMIT;');
-
+        await postgres_pool.query(query, [StringifiedLayout, market_id]);
         return { message: 'Saved' };
     } catch (error) {
-        await client.query('ROLLBACK;');
         console.error('Error updating map:', error);
-    } finally {
-        client.release();
     }
 }
 
 // logic for endpoint /get_map_layouts
-async function getMapLayouts(user_id, postgres_pool) {
+async function getMapLayout(user_id, postgres_pool) {
     try {
         const query = `
             SELECT m.map_layout
@@ -57,4 +50,4 @@ async function getMapLayouts(user_id, postgres_pool) {
     }
 }
 
-module.exports = { putMapLayouts, getMapLayouts }
+module.exports = { putMapLayout, getMapLayout }

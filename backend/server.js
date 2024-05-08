@@ -119,7 +119,7 @@ app.post("/check_credentials", async (req, res)=>{
 /**** MapEditor Routes ****/
 
 // import map editor routes
-const { putMapLayouts, getMapLayouts } = require('./routes/mapEditorRoutes')
+const { putMapLayout, getMapLayout } = require('./routes/mapEditorRoutes')
 
 // shemas to validate map editor jsons 
 const Map = Joi.object({
@@ -136,7 +136,7 @@ app.put('/put_map_layouts', async (req, res) => {
 
     const { user_id, layout } = req.body;
     try {
-        const result = await putMapLayouts(user_id, layout, postgres_pool);
+        const result = await putMapLayout(user_id, layout, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
@@ -153,7 +153,7 @@ app.post('/get_map_layouts', async (req, res) => {
 
     const { user_id } = req.body;
     try {
-        const result = await getMapLayouts(user_id, postgres_pool);
+        const result = await getMapLayout(user_id, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
