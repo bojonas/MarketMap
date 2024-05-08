@@ -10,6 +10,9 @@ async function postUser(username, email, password, permission, postgres_pool) {
       RETURNING user_id;`;
 
     const result = await postgres_pool.query(query, [username, email, password, permission_id]);
+    if (!result){
+      return console.error("result not found")
+    }
     const user_id = result.rows[0].user_id;
 
     return { message: 'User created successfully', user_id: user_id };
@@ -98,4 +101,4 @@ async function checkUserLogin(username, password, postgres_pool){
   }
 }
 
-module.exports = { postUser, getPermission,checkUserLogin };
+module.exports = { postUser, getPermission,checkUserLogin,userExists };
