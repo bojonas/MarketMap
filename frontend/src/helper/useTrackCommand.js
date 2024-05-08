@@ -12,14 +12,22 @@ export function useTrackCommand(setIsCommandKey) {
     setIsCommandKey(e.ctrlKey || e.metaKey);
   }, [setIsCommandKey]);
 
+  const handleDragStart = useCallback((e) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+    }
+  }, []);
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('mousemove', handleMouseMoveOrDrag);
     window.addEventListener('drag', handleMouseMoveOrDrag);
+    window.addEventListener('dragstart', handleDragStart);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('mousemove', handleMouseMoveOrDrag);
       window.removeEventListener('drag', handleMouseMoveOrDrag);
+      window.removeEventListener('dragstart', handleDragStart);
     };
-  }, [handleKeyDown, handleMouseMoveOrDrag]);
+  }, [handleKeyDown, handleMouseMoveOrDrag, handleDragStart]);
 }
