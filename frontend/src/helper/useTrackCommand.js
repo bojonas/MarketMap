@@ -8,26 +8,18 @@ export function useTrackCommand(setIsCommandKey) {
     setIsCommandKey(e.ctrlKey || e.metaKey);
   }, [setIsCommandKey]);
 
-  const handleMouseMoveOrDrag = useCallback((e) => {
+  const handleMouseMoveOrDragOver = useCallback((e) => {
     setIsCommandKey(e.ctrlKey || e.metaKey);
   }, [setIsCommandKey]);
 
-  const handleDragStart = useCallback((e) => {
-    if (e.metaKey) {
-      e.stopPropagation();
-    }
-  }, []);
-
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('mousemove', handleMouseMoveOrDrag);
-    window.addEventListener('drag', handleMouseMoveOrDrag);
-    window.addEventListener('dragstart', handleDragStart);
+    window.addEventListener('mousemove', handleMouseMoveOrDragOver);
+    window.addEventListener('dragover', handleMouseMoveOrDragOver);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('mousemove', handleMouseMoveOrDrag);
-      window.removeEventListener('drag', handleMouseMoveOrDrag);
-      window.removeEventListener('dragstart', handleDragStart);
+      window.removeEventListener('mousemove', handleMouseMoveOrDragOver);
+      window.removeEventListener('dragover', handleMouseMoveOrDragOver);
     };
-  }, [handleKeyDown, handleMouseMoveOrDrag, handleDragStart]);
+  }, [handleKeyDown, handleMouseMoveOrDragOver]);
 }
