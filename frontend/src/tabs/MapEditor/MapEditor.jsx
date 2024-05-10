@@ -19,16 +19,14 @@ export default function MapEditor() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className='flex h-full w-full'>
-        {layout
-        ? <React.Fragment>
-              <div>
-              <div className='w-[80svw] max-w-[80svw] h-full flex content-center justify-center items-center text-center'>
-                <Layout layout={layout} setLayout={setLayout}/>
-              </div>
+        <div>
+          { layout 
+          ? <div className='w-[80svw] max-w-[80svw] h-full flex content-center justify-center items-center text-center'>
+              <Layout layout={layout} setLayout={setLayout}/>
             </div>
-            <Toolbar layout={layout}/>
-          </React.Fragment>
-        : null}
+          : <div className='w-[80svw] max-w-[80svw] h-full flex content-center justify-center items-center text-center'></div> }
+        </div>
+        <Toolbar layout={layout}/>
       </div>
    </DndProvider>
   );

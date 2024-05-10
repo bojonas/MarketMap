@@ -57,10 +57,12 @@ export default function Cell({ type, scale, cellCoordinates, setLayout, isVertic
     width: `${scale}px`,
   };
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
+  if (cord[0] === 0) divStyle['borderTop'] = 'none';
+  if (cord[1] === 0) divStyle['borderLeft'] = 'none';
   if (isVertical) divStyle['transform'] = 'rotate(90deg)';
 
   return (
-    <div ref={drop} className='flex justifycenter items-center border-2 border-slate-800 rounded-[0.5rem] bg-slate-700' style={divStyle}>
+    <div ref={drop} className='flex justify-center items-center border-2 border-slate-800 rounded-[0.5rem] bg-slate-700' style={divStyle}>
       {droppedItem 
         ? <DraggableImage 
           source={droppedItem.source} 
