@@ -13,7 +13,7 @@
     }
 
     .add_remove_button {
-        @apply hover:bg-gray-custom hover:rounded-3xl w-[2svw] h-[4svh] text-xl font-bold;
+        @apply hover:bg-gray-button-hover hover:rounded-3xl w-[2svw] h-[4svh] text-xl font-bold;
         @apply flex items-center justify-center;
     }    
 }

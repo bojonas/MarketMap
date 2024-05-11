@@ -4,7 +4,7 @@ import DraggableImage from "../../helper/DraggableImage";
 import LoadImage from "../../helper/LoadImage"
 import { DimensionContext } from '../../DimensionContext';
 
-export default function Cell({ type, scale, cellCoordinates, setLayout, isVertical }) {
+export default function Cell({ type, scale, cellCoordinates, setLayout, isVertical, rowCount, colCount }) {
   const [droppedItem, setDroppedItem] = useState(null);
 
   const cord = cellCoordinates.split('-').map(Number);
@@ -23,6 +23,7 @@ export default function Cell({ type, scale, cellCoordinates, setLayout, isVertic
       // update layout
       setLayout(prevLayout => {
         const newLayout = [...prevLayout];
+
         // add item to cell 
         newLayout[cord[0]][cord[1]]['type'] = item.alt;
 
@@ -59,6 +60,8 @@ export default function Cell({ type, scale, cellCoordinates, setLayout, isVertic
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
   if (cord[0] === 0) divStyle['borderTop'] = 'none';
   if (cord[1] === 0) divStyle['borderLeft'] = 'none';
+  if (cord[0] === rowCount - 1) divStyle['borderBottom'] = 'none';
+  if (cord[1] === colCount - 1) divStyle['borderRight'] = 'none';
   if (isVertical) divStyle['transform'] = 'rotate(90deg)';
 
   return (
