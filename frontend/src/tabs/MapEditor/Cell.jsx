@@ -4,11 +4,11 @@ import DraggableImage from "../../helper/DraggableImage";
 import LoadImage from "../../helper/LoadImage"
 import { DimensionContext } from '../../DimensionContext';
 
-export default function Cell({ type, scale, cellCoordinates, setLayout, isVertical }) {
+export default function Cell({ type, scale, cellCoordinates, setLayout, isVertical, zoom }) {
   const [droppedItem, setDroppedItem] = useState(null);
 
   const cord = cellCoordinates.split('-').map(Number);
-  const { isCommandKey } = useContext(DimensionContext);
+  const isCommandKey = useContext(DimensionContext);
   // on drop
   const [{ isOver }, drop] = useDrop({
     accept: 'image',

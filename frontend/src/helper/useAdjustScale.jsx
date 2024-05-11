@@ -5,7 +5,6 @@ export function useAdjustScale(ref) {
     const debounceTimeout = useRef(null);
 
     useEffect(() => {
-        // Initial size calculation without delay
         setDimensions({
             width: ref.current.clientWidth,
             height: ref.current.clientHeight

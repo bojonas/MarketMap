@@ -1,8 +1,7 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom';
 import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
-import { useAdjustScale } from './helper/useAdjustScale';
 import { DimensionContext } from './DimensionContext';
 import { useTrackCommand } from './helper/useTrackCommand';
 
@@ -21,9 +20,6 @@ for (let tab of tabPermission) {
 }
 
 export default function App() {
-  const ref = useRef(null);
-  const { width, height } = useAdjustScale(ref);
-
   // track if command key is pressed
   const [isCommandKey, setIsCommandKey] = useState(false);
   useTrackCommand(setIsCommandKey);
@@ -32,8 +28,8 @@ export default function App() {
 
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
-    <DimensionContext.Provider value={{ width, height, isCommandKey }}>
-      <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom' ref={ref}>
+    <DimensionContext.Provider value={ isCommandKey }>
+      <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom'>
         <Router>
           <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>
             {tabs.map(({ name, tab, Icon, permission }) => 

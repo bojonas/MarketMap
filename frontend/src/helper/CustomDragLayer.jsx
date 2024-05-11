@@ -3,7 +3,7 @@ import { useDragLayer } from 'react-dnd';
 export default function CustomDragLayer({ scale }) {
   const { isDragging, item, currentOffset } = useDragLayer((monitor) => ({
     item: monitor.getItem(),
-    currentOffset: monitor.getSourceClientOffset(),
+    currentOffset: monitor.getClientOffset(),
     isDragging: monitor.isDragging(),
   }));
 
@@ -11,7 +11,8 @@ export default function CustomDragLayer({ scale }) {
     return null;
   }
 
-  const { x, y } = currentOffset;
+  const x = currentOffset.x - scale / 2;
+  const y = currentOffset.y - scale / 2;
   return (
     <div style={{ position: 'fixed', pointerEvents: 'none', zIndex: 100, left: 0, top: 0 }}>
       <div style={{ 
