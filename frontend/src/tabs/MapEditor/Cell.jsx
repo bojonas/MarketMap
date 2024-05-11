@@ -4,7 +4,7 @@ import DraggableImage from "../../helper/DraggableImage";
 import LoadImage from "../../helper/LoadImage"
 import { DimensionContext } from '../../DimensionContext';
 
-export default function Cell({ type, scale, cellCoordinates, setLayout, isVertical, rowCount, colCount }) {
+export default function Cell({ type, scale, cellCoordinates, setLayout, isVertical }) {
   const [droppedItem, setDroppedItem] = useState(null);
 
   const cord = cellCoordinates.split('-').map(Number);
@@ -56,16 +56,14 @@ export default function Cell({ type, scale, cellCoordinates, setLayout, isVertic
   let divStyle = {
     height: `${scale}px`,
     width: `${scale}px`,
+    border: `${scale/25}px solid rgb(30 41 59)`,
+    borderRadius: `${scale/10}px`
   };
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
-  if (cord[0] === 0) divStyle['borderTop'] = 'none';
-  if (cord[1] === 0) divStyle['borderLeft'] = 'none';
-  if (cord[0] === rowCount - 1) divStyle['borderBottom'] = 'none';
-  if (cord[1] === colCount - 1) divStyle['borderRight'] = 'none';
   if (isVertical) divStyle['transform'] = 'rotate(90deg)';
 
   return (
-    <div ref={drop} className='flex justify-center items-center border-2 border-slate-800 rounded-[0.5rem] bg-slate-700' style={divStyle}>
+    <div ref={drop} className='flex justify-center items-center border-slate-800 bg-slate-700' style={divStyle}>
       {droppedItem 
         ? <DraggableImage 
           source={droppedItem.source} 

@@ -18,6 +18,13 @@ export default function SearchBar({ onSearch, scale }) {
                 top: '50%', 
                 transform: 'translateY(-50%)', 
                 color: 'white' }}/>
+            {null ? <div style={{ 
+                position: 'absolute', 
+                height: `${scale/2.5}px`,
+                borderLeft: '1.5px solid white',
+                marginLeft: `${scale/1.7}px`,
+                top: '50%', 
+                transform: 'translateY(-50%)' }}/> : null}
             <input
                 className='custom-button indent-[0.5svw] placeholder-slate-200 shadow-slate-700 w-[15svw] h-[5svh] pl-[3.5svh]'
                 style={{ fontSize: `${scale/4}px` }}

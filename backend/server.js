@@ -10,7 +10,7 @@ const app = express();
 const PORT = 3001; 
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://192.168.178.87:3000']
 }));
 app.use(bodyParser.json());
 app.use(express.json());

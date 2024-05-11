@@ -1,4 +1,4 @@
-export function addRow(layout, side) {
+export function addRow(layout, side='bottom') {
     if (side === 'top' || side === 'bottom') {
         const newRow = Array.from({length: layout[0].length}, () => ({ type: 'empty', coordinates: '' }));
         if (side === 'top') {
@@ -10,7 +10,7 @@ export function addRow(layout, side) {
     return updateCoordinates(layout);
 };
 
-export function addColumn(layout, side) {
+export function addColumn(layout, side='right') {
     if (side === 'left' || side === 'right') {
         for (let i = 0; i < layout.length; i++) {
             if (side === 'left') {
@@ -24,7 +24,7 @@ export function addColumn(layout, side) {
 };  
 
 
-export function removeRow(layout, side) {
+export function removeRow(layout, side='bottom') {
     if (layout.length <= 1) return layout;
     if (side === 'top' || side === 'bottom') {
         if (layout.length > 0) { 
@@ -38,7 +38,7 @@ export function removeRow(layout, side) {
     return updateCoordinates(layout);
 };
 
-export function removeColumn(layout, side) {
+export function removeColumn(layout, side='right') {
     if (layout[0].length <= 1) return layout;
     if (side === 'left' || side === 'right') {
         for (let i = 0; i < layout.length; i++) {
