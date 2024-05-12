@@ -2,17 +2,18 @@ import React, { useState, useContext, memo } from 'react';
 import DraggableImage from "../../helper/DraggableImage";
 import LoadImage from "../../helper/LoadImage"
 import { DimensionContext } from '../../DimensionContext';
+import { isEqualArray } from '../../helper/isEqualArray';
 
 const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [isOver, setIsOver] = useState(false);
 
   const cord = cellCoordinates.split('-').map(Number);
-  const { isCommandKey, trackedCells, setTrackedCells } = useContext(DimensionContext);
+  const { addDuplicate, trackedCells, setTrackedCells } = useContext(DimensionContext);
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    if (isCommandKey && !trackedCells.includes(cellCoordinates)) {
+    if (addDuplicate && !trackedCells.includes(cellCoordinates)) {
       setTrackedCells([...trackedCells, cellCoordinates]);
     }
     setIsOver(true);
@@ -31,6 +32,11 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
     setDroppedItem(item);
 
     const { rootCoordinates } = item;
+
+    if (rootCoordinates && isEqualArray(cord, rootCoordinates)) {
+      return;
+    }
+
     // update layout
     setLayout(prevLayout => {
       const newLayout = [...prevLayout];
@@ -39,7 +45,7 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
       newLayout[cord[0]][cord[1]]['type'] = item.alt;
 
       // remove item from previous cell
-      if (!isCommandKey && rootCoordinates) {
+      if (!addDuplicate && rootCoordinates) {
         newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty';
         return newLayout;
       }
@@ -51,7 +57,7 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
 
         // ignore root cell
         const c = cell.split('-').map(Number);
-        if (rootCoordinates && c[0] === rootCoordinates[0] && c[1] === rootCoordinates[1]) continue;
+        if (rootCoordinates && isEqualArray(c, rootCoordinates)) continue;
     
         newLayout[c[0]][c[1]]['type'] = item.alt;
       }
@@ -77,13 +83,13 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
           alt={droppedItem.alt} 
           cellCoordinates={cord} 
           setDroppedItem={setDroppedItem}
-          isCommandKey={isCommandKey}
+          addDuplicate={addDuplicate}
           scale={scale*zoom}/>
         : <LoadImage 
           type={type} 
           cellCoordinates={cord} 
           setDroppedItem={setDroppedItem} 
-          isCommandKey={isCommandKey} 
+          addDuplicate={addDuplicate} 
           scale={scale*zoom}/>
       }
     </div>

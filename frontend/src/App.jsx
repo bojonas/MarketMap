@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom
 import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
 import { DimensionContext } from './DimensionContext';
-import { useTrackCommand } from './helper/useTrackCommand';
+import { useChangeDragMode } from './helper/useChangeDragMode';
 
 // define permission for tabs
 const tabPermission = [
@@ -22,14 +22,14 @@ for (let tab of tabPermission) {
 export default function App() {
   const [trackedCells, setTrackedCells] = useState([]);
   // track if command key is pressed
-  const [isCommandKey, setIsCommandKey] = useState(false);
-  useTrackCommand(setIsCommandKey);
+  const [addDuplicate, setAddDuplicate] = useState(false);
+  useChangeDragMode(setAddDuplicate);
 
   const userPermission = 'admin';
 
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
-    <DimensionContext.Provider value={{ isCommandKey, trackedCells, setTrackedCells }}>
+    <DimensionContext.Provider value={{ addDuplicate, trackedCells, setTrackedCells }}>
       <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom'>
         <Router>
           <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>

@@ -1,16 +1,16 @@
 import { useEffect, useCallback } from "react";
 
-export function useTrackCommand(setIsCommandKey) {
+export function useChangeDragMode(setAddDuplicate) {
   const handleKeyDown = useCallback((e) => {
     if (e.target.tagName.toLowerCase() === 'input') {
       return;
     }
-    setIsCommandKey(e.shiftKey);
-  }, [setIsCommandKey]);
+    setAddDuplicate(e.shiftKey);
+  }, [setAddDuplicate]);
   
   const handleMouseMoveOrDragOver = useCallback((e) => {
-    setIsCommandKey(e.shiftKey);
-  }, [setIsCommandKey]);
+    setAddDuplicate(e.shiftKey);
+  }, [setAddDuplicate]);
   
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);

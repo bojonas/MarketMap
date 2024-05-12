@@ -1,14 +1,15 @@
 import React, { useState, useContext, useRef } from "react";
 import { DimensionContext } from "../DimensionContext";
 
-export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, duplicate, scale }) {
+export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, addDuplicate, duplicate, scale }) {
   const [isDuplicating, setisDuplicating] = useState(true);
   const { setTrackedCells } = useContext(DimensionContext);
   const ref = useRef(null);
 
+  var rootCoordinates;
   const handleDragStart = (e) => {
     setTrackedCells([]);
-    const rootCoordinates = duplicate ? null : cellCoordinates;
+    rootCoordinates = duplicate ? null : cellCoordinates;
     e.dataTransfer.setData('application/json', JSON.stringify({ alt, source, rootCoordinates }));
 
     // drag preview
@@ -20,7 +21,7 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
   }  
 
   const handleDragEnd = (e) => {
-    setisDuplicating(!isCommandKey || duplicate);
+    setisDuplicating(!addDuplicate || duplicate);
     if (!duplicate) setDroppedItem(null);
   };
 

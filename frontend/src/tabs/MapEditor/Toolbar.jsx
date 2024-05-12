@@ -14,7 +14,7 @@ export default function Toolbar({ layout, layoutScale }) {
     alert(await requestUpdateMapLayout(2, layout));
   }
 
-  const { isCommandKey } = useContext(DimensionContext);
+  const { addDuplicate } = useContext(DimensionContext);
   return (
     <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full ml-10'>
       <SearchBar onSearch={setSearch}/>
@@ -26,7 +26,7 @@ export default function Toolbar({ layout, layoutScale }) {
               <span style={{fontSize: '2svh'}}>{type.replace('_', ' ')}</span>
               <div className='rounded-md hover:border-[0.2rem] hover:border-purple-custom hover:shadow-purple-custom'
                 style={{ width: '4svw', height: '8svh', boxShadow: '0 5px 2px -1px rgb(35 45 65)' }}>
-                <DraggableImage alt={type} source={source} isCommandKey={isCommandKey} duplicate={true} scale={layoutScale}/>
+                <DraggableImage alt={type} source={source} addDuplicate={addDuplicate} duplicate={true} scale={layoutScale}/>
               </div>
             </div>
           ))}
