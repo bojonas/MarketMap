@@ -5,21 +5,21 @@ export function useTrackCommand(setIsCommandKey) {
     if (e.target.tagName.toLowerCase() === 'input') {
       return;
     }
-    setIsCommandKey(e.ctrlKey || e.metaKey);
+    setIsCommandKey(e.shiftKey);
   }, [setIsCommandKey]);
-
-  const handleMouseMoveOrDrag = useCallback((e) => {
-    setIsCommandKey(e.ctrlKey || e.metaKey);
+  
+  const handleMouseMoveOrDragOver = useCallback((e) => {
+    setIsCommandKey(e.shiftKey);
   }, [setIsCommandKey]);
-
+  
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('mousemove', handleMouseMoveOrDrag);
-    window.addEventListener('drag', handleMouseMoveOrDrag);
+    window.addEventListener('mousemove', handleMouseMoveOrDragOver);
+    window.addEventListener('dragover', handleMouseMoveOrDragOver);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('mousemove', handleMouseMoveOrDrag);
-      window.removeEventListener('drag', handleMouseMoveOrDrag);
+      window.removeEventListener('mousemove', handleMouseMoveOrDragOver);
+      window.removeEventListener('dragover', handleMouseMoveOrDragOver);
     };
-  }, [handleKeyDown, handleMouseMoveOrDrag]);
+  }, [handleKeyDown, handleMouseMoveOrDragOver]);  
 }

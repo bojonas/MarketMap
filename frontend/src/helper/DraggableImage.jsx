@@ -1,38 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useDrag } from "react-dnd";
-import { getEmptyImage } from "react-dnd-html5-backend";
-import CustomDragLayer from "./CustomDragLayer";
+import React, { useState, useContext, useRef } from "react";
+import { DimensionContext } from "../DimensionContext";
 
 export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, isCommandKey, duplicate, scale }) {
   const [isDuplicating, setisDuplicating] = useState(true);
+  const { setTrackedCells } = useContext(DimensionContext);
+  const ref = useRef(null);
 
-  const [{ isDragging }, drag, preview] = useDrag({
-    type: 'image',
-    item: () => {
-      const trackedCells = [];
-      const rootCoordinates = duplicate ? null : cellCoordinates;
-      return { alt, source, rootCoordinates, trackedCells };
-    },
-    end: (item, monitor) => {
-      const dropResult = monitor.getDropResult();
-      if (dropResult) {
-        setisDuplicating(!isCommandKey || duplicate);
-        if (!duplicate) setDroppedItem(null);
-      }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
+  const handleDragStart = (e) => {
+    setTrackedCells([]);
+    const rootCoordinates = duplicate ? null : cellCoordinates;
+    e.dataTransfer.setData('application/json', JSON.stringify({ alt, source, rootCoordinates }));
 
-  useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true });
-  }, [preview, duplicate, isCommandKey]);
-  
+    // drag preview
+    const crt = ref.current.cloneNode(true);
+    crt.style.width = `${scale}px`;
+    crt.style.height = `${scale}px`;
+    document.body.appendChild(crt);
+    e.dataTransfer.setDragImage(crt, scale/2, scale/2);
+  }  
+
+  const handleDragEnd = (e) => {
+    setisDuplicating(!isCommandKey || duplicate);
+    if (!duplicate) setDroppedItem(null);
+  };
+
   return !isDuplicating ? null :(
-    <>
-      {isDragging && <CustomDragLayer scale={scale}/>}
-      <img ref={drag} src={source} alt={alt}/>
-    </>
+    <img ref={ref} draggable onDragStart={handleDragStart} onDragEnd={handleDragEnd} src={source} alt={alt}
+      className='hover:cursor-grab'/>
   );
 }

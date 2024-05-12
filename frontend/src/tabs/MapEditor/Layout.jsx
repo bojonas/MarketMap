@@ -15,7 +15,7 @@ export default function Layout({ layout, setLayout, setScale, zoom }) {
     <div className="flex flex-col items-center">
       <div className="flex items-center">
         <div ref={ref} className='w-[70svw] h-[75svh] overflow-scroll bg-slate-800 border-[1svh] border-slate-800'>
-          <div className='grid w-fit h-fit' style={{ gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
+          <div id='layoutContainer' className='grid w-fit h-fit' style={{ gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
             gridTemplateRows: `repeat(${layout.length}, ${scale}px)`, transform: `scale(${zoom})`, transformOrigin: '0 0' }}>
             {layout.map((row) => (
               row.map((cell) => (
@@ -23,10 +23,10 @@ export default function Layout({ layout, setLayout, setScale, zoom }) {
                   key={cell['coordinates']} 
                   type={cell['type']} 
                   scale={scale} 
+                  zoom={zoom}
                   layout={layout} 
                   cellCoordinates={cell['coordinates']}
                   setLayout={setLayout}
-                  zoom={zoom}
                 /> 
               ))
             ))}

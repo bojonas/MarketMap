@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import Layout from './Layout';
 import Toolbar from './Toolbar';
 import { requestGetMapLayout } from '../../requests/mapEditorRequests';
@@ -50,20 +48,18 @@ export default function MapEditor() {
   
   const layoutCopy = JSON.parse(JSON.stringify(layout));
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div id='zoomContainer' className='flex h-full w-full gap-5'>
-        <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
-          <IoMdSettings size={24}/>
-        </div>
-        { layout 
-        ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
-            <Layout layout={layout} setLayout={setLayout} setScale={setScale} zoom={zoom}/>
-          </div>
-        : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
-        }
-        <Toolbar layout={layout} layoutScale={scale*zoom}/>
-        <CustomModal layout={layoutCopy} setLayout={setLayout} modalIsOpen={modalIsOpen} closeModal={closeModal}/>
+    <div id='zoomContainer' className='flex h-full w-full gap-5'>
+      <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
+        <IoMdSettings size={24}/>
       </div>
-  </DndProvider>
+      { layout 
+      ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
+          <Layout layout={layout} setLayout={setLayout} setScale={setScale} zoom={zoom}/>
+        </div>
+      : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
+      }
+      <Toolbar layout={layout} layoutScale={scale*zoom}/>
+      <CustomModal layout={layoutCopy} setLayout={setLayout} modalIsOpen={modalIsOpen} closeModal={closeModal}/>
+    </div>
   );
 }

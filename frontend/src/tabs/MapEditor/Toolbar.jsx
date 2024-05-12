@@ -14,7 +14,7 @@ export default function Toolbar({ layout, layoutScale }) {
     alert(await requestUpdateMapLayout(2, layout));
   }
 
-  const isCommandKey = useContext(DimensionContext);
+  const { isCommandKey } = useContext(DimensionContext);
   return (
     <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full ml-10'>
       <SearchBar onSearch={setSearch}/>

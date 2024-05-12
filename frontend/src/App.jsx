@@ -20,6 +20,7 @@ for (let tab of tabPermission) {
 }
 
 export default function App() {
+  const [trackedCells, setTrackedCells] = useState([]);
   // track if command key is pressed
   const [isCommandKey, setIsCommandKey] = useState(false);
   useTrackCommand(setIsCommandKey);
@@ -28,7 +29,7 @@ export default function App() {
 
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
-    <DimensionContext.Provider value={ isCommandKey }>
+    <DimensionContext.Provider value={{ isCommandKey, trackedCells, setTrackedCells }}>
       <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom'>
         <Router>
           <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>

@@ -2,7 +2,7 @@ import { getItemImages } from "./getItemImages";
 import DraggableImage from "./DraggableImage";
 
 // loads an image from image folder
-export default function LoadImage({ type, cellCoordinates, setDroppedItem, isCommandKey, scale}) {
+export default function LoadImage({ type, cellCoordinates, setDroppedItem, isCommandKey, scale }) {
     if (type === 'empty') return null;
 
     const images = getItemImages();
