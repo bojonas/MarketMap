@@ -101,4 +101,42 @@ async function checkUserLogin(username, password, postgres_pool){
   }
 }
 
-module.exports = { postUser, getPermission,checkUserLogin,userExists };
+//logic for endpoint /check_user
+async function checkUser(email, postgres_pool){
+  try{
+    const query = `
+    SELECT email
+    FROM market_map.users
+  `
+  const result = await postgres_pool.query(query);
+  for(i=0;i<result.rowCount;i++){
+    if(result.rows[i].email === email){
+      return {message: true};
+    };
+  }
+  return {message: false};
+  }
+  catch(error){
+    console.error('Error checking email:', error);
+  }
+}
+
+//logic for endpoint /update_password
+async function updatePassword(email, password, postgres_pool){
+  try{
+    const query = `
+      UPDATE market_map.users
+      SET password = $1
+      WHERE email = $2;
+  `
+    const result = await postgres_pool.query(query,[password, email]);
+    return {message: "password successfully changed"}
+  }
+  catch(error){
+    console.error('Error checking email:', error);
+  }
+}
+
+
+
+module.exports = { postUser, getPermission,checkUserLogin,userExists, checkUser, updatePassword };
