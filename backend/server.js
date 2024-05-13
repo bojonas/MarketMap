@@ -40,7 +40,7 @@ process.on('SIGINT', async () => {
 /**** Login Routes ****/
 
 // import login routes
-const { postUser, getPermission, checkUserLogin } = require('./routes/loginRoutes');
+const { postUser, getPermission, checkUserLogin, checkUser, updatePassword } = require('./routes/loginRoutes');
 
 // shemas to validate login jsons 
 const User = Joi.object({
@@ -57,6 +57,15 @@ const UserId = Joi.object({
 const LoginUser = Joi.object({
     username: Joi.string().required(),
     password: Joi.string().required()
+})
+
+const PwUpdate = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+})
+
+const EmailObject = Joi.object({
+    email: Joi.string().required()
 })
 
 // create a new user
@@ -111,6 +120,44 @@ app.post("/check_credentials", async (req, res)=>{
         console.error(error.message);
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
+
+})
+
+app.post("/check_user", async (req, res)=>{
+    const {error} = EmailObject.validate(req.body);
+    if(error){
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    const{email} = req.body;
+    try {
+        const result = await checkUser(email, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+
+    
+
+})
+
+app.post("/update_password", async (req, res)=>{
+    const {error} = PwUpdate.validate(req.body);
+    if(error){
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    const{email, password} = req.body;
+    try {
+        const result = await updatePassword(email, password, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+
+    
 
 })
 

@@ -54,7 +54,42 @@ export async function requestCheckCredentials(username, password) {
     const response = await axiosInstance.post('/check_credentials', data);
     return response.data;
   } catch (error) {
-    console.error('Error querying permission:', error);
+    console.error('Error checking credentials:', error);
   }
 }
 
+//request to /update_password
+export async function requestUpdatePassword(email, password){
+  if (!email || !password) {
+    return {message: 'Invalid parameters'};
+  }
+
+  const data = {
+   email: email,
+   password: password
+  };
+
+  try {
+    const response = await axiosInstance.post('/update_password', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating password:', error);
+  }
+}
+
+export async function requestCheckUser(email){
+  if (!email) {
+    return {message: 'Invalid parameters'};
+  }
+
+  const data = {
+   email: email
+  };
+
+  try {
+    const response = await axiosInstance.post('/check_user', data);
+    return response.data.message;
+  } catch (error) {
+    console.error('Error checking user:', error);
+  }
+}
