@@ -1,4 +1,4 @@
-import React, { useState, useContext, memo } from 'react';
+import React, { useState, useContext, memo, useEffect } from 'react';
 import DraggableImage from "../../helper/DraggableImage";
 import LoadImage from "../../helper/LoadImage"
 import { DimensionContext } from '../../DimensionContext';
@@ -11,6 +11,12 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
   const cord = cellCoordinates.split('-').map(Number);
   const { addDuplicate, trackedCells, setTrackedCells } = useContext(DimensionContext);
 
+  useEffect(() => {
+    const preventDefaultScroll = (e) => e.preventDefault();
+    window.addEventListener('dragover', preventDefaultScroll);
+    return () => window.removeEventListener('dragover', preventDefaultScroll);
+  }, []);
+  
   const handleDragOver = (e) => {
     e.preventDefault();
     if (addDuplicate && !trackedCells.includes(cellCoordinates)) {

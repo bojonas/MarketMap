@@ -5,15 +5,15 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
   const [isDuplicating, setisDuplicating] = useState(true);
   const { setTrackedCells } = useContext(DimensionContext);
   const ref = useRef(null);
-
-  var rootCoordinates;
+  
+  let crt = null;
   const handleDragStart = (e) => {
     setTrackedCells([]);
-    rootCoordinates = duplicate ? null : cellCoordinates;
+    const rootCoordinates = duplicate ? null : cellCoordinates;
     e.dataTransfer.setData('application/json', JSON.stringify({ alt, source, rootCoordinates }));
 
     // drag preview
-    const crt = ref.current.cloneNode(true);
+    crt = ref.current.cloneNode(true);
     crt.style.width = `${scale}px`;
     crt.style.height = `${scale}px`;
     document.body.appendChild(crt);
@@ -23,6 +23,9 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
   const handleDragEnd = (e) => {
     setisDuplicating(!addDuplicate || duplicate);
     if (!duplicate) setDroppedItem(null);
+    if (crt) {
+      document.body.removeChild(crt);
+    }
   };
 
   return !isDuplicating ? null :(

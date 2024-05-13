@@ -51,7 +51,7 @@ export default function App() {
 
 function Tab({ name, Icon, tab }) {
   return (
-    <NavLink to={`/${tab}`} className='custom-button rounded-xl ml-3 border-none w-fit h-[6svh] '
+    <NavLink to={`/${tab}`} className='custom-button rounded-xl ml-3 border-none w-fit h-[6svh]' draggable='false'
         style={({ isActive }) => {
             return {
               backgroundColor: isActive ? '#715DF2' : '#303030',

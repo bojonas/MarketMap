@@ -14,7 +14,7 @@ export default function Layout({ layout, setLayout, setScale, zoom }) {
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center">
-        <div ref={ref} className='w-[70svw] h-[75svh] overflow-scroll bg-slate-800 border-[1svh] border-slate-800'>
+        <div ref={ref} className='w-[70svw] h-[75svh] bg-slate-800 border-[1svh] border-slate-800 overflow-scroll'>
           <div id='layoutContainer' className='grid w-fit h-fit' style={{ gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
             gridTemplateRows: `repeat(${layout.length}, ${scale}px)`, transform: `scale(${zoom})`, transformOrigin: '0 0' }}>
             {layout.map((row) => (
