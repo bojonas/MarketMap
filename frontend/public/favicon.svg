@@ -1,7 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 976.24 938.12">
-  <defs>
-    <style>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 976.24 938.12"
+   version="1.1"
+   sodipodi:docname="favicon.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.43757728"
+     inkscape:cx="317.65817"
+     inkscape:cy="606.74996"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="52"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1"
+     inkscape:lockguides="true" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">
       .cls-1 {
         fill: #393074;
       }
@@ -25,9 +56,35 @@
       }
     </style>
   </defs>
-  <path class="cls-2" d="M483.66,9c-105.68,0-191.35,85.67-191.35,191.35s85.67,191.35,191.35,191.35,191.35-85.67,191.35-191.35S589.34,9,483.66,9ZM483.49,348.71c-81.83,0-148.17-66.34-148.17-148.17S401.65,52.38,483.49,52.38s148.17,66.34,148.17,148.17-66.34,148.17-148.17,148.17Z"/>
-  <polygon class="cls-1" points="381.89 603.31 84.27 301.02 12.93 790.96 381.89 603.31"/>
-  <path class="cls-3" d="M438.81,661.13c-185.49,91.87-363.34,179.77-429.81,212.07,12.3,30.73,42.31,52.99,78.19,52.99h612.59l-260.97-265.06Z"/>
-  <path class="cls-1" d="M912.3,426.31c-83.22,41.31-234.46,116.37-391.18,194.03l306.54,308.78h55.41c50.88,0,90.13-44.81,83.42-95.26l-54.19-407.55Z"/>
-  <path class="cls-1" d="M463.18,561.97l437.57-222.56-9.17-69.01c-8.22-69.76-67.34-122.32-137.58-122.32H226.29c-47.08,0-89.14,23.62-114.24,60.19l351.13,353.7Z"/>
+  <rect
+     style="fill:#d9d9d9;fill-opacity:1"
+     id="rect4"
+     width="975.9267"
+     height="938.01495"
+     x="0.20199479"
+     y="-3.9866954e-08"
+     ry="379.88037"
+     rx="354.22308"
+     sodipodi:insensitive="true" />
+  <polygon
+     class="cls-1"
+     points="84.27,301.02 12.93,790.96 381.89,603.31 "
+     id="polygon1"
+     transform="matrix(0.85317024,0,0,0.88770135,77.638348,4.5668367)" />
+  <path
+     class="cls-2"
+     d="m 490.28265,12.556148 c -90.16305,0 -163.25414,76.049387 -163.25414,169.861672 0,93.81227 73.09109,169.86166 163.25414,169.86166 90.16302,0 163.25412,-76.04939 163.25412,-169.86166 0,-93.812285 -73.0911,-169.861672 -163.25412,-169.861672 z m -0.14502,301.561042 c -69.81492,0 -126.41426,-58.89012 -126.41426,-131.53074 0,-72.64058 56.59081,-131.52181 126.41426,-131.52181 69.82346,0 126.41424,58.89011 126.41424,131.5307 0,72.64061 -56.59934,131.53073 -126.41424,131.53073 z"
+     id="path1" />
+  <path
+     class="cls-3"
+     d="M 452.01796,591.45283 C 293.76342,673.00599 142.0271,751.03494 85.316886,779.70769 c 10.493972,27.27903 36.097624,47.03926 66.709344,47.03926 h 522.6436 z"
+     id="path2" />
+  <path
+     class="cls-1"
+     d="m 855.98558,383.00281 c -71.00087,36.67095 -200.0343,103.30178 -333.74314,172.24071 l 261.53079,274.10442 h 47.27415 c 43.4093,0 76.89625,-39.77792 71.17145,-84.56242 z"
+     id="path3" />
+  <path
+     class="cls-1"
+     d="M 472.80972,503.42839 846.13145,305.86156 838.30786,244.60128 C 831.29479,182.67523 780.85539,136.01766 720.92867,136.01766 H 270.70225 c -40.1673,0 -76.0516,20.96747 -97.46618,53.43075 z"
+     id="path4" />
 </svg>

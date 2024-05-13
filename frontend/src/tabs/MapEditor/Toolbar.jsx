@@ -18,14 +18,14 @@ export default function Toolbar({ layout, layoutScale }) {
   return (
     <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full ml-10'>
       <SearchBar onSearch={setSearch}/>
-      <div className='bg-slate-800 flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
-        <div className='flex flex-col content-center items-center text-center rounded-lg m-2 overflow-y-scroll min-h-[58svh] max-h-[58svh] w-[11svw]'>
+      <div className='bg-darkoffwhite flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
+        <div className='grid grid-cols-2 text-center rounded-lg m-2 overflow-y-scroll min-h-[58svh] max-h-[58svh] w-[11svw]'>
           {images.map(([type, source], index) => (
-            <div key={index} className={`bg-slate-700 w-full flex items-center flex-col border-slate-800 rounded-lg p-[1.6svh] 
+            <div key={index} className={`border-darkoffwhite bg-offwhite w-full flex flex-col items-center rounded-lg p-[1.6svh] 
               ${index === 0 ? 'border-b-2' : index === images.length-1 ? 'border-t-2' : 'border-2'}`}> 
-              <span style={{fontSize: '2svh'}}>{type.replace('_', ' ')}</span>
-              <div className='rounded-md hover:border-[0.2rem] hover:border-purple-custom hover:shadow-purple-custom'
-                style={{ width: '4svw', height: '8svh', boxShadow: '0 5px 2px -1px rgb(35 45 65)' }}>
+              <span style={{fontSize: '1svh', color: 'black'}}>{type.replace('_', ' ')}</span>
+              <div className='rounded-lg hover:border-[0.3rem] hover:border-purple-custom hover:shadow-purple-custom w-fit h-fit'
+                style={{ boxShadow: '0 5px 2px -1px rgb(35 45 65)' }}>
                 <DraggableImage alt={type} source={source} addDuplicate={addDuplicate} duplicate={true} scale={layoutScale}/>
               </div>
             </div>

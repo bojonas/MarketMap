@@ -1,4 +1,4 @@
-import React, { useState, useContext, memo, useEffect } from 'react';
+import React, { useState, useContext, memo } from 'react';
 import DraggableImage from "../../helper/DraggableImage";
 import LoadImage from "../../helper/LoadImage"
 import { DimensionContext } from '../../DimensionContext';
@@ -10,13 +10,6 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
 
   const cord = cellCoordinates.split('-').map(Number);
   const { addDuplicate, trackedCells, setTrackedCells } = useContext(DimensionContext);
-
-  useEffect(() => {
-    const preventDefaultScroll = (e) => e.preventDefault();
-    window.addEventListener('dragover', preventDefaultScroll);
-    return () => window.removeEventListener('dragover', preventDefaultScroll);
-  }, []);
-  
   const handleDragOver = (e) => {
     e.preventDefault();
     if (addDuplicate && !trackedCells.includes(cellCoordinates)) {
@@ -76,13 +69,14 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
   let divStyle = {
     height: `${scale}px`,
     width: `${scale}px`,
-    border: `${scale/25}px solid rgb(30 41 59)`,
-    borderRadius: `${scale/10}px`
+    border: `${scale/10}px solid rgb(16 16 16)`,
+    borderRadius: `${scale/5}px`
   };
+  if (type !== 'empty') divStyle['backgroundColor'] = '#d9d9d9';
   if (isOver) divStyle['backgroundColor'] = '#715DF2';
 
   return (
-    <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} className='flex justify-center items-center border-slate-800 bg-slate-700' style={divStyle}>
+    <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} className='flex justify-center items-center bg-[#4e4e4e7a] p-[0.1rem]' style={divStyle}>
       {droppedItem 
         ? <DraggableImage 
           source={droppedItem.source} 

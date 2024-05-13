@@ -32,23 +32,23 @@ export default function MapEditor() {
     const handleWheel = (e) => {
       if (e.ctrlKey) {
         e.preventDefault();
-        const zoomFactor = Math.max(layout.length, layout[0].length) > 40 ? 0.2 : 0.05; 
-        const newZoom = zoom * (e.deltaY < 0 ? 1 + zoomFactor : 1 - zoomFactor);
-        setZoom(newZoom);
+        const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
+        setZoom(newZoom < 1 ? 1 : newZoom);
       }
     };
-  
-    const container = document.querySelector('#zoomContainer');
-    container.addEventListener('wheel', handleWheel, { passive: false });
-  
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
-  }, [zoom, layout]);  
+
+    const container = document.querySelector('#layoutContainer');
+    if (container) {
+      container.addEventListener('wheel', handleWheel, { passive: false });
+      return () => {
+        container.removeEventListener('wheel', handleWheel);
+      };
+    }
+  }, [zoom, layout]);
   
   const layoutCopy = JSON.parse(JSON.stringify(layout));
   return (
-    <div id='zoomContainer' className='flex h-full w-full gap-5'>
+    <div className='flex h-full w-full gap-5'>
       <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
         <IoMdSettings size={24}/>
       </div>

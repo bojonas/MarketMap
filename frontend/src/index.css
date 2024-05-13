@@ -23,24 +23,25 @@
     color: white;
 }
 
+/* scrollbar */
 ::-webkit-scrollbar {
     display: none;
-    height: 1.6svh;
-    width: 0.8svw;
+    height: 0.8svh;
+    width: 0.4svw;
 }
  
 ::-webkit-scrollbar-track {
-    background: #4e4e4e7a;
+    display: none;
     border-radius: 5px;
 }
  
 ::-webkit-scrollbar-thumb {
-    background: #2424248c;
+    background: #715DF2;
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #28282879;
+    background: #624cf1;
 }
 
 ::-webkit-scrollbar-corner {
