@@ -7,9 +7,9 @@ export default function ForgotPassword(){
     const [emailChecked, setEmailChecked] = useState(false)
 
     return (
-        <div className="bg-slate-700 flex items-center justify-center h-full">
-        <div className="bg-slate-700 rounded-lg p-8">
-        <div className="bg-slate-700 flex flex-col items-center justify-center">
+        <div className="flex items-center justify-center h-full">
+        <div className="rounded-lg p-8">
+        <div className="flex flex-col items-center justify-center">
           
           {emailChecked ? <NewPassword setEmailChecked={setEmailChecked}/> : <CheckEmail setEmailChecked={setEmailChecked}/>}
 

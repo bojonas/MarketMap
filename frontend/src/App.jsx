@@ -27,7 +27,7 @@ export default function App() {
   const [addDuplicate, setAddDuplicate] = useState(false);
   useChangeDragMode(setAddDuplicate);
 
-  const userPermission = 'admin';
+  const userPermission = 'unregisteredUser';
 
   const tabs = sortObject(getTabs(tabPermission), order);
   return (

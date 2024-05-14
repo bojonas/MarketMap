@@ -1,5 +1,9 @@
 //logic for endpoint /update_data
 async function updateData(username, label, data, postgres_pool){
+    const whiteList = ['email']; //ALWAYS ADD YOUR ROWS
+    if (!whiteList.includes(label)) {
+        throw new Error('Invalid column name');
+    }
     try{
         const query = `
         UPDATE market_map.users
@@ -22,7 +26,7 @@ async function updateData(username, label, data, postgres_pool){
 async function getUser(username, postgres_pool){
     try{
         const query = `
-        SELECT username, email, 'Ben' as firstName, 'Roehrig' as lastName
+        SELECT username, email, 'Ben' as firstname, 'Roehrig' as lastname
         FROM market_map.users
         Where username = $1
         `

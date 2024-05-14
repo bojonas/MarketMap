@@ -49,16 +49,14 @@ export default function MyProfile(){
     
 
     return (
-        <div className="bg-slate-700 flex items-center justify-center h-full w-full">
-          <div className="bg-slate-700 rounded-md p-6 w-full">
+        <div className="flex items-center justify-center h-full w-full">
+          <div className=" rounded-md p-6 w-full">
                 
                 <div>
-                    
                     <ContentRow label = {"Username"} content = {username} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} />
-                    <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
+                    <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"First Name"} content = {firstName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    
                 </div>
             
           </div>
