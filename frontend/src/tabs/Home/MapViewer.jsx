@@ -6,7 +6,7 @@ export default function MapViewer({ market_id }) {
     const [layout, setLayout] = useState(null);
     const [zoom, setZoom] = useState(1);
 
-    // get map for market
+    // get map for market_id
     useEffect(() => {
         const getLayout = async () => {
           const data = await requestGetMapViewers(market_id);

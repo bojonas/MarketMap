@@ -22,23 +22,24 @@ export default function LayoutViewer({ layout, zoom }) {
     setDimensions({ width: 'fit-content', height: 'fit-content' });
   }, []);
 
+  //const { emptyRows, emptyColumns } = getCellStyles(layout, scale);
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center">
-        <div ref={ref} className={`bg-black-custom border-[1svh] border-black-custom overflow-scroll`} style={dimensions}>
-          <div id='layoutContainer' className='grid w-fit h-fit' 
+        <div ref={ref} className='bg-black-custom overflow-scroll' style={dimensions}>
+          <div id='layoutContainer' className='grid w-fit h-fit border-[2svh] border-gray-custom' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
               gridTemplateRows: `repeat(${layout.length}, ${scale}px)`, 
               transform: `scale(${zoom})`,
               transformOrigin: '0 0'
             }}>
-            {layout.map((row) => (
-              row.map((cell) => (
+            {layout.map((row, i) => (
+              row.map((cell, j) => (
                 <CellViewer
                   key={cell['coordinates']} 
                   type={cell['type']} 
-                  scale={scale} 
+                  cellStyle={{ height: `${scale}px`, width: `${scale}px` }}
                 /> 
               ))
             ))}
@@ -48,3 +49,17 @@ export default function LayoutViewer({ layout, zoom }) {
     </div>
   );
 }
+
+/*
+function getCellStyles(layout, scale) {
+  // Check for empty rows
+  const emptyRows = layout.map(row => row.every(cell => cell.type === 'empty'));
+
+  // Find the maximum column length
+  const maxColLength = Math.max(...layout.map(row => row.length));
+
+  // Check for empty columns
+  const emptyColumns = Array(maxColLength).fill().map((_, colIndex) => layout.every(row => row[colIndex] && row[colIndex].type === 'empty'));
+
+  return { emptyRows, emptyColumns };
+}*/
