@@ -10,7 +10,7 @@ const app = express();
 const PORT = 3001; 
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://192.168.178.87:3000']
+    origin: ['http://localhost:3000', 'http://192.168.178.87:3000','http://192.168.178.136:3000']
 }));
 app.use(bodyParser.json());
 app.use(express.json());
@@ -65,7 +65,7 @@ const PwUpdate = Joi.object({
 })
 
 const EmailObject = Joi.object({
-    email: Joi.string().required()
+    email: Joi.string().email().required()
 })
 
 // create a new user
@@ -160,6 +160,62 @@ app.post("/update_password", async (req, res)=>{
     
 
 })
+
+/**** MyProfile Routes ****/
+
+//import My Profile Routes
+const {updateData, getUser} = require('./routes/myProfileRoutes')
+
+// schemas to validate My Profile jsons 
+const UpdateData = Joi.object({
+    username: Joi.string().required(),
+    label: Joi.string().required(),
+    data: Joi.string().required()
+})
+
+const UsernameObject = Joi.object({
+    username: Joi.string().required()
+})
+
+//endpoints for My Profile
+app.put('/update_data', async (req, res) => {
+    const {error} = UpdateData.validate(req.body)
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { username, label, data } = req.body;
+    try {
+        const result = await updateData(username, label, data, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+app.put('/get_user', async (req, res) => {
+    const {error} = UsernameObject.validate(req.body)
+
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { username} = req.body;
+    try {
+        const result = await getUser(username, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+
+
+
 
 /**** MapViewer Routes ****/
 

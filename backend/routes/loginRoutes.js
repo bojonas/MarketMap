@@ -87,17 +87,17 @@ async function checkUserLogin(username, password, postgres_pool){
   try{
     const userExistsFlag = await userExists(username, postgres_pool)
     if(!userExistsFlag){
-      return {message: 'User does not exist'}
+      return {message: 'User does not exist', isLoggedIn: false}
     }
     const pwCorrectFlag = await pwCorrect(username, password, postgres_pool)
     if(!pwCorrectFlag){
-      return {message: 'Invalid Password'}
+      return {message: 'Invalid Password', isLoggedIn: false}
     }
     //todo: Logged In logic
-    return {message: "User Logged in"}
+    return {message: "User Logged in", isLoggedIn: true}
   }
   catch(error){
-    console.error('Error querying permission:', error);
+    console.error('Error checking credentials:', error);
   }
 }
 
