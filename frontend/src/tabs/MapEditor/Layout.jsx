@@ -21,7 +21,6 @@ export default function Layout({ layout, setLayout, setScale, zoom }) {
     }
   }, [zoom]);
 
-
   // update dimensions after initial render
   useLayoutEffect(() => {
     setDimensions({ width: 'fit-content', height: 'fit-content' });
@@ -36,7 +35,7 @@ export default function Layout({ layout, setLayout, setScale, zoom }) {
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
               gridTemplateRows: `repeat(${layout.length}, ${scale}px)`, 
               transform: `scale(${zoom})`,
-              transformOrigin: 'center center'
+              transformOrigin: '0 0'
             }}>
             {layout.map((row) => (
               row.map((cell) => (
