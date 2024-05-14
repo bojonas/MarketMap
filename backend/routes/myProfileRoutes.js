@@ -7,7 +7,7 @@ async function updateData(username, label, data, postgres_pool){
         WHERE username = $2
         RETURNING user_id
         `
-        console.log(query)
+        
         const result = await postgres_pool.query(query,[data, username])
         return {message: "User Data updated!", user_id: result.rows[0].user_id}
     }
