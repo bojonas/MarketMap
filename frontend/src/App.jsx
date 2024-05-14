@@ -12,7 +12,8 @@ const tabPermission = [
   { name: 'Map Editor', permission: 'market' },
   { name: 'Login', permission: 'all' },
   { name: 'Register', permission: 'all' },
-  { name: 'Forgot Password', permission: 'all' }
+  { name: 'Forgot Password', permission: 'all' },
+  { name: 'My Profile', permission: 'all' }
 ];
 // custom navigation order (!whitespaces important!)
 const order = [];
