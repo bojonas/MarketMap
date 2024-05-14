@@ -4,7 +4,7 @@ import LoadImage from "../../helper/LoadImage"
 import { DimensionContext } from '../../DimensionContext';
 import { isEqualArray } from '../../helper/isEqualArray';
 
-const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
+const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [isOver, setIsOver] = useState(false);
 
@@ -66,6 +66,7 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
     return { name: type };
   };
 
+  // useMemo?
   let divStyle = {
     height: `${scale}px`,
     width: `${scale}px`,
@@ -83,14 +84,12 @@ const Cell = memo(({ type, scale, zoom, cellCoordinates, setLayout }) => {
           alt={droppedItem.alt} 
           cellCoordinates={cord} 
           setDroppedItem={setDroppedItem}
-          addDuplicate={addDuplicate}
-          scale={scale*zoom}/>
+          addDuplicate={addDuplicate}/>
         : <LoadImage 
           type={type} 
           cellCoordinates={cord} 
           setDroppedItem={setDroppedItem} 
-          addDuplicate={addDuplicate} 
-          scale={scale*zoom}/>
+          addDuplicate={addDuplicate}/>
       }
     </div>
   );

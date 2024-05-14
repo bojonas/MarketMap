@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
 import { DimensionContext } from './DimensionContext';
@@ -8,7 +8,6 @@ import { useChangeDragMode } from './helper/useChangeDragMode';
 // define permission for tabs
 const tabPermission = [
   { name: 'Home', permission: 'all' },
-  { name: 'Map Viewer', permission: 'all' },
   { name: 'Map Editor', permission: 'market' },
   { name: 'Login', permission: 'all' },
   { name: 'Register', permission: 'all' },

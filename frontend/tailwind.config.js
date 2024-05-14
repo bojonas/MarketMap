@@ -18,6 +18,10 @@ module.exports = {
         'black-custom': '#101010',
         'offwhite': '#f5f5f5',
         'darkoffwhite': '#d9d9d9',
+      },
+      cursor: {
+        grab: 'grab',
+        grabbing: 'grabbing'
       }
     },
   },

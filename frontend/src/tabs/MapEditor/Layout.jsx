@@ -2,16 +2,12 @@ import React, { useRef, useLayoutEffect, useState } from 'react';
 import Cell from './Cell';
 import { useAdjustScale } from '../../helper/useAdjustScale';
 
-export default function Layout({ layout, setLayout, setScale, zoom }) {
+export default function Layout({ layout, setLayout, zoom }) {
   const ref = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: '70svw', height: '75svh' });
+  const [dimensions, setDimensions] = useState({ width: '80svw', height: '80svh' });
   const { width, height } = useAdjustScale(ref);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
 
-  useLayoutEffect(() => {
-      setScale(scale);
-  }, [scale, setScale]);
-  
   // fix scrollbars after zoom
   useLayoutEffect(() => {
     if (ref.current) {
@@ -44,7 +40,6 @@ export default function Layout({ layout, setLayout, setScale, zoom }) {
                   type={cell['type']} 
                   scale={scale} 
                   zoom={zoom}
-                  layout={layout} 
                   cellCoordinates={cell['coordinates']}
                   setLayout={setLayout}
                 /> 

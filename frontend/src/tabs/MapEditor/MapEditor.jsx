@@ -7,7 +7,6 @@ import CustomModal from '../../helper/CustomModal';
 
 export default function MapEditor() {
   const [layout, setLayout] = useState(null);
-  const [scale, setScale] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
 
@@ -54,11 +53,11 @@ export default function MapEditor() {
       </div>
       { layout 
       ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
-          <Layout layout={layout} setLayout={setLayout} setScale={setScale} zoom={zoom}/>
+          <Layout layout={layout} setLayout={setLayout} zoom={zoom}/>
         </div>
       : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
       }
-      <Toolbar layout={layout} layoutScale={scale*zoom}/>
+      <Toolbar layout={layout}/>
       <CustomModal layout={layoutCopy} setLayout={setLayout} modalIsOpen={modalIsOpen} closeModal={closeModal}/>
     </div>
   );

@@ -37,12 +37,37 @@ process.on('SIGINT', async () => {
 // route endpoints
 /**** Home Routes ****/
 
+// import login routes
+const { getMapViewers } = require('./routes/homeRoutes');
+
+// schemas to validate login jsons 
+const MarketId = Joi.object({
+   market_id: Joi.number().required()
+});
+
+app.post('/get_map_viewers', async (req, res) => {
+    const { error } = MarketId.validate(req.body)
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { market_id } = req.body;
+    try {
+        const result = await getMapViewers(market_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+})
+
 /**** Login Routes ****/
 
 // import login routes
 const { postUser, getPermission, checkUserLogin, checkUser, updatePassword } = require('./routes/loginRoutes');
 
-// shemas to validate login jsons 
+// schemas to validate login jsons 
 const User = Joi.object({
     username: Joi.string().required(),
     email: Joi.string().email().required(),

@@ -1,6 +1,6 @@
-import { BiSolidEdit } from "react-icons/bi";
-export default function MapEditorIcon() {
+import { FaMap } from "react-icons/fa";
+export default function MapViewerIcon() {
     return(
-        <BiSolidEdit size={30}/>
+        <FaMap size={30}/>
     );
 }

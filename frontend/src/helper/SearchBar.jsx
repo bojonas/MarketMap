@@ -10,7 +10,7 @@ export default function SearchBar({ onSearch }) {
     };
 
     return (
-        <div className='relative inline-block mt-[4svh] text-center'>
+        <div className='relative inline-block mt-[4svh] text-center w-3/4'>
             <FaSearch style={{ 
                 position: 'absolute', 
                 width: '2.8svw',
@@ -26,7 +26,7 @@ export default function SearchBar({ onSearch }) {
                 top: '50%', 
                 transform: 'translateY(-50%)' }}/> : null}
             <input
-                className='custom-button indent-[0.5svw] placeholder-slate-200 shadow-slate-700 w-[15svw] h-[5svh] pl-[3.5svh] text-[2svh]'
+                className='custom-button indent-[0.5svw] placeholder-slate-200 shadow-slate-700 w-full h-[5svh] pl-[3.5svh] text-[2svh]'
                 type='text'
                 value={search}
                 onChange={handleSearch}
