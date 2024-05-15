@@ -15,7 +15,7 @@ export async function requestUpdateMapLayout(user_id, layout) {
     const response = await axiosInstance.put('/put_map_layouts', data);
     return response.data.message
   } catch (error) {
-    console.error('Error creating user:', error);
+    console.error('Error updating map layouts:', error);
   }
 }
 
@@ -33,6 +33,6 @@ export async function requestGetMapLayout(user_id) {
     const response = await axiosInstance.post('/get_map_layouts', data);
     return response.data
   } catch (error) {
-    console.error('Error creating user:', error);
+    console.error('Error getting map layouts:', error);
   }
 }

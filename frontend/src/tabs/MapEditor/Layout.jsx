@@ -4,7 +4,7 @@ import { useAdjustScale } from '../../helper/useAdjustScale';
 
 export default function Layout({ layout, setLayout, zoom }) {
   const ref = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: '80svw', height: '80svh' });
+  const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
 

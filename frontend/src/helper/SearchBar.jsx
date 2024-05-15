@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, onFocus, onBlur }) {
     const [search, setSearch] = useState('');
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
-        onSearch(e.target.value);
+        onSearch(e.target.value.toLowerCase());
     };
 
     return (
@@ -30,6 +30,8 @@ export default function SearchBar({ onSearch }) {
                 type='text'
                 value={search}
                 onChange={handleSearch}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 placeholder='Search items...'/>
         </div>
     );

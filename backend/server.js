@@ -38,23 +38,11 @@ process.on('SIGINT', async () => {
 /**** Home Routes ****/
 
 // import login routes
-const { getMapViewers } = require('./routes/homeRoutes');
+const { getMarkets } = require('./routes/homeRoutes');
 
-// schemas to validate login jsons 
-const MarketId = Joi.object({
-   market_id: Joi.number().required()
-});
-
-app.post('/get_map_viewers', async (req, res) => {
-    const { error } = MarketId.validate(req.body)
-    if (error) {
-        console.error(error.details[0].message);
-        return res.status(400).json({ error: error.details[0].message });
-    }
-
-    const { market_id } = req.body;
+app.get('/get_markets', async (req, res) => {
     try {
-        const result = await getMapViewers(market_id, postgres_pool);
+        const result = await getMarkets(postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);

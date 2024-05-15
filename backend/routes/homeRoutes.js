@@ -1,16 +1,16 @@
-// logic for endpoint /get_map_viewers
-async function getMapViewers(market_id, postgres_pool) {
+// logic for endpoint /get_markets
+async function getMarkets(postgres_pool) {
     try {
         const query = `
-            SELECT map_layout
-            FROM market_map.markets 
-            WHERE market_id = $1;`;
+            SELECT *
+            FROM market_map.markets;`;
 
-        const result = await postgres_pool.query(query, [market_id]);
-        return result.rows[0]?.map_layout;
+        const result = await postgres_pool.query(query);
+        return result.rows;
     } catch (error) {
         console.error('Error querying map layout:', error);
     }
 }
 
-module.exports = { getMapViewers }
+
+module.exports = { getMarkets }

@@ -4,6 +4,7 @@ import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
 import { DimensionContext } from './DimensionContext';
 import { useChangeDragMode } from './helper/useChangeDragMode';
+import MapViewer from './tabs/Home/MapViewer';
 
 // define permission for tabs
 const tabPermission = [
@@ -42,6 +43,7 @@ export default function App() {
             {tabs.map(({ tab, Component, permission }, index) => 
               (permission === 'all' || userPermission === 'admin' || userPermission === permission) ? <Route key={index} path={`/${tab}`} element={<Component/>}/> : null
             )}
+            <Route path='/map' element={<MapViewer/>}/>
           </Routes>
         </Router>
       </div>

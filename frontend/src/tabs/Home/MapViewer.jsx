@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
-import { requestGetMapViewers } from "../../requests/homeRequests";
+import { useLocation } from 'react-router-dom';
 import LayoutViewer from "./LayoutViewer";
 
-export default function MapViewer({ market_id }) {
-    const [layout, setLayout] = useState(null);
+export default function MapViewer() {
+    const location = useLocation();
+    const market = location.state.market;
+    const layout = market.map_layout
     const [zoom, setZoom] = useState(1);
-
-    // get map for market_id
-    useEffect(() => {
-        const getLayout = async () => {
-          const data = await requestGetMapViewers(market_id);
-          if (data) setLayout(data);
-        }
-        getLayout();
-      }, [market_id]);
 
     // zoom effect on layout
     useEffect(() => {
@@ -34,14 +27,11 @@ export default function MapViewer({ market_id }) {
         }
     }, [zoom, layout]);
 
-    return (
-        <div>
-       { layout 
-        ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
-          <LayoutViewer layout={layout} setLayout={setLayout} zoom={zoom}/>
+    return !layout ? null :(
+      <div className='flex w-full h-full items-center justify-center'>
+        <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
+          <LayoutViewer layout={layout} zoom={zoom}/>
         </div>
-        : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
-      }
       </div>
     );
 }

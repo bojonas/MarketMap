@@ -8,8 +8,7 @@ import { requestUpdateMapLayout } from '../../requests/mapEditorRequests';
 
 export default function Toolbar({ layout }) {
   const [search, setSearch] = useState('');
-  const images = Object.entries(getItemImages()).filter(([type]) => type.includes(search));
-
+  const images = Object.entries(getItemImages()).filter(([type]) => type.toLowerCase().includes(search));
   const { addDuplicate } = useContext(DimensionContext);
 
   const handleSave = async () => {
@@ -17,7 +16,7 @@ export default function Toolbar({ layout }) {
   }
 
   return (
-    <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full ml-10'>
+    <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full'>
       <SearchBar onSearch={setSearch}/>
       <div className='bg-darkoffwhite flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
         <div className='min-h-[58svh] max-h-[58svh]'>
