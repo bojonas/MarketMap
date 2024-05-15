@@ -37,7 +37,7 @@ process.on('SIGINT', async () => {
 // route endpoints
 /**** Home Routes ****/
 
-// import login routes
+// import home routes
 const { getMarkets } = require('./routes/homeRoutes');
 
 app.get('/get_markets', async (req, res) => {
@@ -186,7 +186,7 @@ const UpdateData = Joi.object({
     data: Joi.string().required()
 })
 
-const UsernameObject = Joi.object({
+const UserIdObject = Joi.object({
     username: Joi.string().required()
 })
 
@@ -209,16 +209,22 @@ app.put('/update_data', async (req, res) => {
 });
 
 app.put('/get_user', async (req, res) => {
-    const {error} = UsernameObject.validate(req.body)
+    const {error} = UserIdObject.validate(req.body)
 
     if (error) {
         console.error(error.details[0].message);
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { username} = req.body;
+    const { user_id} = req.body;
+
+    if (user_id === -1) {
+        console.error("No valid user");
+        return res.status(400).json({ error: "No valid user" });
+    }
+
     try {
-        const result = await getUser(username, postgres_pool);
+        const result = await getUser(user_id, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
