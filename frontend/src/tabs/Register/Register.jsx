@@ -22,7 +22,7 @@ export default function Register(){
     return (
         <div className="flex items-center justify-center h-full">
           <div className="rounded-lg p-8">
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center sourrounding-div">
               <input
                 type="text"
                 placeholder="Username"

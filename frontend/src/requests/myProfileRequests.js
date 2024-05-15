@@ -20,20 +20,20 @@ export async function requestUpdateData(username, label, content) {
     }
   }
 
-  //request to /get_user
-export async function requestUser(username) {
-    if (!username ) {
-      return console.error('Invalid parameters');
-    }
-  
-    const data = {
-      username: username
-    };
-  
-    try {
-      const response = await axiosInstance.put('/get_user', data);
-      return response.data
-    } catch (error) {
-      console.error('Error creating user:', error);
-    }
+    //request to /get_user
+export async function requestUser(user_id) {
+  if (!user_id ||user_id <1) {
+    return console.error('Invalid parameters');
   }
+
+  const data = {
+    user_id: user_id
+  };
+
+  try {
+    const response = await axiosInstance.put('/get_user', data);
+    return response.data
+  } catch (error) {
+    console.error('Error creating user:', error);
+  }
+}

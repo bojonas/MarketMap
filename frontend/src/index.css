@@ -3,13 +3,23 @@
 @tailwind utilities;
 
 @layer components {
+    .sourrounding-div{
+        @apply bg-offwhite px-40 py-10 rounded-xl
+    }
     .custom-button {
         @apply flex items-center content-center justify-center bg-purple-custom text-white rounded-full p-3 text-xl font-bold
         border-purple-custom border-2 hover:border-white hover:border-2 shadow-md shadow-black-custom;
     }
+    .custom-button-forgotPw {
+        @apply flex items-center content-center justify-center bg-purple-custom text-white rounded-full p-1 text-sm
+        border-purple-custom mt-2 hover:border-white hover:border-2 hover:mt-1 shadow-md shadow-black-custom ;
+    }
 
     .custom-input {
-        @apply rounded-full w-64 px-4 py-2 placeholder-gray-200 bg-blue-400
+        @apply rounded-full w-64 px-4 py-2 placeholder-gray-200 bg-purple-custom border-purple-custom border-2
+    }
+    .custom-input-error {
+        @apply rounded-full w-64 px-4 py-2 placeholder-gray-200 bg-purple-custom border-red-700 border-2
     }
 
     .add_remove_button {

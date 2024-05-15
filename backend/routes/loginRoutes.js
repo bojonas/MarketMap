@@ -54,47 +54,22 @@ async function getPermission(user_id, postgres_pool) {
   }
 }
 
-//checks whether user exists
-async function userExists(username, postgres_pool){
-  const query = `
-  SELECT username
-  FROM market_map.users
-  `
-  const result = await postgres_pool.query(query);
-  for(i=0;i<result.rowCount;i++){
-    if(result.rows[i].username === username){
-      return true;
-    };
-  }
-  return false;
-}
-
-async function pwCorrect(username, password, postgres_pool){
-  const query = `
-  SELECT password
-  FROM market_map.users
-  WHERE username = $1
-  `
-  const result = await postgres_pool.query(query,[username]);
-  if(result.rows[0].password === password){
-    return true;
-  }
-  return false;
-}
-
-//logic for endpoint /check_credentials
 async function checkUserLogin(username, password, postgres_pool){
   try{
-    const userExistsFlag = await userExists(username, postgres_pool)
-    if(!userExistsFlag){
-      return {message: 'User does not exist', isLoggedIn: false}
-    }
-    const pwCorrectFlag = await pwCorrect(username, password, postgres_pool)
-    if(!pwCorrectFlag){
+    const query =`
+      SELECT user_id, password
+      FROM market_map.users
+      WHERE username = $1
+    `
+    const result = await postgres_pool.query(query,[username])
+
+    if(result.rows[0]){
+      if(result.rows[0].password === password){
+        return {message: "User Logged in", isLoggedIn: true, user_id: result.rows[0].user_id}
+      }
       return {message: 'Invalid Password', isLoggedIn: false}
     }
-    //todo: Logged In logic
-    return {message: "User Logged in", isLoggedIn: true}
+    return {message: 'User does not exist', isLoggedIn: false}
   }
   catch(error){
     console.error('Error checking credentials:', error);
@@ -139,4 +114,4 @@ async function updatePassword(email, password, postgres_pool){
 
 
 
-module.exports = { postUser, getPermission,checkUserLogin,userExists, checkUser, updatePassword };
+module.exports = { postUser, getPermission,checkUserLogin, checkUser, updatePassword };

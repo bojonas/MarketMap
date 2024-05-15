@@ -8,17 +8,28 @@ export default function MyProfile(){
     const [popupLabel, setPopupLabel] = useState("")
     const [popupContent, setPopupContent] = useState("")
 
-    const[username, setUsername] = useState("roben") //currently username is hardcoded, later we will automate it by user_id
-    const[email, setEmail] = useState("")
-    const[firstName, setFirstName] = useState("")
-    const[lastName, setLastName] = useState("")
+    const [user_id,setUserId] = useState("")
+    const[username, setUsername] = useState("no user logged in") //currently username is hardcoded, later we will automate it by user_id
+    const[email, setEmail] = useState("no user logged in")
+    const[firstName, setFirstName] = useState("no user logged in")
+    const[lastName, setLastName] = useState("no user logged in")
 
     const loadData = async()=>{
-        const result = await requestUser(username)
-        setUsername(result.username)
-        setEmail(result.email)
-        setFirstName(result.firstName)
-        setLastName(result.lastName)
+        if(localStorage.getItem("user_id")){
+            setUserId(parseInt(await localStorage.getItem("user_id"), 10))
+            try{
+                const result = await requestUser(user_id)
+                setUsername(result.username)
+                setEmail(result.email)
+                setFirstName(result.firstName)
+                setLastName(result.lastName)
+            }
+            catch(error){
+
+            }
+            
+        }
+        
     }
     loadData()
 
@@ -53,6 +64,7 @@ export default function MyProfile(){
           <div className=" rounded-md p-6 w-full">
                 
                 <div>
+                    <ContentRow label = {"User id"} content = {user_id} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Username"} content = {username} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} />
                     <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>

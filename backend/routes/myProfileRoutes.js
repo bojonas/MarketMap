@@ -23,18 +23,19 @@ async function updateData(username, label, data, postgres_pool){
 }
 
 //logic for endpoint /get_user
-async function getUser(username, postgres_pool){
+async function getUser(user_id, postgres_pool){
     try{
         const query = `
         SELECT username, email, 'Ben' as firstname, 'Roehrig' as lastname
         FROM market_map.users
-        Where username = $1
+        Where user_id = $1
         `
-        const result = await postgres_pool.query(query,[username]);
+        const result = await postgres_pool.query(query,[user_id]);
         return {username: result.rows[0].username, email: result.rows[0].email, firstName: result.rows[0].firstname, lastName: result.rows[0].lastname}
 
     }
     catch(error){
+        console.log(user_id)
         console.error('Error getting user data:', error);
     }
 }
