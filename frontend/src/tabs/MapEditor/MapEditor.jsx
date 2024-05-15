@@ -3,9 +3,17 @@ import Layout from './Layout';
 import Toolbar from './Toolbar';
 import { requestGetMapLayout } from '../../requests/mapEditorRequests';
 import { IoMdSettings } from "react-icons/io";
-import CustomModal from '../../helper/CustomModal';
+import CustomModal from '../../atoms/CustomModal';
+import { DimensionContext } from '../../DimensionContext';
+import { useChangeDragMode } from '../../helper/useChangeDragMode';
 
 export default function MapEditor() {
+  // key tracking for edit modes
+  const [trackedCells, setTrackedCells] = useState([]);
+  const [duplicateMode, setduplicateMode] = useState(false);
+  const [deleteMode, setdeleteMode] = useState(false);
+  useChangeDragMode(setduplicateMode, setdeleteMode);
+
   const [layout, setLayout] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
@@ -47,18 +55,20 @@ export default function MapEditor() {
   
   const layoutCopy = JSON.parse(JSON.stringify(layout));
   return (
-    <div className='flex h-full w-full gap-5'>
-      <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
-        <IoMdSettings size={24}/>
-      </div>
-      { layout 
-      ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
-          <Layout layout={layout} setLayout={setLayout} zoom={zoom}/>
+    <DimensionContext.Provider value={{ trackedCells, setTrackedCells, duplicateMode, deleteMode }}>
+      <div className='flex h-full w-full gap-5'>
+        <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
+          <IoMdSettings size={24}/>
         </div>
-      : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
-      }
-      <Toolbar layout={layout}/>
-      <CustomModal layout={layoutCopy} setLayout={setLayout} modalIsOpen={modalIsOpen} closeModal={closeModal}/>
-    </div>
+        { layout 
+        ? <div style={{ cursor: deleteMode ? 'not-allowed' : 'auto' }} className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
+            <Layout layout={layout} setLayout={setLayout} zoom={zoom}/>
+          </div>
+        : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
+        }
+        <Toolbar layout={layout}/>
+        <CustomModal layout={layoutCopy} setLayout={setLayout} modalIsOpen={modalIsOpen} closeModal={closeModal}/>
+      </div>
+    </DimensionContext.Provider>
   );
 }

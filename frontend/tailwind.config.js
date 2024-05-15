@@ -16,8 +16,9 @@ module.exports = {
         'gray-button-hover': '#353535',
         'darkgray-custom': '#171717',
         'black-custom': '#101010',
-        'offwhite': '#f5f5f5',
-        'darkoffwhite': '#d9d9d9',
+        'offwhite': '#e1e1e1',
+        'offwhite-hover': '#ffffff',
+        'darkoffwhite': '#d0d0d0',
       },
       cursor: {
         grab: 'grab',

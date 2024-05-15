@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { addRow, addColumn, removeRow, removeColumn } from './editLayout'
+import { addRow, addColumn, removeRow, removeColumn } from '../helper/editLayout'
 
 export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal }) {
     return (

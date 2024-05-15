@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import debounce from 'lodash.debounce';
-import SearchBar from '../../helper/SearchBar'
+import SearchBar from '../../atoms/SearchBar'
 import { requestGetMarkets } from "../../requests/homeRequests";
 
 export default function Home(){
@@ -58,9 +58,9 @@ export default function Home(){
         <div className='flex flex-col w-full h-full items-center'>
             <div className='flex flex-col items-center text-center w-1/2 h-fit'>
                 <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur}/>
-                {searchClicked && <div className='w-2/3 h-[10svh]'>
+                {searchClicked && <div className='p-1 w-[35svw] h-fit bg-[#4e4e4e7a] rounded-b-lg'>
                     {filteredMarkets.map((market, i) => (
-                        <div key={i} onClick={() => handleMarketClick(market)} className='bg-[#4e4e4e7a] border-1 border-darkgray-custom separate flex gap-1 hover:cursor-pointer'>
+                        <div key={i} onClick={() => handleMarketClick(market)} className='h-[8svh] p-4 flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.4svh] rounded-lg hover:bg-white hover:cursor-pointer'>
                             <p className='font-bold'>{market.market_name}</p>
                             <p className='ml-4'>{market.address},</p>
                             <p>{market.postal_code},</p>

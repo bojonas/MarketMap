@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useAdjustScale } from '../../helper/useAdjustScale';
 import CellViewer from './CellViewer';
 
@@ -9,7 +9,7 @@ export default function LayoutViewer({ layout, zoom }) {
   const scale = Math.min(width/ layout[0].length, height / layout.length);
 
   // fix scrollbars after zoom
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (ref.current) {
       const container = ref.current;
       container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
@@ -18,7 +18,7 @@ export default function LayoutViewer({ layout, zoom }) {
   }, [zoom]);
 
   // update dimensions after initial render
-  useLayoutEffect(() => {
+  useEffect(() => {
     setDimensions({ width: 'fit-content', height: 'fit-content' });
   }, []);
 

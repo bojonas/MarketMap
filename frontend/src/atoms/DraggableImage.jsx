@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { DimensionContext } from "../DimensionContext";
 
-export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, addDuplicate, duplicate }) {
+export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, duplicate, duplicateMode }) {
   const [isDuplicating, setisDuplicating] = useState(true);
   const { setTrackedCells } = useContext(DimensionContext);
 
@@ -13,12 +13,12 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
   }  
 
   const handleDragEnd = (e) => {
-    setisDuplicating(!addDuplicate || duplicate);
+    setisDuplicating(!duplicateMode || duplicate);
     if (!duplicate) setDroppedItem(null);
   };
 
   return !isDuplicating ? null : (
     <img draggable onDragStart={handleDragStart} onDragEnd={handleDragEnd} 
-      src={source} alt={alt} className='hover:cursor-grab active:cursor-grabbing'/>
+      src={source} alt={alt}/>
   );
 }

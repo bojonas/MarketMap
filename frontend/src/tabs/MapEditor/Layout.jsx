@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Cell from './Cell';
 import { useAdjustScale } from '../../helper/useAdjustScale';
 
@@ -9,7 +9,7 @@ export default function Layout({ layout, setLayout, zoom }) {
   const scale = Math.min(width/ layout[0].length, height / layout.length);
 
   // fix scrollbars after zoom
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (ref.current) {
       const container = ref.current;
       container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
@@ -18,10 +18,10 @@ export default function Layout({ layout, setLayout, zoom }) {
   }, [zoom]);
 
   // update dimensions after initial render
-  useLayoutEffect(() => {
+  useEffect(() => {
     setDimensions({ width: 'fit-content', height: 'fit-content' });
   }, []);
-
+  
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center">

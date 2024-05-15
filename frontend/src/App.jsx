@@ -1,9 +1,6 @@
-import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
-import { DimensionContext } from './DimensionContext';
-import { useChangeDragMode } from './helper/useChangeDragMode';
 import MapViewer from './tabs/Home/MapViewer';
 
 // define permission for tabs
@@ -22,32 +19,25 @@ for (let tab of tabPermission) {
 }
 
 export default function App() {
-  const [trackedCells, setTrackedCells] = useState([]);
-  // track if command key is pressed
-  const [addDuplicate, setAddDuplicate] = useState(false);
-  useChangeDragMode(setAddDuplicate);
-
   const userPermission = 'admin';
 
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
-    <DimensionContext.Provider value={{ addDuplicate, trackedCells, setTrackedCells }}>
-      <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom'>
-        <Router>
-          <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>
-            {tabs.map(({ name, tab, Icon, permission }) => 
-              (permission === 'all' || userPermission === 'admin' || userPermission === permission) ? <Tab key={name} tab={tab} name={name} Icon={Icon}/> : null
-            )}
-          </div>
-          <Routes>
-            {tabs.map(({ tab, Component, permission }, index) => 
-              (permission === 'all' || userPermission === 'admin' || userPermission === permission) ? <Route key={index} path={`/${tab}`} element={<Component/>}/> : null
-            )}
-            <Route path='/map' element={<MapViewer/>}/>
-          </Routes>
-        </Router>
-      </div>
-    </DimensionContext.Provider>
+    <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom'>
+      <Router>
+        <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>
+          {tabs.map(({ name, tab, Icon, permission }) => 
+            (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
+          )}
+        </div>
+        <Routes>
+          {tabs.map(({ tab, Component, permission }, index) => 
+            (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Route key={index} path={`/${tab}`} element={<Component/>}/>
+          )}
+          <Route path='/map' element={<MapViewer/>}/>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
