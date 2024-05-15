@@ -3,16 +3,18 @@ import Layout from './Layout';
 import Toolbar from './Toolbar';
 import { requestGetMapLayout } from '../../requests/mapEditorRequests';
 import { IoMdSettings } from "react-icons/io";
-import CustomModal from '../../atoms/CustomModal';
+import CustomModal from './CustomModal';
 import { DimensionContext } from '../../DimensionContext';
 import { useChangeDragMode } from '../../helper/useChangeDragMode';
 
 export default function MapEditor() {
   // key tracking for edit modes
   const [trackedCells, setTrackedCells] = useState([]);
-  const [duplicateMode, setduplicateMode] = useState(false);
-  const [deleteMode, setdeleteMode] = useState(false);
-  useChangeDragMode(setduplicateMode, setdeleteMode);
+  const [duplicateMode, setDuplicateMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [overruledDuplicate, setOverruledDuplicate] = useState(false);
+  const [overruledDelete, setOverruledDelete] = useState(false);
+  useChangeDragMode(setDuplicateMode, setDeleteMode, overruledDuplicate, overruledDelete);
 
   const [layout, setLayout] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -32,6 +34,19 @@ export default function MapEditor() {
   }
   const closeModal = () => {
     setModalIsOpen(false);
+  }
+
+  // change Mode
+  const changeDuplicateMode = () => {
+    setOverruledDuplicate(true);
+    setDeleteMode(false);
+    setDuplicateMode(prevValue => !prevValue)
+  }
+
+  const changeDeleteMode = () => {
+    setOverruledDelete(true);
+    setDuplicateMode(false);
+    setDeleteMode(prevValue => !prevValue)
   }
 
   // zoom effect on layout
@@ -61,13 +76,20 @@ export default function MapEditor() {
           <IoMdSettings size={24}/>
         </div>
         { layout 
-        ? <div style={{ cursor: deleteMode ? 'not-allowed' : 'auto' }} className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
+        ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center' 
+            style={{cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : '',}}>
             <Layout layout={layout} setLayout={setLayout} zoom={zoom}/>
           </div>
         : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
         }
         <Toolbar layout={layout}/>
-        <CustomModal layout={layoutCopy} setLayout={setLayout} modalIsOpen={modalIsOpen} closeModal={closeModal}/>
+        <CustomModal 
+          layout={layoutCopy} 
+          setLayout={setLayout} 
+          modalIsOpen={modalIsOpen} 
+          closeModal={closeModal} 
+          changeDuplicateMode={changeDuplicateMode} 
+          changeDeleteMode={changeDeleteMode}/>
       </div>
     </DimensionContext.Provider>
   );

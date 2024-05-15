@@ -74,7 +74,7 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
         width: `${scale}px`,
         border: `${scale/10}px solid rgb(16 16 16)`,
         borderRadius: `${scale/5}px`,
-        cursor: duplicateMode ? 'copy' : deleteMode ? 'not-allowed' : 'auto',
+        cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : '',
         backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#4e4e4e7a'
       }}>
       {type === 'empty' ? null
