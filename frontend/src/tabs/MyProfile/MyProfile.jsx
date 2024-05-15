@@ -25,6 +25,7 @@ export default function MyProfile(){
                 setLastName(result.lastName)
             }
             catch(error){
+                
 
             }
             

@@ -187,7 +187,7 @@ const UpdateData = Joi.object({
 })
 
 const UserIdObject = Joi.object({
-    username: Joi.string().required()
+    user_id: Joi.number().required()
 })
 
 //endpoints for My Profile
