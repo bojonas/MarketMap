@@ -35,7 +35,6 @@ async function getUser(user_id, postgres_pool){
 
     }
     catch(error){
-        console.log(user_id)
         console.error('Error getting user data:', error);
     }
 }
