@@ -16,20 +16,12 @@ export default function MyProfile(){
 
     useEffect(() => {
         const loadData = async () => {
-            if(!user_id) return
-            try{
-                const result = await requestUser(user_id)
-                setUsername(result.username)
-                setEmail(result.email)
-                setFirstName(result.firstName)
-                setLastName(result.lastName)
-            }
-            catch(error){
-                
-
-            }
-                
-            
+            if(!user_id) return;
+            const result = await requestUser(user_id);
+            setUsername(result.username);
+            setEmail(result.email);
+            setFirstName(result.firstName);
+            setLastName(result.lastName);
         }
         loadData();
     }, [user_id]);
