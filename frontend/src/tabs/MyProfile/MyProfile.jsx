@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { requestUpdateData, requestUser } from "../../requests/myProfileRequests";
 
 export default function MyProfile(){
@@ -8,15 +8,15 @@ export default function MyProfile(){
     const [popupLabel, setPopupLabel] = useState("")
     const [popupContent, setPopupContent] = useState("")
 
-    const [user_id,setUserId] = useState("")
+    const [user_id,] = useState(parseInt(localStorage.getItem("user_id"), 10))
     const[username, setUsername] = useState("no user logged in") //currently username is hardcoded, later we will automate it by user_id
     const[email, setEmail] = useState("no user logged in")
     const[firstName, setFirstName] = useState("no user logged in")
     const[lastName, setLastName] = useState("no user logged in")
 
-    const loadData = async()=>{
-        if(localStorage.getItem("user_id")){
-            setUserId(parseInt(await localStorage.getItem("user_id"), 10))
+    useEffect(() => {
+        const loadData = async () => {
+            if(!user_id) return
             try{
                 const result = await requestUser(user_id)
                 setUsername(result.username)
@@ -28,17 +28,15 @@ export default function MyProfile(){
                 
 
             }
+                
             
         }
-        
-    }
-    loadData()
-
+        loadData();
+    }, [user_id]);
 
     const updateData = async()=>{
         if(popupContent){
             await requestUpdateData(username, popupLabel, popupContent)
-            loadData()
             setPopupContent("")
             setPopupLabel("")
         }

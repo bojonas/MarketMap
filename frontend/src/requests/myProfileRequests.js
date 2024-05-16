@@ -22,7 +22,7 @@ export async function requestUpdateData(username, label, content) {
 
     //request to /get_user
 export async function requestUser(user_id) {
-  if (!user_id ||user_id <1) {
+  if (!user_id || user_id < 1) {
     return console.error('Invalid parameters');
   }
 
