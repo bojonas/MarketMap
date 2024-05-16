@@ -3,24 +3,24 @@ import { useEffect, useCallback } from "react";
 export function useChangeDragMode(setDuplicateMode, setdeleteMode, overruledDuplicate, overruledDelete) {
   const handleKeyDown = useCallback((e) => {
     e.preventDefault();
-    if (e.target.tagName.toLowerCase() === 'input') {
-      return;
-    }
+    if (overruledDelete || overruledDuplicate) return;
+    if (e.target.tagName.toLowerCase() === 'input') return;
+    
     setDuplicateMode(e.shiftKey);
     setdeleteMode(e.altKey);
-  }, [setDuplicateMode, setdeleteMode]);
+  }, [setDuplicateMode, setdeleteMode, overruledDelete, overruledDuplicate]);
 
   const handleKeyUp = useCallback((e) => {
-    if (e.target.tagName.toLowerCase() === 'input') {
-      return;
-    }
+    if (overruledDelete || overruledDuplicate) return;
+    if (e.target.tagName.toLowerCase() === 'input') return;
     setDuplicateMode(false);
     setdeleteMode(false);
-  }, [setDuplicateMode, setdeleteMode]);
+  }, [setDuplicateMode, setdeleteMode, overruledDelete, overruledDuplicate]);
 
   const handleDragOver = useCallback((e) => {
-    if (!overruledDuplicate) setDuplicateMode(e.shiftKey);
-    if (!overruledDelete) setdeleteMode(e.altKey);
+    if (overruledDelete || overruledDuplicate) return;
+    setDuplicateMode(e.shiftKey);
+    setdeleteMode(e.altKey);
   }, [setDuplicateMode, setdeleteMode, overruledDuplicate, overruledDelete]);
 
   useEffect(() => {

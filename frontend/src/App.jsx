@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Tab from './atoms/Tab';
 import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
 import MapViewer from './tabs/Home/MapViewer';
@@ -25,7 +26,7 @@ export default function App() {
   return (
     <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom'>
       <Router>
-        <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>
+        <div className='flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh] border-black borderb-[0.3svh]'>
           {tabs.map(({ name, tab, Icon, permission }) => 
             (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
           )}
@@ -38,21 +39,5 @@ export default function App() {
         </Routes>
       </Router>
     </div>
-  );
-}
-
-function Tab({ name, Icon, tab }) {
-  return (
-    <NavLink to={`/${tab}`} className='custom-button rounded-xl ml-3 border-none w-fit h-fit text-lg' draggable='false'
-        style={({ isActive }) => {
-            return {
-              backgroundColor: isActive ? '#715DF2' : '#303030',
-              boxShadow: isActive ? '0 4px 6px -1px #334155, 0 2px 4px -2px #334155' : '',
-            }
-        }}
-    > {
-      Icon ? <Icon/> : name
-    }
-    </NavLink>
   );
 }

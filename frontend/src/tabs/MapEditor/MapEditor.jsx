@@ -77,7 +77,7 @@ export default function MapEditor() {
         </div>
         { layout 
         ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center' 
-            style={{cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : '',}}>
+          style={{cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
             <Layout layout={layout} setLayout={setLayout} zoom={zoom}/>
           </div>
         : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 

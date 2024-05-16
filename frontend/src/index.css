@@ -61,7 +61,3 @@
 .overflow-scroll::-webkit-scrollbar {
     display: block;
 }
-
-img:active {
-    pointer-events: painted
-}

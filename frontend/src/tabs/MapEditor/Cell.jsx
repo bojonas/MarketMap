@@ -83,8 +83,7 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
           source={droppedItem.source} 
           alt={droppedItem.alt} 
           cellCoordinates={cord} 
-          setDroppedItem={setDroppedItem}
-          duplicateMode={duplicateMode}/>
+          setDroppedItem={setDroppedItem}/>
         : <LoadImage 
           type={type} 
           cellCoordinates={cord} 
