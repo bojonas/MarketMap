@@ -38,13 +38,13 @@ export default function MapEditor() {
 
   // change Mode
   const changeDuplicateMode = () => {
-    setOverruledDuplicate(true);
+    setOverruledDuplicate(prevValue => !prevValue);
     setDeleteMode(false);
     setDuplicateMode(prevValue => !prevValue)
   }
 
   const changeDeleteMode = () => {
-    setOverruledDelete(true);
+    setOverruledDelete(prevValue => !prevValue);
     setDuplicateMode(false);
     setDeleteMode(prevValue => !prevValue)
   }

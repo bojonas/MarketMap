@@ -1,17 +1,29 @@
-import React from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { TabContext } from "../DimensionContext";
 
 export default function Tab({ name, Icon, tab }) {
   let location = useLocation();
   let isActive = location.pathname === `/${tab}`;
+  const { setActiveTab } = useContext(TabContext);
+  const tabRef = useRef(null);
+
+  useEffect(() => {
+    if (tabRef.current && isActive) {
+      setActiveTab({
+        left: tabRef.current.offsetLeft,
+        width: tabRef.current.offsetWidth
+      });
+    }
+  }, [isActive, setActiveTab]);
 
   return (
-    <div style={{ position: 'relative' }}>
-      <NavLink to={`/${tab}`} className='custom-button rounded-xl ml-3 border-none w-fit h-fit text-sm' draggable='false'
+      <NavLink to={`/${tab}`} className='custom-button rounded-xl ml-[1.5svw] border-none w-fit h-fit text-sm' draggable='false'
           style={{
               backgroundColor: isActive ? '#202020' : '#303030',
-              transition: 'background-color 0.5s ease' 
+              transition: 'background-color 0.5s ease'
           }}
+          ref={tabRef}
       > { Icon 
         ? <React.Fragment>
             <Icon isActive={isActive}/> 
@@ -19,8 +31,5 @@ export default function Tab({ name, Icon, tab }) {
           </React.Fragment>
       : <p style={{ color: isActive ? '' : '#707070' }}>{name}</p> }
       </NavLink>
-      <div className={`h-[0.3svh] absolute top-[7.2svh] left-[1svw] right-0 ${isActive ? 'bg-[#715DF2]' : ''}`}
-        style={{ transition: 'background-color 0.5s ease' }}></div>
-    </div>
   );
 }
