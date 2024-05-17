@@ -9,11 +9,12 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
   const [isOver, setIsOver] = useState(false);
 
   const cord = cellCoordinates.split('-').map(Number);
-  const { trackedCells, setTrackedCells, duplicateMode, deleteMode } = useContext(MapEditorContext);
+  const { duplicateCells, setDuplicateCells, deleteCells, setDeleteCells, duplicateMode, deleteMode } = useContext(MapEditorContext);
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    if ((duplicateMode || deleteMode) && !trackedCells.includes(cellCoordinates))  setTrackedCells([...trackedCells, cellCoordinates]);
+    if (duplicateMode && !duplicateCells.includes(cellCoordinates)) setDuplicateCells([...duplicateCells, cellCoordinates]);
+    if (deleteMode && !deleteCells.includes(cellCoordinates)) setDeleteCells([...deleteCells, cellCoordinates]);
     setIsOver(true);
   };  
 
@@ -25,46 +26,37 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsOver(false);
-
     const item = JSON.parse(e.dataTransfer.getData('application/json'));
-    setDroppedItem(item);
+    setDroppedItem(deleteCells.length === 0 ? item : null);
 
     const { rootCoordinates } = item;
-
     if (rootCoordinates && isEqualArray(cord, rootCoordinates)) {
       return;
     }
-
     // update layout
     setLayout(prevLayout => {
       const newLayout = [...prevLayout];
 
-      // add item to cell 
+      // add item to current cell 
       newLayout[cord[0]][cord[1]]['type'] = item.alt;
 
-      // remove item from previous cell
-      if (!duplicateMode && rootCoordinates) {
-        newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty';
-      }
+      // remove item from drag start cell
+      if (rootCoordinates) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty';
 
-      // add item for tracked cells if command key is pressed
-      for (const cell of trackedCells) {
+      // add/remove items with modes
+      console.log(deleteCells, deleteCells.length)
+      for (const cell of duplicateCells) {
         const c = cell.split('-').map(Number);
-        // skip root cell
-        if (rootCoordinates && isEqualArray(c, rootCoordinates)) continue;
-        if (deleteMode) {
-          newLayout[c[0]][c[1]]['type'] = 'empty';
-        } else {
-          // ignore current cell
-          if (cell === cellCoordinates) continue;
-
-          newLayout[c[0]][c[1]]['type'] = item.alt;
-        }
+        newLayout[c[0]][c[1]]['type'] = item.alt;
+      }
+      for (const cell of deleteCells) {
+        const c = cell.split('-').map(Number);
+        newLayout[c[0]][c[1]]['type'] = 'empty';
       }
       return newLayout;
     });
 
-    return { name: type };
+    return deleteCells.length === 0 ? { name: type } : null;
   };
 
   return (

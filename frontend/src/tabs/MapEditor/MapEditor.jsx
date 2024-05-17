@@ -8,9 +8,10 @@ import { MapEditorContext } from '../../DimensionContext';
 import { useChangeDragMode } from '../../helper/useChangeDragMode';
 
 export default function MapEditor() {
-  // key tracking for edit modes
-  const [trackedCells, setTrackedCells] = useState([]);
+  // tracking for edit modes
+  const [duplicateCells, setDuplicateCells] = useState([]);
   const [duplicateMode, setDuplicateMode] = useState(false);
+  const [deleteCells, setDeleteCells] = useState([]);
   const [deleteMode, setDeleteMode] = useState(false);
   const [overruledDuplicate, setOverruledDuplicate] = useState(false);
   const [overruledDelete, setOverruledDelete] = useState(false);
@@ -72,7 +73,7 @@ export default function MapEditor() {
   
   const layoutCopy = JSON.parse(JSON.stringify(layout));
   return (
-    <MapEditorContext.Provider value={{ trackedCells, setTrackedCells, duplicateMode, deleteMode }}>
+    <MapEditorContext.Provider value={{ duplicateCells, setDuplicateCells, deleteCells, setDeleteCells, duplicateMode, deleteMode }}>
       <div className='flex h-full w-full gap-5'>
         <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
           <IoMdSettings size={24}/>
