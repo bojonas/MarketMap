@@ -21,7 +21,7 @@ export default function Layout({ layout, setLayout, zoom }) {
   useEffect(() => {
     setDimensions({ width: 'fit-content', height: 'fit-content' });
   }, []);
-  
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center">

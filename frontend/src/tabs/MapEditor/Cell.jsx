@@ -1,7 +1,7 @@
 import React, { useState, useContext, memo } from 'react';
 import DraggableImage from "../../atoms/DraggableImage";
 import LoadImage from "../../atoms/LoadImage"
-import { DimensionContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../DimensionContext';
 import { isEqualArray } from '../../helper/isEqualArray';
 
 const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
@@ -9,7 +9,7 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
   const [isOver, setIsOver] = useState(false);
 
   const cord = cellCoordinates.split('-').map(Number);
-  const { trackedCells, setTrackedCells, duplicateMode, deleteMode } = useContext(DimensionContext);
+  const { trackedCells, setTrackedCells, duplicateMode, deleteMode } = useContext(MapEditorContext);
 
   const handleDragOver = (e) => {
     e.preventDefault();

@@ -18,7 +18,7 @@ const tabPermission = [
 ];
 // custom navigation order (!whitespaces important!)
 const order = [];
-for (let tab of tabPermission) {
+for (const tab of tabPermission) {
   order.push(tab.name);
 }
 

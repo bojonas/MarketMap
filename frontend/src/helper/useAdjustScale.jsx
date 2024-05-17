@@ -28,7 +28,7 @@ export function useAdjustScale(ref) {
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [ref]);
+    }, [ref]); 
 
     return dimensions;
 }

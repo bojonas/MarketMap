@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { DimensionContext } from "../DimensionContext";
+import { MapEditorContext } from "../DimensionContext";
 
 export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, duplicate }) {
   const [isDuplicating, setisDuplicating] = useState(true);
-  const { setTrackedCells, duplicateMode } = useContext(DimensionContext);
+  const { setTrackedCells, duplicateMode } = useContext(MapEditorContext);
 
   const handleDragStart = (e) => {
     setTrackedCells([]);

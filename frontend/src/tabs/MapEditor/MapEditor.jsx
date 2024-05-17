@@ -4,7 +4,7 @@ import Toolbar from './Toolbar';
 import { requestGetMapLayout } from '../../requests/mapEditorRequests';
 import { IoMdSettings } from "react-icons/io";
 import CustomModal from './CustomModal';
-import { DimensionContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../DimensionContext';
 import { useChangeDragMode } from '../../helper/useChangeDragMode';
 
 export default function MapEditor() {
@@ -38,15 +38,17 @@ export default function MapEditor() {
 
   // change Mode
   const changeDuplicateMode = () => {
+    setDuplicateMode(prevValue => !prevValue);
     setOverruledDuplicate(prevValue => !prevValue);
     setDeleteMode(false);
-    setDuplicateMode(prevValue => !prevValue)
+    setOverruledDelete(false);
   }
 
   const changeDeleteMode = () => {
+    setDeleteMode(prevValue => !prevValue)
     setOverruledDelete(prevValue => !prevValue);
     setDuplicateMode(false);
-    setDeleteMode(prevValue => !prevValue)
+    setOverruledDuplicate(false);
   }
 
   // zoom effect on layout
@@ -70,7 +72,7 @@ export default function MapEditor() {
   
   const layoutCopy = JSON.parse(JSON.stringify(layout));
   return (
-    <DimensionContext.Provider value={{ trackedCells, setTrackedCells, duplicateMode, deleteMode }}>
+    <MapEditorContext.Provider value={{ trackedCells, setTrackedCells, duplicateMode, deleteMode }}>
       <div className='flex h-full w-full gap-5'>
         <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
           <IoMdSettings size={24}/>
@@ -91,6 +93,6 @@ export default function MapEditor() {
           changeDuplicateMode={changeDuplicateMode} 
           changeDeleteMode={changeDeleteMode}/>
       </div>
-    </DimensionContext.Provider>
+    </MapEditorContext.Provider>
   );
 }

@@ -3,8 +3,10 @@ import { useEffect, useCallback } from "react";
 export function useChangeDragMode(setDuplicateMode, setdeleteMode, overruledDuplicate, overruledDelete) {
   const handleKeyDown = useCallback((e) => {
     if (e.target.tagName.toLowerCase() === 'input') return;
-    e.preventDefault();
     if (overruledDelete || overruledDuplicate) return;
+
+    if (e.shiftKey && e.altKey) return;
+    e.preventDefault();
     
     setDuplicateMode(e.shiftKey);
     setdeleteMode(e.altKey);
@@ -13,12 +15,14 @@ export function useChangeDragMode(setDuplicateMode, setdeleteMode, overruledDupl
   const handleKeyUp = useCallback((e) => {
     if (e.target.tagName.toLowerCase() === 'input') return;
     if (overruledDelete || overruledDuplicate) return;
+
     setDuplicateMode(false);
     setdeleteMode(false);
   }, [setDuplicateMode, setdeleteMode, overruledDelete, overruledDuplicate]);
 
   const handleDragOver = useCallback((e) => {
     if (overruledDelete || overruledDuplicate) return;
+    if (e.shiftKey && e.altKey) return;
     setDuplicateMode(e.shiftKey);
     setdeleteMode(e.altKey);
   }, [setDuplicateMode, setdeleteMode, overruledDuplicate, overruledDelete]);

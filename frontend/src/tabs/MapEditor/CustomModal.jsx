@@ -1,10 +1,10 @@
 import Modal from 'react-modal';
 import { useContext } from 'react';
 import { addRow, addColumn, removeRow, removeColumn } from '../../helper/editLayout'
-import { DimensionContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../DimensionContext';
 
 export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
-    const { duplicateMode, deleteMode } = useContext(DimensionContext); 
+    const { duplicateMode, deleteMode } = useContext(MapEditorContext); 
     return (
         <Modal
           isOpen={modalIsOpen}
@@ -43,13 +43,13 @@ export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal
                 </div>
                 <div className='flex gap-2 items-center justify-center w-[70%]'>
                   <p className='absolute left-[8svw] font-bold'>Duplicate Mode:</p>
-                  <p onClick={changeDuplicateMode} className={`${duplicateMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700`}>
+                  <p onClick={changeDuplicateMode} className={`${duplicateMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700 p-1 text-base`}>
                       {duplicateMode ? 'On' : 'Off'}
                   </p>
                 </div>
                 <div className='flex gap-2 items-center justify-center w-[70%]'>
                   <p className='absolute left-[8svw] font-bold'>Delete Mode:</p>
-                  <p onClick={changeDeleteMode} className={`${deleteMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700 items-center`}>
+                  <p onClick={changeDeleteMode} className={`${deleteMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700 p-1 text-base`}>
                       {deleteMode ? 'On' : 'Off'}
                   </p>
                 </div>
