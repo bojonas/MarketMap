@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Cell from './Cell';
-import { useAdjustScale } from '../../helper/useAdjustScale';
+import { useAdjustScale } from '../../hooks/useAdjustScale';
 
 export default function Layout({ layout, setLayout, zoom }) {
   const ref = useRef(null);
@@ -25,7 +25,7 @@ export default function Layout({ layout, setLayout, zoom }) {
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center">
-        <div ref={ref} className={`bg-black-custom border-[1svh] border-black-custom overflow-scroll`} style={dimensions}>
+        <div ref={ref} className='bg-black-custom border-[1svh] border-black-custom overflow-scroll' style={dimensions}>
           <div id='layoutContainer' className='grid w-fit h-fit' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 

@@ -5,7 +5,7 @@ import { requestGetMapLayout } from '../../requests/mapEditorRequests';
 import { IoMdSettings } from "react-icons/io";
 import CustomModal from './CustomModal';
 import { MapEditorContext } from '../../DimensionContext';
-import { useChangeDragMode } from '../../helper/useChangeDragMode';
+import { useChangeDragMode } from '../../hooks/useChangeDragMode';
 
 export default function MapEditor() {
   // tracking for edit modes
@@ -86,6 +86,7 @@ export default function MapEditor() {
         : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
         }
         <Toolbar layout={layout}/>
+        {layout ? 
         <CustomModal 
           layout={layoutCopy} 
           setLayout={setLayout} 
@@ -93,6 +94,7 @@ export default function MapEditor() {
           closeModal={closeModal} 
           changeDuplicateMode={changeDuplicateMode} 
           changeDeleteMode={changeDeleteMode}/>
+        : null }
       </div>
     </MapEditorContext.Provider>
   );

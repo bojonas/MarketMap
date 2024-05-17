@@ -9,7 +9,6 @@ export default function DraggableImage({ alt, source, cellCoordinates, setDroppe
     setDuplicateCells([]);
     setDeleteCells([]);
     const rootCoordinates = duplicate ? null : cellCoordinates;
-
     e.dataTransfer.setData('application/json', JSON.stringify({ alt, source, rootCoordinates }));
     e.dataTransfer.effectAllowed = "copyMove";
     e.target.style.cursor = e.shiftKey ? 'cell' : e.altKey ? 'not-allowed' : 'auto';

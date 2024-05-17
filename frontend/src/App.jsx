@@ -36,7 +36,7 @@ export default function App() {
             {tabs.map(({ name, tab, Icon, permission }) => 
               (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
             )}
-            <animated.div className="h-[0.3svh] w-full absolute top-[8.2svh] bg-[#715DF2]" style={{ ...springStyle, position: 'absolute' }}></animated.div>
+            <animated.div className='h-[0.3svh] w-full absolute bg-[#715DF2] top-[8.2svh]' style={{ ...springStyle, position: 'absolute' }}></animated.div>
           </TabContext.Provider>
         </div>
         <Routes>

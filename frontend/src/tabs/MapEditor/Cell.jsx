@@ -26,7 +26,11 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsOver(false);
-    const item = JSON.parse(e.dataTransfer.getData('application/json'));
+    
+    let imageData = e.dataTransfer.getData('application/json')
+    if (!imageData) return;
+
+    const item = JSON.parse(imageData);
     setDroppedItem(deleteCells.length === 0 ? item : null);
 
     const { rootCoordinates } = item;
@@ -44,7 +48,6 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
       if (rootCoordinates) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty';
 
       // add/remove items with modes
-      console.log(deleteCells, deleteCells.length)
       for (const cell of duplicateCells) {
         const c = cell.split('-').map(Number);
         newLayout[c[0]][c[1]]['type'] = item.alt;
@@ -67,7 +70,7 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
         border: `${scale/10}px solid rgb(16 16 16)`,
         borderRadius: `${scale/5}px`,
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : '',
-        backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#4e4e4e7a'
+        backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#4e4e4e7a',
       }}>
       {type === 'empty' ? null
       : droppedItem
