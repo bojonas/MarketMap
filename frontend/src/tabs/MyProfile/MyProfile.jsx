@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { requestUpdateData, requestUser } from "../../requests/myProfileRequests";
+import { useNavigate } from "react-router-dom";
 
 export default function MyProfile(){
     
@@ -13,6 +14,7 @@ export default function MyProfile(){
     const[email, setEmail] = useState("no user logged in")
     const[firstName, setFirstName] = useState("no user logged in")
     const[lastName, setLastName] = useState("no user logged in")
+    var navigator = useNavigate()
 
     useEffect(() => {
         const loadData = async () => {
@@ -48,19 +50,29 @@ export default function MyProfile(){
         setShowPopup(false);
     };
 
+    const logout = ()=>{   
+        localStorage.removeItem("user_id")
+        navigator("/")
+    }
+
     
 
     return (
         <div className="flex items-center justify-center h-full w-full">
-          <div className=" rounded-md p-6 w-full">
+          <div className=" rounded-md p-6 w-full items-center">
                 
                 <div>
                     <ContentRow label = {"User id"} content = {user_id} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Username"} content = {username} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    <ContentRow label = {"First Name"} content = {firstName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
+                    <ContentRow label = {"First Name"} content = {firstName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/> 
                 </div>
+                <div className="flex w-1/2 justify-left mx-auto">
+                    <button className="custom-button items-center mt-9" onClick={logout}>Logout</button>
+                </div>
+                
+                
             
           </div>
           {showPopup && <Popup backPopup = {backPopup} closePopup={closePopup} popupLabel={popupLabel} setPopupContent={setPopupContent}/>}
