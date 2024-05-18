@@ -3,15 +3,15 @@ import { requestUpdatePassword, requestCheckUser } from "../../requests/loginReq
 
 var emailFinal = null;
 
-export default function ForgotPassword(){
+export default function ForgotPassword({setForgotPw}){
     const [emailChecked, setEmailChecked] = useState(false)
 
     return (
         <div className="flex items-center justify-center h-full">
         <div className="rounded-lg p-8">
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center sourrounding-div">
           
-          {emailChecked ? <NewPassword setEmailChecked={setEmailChecked}/> : <CheckEmail setEmailChecked={setEmailChecked}/>}
+          {emailChecked ? <NewPassword setEmailChecked={setEmailChecked} setForgotPw={setForgotPw}/> : <CheckEmail setEmailChecked={setEmailChecked} setForgotPw={setForgotPw}/>}
 
         </div>
       </div>
@@ -19,13 +19,17 @@ export default function ForgotPassword(){
     )
 }
 
-function NewPassword({setEmailChecked}){
+function NewPassword({setEmailChecked, setForgotPw}){
     const [pw1, setPw1] = useState("")
     const [pw2, setPw2] = useState("")
 
     const savePassword = async () => {
         if(pw1===pw2){
             await requestUpdatePassword(emailFinal, pw1);
+            setEmailChecked(false)
+            setPw1("")
+            setPw2("")
+            setForgotPw(false)
         }
         else{
             alert("Passwords must be identical");
@@ -66,7 +70,7 @@ function NewPassword({setEmailChecked}){
     )
 }
 
-function CheckEmail({setEmailChecked}){
+function CheckEmail({setEmailChecked, setForgotPw}){
     const continuePage = async() => {
         if(email){
             const validMailFlag = await requestCheckUser(email)
@@ -86,6 +90,8 @@ function CheckEmail({setEmailChecked}){
 
     }
 
+    const backPage = async() => setForgotPw(false);
+
     const [email, setEmail] = useState("")
     return ( 
         <div>
@@ -96,9 +102,15 @@ function CheckEmail({setEmailChecked}){
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} 
             />
-            <button className="custom-button" onClick={continuePage}>
-                Continue
-            </button>
+            <div className="items-center">
+                <button className="custom-button" onClick={continuePage}>
+                    Continue
+                </button>
+                <button className="custom-button-forgotPw" onClick={backPage}>
+                    Back
+                </button>
+            </div>
+            
         </div>
         
     )

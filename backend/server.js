@@ -60,6 +60,8 @@ const User = Joi.object({
     username: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     permission: Joi.string().valid('admin', 'market', 'user').required()
 });
 
@@ -89,9 +91,9 @@ app.post('/post_users', async (req, res) => {
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { username, email, password, permission } = req.body;
+    const { username, email, password, firstName, lastName, permission } = req.body;
     try {
-      const result = await postUser(username, email, password, permission, postgres_pool);
+      const result = await postUser(username, email, password, firstName, lastName, permission, postgres_pool);
       res.status(201).json(result);
     } catch (error) {
       console.error(error.message);

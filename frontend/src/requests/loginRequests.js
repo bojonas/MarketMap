@@ -1,7 +1,7 @@
 import { axiosInstance } from "./axiosInstance";
 
 // request to /post_users
-export async function requestCreateUser(username, email, password, permission) {
+export async function requestCreateUser(username, email, password, firstName, lastName, permission) {
   if (!username || !email || !password || !permission) {
     return console.error('Invalid parameters');
   }
@@ -10,6 +10,8 @@ export async function requestCreateUser(username, email, password, permission) {
     username: username,
     email: email,
     password: password,
+    firstName: firstName,
+    lastName: lastName,
     permission: permission
   };
 

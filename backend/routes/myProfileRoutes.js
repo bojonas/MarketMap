@@ -26,7 +26,7 @@ async function updateData(username, label, data, postgres_pool){
 async function getUser(user_id, postgres_pool){
     try{
         const query = `
-        SELECT username, email, 'Ben' as firstname, 'Roehrig' as lastname
+        SELECT username, email, firstname, lastname
         FROM market_map.users
         Where user_id = $1
         `

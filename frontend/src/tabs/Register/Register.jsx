@@ -1,16 +1,19 @@
 import { useState } from "react";
 import {requestCreateUser} from '../../requests/loginRequests';
-
+import { useNavigate } from "react-router-dom";
 export default function Register(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    var navigator = useNavigate()
 
     const register = async()=>{
         if(username !=="" || password.length<8 || email !== ""){
-            const response = await requestCreateUser(username, email, password,"admin")
-            alert(response)
+            await requestCreateUser(username, email, password, firstName, lastName,"user")
+            navigator("/")
         }
         else{
             setErrorMessage ("Invalid Credentials")
@@ -29,6 +32,20 @@ export default function Register(){
                 className="custom-input mb-4"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="First Name"
+                className="custom-input mb-4"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="custom-input mb-4"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
               />
               <input
                 type="email"

@@ -1,15 +1,15 @@
 // logic for endpoint /post_user
-async function postUser(username, email, password, permission, postgres_pool) {
+async function postUser(username, email, password, firstName, lastName, permission, postgres_pool) {
   try {
     // get permission id 
     const permission_id = await getPermissionId(permission, postgres_pool);
 
     const query = `
-      INSERT INTO market_map.users (username, email, password, permission_id)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO market_map.users (username, email, password, firstname, lastname, permission_id)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING user_id;`;
 
-    const result = await postgres_pool.query(query, [username, email, password, permission_id]);
+    const result = await postgres_pool.query(query, [username, email, password, firstName, lastName, permission_id]);
     if (!result){
       return console.error("result not found")
     }
@@ -28,7 +28,7 @@ async function getPermissionId(permission, postgres_pool) {
       FROM market_map.permissions
       WHERE permission = $1;`;
 
-    const result = await postgres_pool.query(query, [permission]);
+    const result = await postgres_pool.query(query,[permission]);
     return result.rows[0].permission_id;
   } catch (error) {
     console.error('Error querying permission_id:', error);
