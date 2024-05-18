@@ -27,7 +27,7 @@ export default function LayoutViewer({ layout, zoom }) {
     <div className="flex flex-col items-center">
       <div className="flex items-center">
         <div ref={ref} className='bg-black-custom border-[1svh] border-black-custom overflow-scroll' style={dimensions}>
-          <div id='layoutContainer' className='grid w-fit h-fit' 
+          <div id='layoutViewer' className='grid w-fit h-fit' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
               gridTemplateRows: `repeat(${layout.length}, ${scale}px)`, 

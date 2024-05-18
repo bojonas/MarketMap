@@ -72,7 +72,7 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : '',
         backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#4e4e4e7a',
       }}>
-      {type === 'empty' ? null
+      { type === 'empty' ? null
       : droppedItem
         ? <DraggableImage 
           source={droppedItem.source} 

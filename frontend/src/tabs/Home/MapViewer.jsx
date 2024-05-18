@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import LayoutViewer from "./LayoutViewer";
+import ShoppingCart from "./ShoppingCart";
 
 export default function MapViewer() {
     const location = useLocation();
@@ -18,7 +19,7 @@ export default function MapViewer() {
         }
         };
 
-        const container = document.querySelector('#layoutContainer');
+        const container = document.querySelector('#layoutViewer');
         if (container) {
         container.addEventListener('wheel', handleWheel, { passive: false });
         return () => {
@@ -28,9 +29,13 @@ export default function MapViewer() {
     }, [zoom, layout]);
 
     return !layout ? null :(
-      <div className='flex w-full h-full items-center justify-center'>
-        <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'>
-          <LayoutViewer layout={layout} zoom={zoom}/>
+      <div className='flex w-full h-full'>
+        <ShoppingCart/>
+        <div className='flex flex-col items-center justify-center'>
+          <p className='text-3xl font-bold mb-[3svh]'>{market.market_name}</p>
+          <div className='min-w-[80svw] max-w-[80svw] flex content-center justify-center items-center text-center'>
+            <LayoutViewer layout={layout} zoom={zoom}/>
+          </div>
         </div>
       </div>
     );

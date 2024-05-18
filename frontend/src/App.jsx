@@ -24,19 +24,26 @@ for (const tab of tabPermission) {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(null);
-  const springStyle = useSpring(activeTab || { left: 0, width: 0 });
+  const springStyle = useSpring(activeTab || { width: 0 });
 
   const userPermission = 'admin';
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
     <div className='flex flex-col h-[100svh] w-[100svw] bg-black-custom'>
       <Router>
-        <div className='relative flex-grow grid grid-flow-col items-center justify-start bg-gray-custom w-full h-[9svh]'>
+        <div className='relative flex-grow grid grid-flow-col items-center justify-between bg-gray-custom w-full h-[10svh] border-b-[0.3svh] border-black'>
           <TabContext.Provider value={{ activeTab, setActiveTab }}>
-            {tabs.map(({ name, tab, Icon, permission }) => 
-              (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
-            )}
-            <animated.div className='h-[0.3svh] w-full absolute bg-[#715DF2] top-[8.2svh]' style={{ ...springStyle, position: 'absolute' }}></animated.div>
+            <div className='flex h-full w-[20svw] items-center mr-[1svw] bg-purple-custom'>
+              {tabs.map(({ name, tab, Icon, permission }) => 
+                (['My Profile', 'Login'].includes(name) && (permission === 'all' || userPermission === 'admin' || userPermission === permission)) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
+              )}
+            </div>
+            <div className='flex w-fit ml-[1svw]'>
+              {tabs.map(({ name, tab, Icon, permission }) => 
+                (!['My Profile', 'Login'].includes(name) && (permission === 'all' || userPermission === 'admin' || userPermission === permission)) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
+              )}
+            </div>
+            <animated.div className='h-[0.3svh] w-full absolute bg-[#715DF2] top-[8.9svh]' style={{ ...springStyle, position: 'absolute' }}></animated.div>
           </TabContext.Provider>
         </div>
         <Routes>
