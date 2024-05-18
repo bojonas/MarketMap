@@ -8,7 +8,7 @@ export async function requestUpdateData(username, label, content) {
   
     const data = {
       username: username,
-      label: label.toLowerCase(),
+      label: label.toLowerCase().replace(" ", ""),
       data: content
     };
   

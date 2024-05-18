@@ -1,6 +1,6 @@
 //logic for endpoint /update_data
 async function updateData(username, label, data, postgres_pool){
-    const whiteList = ['email']; //ALWAYS ADD YOUR ROWS
+    const whiteList = ['email', 'firstname', 'lastname']; //ALWAYS ADD YOUR ROWS
     if (!whiteList.includes(label)) {
         throw new Error('Invalid column name');
     }

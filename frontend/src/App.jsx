@@ -11,10 +11,9 @@ import { TabContext } from './DimensionContext';
 const tabPermission = [
   { name: 'Home', permission: 'all' },
   { name: 'Map Editor', permission: 'market' },
-  { name: 'Login', permission: 'all' },
-  { name: 'Register', permission: 'all' },
-  { name: 'Forgot Password', permission: 'all' },
-  { name: 'My Profile', permission: 'all' }
+  { name: 'Login', permission: 'unregistered' },
+  { name: 'Register', permission: 'unregistered' },
+  { name: 'My Profile', permission: 'user' }
 ];
 // custom navigation order (!whitespaces important!)
 const order = [];

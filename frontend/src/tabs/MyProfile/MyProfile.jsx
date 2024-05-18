@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { requestUpdateData, requestUser } from "../../requests/myProfileRequests";
 import { useNavigate } from "react-router-dom";
+import Switch from "./Switch";
 
-export default function MyProfile(){
+export default function MyProfileComponent(){
     
 
     const [showPopup, setShowPopup] = useState(false);
@@ -28,11 +29,21 @@ export default function MyProfile(){
         loadData();
     }, [user_id]);
 
+    const loadData = async () => {
+        if(!user_id) return;
+        const result = await requestUser(user_id);
+        setUsername(result.username);
+        setEmail(result.email);
+        setFirstName(result.firstName);
+        setLastName(result.lastName);
+    }
+
     const updateData = async()=>{
         if(popupContent){
             await requestUpdateData(username, popupLabel, popupContent)
-            setPopupContent("")
-            setPopupLabel("")
+            setPopupContent("");
+            setPopupLabel("");
+            loadData();
         }
             
     }
@@ -64,19 +75,26 @@ export default function MyProfile(){
                 <div>
                     <ContentRow label = {"User id"} content = {user_id} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Username"} content = {username} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    <ContentRow label = {"First Name"} content = {firstName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/> 
+                    <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
+                    <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
+                    <ContentRow label = {"First Name"} content = {firstName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/> 
                 </div>
-                <div className="flex w-1/2 justify-left mx-auto">
+                <div className="flex w-1/4 justify-left mx-auto flex-col">
                     <button className="custom-button items-center mt-9" onClick={logout}>Logout</button>
+                    <Switch/>
+                    
                 </div>
+
                 
                 
             
           </div>
           {showPopup && <Popup backPopup = {backPopup} closePopup={closePopup} popupLabel={popupLabel} setPopupContent={setPopupContent}/>}
+          
+          
         </div>
+        
+
       );
 }
 
