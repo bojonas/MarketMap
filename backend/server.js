@@ -38,7 +38,7 @@ process.on('SIGINT', async () => {
 /**** Home Routes ****/
 
 // import home routes
-const { getMarkets } = require('./routes/homeRoutes');
+const { getMarkets, getProducts } = require('./routes/homeRoutes');
 
 app.get('/get_markets', async (req, res) => {
     try {
@@ -48,7 +48,19 @@ app.get('/get_markets', async (req, res) => {
         console.error(error.message);
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
-})
+});
+
+app.get('/get_products', async (req, res) => {
+    try {
+        const result = await getProducts(postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+
 
 /**** Login Routes ****/
 

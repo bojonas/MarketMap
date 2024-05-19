@@ -62,10 +62,10 @@ export default function Home(){
                     <div className='flex flex-col items-center text-center w-3/5 h-fit'>
                         <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
                     </div>
-                    {searchClicked && <div className='p-1 w-[33svw] h-fit bg-[#4e4e4e7a] rounded-b-lg'>
-                        {filteredMarkets.map((market, i) => (
+                    { searchClicked && <div className='p-1 w-[42%] max-h-3/4 bg-[#4e4e4e7a] rounded-b-lg'>
+                        { filteredMarkets.map((market, i) => (
                             <div key={i} onClick={() => setMarket(market)} 
-                                className='h-[8svh] p-4 flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.4svh] rounded-lg hover:bg-white hover:cursor-pointer'>
+                                className='h-[7svh] p-4 flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.4svh] rounded-lg hover:bg-white hover:cursor-pointer'>
                                 <p className='font-bold'>{market.market_name}</p>
                                 <p className='ml-4'>{market.address},</p>
                                 <p>{market.postal_code},</p>

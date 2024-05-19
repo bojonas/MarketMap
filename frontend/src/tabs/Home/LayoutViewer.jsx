@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 
-export default function LayoutViewer({ layout, zoom }) {
+export default function LayoutViewer({ layout, zoom, products }) {
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
@@ -20,9 +20,8 @@ export default function LayoutViewer({ layout, zoom }) {
   // update dimensions after initial render
   useEffect(() => {
     setDimensions({ width: 'fit-content', height: 'fit-content' });
-  }, []);
+  }, []);  
 
-  //const { emptyRows, emptyColumns } = getCellStyles(layout, scale);
   return (
     <div className="flex flex-col items-center">
       <div className="flex items-center">
@@ -36,16 +35,28 @@ export default function LayoutViewer({ layout, zoom }) {
             }}>
             {layout.map((row, i) => (
               row.map((cell, j) => (
-                <CellViewer
-                  key={cell['coordinates']} 
-                  type={cell['type']} 
-                  cellStyle={{ 
-                    height: `${scale}px`, 
-                    width: `${scale}px`, 
-                    border: `${scale/10}px solid rgb(16 16 16)`,
-                    borderRadius: `${scale/5}px`
-                  }}
-                /> 
+                <div key={`cell-${i}-${j}`} className='relative'>
+                  <CellViewer
+                    key={cell['coordinates']} 
+                    type={cell['type']} 
+                    cellStyle={{ 
+                      height: `${scale}px`, 
+                      width: `${scale}px`, 
+                      border: `${scale/10}px solid rgb(16 16 16)`,
+                      borderRadius: `${scale/5}px`
+                    }}
+                  />
+                  { products.filter(product => product.row === i && product.column === j).map(product => (
+                    <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full'
+                      style={{ 
+                        width: `${scale/2}px`, 
+                        height: `${scale/2}px`,
+                        backgroundColor: 'green',
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 1
+                    }}/>
+                  ))}
+                </div>
               ))
             ))}
           </div>
@@ -54,17 +65,3 @@ export default function LayoutViewer({ layout, zoom }) {
     </div>
   );
 }
-
-/*
-function getCellStyles(layout, scale) {
-  // Check for empty rows
-  const emptyRows = layout.map(row => row.every(cell => cell.type === 'empty'));
-
-  // Find the maximum column length
-  const maxColLength = Math.max(...layout.map(row => row.length));
-
-  // Check for empty columns
-  const emptyColumns = Array(maxColLength).fill().map((_, colIndex) => layout.every(row => row[colIndex] && row[colIndex].type === 'empty'));
-
-  return { emptyRows, emptyColumns };
-}*/

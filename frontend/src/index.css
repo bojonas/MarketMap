@@ -8,7 +8,7 @@
     }
     .custom-button {
         @apply flex items-center content-center justify-center bg-purple-custom text-white rounded-full p-3 text-xl font-bold
-        border-purple-custom border-2 hover:border-white hover:border-2 shadow-md shadow-black-custom;
+        border-purple-custom border-2 hover:border-white shadow-md shadow-black-custom;
     }
     .custom-button-forgotPw {
         @apply text-black hover:text-gray-400 ;
@@ -61,5 +61,18 @@
 }
 
 .overflow-scroll::-webkit-scrollbar {
+    display: block;
+}
+
+.overflow-y-scroll::-webkit-scrollbar-thumb {
+    background: #242424;
+    border-radius: 5px;
+}
+
+.overflow-y-scroll::-webkit-scrollbar-thumb:hover {
+    background: #242424;
+}
+
+.overflow-x-scroll::-webkit-scrollbar {
     display: block;
 }

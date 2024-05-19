@@ -10,23 +10,10 @@ export default function SearchBar({ onSearch, onFocus, onBlur, placeholder }) {
     };
 
     return (
-        <div className='relative inline-block mt-[4svh] text-center w-3/4'>
-            <FaSearch style={{ 
-                position: 'absolute', 
-                width: '2.8svw',
-                height: '2svh',
-                top: '50%', 
-                transform: 'translateY(-50%)', 
-                color: 'black' }}/>
-            {null ? <div style={{ 
-                position: 'absolute', 
-                height: `2.5svh`,
-                borderLeft: '1.5px solid white',
-                marginLeft: `0.5svh`,
-                top: '50%', 
-                transform: 'translateY(-50%)' }}/> : null}
-            <input
-                className='custom-button bg-offwhite border-offwhite indent-[0.5svw] placeholder-slate-800 shadow-slate-700 w-full h-[5svh] pl-[3.5svh] text-[2svh]'
+        <div className='flex items-center mt-[4svh] w-3/4 rounded-full bg-offwhite border-offwhite border-2 hover:border-darkgray-custom shadow-md'>
+            <FaSearch className='w-[2.5svw] h-[2svh] ml-[0.2svw] text-black'/>
+            <div className='bg-black h-3/5 w-[0.1svw] ml-[0.5svh]'/>
+            <input className='bg-offwhite text-black indent-[1svw] rounded-r-full placeholder-slate-800 w-full h-[5svh] text-sm outline-none'
                 type='text'
                 value={search}
                 onChange={handleSearch}

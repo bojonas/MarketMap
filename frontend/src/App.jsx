@@ -30,7 +30,7 @@ export default function App() {
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
     <div className='flex flex-col h-[100svh] w-[100svw]' 
-      style={{background: 'linear-gradient(to right, rgb(113 93 242) 0%, rgb(113 93 242) 25%, rgb(16 16 16) 25%, rgb(16 16 16) 100%)'}}>
+      style={{background: 'linear-gradient(to right, #715DF2 0%, #715DF2 25%, #101010 25%, #101010 100%)'}}>
       <Router>
         <div className='relative flex-grow grid grid-flow-col items-center justify-between bg-gray-custom w-full h-[10svh]'>
           <TabContext.Provider value={{ activeTab, setActiveTab }}>

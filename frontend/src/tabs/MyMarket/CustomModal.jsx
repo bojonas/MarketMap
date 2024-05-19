@@ -54,12 +54,8 @@ export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal
         ? <div className='w-[80%] h-[40%] flex flex-col gap-5 justify-center text-center items-center'>
             <div className='flex gap-2 items-center justify-center w-[70%]'>
                 <p className='absolute left-[8svw] font-bold'>Width:</p>
-                <button className='add_remove_button' 
-                  onClick={() => {
-                    setInputColumns(inputColumns > 1 ? inputColumns - 1 : inputColumns)
-                  }}
-                >-</button>
-                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center' 
+                <button className='add_remove_button p-0 leading-none' onClick={() => { setInputColumns(inputColumns > 1 ? inputColumns - 1 : inputColumns) }}>-</button>
+                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center outline-purple-custom' 
                   value={inputColumns <= 130 ? inputColumns : 130} 
                   onChange={(e) => {
                     const value = Number(e.target.value > 0 ? e.target.value : 0);
@@ -70,8 +66,8 @@ export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal
             </div>
             <div className='flex gap-2 items-center w-[70%] justify-center'>
                 <p className='absolute left-[8svw] font-bold'>Height:</p>
-                <button className='add_remove_button' onClick={() => setInputRows(inputRows > 1 ? inputRows - 1 : inputRows)}>-</button>
-                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center' 
+                <button className='add_remove_button p-0 leading-none' onClick={() => setInputRows(inputRows > 1 ? inputRows - 1 : inputRows)}>-</button>
+                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center outline-purple-custom' 
                   value={inputRows <= 130 ? inputRows : 130} 
                   onChange={(e) => {
                     const value = Number(e.target.value > 0 ? e.target.value : 0);

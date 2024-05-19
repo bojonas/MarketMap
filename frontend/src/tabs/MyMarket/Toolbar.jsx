@@ -17,16 +17,16 @@ export default function Toolbar({ layout, setEditMode }) {
   }
 
   return (
-    <div className='flex flex-col items-center text-center bg-darkgray-custom w-full h-full'>
+    <div className='flex flex-col items-center text-center w-full h-full'>
       <SearchBar onSearch={setSearch} placeholder={'Search items...'}/>
-      <div className='bg-darkoffwhite flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
+      <div className='bg-gray-button-hover flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
         <div className='min-h-[58svh] max-h-[58svh]'>
           <div className='grid grid-cols-2 gap-0 text-center rounded-lg m-2 overflow-y-scroll w-[15svw]'>
             {images.map(([type, source], index) => (
-              <div key={index} className='border-darkoffwhite bg-offwhite w-full h-fit flex flex-col items-center rounded-lg border-2 p-1 pb-3'> 
+              <div key={index} className='bg-offwhite w-full h-fit flex flex-col items-center rounded-lg border-2 border-gray-custom p-1 pb-3'> 
                 <span className='text-black text-xs'>{type.replace('_', ' ')}</span>
-                <div className='w-[4svw] h-fit rounded-lg hover:border-[0.2rem] hover:border-purple-custom hover:shadow-purple-custom'
-                  style={{ boxShadow: '0 5px 2px -1px rgb(35 45 65)' }}>
+                <div className='w-[4svw] h-fit rounded-lg hover:border-[0.2rem] hover:border-gray-button'
+                  style={{ boxShadow: '0 5px 2px -1px #303030' }}>
                   <DraggableImage alt={type} source={source} duplicate={true}/>
                 </div>
               </div>

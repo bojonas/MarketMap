@@ -8,7 +8,7 @@ export default function Layout({ layout, setLayout, zoom }) {
   const { width, height } = useAdjustScale(ref);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
 
-  // fix scrollbars after zoom
+  // adjust scrollbars after zoom
   useEffect(() => {
     if (ref.current) {
       const container = ref.current;
