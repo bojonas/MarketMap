@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
 import LayoutViewer from "./LayoutViewer";
 import ShoppingCart from "./ShoppingCart";
 
-export default function MapViewer() {
-    const location = useLocation();
-    const market = location.state.market;
+export default function MapViewer({ market }) {
     const layout = market.map_layout
     const [zoom, setZoom] = useState(1);
 
@@ -33,7 +30,7 @@ export default function MapViewer() {
         <ShoppingCart/>
         <div className='flex flex-col items-center justify-center'>
           <p className='text-3xl font-bold mb-[3svh]'>{market.market_name}</p>
-          <div className='min-w-[80svw] max-w-[80svw] flex content-center justify-center items-center text-center'>
+          <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
             <LayoutViewer layout={layout} zoom={zoom}/>
           </div>
         </div>

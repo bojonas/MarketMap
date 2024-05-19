@@ -19,8 +19,8 @@ export async function requestUpdateMapLayout(user_id, layout) {
   }
 }
 
-// request to /get_map_layouts
-export async function requestGetMapLayout(user_id) {
+// request to /get_my_markets
+export async function requestGetMyMarket(user_id) {
   if (!user_id) {
     return console.error('Invalid parameters');
   }
@@ -30,9 +30,9 @@ export async function requestGetMapLayout(user_id) {
   };
 
   try {
-    const response = await axiosInstance.post('/get_map_layouts', data);
+    const response = await axiosInstance.post('/get_my_markets', data);
     return response.data
   } catch (error) {
-    console.error('Error getting map layouts:', error);
+    console.error('Error getting my market:', error);
   }
 }

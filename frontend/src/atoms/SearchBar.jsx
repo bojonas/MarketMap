@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 
-export default function SearchBar({ onSearch, onFocus, onBlur }) {
+export default function SearchBar({ onSearch, onFocus, onBlur, placeholder }) {
     const [search, setSearch] = useState('');
 
     const handleSearch = (e) => {
@@ -17,7 +17,7 @@ export default function SearchBar({ onSearch, onFocus, onBlur }) {
                 height: '2svh',
                 top: '50%', 
                 transform: 'translateY(-50%)', 
-                color: 'white' }}/>
+                color: 'black' }}/>
             {null ? <div style={{ 
                 position: 'absolute', 
                 height: `2.5svh`,
@@ -26,13 +26,13 @@ export default function SearchBar({ onSearch, onFocus, onBlur }) {
                 top: '50%', 
                 transform: 'translateY(-50%)' }}/> : null}
             <input
-                className='custom-button indent-[0.5svw] placeholder-slate-200 shadow-slate-700 w-full h-[5svh] pl-[3.5svh] text-[2svh]'
+                className='custom-button bg-offwhite border-offwhite indent-[0.5svw] placeholder-slate-800 shadow-slate-700 w-full h-[5svh] pl-[3.5svh] text-[2svh]'
                 type='text'
                 value={search}
                 onChange={handleSearch}
                 onFocus={onFocus}
                 onBlur={onBlur}
-                placeholder='Search items...'/>
+                placeholder={placeholder}/>
         </div>
     );
 }

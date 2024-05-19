@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import debounce from 'lodash.debounce';
 import SearchBar from '../../atoms/SearchBar'
 import { requestGetMarkets } from "../../requests/homeRequests";
+import MapViewer from "./MapViewer";
 
 export default function Home(){
     const [search, setSearch] = useState('');
     const [markets, setMarkets] = useState([]);
+    const [market, setMarket] = useState(null)
     const [filteredMarkets, setFilteredMarkets] = useState([]);
     const [searchClicked, setSearchClicked] = useState(false); 
-    const navigate = useNavigate();
     const timeoutId = useRef();
 
     const debouncedSearch = debounce(value => {
@@ -25,17 +25,15 @@ export default function Home(){
     }, []);
 
     useEffect(() => {
-        const results = markets.filter(({market_name, address, postal_code}) => 
-            market_name.toLowerCase().includes(search.toLowerCase()) ||
-            address.toLowerCase().includes(search.toLowerCase()) ||
-            postal_code.toLowerCase().includes(search.toLowerCase())
+        const results = markets.filter(({ market_name, address, postal_code, city, country }) => 
+            market_name.toLowerCase().includes(search) ||
+            address.toLowerCase().includes(search) ||
+            postal_code.toLowerCase().includes(search) ||
+            city.toLowerCase().includes(search) ||
+            country.toLowerCase().includes(search)
         );
         setFilteredMarkets(results);
     }, [search, markets]);
-
-    const handleMarketClick = (market) => {
-        navigate('/map', { state: { market: market } });
-    }
 
     const handleOnFocus = () => {
         setSearchClicked(prevsearchClicked => !prevsearchClicked);
@@ -55,21 +53,29 @@ export default function Home(){
     }, []);
 
     return (
-        <div className='flex flex-col w-full h-full items-center'>
-            <div className='flex flex-col items-center text-center w-1/2 h-fit'>
-                <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur}/>
-                {searchClicked && <div className='p-1 w-[35svw] h-fit bg-[#4e4e4e7a] rounded-b-lg'>
-                    {filteredMarkets.map((market, i) => (
-                        <div key={i} onClick={() => handleMarketClick(market)} className='h-[8svh] p-4 flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.4svh] rounded-lg hover:bg-white hover:cursor-pointer'>
-                            <p className='font-bold'>{market.market_name}</p>
-                            <p className='ml-4'>{market.address},</p>
-                            <p>{market.postal_code},</p>
-                            <p>{market.city},</p>
-                            <p>{market.country}</p>
-                        </div>
-                    ))}
-                </div>}
-            </div>
-        </div>
+        <React.Fragment>
+            { market ? <MapViewer market={market}/>
+            : <div className='flex w-full h-full justify-between'>
+                <div className='flex w-full h-full bg-purple-custom'> 
+                </div>
+                <div className='flex flex-col items-center text-center min-w-[75svw] max-w-[75svw] h-full'>
+                    <div className='flex flex-col items-center text-center w-3/5 h-fit'>
+                        <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
+                    </div>
+                    {searchClicked && <div className='p-1 w-[33svw] h-fit bg-[#4e4e4e7a] rounded-b-lg'>
+                        {filteredMarkets.map((market, i) => (
+                            <div key={i} onClick={() => setMarket(market)} 
+                                className='h-[8svh] p-4 flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.4svh] rounded-lg hover:bg-white hover:cursor-pointer'>
+                                <p className='font-bold'>{market.market_name}</p>
+                                <p className='ml-4'>{market.address},</p>
+                                <p>{market.postal_code},</p>
+                                <p>{market.city},</p>
+                                <p>{market.country}</p>
+                            </div>
+                        ))}
+                    </div>}
+                </div>
+            </div>}
+        </React.Fragment>
     );
 }

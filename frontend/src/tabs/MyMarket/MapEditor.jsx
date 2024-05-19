@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Layout from './Layout';
 import Toolbar from './Toolbar';
-import { requestGetMapLayout } from '../../requests/mapEditorRequests';
 import { IoMdSettings } from "react-icons/io";
 import CustomModal from './CustomModal';
 import { MapEditorContext } from '../../DimensionContext';
+import { MyMarketContext } from '../../DimensionContext';
 import { useChangeDragMode } from '../../hooks/useChangeDragMode';
 
-export default function MapEditor() {
+export default function MapEditor({ setEditMode }) {
+  const market = useContext(MyMarketContext);
+  const [layout, setLayout] = useState(market ? JSON.parse(JSON.stringify(market.map_layout)) : null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [zoom, setZoom] = useState(1);
+
   // tracking for edit modes
   const [duplicateCells, setDuplicateCells] = useState([]);
   const [duplicateMode, setDuplicateMode] = useState(false);
@@ -16,18 +21,6 @@ export default function MapEditor() {
   const [overruledDuplicate, setOverruledDuplicate] = useState(false);
   const [overruledDelete, setOverruledDelete] = useState(false);
   useChangeDragMode(setDuplicateMode, setDeleteMode, overruledDuplicate, overruledDelete);
-
-  const [layout, setLayout] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [zoom, setZoom] = useState(1);
-
-  useEffect(() => {
-    const getLayout = async () => {
-      const data = await requestGetMapLayout(2);
-      if (data) setLayout(data);
-    }
-    getLayout();
-  }, []);
 
   // settings window
   const openModal = () => {
@@ -71,30 +64,26 @@ export default function MapEditor() {
     }
   }, [zoom, layout]);
   
-  const layoutCopy = JSON.parse(JSON.stringify(layout));
-  return (
+  return !layout ? (<div className='w-full h-full'></div>) : (
     <MapEditorContext.Provider value={{ duplicateCells, setDuplicateCells, deleteCells, setDeleteCells, duplicateMode, deleteMode }}>
-      <div className='flex h-full w-full gap-5'>
-        <div className='float-left h-fit w-fit p-[1svh] ml-[1svw] mt-[2svh] hover:bg-gray-custom rounded-3xl' onClick={openModal}>
-          <IoMdSettings size={24}/>
-        </div>
-        { layout 
-        ? <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center' 
+      <div className='flex h-full w-full'>
+        <Toolbar layout={layout} setEditMode={setEditMode}/>
+        <div className='min-w-[75svw] max-w-[75svw] flex flex-col content-center justify-center items-center text-center' 
           style={{cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
-            <Layout layout={layout} setLayout={setLayout} zoom={zoom}/>
-          </div>
-        : <div className='min-w-[70svw] max-w-[70svw] flex content-center justify-center items-center text-center'></div> 
-        }
-        <Toolbar layout={layout}/>
-        {layout ? 
-        <CustomModal 
-          layout={layoutCopy} 
+          <p className='text-3xl font-bold mb-[3svh]'>{market.market_name}</p>
+          <Layout layout={layout} setLayout={setLayout} zoom={zoom}/>
+        </div>
+        <div onClick={openModal} className='flex absolute h-fit w-fit p-[1svh] right-[2.5svw] top-[2.2svw] hover:bg-gray-custom rounded-full cursor-pointer hover:text-purple-custom'>
+          <IoMdSettings size={24}/>
+          <p className='ml-[0.5svw]'>Settings</p>
+        </div>
+        { modalIsOpen && <CustomModal 
+          layout={layout} 
           setLayout={setLayout} 
           modalIsOpen={modalIsOpen} 
           closeModal={closeModal} 
           changeDuplicateMode={changeDuplicateMode} 
-          changeDeleteMode={changeDeleteMode}/>
-        : null }
+          changeDeleteMode={changeDeleteMode}/>}
       </div>
     </MapEditorContext.Provider>
   );

@@ -237,13 +237,10 @@ app.put('/get_user', async (req, res) => {
 
 
 
-
-/**** MapViewer Routes ****/
-
-/**** MapEditor Routes ****/
+/**** MyMarket Routes ****/
 
 // import map editor routes
-const { putMapLayout, getMapLayout } = require('./routes/mapEditorRoutes')
+const { putMapLayout, getMyMarket } = require('./routes/myMarketRoutes')
 
 // shemas to validate map editor jsons 
 const Map = Joi.object({
@@ -268,7 +265,7 @@ app.put('/put_map_layouts', async (req, res) => {
     }
 });
 
-app.post('/get_map_layouts', async (req, res) => {
+app.post('/get_my_markets', async (req, res) => {
     const { error } = UserId.validate(req.body)
     if (error) {
         console.error(error.details[0].message);
@@ -277,7 +274,7 @@ app.post('/get_map_layouts', async (req, res) => {
 
     const { user_id } = req.body;
     try {
-        const result = await getMapLayout(user_id, postgres_pool);
+        const result = await getMyMarket(user_id, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
