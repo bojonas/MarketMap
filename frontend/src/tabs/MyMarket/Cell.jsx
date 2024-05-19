@@ -67,7 +67,7 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
       style={{
         height: `${scale}px`,
         width: `${scale}px`,
-        border: `${scale/10}px solid rgb(16 16 16)`,
+        border: `${scale/10}px solid #171717`,
         borderRadius: `${scale/5}px`,
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : '',
         backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#4e4e4e7a',

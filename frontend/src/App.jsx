@@ -29,22 +29,21 @@ export default function App() {
   const userPermission = 'admin';
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
-    <div className='flex flex-col h-[100svh] w-[100svw]' 
-      style={{background: 'linear-gradient(to right, #715DF2 0%, #715DF2 25%, #101010 25%, #101010 100%)'}}>
+    <div className='flex flex-col h-[100svh] w-[100svw] bg-darkgray-custom' >
       <Router>
-        <div className='relative flex-grow grid grid-flow-col items-center justify-between bg-gray-custom w-full h-[10svh]'>
+        <div className='relative flex-grow grid grid-flow-col items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
           <TabContext.Provider value={{ activeTab, setActiveTab }}>
-            <div className='flex h-full w-[25svw] items-center pl-[1svw] bg-purple-custom border-b-[0.5svh] border-gray-custom'>
+            <div className='flex h-full w-[25svw] items-center pl-[1svw] bg-purple-custom'>
               {tabs.map(({ name, tab, Icon, permission }) => 
                 (['My Profile', 'Login'].includes(name) && (permission === 'all' || userPermission === 'admin' || userPermission === permission)) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
               )}
             </div>
-            <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end mr-[1svw] border-b-[0.5svh] border-purple-custom'>
+            <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end mr-[1svw] border-b-[0.5svh] border-[#212121]'>
               {tabs.map(({ name, tab, Icon, permission }) => 
                 (!['My Profile', 'Login'].includes(name) && (permission === 'all' || userPermission === 'admin' || userPermission === permission)) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
               )}
             </div>
-            <animated.div className='h-[0.5svh] w-full absolute bg-offwhite top-[8.6svh] rounded-lg' style={{ ...springStyle, position: 'absolute' }}></animated.div>
+            <animated.div className='h-[0.5svh] absolute bg-purple-custom top-[8.6svh] rounded-lg' style={{ ...springStyle, position: 'absolute' }}></animated.div>
           </TabContext.Provider>
         </div>
         <Routes>

@@ -17,9 +17,9 @@ export default function Toolbar({ layout, setEditMode }) {
   }
 
   return (
-    <div className='flex flex-col items-center text-center w-full h-full'>
+    <div className='flex flex-col items-center text-center w-full h-full bg-purple-custom'>
       <SearchBar onSearch={setSearch} placeholder={'Search items...'}/>
-      <div className='bg-gray-button-hover flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
+      <div className='bg-gray-custom flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
         <div className='min-h-[58svh] max-h-[58svh]'>
           <div className='grid grid-cols-2 gap-0 text-center rounded-lg m-2 overflow-y-scroll w-[15svw]'>
             {images.map(([type, source], index) => (
@@ -35,8 +35,8 @@ export default function Toolbar({ layout, setEditMode }) {
         </div>
       </div>
       <div className='bg-purple-custom w-full h-full flex gap-6 items-center justify-center content-center float-end end-full'>
-        <button onClick={handleSave} className='custom-button bg-offwhite border-offwhite hover:border-darkgray-custom text-black w-[6svw] h-[6svh] text-[2.6svh]'>Save</button>
-        <button onClick={() => setEditMode(false)} className='custom-button bg-darkgray-custom border-darkgray-custom hover:border-offwhite shadow-slate-400 w-[6svw] h-[6svh] text-[2.6svh]'>Back</button>
+        <button onClick={handleSave} className='custom-button bg-offwhite border-offwhite hover:border-darkgray-custom text-black w-[5svw] h-[5svh] text-[2.2svh]'>Save</button>
+        <button onClick={() => setEditMode(false)} className='custom-button bg-darkgray-custom border-darkgray-custom hover:border-offwhite w-[5svw] h-[5svh] text-[2.2svh]'>Back</button>
       </div>
     </div>
   );  
