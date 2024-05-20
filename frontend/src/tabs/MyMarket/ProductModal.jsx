@@ -6,6 +6,7 @@ import SearchBar from '../../atoms/SearchBar';
 
 export default function CustomModal({ products, openCell, closeCell }) {
     const { layout, setLayout } = useContext(MapEditorContext);
+    console.log(layout, setLayout)
     const [search, setSearch] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
 
