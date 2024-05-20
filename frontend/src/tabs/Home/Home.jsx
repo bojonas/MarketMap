@@ -56,13 +56,11 @@ export default function Home(){
         <React.Fragment>
             { market ? <MapViewer market={market}/>
             : <div className='flex w-full h-full justify-between'>
-                <div className='flex w-full h-full bg-purple-custom'> 
-                </div>
-                <div className='flex flex-col items-center text-center min-w-[75svw] max-w-[75svw] h-full'>
-                    <div className='flex flex-col items-center text-center w-3/5 h-fit'>
+                <div className='flex flex-col items-center text-center w-full h-full'>
+                    <div className='flex flex-col items-center text-center w-2/5 h-fit'>
                         <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
                     </div>
-                    { searchClicked && <div className='p-1 w-[42%] max-h-3/4 bg-[#4e4e4e7a] rounded-b-lg'>
+                    { searchClicked && <div className='p-1 w-[28%] max-h-3/4 bg-[#4e4e4e7a] rounded-b-lg'>
                         { filteredMarkets.map((market, i) => (
                             <div key={i} onClick={() => setMarket(market)} 
                                 className='h-[7svh] p-4 flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.4svh] rounded-lg hover:bg-white hover:cursor-pointer'>

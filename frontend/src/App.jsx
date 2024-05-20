@@ -12,8 +12,8 @@ import MapEditor from './tabs/MyMarket/MapEditor';
 const tabPermission = [
   { name: 'Home', permission: 'all' },
   { name: 'My Market', permission: 'market' },
-  { name: 'Login', permission: 'unregistered' },
-  { name: 'Register', permission: 'unregistered' },
+  { name: 'Login', permission: 'all' },
+  { name: 'Register', permission: 'all' },
   { name: 'My Profile', permission: 'user' }
 ];
 // custom navigation order

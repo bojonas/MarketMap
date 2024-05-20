@@ -11,7 +11,7 @@ export default function MyMarket() {
 
     useEffect(() => {
         const getMarkets = async () => {
-          const data = await requestGetMyMarket(2);
+          const data = await requestGetMyMarket(3);
           if (data) setMarket(data);
         }
         getMarkets();
