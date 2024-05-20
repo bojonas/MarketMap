@@ -1,11 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Cell from './Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
+import { useContext } from 'react';
+import { MapEditorContext } from '../../DimensionContext';
 
-export default function Layout({ layout, setLayout, zoom }) {
+export default function Layout({ zoom }) {
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
+  const { layout } = useContext(MapEditorContext);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
 
   // adjust scrollbars after zoom
@@ -39,9 +42,7 @@ export default function Layout({ layout, setLayout, zoom }) {
                   key={cell['coordinates']} 
                   type={cell['type']} 
                   scale={scale} 
-                  zoom={zoom}
                   cellCoordinates={cell['coordinates']}
-                  setLayout={setLayout}
                 /> 
               ))
             ))}

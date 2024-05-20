@@ -11,6 +11,8 @@ module.exports = {
         'sky-1000': 'rgb(6 40 70)',
         'slate-850': 'rgb(22 33 51)',
         'purple-custom': '#715DF2',
+        'gray-standard': '#4e4e4e',
+        'gray-cell': '#4e4e4e7a',
         'gray-custom': '#242424',
         'gray-button': '#303030',
         'gray-button-hover': '#353535',

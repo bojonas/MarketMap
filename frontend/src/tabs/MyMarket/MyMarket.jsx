@@ -8,6 +8,7 @@ import { MyMarketContext } from "../../DimensionContext";
 export default function MyMarket() {
     const [market, setMarket] = useState([]);
     const [editMode, setEditMode] = useState(false);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const getMarkets = async () => {
@@ -18,7 +19,7 @@ export default function MyMarket() {
     }, []);
 
     return (
-        <MyMarketContext.Provider value={ market }>
+        <MyMarketContext.Provider value={{ market, products, setProducts }}>
             <div className='relative flex w-full h-full'>
                 { market &&
                 editMode ? <MapEditor market={market} setEditMode={setEditMode}/>

@@ -4,8 +4,8 @@ import debounce from 'lodash.debounce';
 import { addRow, addColumn, removeRow, removeColumn } from '../../helper/editLayout'
 import { MapEditorContext } from '../../DimensionContext';
 
-export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
-  const { duplicateMode, deleteMode } = useContext(MapEditorContext); 
+export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
+  const { layout, setLayout, duplicateMode, deleteMode } = useContext(MapEditorContext); 
   const [inputRows, setInputRows] = useState(layout.length);
   const [inputColumns, setInputColumns] = useState(layout[0].length);
 
@@ -31,14 +31,14 @@ export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal
     <Modal
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
-      contentLabel="Settings Modal"
+      contentLabel="SettingsWindow"
       style={{
         content: {
           backgroundColor: '#171717',
           width: '50svw',
           height: '50svh',
           top: '16svh',
-          left: '45%',
+          left: '40%',
           display: 'flex',
           flexDirection: 'column',
           content: 'center',

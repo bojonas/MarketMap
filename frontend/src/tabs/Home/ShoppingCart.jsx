@@ -2,14 +2,14 @@ import { useState, useEffect, useRef, useContext } from "react";
 import SearchBar from "../../atoms/SearchBar";
 import { requestGetProducts } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
-import { ShoppingCartContext } from "../../DimensionContext";
+import { MyMarketContext, ShoppingCartContext } from "../../DimensionContext";
 
 export default function ShoppingCart({ setShoppingCart }) {
     const [search, setSearch] = useState('');
-    const [products, setProducts] = useState([]);
+    const shoppingCart = useContext(ShoppingCartContext);
+    const { products, setProducts } = useContext(MyMarketContext);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchClicked, setSearchClicked] = useState(false); 
-    const shoppingCart = useContext(ShoppingCartContext);
     const timeoutId = useRef();
     
     const debouncedSearch = debounce(value => {
@@ -22,7 +22,7 @@ export default function ShoppingCart({ setShoppingCart }) {
           if (data) setProducts(data);
         }
         getProducts();
-    }, []);
+    }, [setProducts]);
 
     useEffect(() => {
         const results = products.filter(({ product_name_en, brand_name, category_en, type_en }) => 

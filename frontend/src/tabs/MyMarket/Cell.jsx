@@ -4,12 +4,13 @@ import LoadImage from "../../atoms/LoadImage"
 import { MapEditorContext } from '../../DimensionContext';
 import { isEqualArray } from '../../helper/isEqualArray';
 
-const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
+const Cell = memo(({ type, scale, cellCoordinates }) => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [isOver, setIsOver] = useState(false);
 
   const cord = cellCoordinates.split('-').map(Number);
-  const { duplicateCells, setDuplicateCells, deleteCells, setDeleteCells, duplicateMode, deleteMode } = useContext(MapEditorContext);
+  const { layout, setLayout, duplicateCells, setDuplicateCells, deleteCells, setDeleteCells, duplicateMode, deleteMode, setOpenCell } = useContext(MapEditorContext);
+  const cell = layout[cord[0]][cord[1]];
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -60,10 +61,11 @@ const Cell = memo(({ type, scale, cellCoordinates, setLayout }) => {
     });
 
     return deleteCells.length === 0 ? { name: type } : null;
-  };
+  }
 
   return (
-    <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} className='flex justify-center items-center p-[0.1rem]' 
+    <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} onDoubleClick={() => { if (type !== 'empty') setOpenCell(cell) }}
+      className='flex justify-center items-center p-[0.1rem]' 
       style={{
         height: `${scale}px`,
         width: `${scale}px`,

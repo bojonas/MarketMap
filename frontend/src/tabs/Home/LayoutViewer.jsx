@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 
-export default function LayoutViewer({ layout, zoom, products }) {
+export default function LayoutViewer({ layout, zoom, productsInMarket }) {
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
@@ -46,7 +46,7 @@ export default function LayoutViewer({ layout, zoom, products }) {
                       borderRadius: `${scale/5}px`
                     }}
                   />
-                  { products.filter(product => product.row === i && product.column === j).map(product => (
+                  { productsInMarket.filter(product => product.row === i && product.column === j).map(product => (
                     <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full'
                       style={{ 
                         width: `${scale/2}px`, 
