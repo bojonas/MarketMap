@@ -39,10 +39,27 @@ async function getUser(user_id, postgres_pool){
     }
 }
 
+//logic for endpoint /get_market
+async function getMarket(user_id, postgres_pool){
+    try{
+        const query = `
+        SELECT markets.market_id, market_name, address, postal_code, city, country
+        FROM market_map.markets
+        INNER JOIN market_map.users_markets um on markets.market_id = um.market_id
+        WHERE um.user_id = $1;
+        `
+        const result = await postgres_pool.query(query,[user_id]);
+        return {market_id: result.rows[0].market_id, market_name: result.rows[0].market_name, address: result.rows[0].address, postal_code: result.rows[0].postal_code, city: result.rows[0].city, country: result.rows[0].country}
+
+    }
+    catch(error){
+        console.error('Error getting user data:', error);
+    }
+}
 
 
 
 
 
 
-module.exports = {updateData, getUser}
+module.exports = {updateData, getUser, getMarket}
