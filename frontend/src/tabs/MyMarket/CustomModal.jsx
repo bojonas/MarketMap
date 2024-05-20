@@ -92,7 +92,7 @@ export default function CustomModal({ layout, setLayout, modalIsOpen, closeModal
             </p>
           </div>
         </div>
-      <button className='custom-button text-base w-[12%] h-[12%] shadow-slate-700 mt-5' onClick={closeModal}>Close</button>
+      <button className='custom-button text-base w-[10%] h-[10%] shadow-slate-700 mt-5' onClick={closeModal}>Close</button>
     </Modal>
   );
 }

@@ -12,7 +12,7 @@ export default function Toolbar({ layout, setEditMode }) {
 
   const handleSave = async () => {
     market.map_layout = layout
-    alert(await requestUpdateMapLayout(2, layout));
+    alert(await requestUpdateMapLayout(3, layout));
     setEditMode(false);
   }
 
@@ -21,11 +21,11 @@ export default function Toolbar({ layout, setEditMode }) {
       <SearchBar onSearch={setSearch} placeholder={'Search items...'}/>
       <div className='bg-gray-custom flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
         <div className='min-h-[58svh] max-h-[58svh]'>
-          <div className='grid grid-cols-3 gap-0 text-center rounded-lg m-2 overflow-y-scroll w-[15svw] p-2'>
+          <div className='grid grid-cols-3 gap-3 text-center rounded-lg m-2 overflow-y-scroll w-[15svw] p-2'>
             {images.map(([type, source], index) => (
-              <div key={index} className='bg-offwhite w-fit h-fit flex flex-col items-center rounded-lg border-2 border-gray-custom p-1 pb-3'> 
+              <div key={index} className='bg-offwhite w-fit h-fit flex flex-col items-center rounded-lg border-1 border-gray-custom pb-2 pr-1 pl-1'> 
                 <span className='text-black text-xs'>{type.replace('_', ' ')}</span>
-                <div className='w-3/4 h-fit rounded-lg hover:border-[0.2rem] hover:border-gray-button'
+                <div className='w-3/4 h-fit rounded-lg hover:border-[0.5svh] hover:border-gray-button'
                   style={{ boxShadow: '0 5px 2px -1px #303030' }}>
                   <DraggableImage alt={type} source={source} duplicate={true}/>
                 </div>
