@@ -12,9 +12,10 @@ export default function Toolbar({ setEditMode }) {
   const { layout } = useContext(MapEditorContext);
 
   const handleSave = async () => {
+    setEditMode(false);
+    if (JSON.stringify(layout) === JSON.stringify(market.map_layout)) return alert('No Changes');
     market.map_layout = layout
     alert(await requestUpdateMapLayout(3, layout));
-    setEditMode(false);
   }
 
   return (

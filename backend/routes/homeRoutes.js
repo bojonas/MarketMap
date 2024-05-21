@@ -19,7 +19,8 @@ async function getProducts(postgres_pool) {
             FROM market_map.products p
             JOIN market_map.brands b ON p.brand_id = b.brand_id
             JOIN market_map.categories c ON p.category_id = c.category_id
-            JOIN market_map.types t ON p.type_id = t.type_id;`;
+            JOIN market_map.types t ON p.type_id = t.type_id
+            ORDER BY product_id;`;
 
         const result = await postgres_pool.query(query);
         return result.rows;

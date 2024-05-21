@@ -1,17 +1,12 @@
 // logic for endpoint /put_map_layouts
 async function putMapLayout(user_id, layout, postgres_pool) {
     try {
-        const StringifiedLayout = JSON.stringify(layout);
-        // check if layout changed
-        const myMarket = await getMyMarket(user_id, postgres_pool);
-        if (StringifiedLayout === JSON.stringify(myMarket.map_layout)) return { message : 'No changes' };
-        
         const query = `
             UPDATE market_map.markets
             SET map_layout = $1
             WHERE market_id = (SELECT market_id FROM market_map.users_markets WHERE user_id = $2);`;
 
-        await postgres_pool.query(query, [StringifiedLayout, user_id]);
+        await postgres_pool.query(query, [JSON.stringify(layout), user_id]);
         return { message: 'Saved' };
     } catch (error) {
         console.error('Error updating map:', error);

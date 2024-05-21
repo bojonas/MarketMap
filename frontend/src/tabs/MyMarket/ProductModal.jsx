@@ -5,8 +5,7 @@ import { MapEditorContext } from '../../DimensionContext';
 import SearchBar from '../../atoms/SearchBar';
 
 export default function CustomModal({ products, openCell, closeCell }) {
-    const { layout, setLayout } = useContext(MapEditorContext);
-    console.log(layout, setLayout)
+    const { setLayout } = useContext(MapEditorContext);
     const [search, setSearch] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -23,6 +22,32 @@ export default function CustomModal({ products, openCell, closeCell }) {
         );
         setFilteredProducts(results);
     }, [search, products]);
+
+    const addProduct = (product_id) => {
+        const [i, j] = openCell.coordinates.split('-').map(Number);
+        setLayout(prev => {
+            const newLayout = [...prev];
+            const prevProducts = newLayout[i][j]['products'];
+
+            if (!prevProducts) newLayout[i][j]['products'] = [product_id];
+            if (!prevProducts.includes(product_id)) prevProducts.push(product_id);
+            return newLayout;
+        });
+    }
+
+    const removeProduct = (product_id) => {
+        const [i, j] = openCell.coordinates.split('-').map(Number);
+        setLayout(prev => {
+            const newLayout = [...prev];
+            const prevProducts = newLayout[i][j]['products'];
+
+            if (prevProducts) {
+                const index = prevProducts.indexOf(product_id);
+                if (index > -1) prevProducts.splice(index, 1);
+            }
+            return newLayout;
+        })
+    }
 
     return (
         <Modal
@@ -50,21 +75,22 @@ export default function CustomModal({ products, openCell, closeCell }) {
                 <SearchBar placeholder={'Search products...'} onSearch={debouncedSearch}/>
                 <div className='bg-offwhite text-black w-full h-full flex flex-col items-center gap-[2%] p-[5%] rounded-xl mt-[5%] overflow-scroll'>
                     { filteredProducts.map((product) => (
-                        <div key={product.product_id} className='flex bg-gray-cell border-2 border-darkgray-custom rounded-xl p-[2%] w-4/5'>
+                        <div onDoubleClick={() => addProduct(product.product_id)} key={product.product_id} className='flex bg-darkoffwhite border-2 border-darkgray-custom rounded-xl p-[2%] w-full hover:bg-offwhite hover:border-purple-custom hover:cursor-pointer'>
                             <p>{product.product_name_en}</p>
                         </div>  
                         ))
                     }
                 </div>
             </div>
-            <div className='flex flex-col w-2/5 h-3/4 items-center mr-[2%]'>
-                <p className='font-bold text-lg'>Products in Cell</p>
+            <div className='w-[0.5%] h-5/6 bg-offwhite'></div>
+            <div className='flex flex-col w-2/5 h-5/6 items-center mr-[2%]'>
+                <p className='font-bold text-lg'>Products in Cell: {openCell ? openCell.coordinates : null}</p>
                 <div className='bg-offwhite text-black w-full h-full flex flex-col items-center gap-[2%] p-[5%] rounded-xl mt-[5%] overflow-scroll'>
                     { openCell && openCell.products ? openCell.products.map((product_id) => {
-                        const product = products[product_id];
+                        products.sort((a, b) => a.product_id - b.product_id)
                         return (
-                            <div key={product_id} className='bg-gray-cell border-2 border-darkgray-custom rounded-xl p-[2%] w-4/5'>
-                                <p>{product.product_name_en}</p>
+                            <div onDoubleClick={() => removeProduct(product_id)} key={product_id} className='bg-darkoffwhite border-2 border-darkgray-custom rounded-xl p-[2%] w-full hover:bg-offwhite hover:border-purple-custom hover:cursor-pointer'>
+                                <p>{products[product_id-1].product_name_en}</p>
                             </div>  
                         );
                     })

@@ -2,12 +2,13 @@ import { useState, useEffect, useRef, useContext } from "react";
 import SearchBar from "../../atoms/SearchBar";
 import { requestGetProducts } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
-import { MyMarketContext, ShoppingCartContext } from "../../DimensionContext";
+import { MapViewerContext } from "../../DimensionContext";
+import { useProductState } from '../../hooks/useProductState';
 
 export default function ShoppingCart({ setShoppingCart }) {
     const [search, setSearch] = useState('');
-    const shoppingCart = useContext(ShoppingCartContext);
-    const { products, setProducts } = useContext(MyMarketContext);
+    const { shoppingCart, colors } = useContext(MapViewerContext);
+    const [products, setProducts] = useProductState();
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
@@ -81,17 +82,22 @@ export default function ShoppingCart({ setShoppingCart }) {
                     ))}
                 </div>}
             </div>
-            <div className='absolute bottom-[10svh] z-0 flex flex-col items-center bg-darkoffwhite text-black font-bold w-3/4 h-[70%] max-h-1/2 rounded-xl'>
-                <p className='p-[2svh]'>Shopping Cart:</p>
+            <div className='absolute bottom-[10svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-[70%] max-h-1/2 rounded-xl'>
+                <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
                 <div className='flex flex-col justify-start items-start w-full h-full p-[1svh] bg-offwhite overflow-y-scroll rounded-b-xl'>
                     { shoppingCart.map((product, i) => (
-                        <div key={`cart-${product.product_id}`} className='flex gap-3 p-[2svh] justify-start w-full'>
-                            <p>{i+1}.</p>
+                        <div key={`cart-${product.product_id}`} className='flex justify-between gap-[5%] p-[2svh] w-full'>
+                        <div className='flex gap-[5%] w-4/5'>
+                            <p className='font-bold'>{i+1}.</p>
                             <p>{product.product_name_en}</p>
-                            <p>{product.count}x</p>
                         </div>
-                    ))
-                    }
+                        <div className='flex gap-[30%] w-1/5'>
+                            <p>{product.count}x</p>
+                            <p className='rounded-full w-fit h-fit p-[15%] m-[14%]'
+                            style={{ backgroundColor: colors[product.product_id-1 % colors.length] }}/>
+                        </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

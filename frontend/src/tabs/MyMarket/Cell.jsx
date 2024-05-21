@@ -9,8 +9,16 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
   const [isOver, setIsOver] = useState(false);
 
   const cord = cellCoordinates.split('-').map(Number);
-  const { layout, setLayout, duplicateCells, setDuplicateCells, deleteCells, setDeleteCells, duplicateMode, deleteMode, setOpenCell } = useContext(MapEditorContext);
-  const cell = layout[cord[0]][cord[1]];
+  const { 
+    layout,
+    setLayout, 
+    duplicateCells, 
+    setDuplicateCells, 
+    deleteCells, 
+    setDeleteCells, 
+    duplicateMode, 
+    deleteMode, 
+    setOpenCell } = useContext(MapEditorContext);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -39,8 +47,8 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
       return;
     }
     // update layout
-    setLayout(prevLayout => {
-      const newLayout = [...prevLayout];
+    setLayout(prev => {
+      const newLayout = [...prev];
 
       // add item to current cell 
       newLayout[cord[0]][cord[1]]['type'] = item.alt;
@@ -63,16 +71,28 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
     return deleteCells.length === 0 ? { name: type } : null;
   }
 
+  const rotateCell = (e) => {
+    if (type !== 'empty') return;
+    e.preventDefault();
+    setLayout(prev => {
+      const newLayout = [...prev];
+
+      newLayout[cord[0]][cord[1]]['rotation'] = (newLayout[cord[0]][cord[1]]['rotation'] + 90) % 360;
+      return newLayout;
+    });
+  }
+
   return (
-    <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} onDoubleClick={() => { if (type !== 'empty') setOpenCell(cell) }}
-      className='flex justify-center items-center p-[0.1rem]' 
+    <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} onContextMenu={rotateCell} onDoubleClick={() => { if (type !== 'empty') setOpenCell(layout[cord[0]][cord[1]]) }}
+      className='flex justify-center items-center p-[5%]' 
       style={{
         height: `${scale}px`,
         width: `${scale}px`,
         border: `${scale/10}px solid #171717`,
         borderRadius: `${scale/5}px`,
-        cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : '',
+        cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'pointer',
         backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#4e4e4e7a',
+        transform: `rotate(${layout[cord[0]][cord[1]]['rotation']}deg)`,
       }}>
       { type === 'empty' ? null
       : droppedItem

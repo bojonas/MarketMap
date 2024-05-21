@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import LayoutViewer from './LayoutViewer';
 import ShoppingCart from './ShoppingCart';
 import { findProducts } from '../../helper/findProducts';
-import { ShoppingCartContext } from '../../DimensionContext';
+import { MapViewerContext } from '../../DimensionContext';
 
 export default function MapViewer({ market }) {
     const layout = market.map_layout
     const [shoppingCart, setShoppingCart] = useState([]);
     const productsInMarket = findProducts(shoppingCart, layout);
+    const colors = ['red', 'green', 'blue', 'yellow', 'aqua', 'fuchsia', 'lime', 'maroon', 'navy', 'olive', 'purple', 'teal'];
     const [zoom, setZoom] = useState(1);
 
     // zoom effect on layout
@@ -30,16 +31,16 @@ export default function MapViewer({ market }) {
     }, [zoom, layout]); 
 
     return !layout ? null :(
-      <ShoppingCartContext.Provider value={ shoppingCart }>
+      <MapViewerContext.Provider value={{ shoppingCart, layout, productsInMarket, colors }}>
         <div className='flex w-full h-full'>
           <ShoppingCart setShoppingCart={setShoppingCart}/>
           <div className='flex flex-col items-center justify-center'>
             <p className='text-3xl font-bold mb-[3svh]'>{market.market_name}</p>
             <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
-              <LayoutViewer layout={layout} zoom={zoom} productsInMarket={productsInMarket}/>
+              <LayoutViewer zoom={zoom}/>
             </div>
           </div>
         </div>
-      </ShoppingCartContext.Provider>
+      </MapViewerContext.Provider>
     );
 }

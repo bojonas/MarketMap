@@ -1,8 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
+import { MapViewerContext } from '../../DimensionContext';
 
-export default function LayoutViewer({ layout, zoom, productsInMarket }) {
+export default function LayoutViewer({ zoom }) {
+  const { layout, productsInMarket, colors } = useContext(MapViewerContext);
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
@@ -47,13 +49,12 @@ export default function LayoutViewer({ layout, zoom, productsInMarket }) {
                     }}
                   />
                   { productsInMarket.filter(product => product.row === i && product.column === j).map(product => (
-                    <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full'
+                    <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
                       style={{ 
                         width: `${scale/2}px`, 
                         height: `${scale/2}px`,
-                        backgroundColor: 'green',
+                        backgroundColor: colors[product.product_id-1 % colors.length],
                         transform: 'translate(-50%, -50%)',
-                        zIndex: 1
                     }}/>
                   ))}
                 </div>
