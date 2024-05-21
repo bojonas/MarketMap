@@ -72,11 +72,11 @@ export default function ShoppingCart({ setShoppingCart }) {
     return (
         <div className='relative flex flex-col items-center w-full h-full bg-purple-custom gap-[5%]'>
             <div className='flex flex-col items-center w-full'>
-                <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search products...'}/>
-                { searchClicked && <div className='z-10 p-[0.5svh] w-[65%] max-h-3/4 overflow-y-scroll bg-gray-custom rounded-b-lg'>
+                <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search products...'} contrast='purple'/>
+                { searchClicked && <div className='flex flex-col gap-[0.3svh]  z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-sm'>
                     { filteredProducts.map((product, i) => (
                         <div key={`filtered-${product.product_id}`} onClick={() => handleShoppingCart(product)} 
-                            className='h-[5svh] p-[1svh] flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.3svh] rounded-lg hover:bg-white hover:cursor-pointer'>
+                            className='h-[5svh] p-[1svh] flex gap-1 items-center text-black bg-darkoffwhite border-white border-[0.3svh] rounded-sm hover:bg-offwhite hover:border-purple-custom hover:cursor-pointer'>
                             <p className='font-bold'>{product.product_name_en}</p>
                         </div>
                     ))}

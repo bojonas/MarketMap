@@ -20,7 +20,7 @@ export default function Toolbar({ setEditMode }) {
 
   return (
     <div className='flex flex-col items-center text-center w-full h-full bg-purple-custom'>
-      <SearchBar onSearch={setSearch} placeholder={'Search items...'}/>
+      <SearchBar onSearch={setSearch} placeholder={'Search items...'} contrast='purple'/>
       <div className='bg-gray-custom flex flex-col items-center text-center h-full rounded-lg m-[5svh]'>
         <div className='min-h-[60svh] max-h-[60svh]'>
           <div className='grid grid-cols-3 gap-3 text-center rounded-lg m-2 overflow-y-scroll w-[15svw] p-2'>

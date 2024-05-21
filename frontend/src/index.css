@@ -70,7 +70,7 @@
 }
 
 .overflow-y-scroll::-webkit-scrollbar-thumb:hover {
-    background: #242424;
+    display: block;
 }
 
 .overflow-x-scroll::-webkit-scrollbar {

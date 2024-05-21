@@ -3,7 +3,8 @@ async function getMarkets(postgres_pool) {
     try {
         const query = `
             SELECT *
-            FROM market_map.markets;`;
+            FROM market_map.markets
+            ORDER BY market_name;`;
 
         const result = await postgres_pool.query(query);
         return result.rows;
@@ -20,7 +21,7 @@ async function getProducts(postgres_pool) {
             JOIN market_map.brands b ON p.brand_id = b.brand_id
             JOIN market_map.categories c ON p.category_id = c.category_id
             JOIN market_map.types t ON p.type_id = t.type_id
-            ORDER BY product_id;`;
+            ORDER BY type_en, product_name_en;`;
 
         const result = await postgres_pool.query(query);
         return result.rows;

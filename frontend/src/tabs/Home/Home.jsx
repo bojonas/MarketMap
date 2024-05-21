@@ -57,13 +57,13 @@ export default function Home(){
             { market ? <MapViewer market={market}/>
             : <div className='flex w-full h-full justify-between'>
                 <div className='flex flex-col items-center text-center w-full h-full'>
-                    <div className='flex flex-col items-center text-center w-1/2 h-fit'>
+                    <div className='flex flex-col items-center text-center w-1/2 h-fit p-[2%] pb-0'>
                         <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
                     </div>
-                    { searchClicked && <div className='p-1 w-1/3 max-h-3/4 bg-[#4e4e4e7a] rounded-b-lg'>
+                    { searchClicked && <div className='flex flex-col gap-[0.5svh] p-[1svh] w-[32%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
                         { filteredMarkets.map((market, i) => (
                             <div key={i} onClick={() => setMarket(market)} 
-                                className='h-[7svh] p-4 flex gap-1 items-center bg-offwhite text-black border-gray-custom border-[0.4svh] rounded-lg hover:bg-white hover:cursor-pointer'>
+                                className='h-[7svh] p-[1svw] flex gap-[2%] items-center text-black bg-offwhite rounded-lg border-[0.3svh] hover:border-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
                                 <p className='font-bold'>{market.market_name}</p>
                                 <p className='ml-4'>{market.address},</p>
                                 <p>{market.postal_code},</p>
