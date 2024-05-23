@@ -3,12 +3,12 @@ import LayoutViewer from './LayoutViewer';
 import ShoppingCart from './ShoppingCart';
 import { findProducts } from '../../helper/findProducts';
 import { MapViewerContext } from '../../DimensionContext';
+import { colors } from './colors';
 
 export default function MapViewer({ market }) {
     const layout = market.map_layout
     const [shoppingCart, setShoppingCart] = useState([]);
     const productsInMarket = findProducts(shoppingCart, layout);
-    const colors = ['red', 'green', 'blue', 'yellow', 'aqua', 'fuchsia', 'lime', 'maroon', 'navy', 'olive', 'purple', 'teal'];
     const [zoom, setZoom] = useState(1);
 
     // zoom effect on layout
