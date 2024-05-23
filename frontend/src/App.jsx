@@ -33,7 +33,7 @@ export default function App() {
           <TabContext.Provider value={{ activeTab, setActiveTab }}>
             <div className='flex h-full w-[25svw] items-center pl-[1svw] bg-purple-custom'>
             </div>
-            <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end pl-[1svw] border-b-[0.5svh] border-gray-cell'>
+            <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end pl-[1svw] border-b-[0.5svh] border-gray-custom'>
               {tabs.map(({ name, tab, Icon, permission }) => 
                 (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
               )}

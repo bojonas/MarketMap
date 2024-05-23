@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useContext } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 import { MapViewerContext } from '../../DimensionContext';
+import { getLayoutIndex } from '../../helper/getLayoutIndex';
 
 export default function LayoutViewer({ zoom }) {
   const { layout, productsInMarket, colors } = useContext(MapViewerContext);
@@ -53,7 +54,7 @@ export default function LayoutViewer({ zoom }) {
                       style={{ 
                         width: `${scale/2}px`, 
                         height: `${scale/2}px`,
-                        backgroundColor: colors[product.product_id-1 % colors.length],
+                        backgroundColor: colors[getLayoutIndex(layout)[product.row.toString() + product.column.toString()]],
                         transform: 'translate(-50%, -50%)',
                     }}/>
                   ))}

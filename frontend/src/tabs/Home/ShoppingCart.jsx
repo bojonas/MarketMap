@@ -4,10 +4,11 @@ import { requestGetProducts } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
 import { MapViewerContext } from "../../DimensionContext";
 import { useProductState } from '../../hooks/useProductState';
+import { getLayoutIndex } from '../../helper/getLayoutIndex';
 
 export default function ShoppingCart({ setShoppingCart }) {
     const [search, setSearch] = useState('');
-    const { shoppingCart, colors } = useContext(MapViewerContext);
+    const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
     const [products, setProducts] = useProductState();
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchClicked, setSearchClicked] = useState(false); 
@@ -85,7 +86,9 @@ export default function ShoppingCart({ setShoppingCart }) {
             <div className='absolute bottom-[10svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-[75%] max-h-1/2 rounded-xl'>
                 <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
                 <div className='flex flex-col justify-start items-start w-full h-full p-[1svh] bg-offwhite overflow-y-scroll rounded-b-xl'>
-                    { shoppingCart.map((product, i) => (
+                    { shoppingCart.map((product, i) => {
+                        const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
+                        return (
                         <div key={`cart-${product.product_id}`} className='flex justify-between gap-[5%] p-[2svh] w-full'>
                         <div className='flex gap-[5%] w-4/5'>
                             <p className='font-bold'>{i+1}.</p>
@@ -93,11 +96,13 @@ export default function ShoppingCart({ setShoppingCart }) {
                         </div>
                         <div className='flex gap-[30%] w-1/5'>
                             <p>{product.count}x</p>
-                            <p className='rounded-full w-fit h-fit p-[15%] m-[14%]'
-                            style={{ backgroundColor: colors[product.product_id-1 % colors.length] }}/>
+                            { marketProduct && <p className='rounded-full w-fit h-fit p-[15%] m-[14%]'
+                            style={{ backgroundColor: colors[getLayoutIndex(layout)[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
                         </div>
                         </div>
-                    ))}
+                        );
+                    }
+                    )}
                 </div>
             </div>
         </div>
