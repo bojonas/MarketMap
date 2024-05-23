@@ -10,7 +10,7 @@ const CellViewer = memo(({ type, cellStyle }) => {
       ? <div className='flex justify-center items-center bg-[#d9d9d9] p-[5%]' style={cellStyle}>
           <img draggable='false' src={source} alt={type}/>
       </div>
-      : <div className='flex justify-center items-center bg-[#4e4e4e7a] p-[5%]' style={cellStyle}/>
+      : <div className='flex justify-center items-center bg-gray-custom p-[5%]' style={cellStyle}/>
       }
     </React.Fragment>
   );

@@ -91,7 +91,7 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
         border: `${scale/10}px solid #171717`,
         borderRadius: `${scale/5}px`,
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'pointer',
-        backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#4e4e4e7a',
+        backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#242424',
         transform: `rotate(${layout[cord[0]][cord[1]]['rotation']}deg)`,
       }}>
       { type === 'empty' ? null

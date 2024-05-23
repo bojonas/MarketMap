@@ -82,7 +82,7 @@ export default function ShoppingCart({ setShoppingCart }) {
                     ))}
                 </div>}
             </div>
-            <div className='absolute bottom-[10svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-[70%] max-h-1/2 rounded-xl'>
+            <div className='absolute bottom-[10svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-[75%] max-h-1/2 rounded-xl'>
                 <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
                 <div className='flex flex-col justify-start items-start w-full h-full p-[1svh] bg-offwhite overflow-y-scroll rounded-b-xl'>
                     { shoppingCart.map((product, i) => (
