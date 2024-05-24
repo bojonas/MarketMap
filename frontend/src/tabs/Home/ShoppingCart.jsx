@@ -96,7 +96,7 @@ export default function ShoppingCart({ setShoppingCart }) {
                         </div>
                         <div className='flex gap-[30%] w-1/5'>
                             <p>{product.count}x</p>
-                            { marketProduct && <p className='rounded-full w-fit h-fit p-[15%] m-[14%]'
+                            { marketProduct && <p className='rounded-full w-fit h-fit p-[15%] self-center'
                             style={{ backgroundColor: colors[getLayoutIndex(layout)[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
                         </div>
                         </div>
