@@ -5,7 +5,7 @@ import { MapViewerContext } from '../../DimensionContext';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
 
 export default function LayoutViewer({ zoom }) {
-  const { layout, productsInMarket, colors } = useContext(MapViewerContext);
+  const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
@@ -49,7 +49,9 @@ export default function LayoutViewer({ zoom }) {
                       borderRadius: `${scale/5}px`
                     }}
                   />
-                  { productsInMarket.filter(product => product.row === i && product.column === j).map(product => (
+                  { productsInMarket.filter(product => product.row === i && product.column === j).map(product => {
+                    const shoppingCartProduct = shoppingCart.find(marketProduct => marketProduct.product_id === product.product_id);
+                    return !shoppingCartProduct ? null : (
                     <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
                       style={{ 
                         width: `${scale/2}px`, 
@@ -57,7 +59,8 @@ export default function LayoutViewer({ zoom }) {
                         backgroundColor: colors[getLayoutIndex(layout)[product.row.toString() + product.column.toString()]],
                         transform: 'translate(-50%, -50%)',
                     }}/>
-                  ))}
+                  );}
+                  )}
                 </div>
               ))
             ))}

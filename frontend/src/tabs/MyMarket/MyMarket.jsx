@@ -6,22 +6,24 @@ import { FaEdit } from "react-icons/fa";
 import { MyMarketContext } from "../../DimensionContext";
 
 export default function MyMarket() {
+    const user_id = localStorage.getItem('user_id');
     const [market, setMarket] = useState([]);
     const [editMode, setEditMode] = useState(false);
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
+        if (!user_id) return;
         const getMarkets = async () => {
-          const data = await requestGetMyMarket(3);
+          const data = await requestGetMyMarket(user_id);
           if (data) setMarket(data);
         }
         getMarkets();
-    }, []);
+    }, [user_id]);
 
     return (
         <MyMarketContext.Provider value={{ market, products, setProducts }}>
             <div className='relative flex w-full h-full'>
-                { market &&
+                { market.length > 0 &&
                 editMode ? <MapEditor market={market} setEditMode={setEditMode}/>
                 : <React.Fragment>
                     <MapViewer market={market}/>

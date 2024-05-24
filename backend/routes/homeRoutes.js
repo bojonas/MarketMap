@@ -30,5 +30,80 @@ async function getProducts(postgres_pool) {
     }
 }
 
+async function putHistory(timestamp, user_id, market_id, postgres_pool) {
+    try { 
+        const checkQuery = `
+            SELECT hist_id 
+            FROM market_map.histories 
+            WHERE user_id = $1 AND market_id = $2;`;
 
-module.exports = { getMarkets, getProducts }
+        const checkResult = await postgres_pool.query(checkQuery, [user_id, market_id]);
+
+        // when exist update
+        if (checkResult.rows.length > 0) {
+            const updateQuery = `
+                UPDATE market_map.histories  
+                SET hist_timestamp = $1
+                WHERE hist_id = $2
+                RETURNING hist_id;
+            `;
+
+            const updateResult = await postgres_pool.query(updateQuery, [timestamp, checkResult.rows[0].hist_id]);
+            return updateResult.rows;
+        } 
+
+        const countQuery = `
+            SELECT COUNT(*) 
+            FROM market_map.histories  
+            WHERE user_id = $1;
+        `;
+
+        const countResult = await postgres_pool.query(countQuery, [user_id]);
+
+        // only allow up to 5 entries per user
+        if (parseInt(countResult.rows[0].count) < 5) {
+            const insertQuery = `
+            INSERT INTO market_map.histories  (hist_timestamp, user_id, market_id)
+            VALUES ($1, $2, $3)
+            RETURNING hist_id;`;
+
+            const insertResult = await postgres_pool.query(insertQuery, [timestamp, user_id, market_id]);
+            return insertResult.rows;
+        }
+
+        const updateQuery = `
+                UPDATE market_map.histories 
+                SET hist_timestamp = $1, market_id = $2
+                WHERE hist_id = (
+                    SELECT hist_id 
+                    FROM market_map.histories 
+                    WHERE user_id = $3 
+                    ORDER BY hist_timestamp ASC 
+                    LIMIT 1
+                )
+                RETURNING hist_id;
+            `;
+
+            const updateResult = await postgres_pool.query(updateQuery, [timestamp, market_id, user_id]);
+            return updateResult.rows;
+    } catch (error) {
+        console.error('Error putting history:', error);
+    }
+}
+
+async function getHistory(user_id, postgres_pool) {
+    try {
+        const query = `
+            SELECT market_id, hist_timestamp
+            FROM market_map.histories h
+            WHERE user_id = $1
+            ORDER BY hist_timestamp DESC;`;
+
+        const result = await postgres_pool.query(query, [user_id]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error querying history:', error);
+    }
+}
+
+module.exports = { getMarkets, getProducts, putHistory, getHistory }

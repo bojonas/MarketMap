@@ -74,13 +74,16 @@ export default function ShoppingCart({ setShoppingCart }) {
         <div className='relative flex flex-col items-center w-full h-full bg-purple-custom gap-[5%]'>
             <div className='flex flex-col items-center w-full'>
                 <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search products...'} contrast='purple'/>
-                { searchClicked && <div className='flex flex-col gap-[0.3svh]  z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-sm'>
-                    { filteredProducts.map((product, i) => (
+                { searchClicked && <div className='flex flex-col gap-[0.3svh] z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-sm'>
+                    { filteredProducts.map(product => {
+                         const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
+                        return !marketProduct ? null : (
                         <div key={`filtered-${product.product_id}`} onClick={() => handleShoppingCart(product)} 
                             className='h-[5svh] p-[1svh] flex gap-1 items-center text-black bg-darkoffwhite border-white border-[0.3svh] rounded-sm hover:bg-offwhite hover:border-purple-custom hover:cursor-pointer'>
                             <p className='font-bold'>{product.product_name_en}</p>
                         </div>
-                    ))}
+                    )}
+                    )}
                 </div>}
             </div>
             <div className='absolute bottom-[10svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-[75%] max-h-1/2 rounded-xl'>
