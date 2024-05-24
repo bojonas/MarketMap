@@ -14,6 +14,15 @@ export default function MyAccount(){
         setIsVisible(!isVisible);
     };
 
+    useEffect(() => {
+      const loadData = async () => {
+          const user_id = localStorage.getItem("user_id")
+          if(!user_id) return;
+          setContent("MP") //todo: get_initials function
+      }
+      loadData();
+  }, []);
+
     const login = ()=>{
       navigate("/login")
       setIsVisible(false)

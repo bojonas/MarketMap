@@ -11,7 +11,7 @@ export default function MyProfileComponent(){
     const [popupContent, setPopupContent] = useState("")
 
     const [user_id] = useState(parseInt(localStorage.getItem("user_id"), 10))
-    const[username, setUsername] = useState("no user logged in") //currently username is hardcoded, later we will automate it by user_id
+    const[username, setUsername] = useState("no user logged in") 
     const[email, setEmail] = useState("no user logged in")
     const[firstName, setFirstName] = useState("no user logged in")
     const[lastName, setLastName] = useState("no user logged in")
