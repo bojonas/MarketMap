@@ -1,13 +1,37 @@
 import DropdownMenu from "./DropdownMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function MyAccount(){
+
+  const navigate = useNavigate()
     const [isVisible, setIsVisible] = useState(false);
-    const [content, setContent] =  useState("b")
+    const [content, setContent] =  useState("Login")
+    const [isLoggedIn, setIsLoggedIn] = useState(true)
+
 
     const toggleDropdown = () => {
         setIsVisible(!isVisible);
     };
+
+    const login = ()=>{
+      navigate("/login")
+      setIsVisible(false)
+    }
+
+    const register=()=>{
+      navigate("/register")
+      setIsVisible(false)
+    }
+
+    const myProfile = ()=>{
+      navigate("/my_profile")
+      setIsVisible(false)
+    }
+    const logout = () =>{
+      localStorage.removeItem("user_id")
+      setIsLoggedIn(false)
+    }
 
   return (
     <div className="relative p-5">
@@ -18,9 +42,10 @@ export default function MyAccount(){
         {content}
       </button>
       <DropdownMenu isVisible={isVisible}>
-        <div className="dropdown-content">Option 1</div>
-        <div className="dropdown-content">Option 2</div>
-        <div className="dropdown-content">Option 3</div>
+        {isLoggedIn?null:<div className="dropdown-content" onClick={login}>Login</div>}
+        {isLoggedIn?null: <div className="dropdown-content" onClick={register}>Register</div>}
+        {isLoggedIn?<div className="dropdown-content" onClick={myProfile}>My Profile</div>:null}
+        {isLoggedIn?<div className="dropdown-content" onClick={logout}>Logout</div>:null}
       </DropdownMenu>
     </div>
   );
