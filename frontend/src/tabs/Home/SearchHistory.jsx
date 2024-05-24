@@ -38,7 +38,7 @@ export default function SearchHistory({ user_id, markets }) {
                         <div key={market.market_id} className='flex w-full gap-[5%] rounded-xl items-center'>
                             <MiniMap layout={market.map_layout}/>
                             <p>{market.market_name}</p>
-                            <p>vor {time} {entity}</p>
+                            <p>{time} {entity} ago</p>
                         </div>
                     );
                 })}
