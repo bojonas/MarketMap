@@ -31,9 +31,9 @@ export default function App() {
   const userPermission = 'admin';
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
-    <div className='flex flex-col h-[100svh] w-[100svw] bg-darkgray-custom' >
+    <div className='relative flex flex-col h-[100svh] w-[100svw] bg-darkgray-custom' >
       <Router>
-        <div className='relative flex-grow grid grid-flow-col items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
+        <div className='flex-grow grid grid-flow-col items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
           <TabContext.Provider value={{ activeTab, setActiveTab }}>
             <div className='flex h-full w-[25svw] items-center pl-[1svw] bg-purple-custom'>
               <MyAccount/>
@@ -43,9 +43,9 @@ export default function App() {
                 (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Tab key={name} tab={tab} name={name} Icon={Icon}/>
               )}
             </div>
-            <animated.div className='h-[0.5svh] absolute bg-purple-custom top-[8.6svh] rounded-lg' style={{ ...springStyle, position: 'absolute' }}></animated.div>
           </TabContext.Provider>
         </div>
+        <animated.div className='h-[0.5svh] absolute bg-purple-custom top-[10.5svh] rounded-lg' style={{ ...springStyle, position: 'absolute' }}></animated.div>
         <Routes>
           {tabs.map(({ tab, Component, permission }, index) => 
             (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Route key={index} path={`/${tab}`} element={<Component/>}/>
