@@ -24,7 +24,7 @@ export default function SearchHistory({ user_id, markets, setMarket }) {
     }
 
     return (
-        <div className='absolute z-0 bottom-[5%] left-[5%] flex flex-col w-1/3 h-2/3 text-black bg-darkoffwhite rounded-xl'>
+        <div className='absolute z-0 bottom-[5%] left-[10%] flex flex-col w-1/3 h-2/3 text-black bg-darkoffwhite rounded-xl'>
             <p className='p-[3svh] text-[2.5svh] font-bold'>Search History:</p>
             <div className='flex flex-col w-full h-full p-[4%] gap-[5%] bg-offwhite overflow-scroll rounded-b-xl'>
                 { history.map(hist => {
@@ -32,11 +32,11 @@ export default function SearchHistory({ user_id, markets, setMarket }) {
                     if (!market) return null;
                     const [time, entity] = getTimePassed(hist.hist_timestamp)
                     return (
-                        <div key={market.market_id} className='flex w-full items-center justify-between pl-[5%] pr-[5%] cursor-pointer'>
+                        <div key={market.market_id} className='flex w-full items-center justify-between pl-[5%] pr-[5%]'>
                             <MiniMap layout={market.map_layout} market={market} setMarket={setMarket}/>
                             <p className='w-[20%] font-bold'>{market.market_name}</p>
                             <p>{time}{entity} ago</p>
-                            <FaTrashCan onClick={() => removeHistory(market.market_id)} className='hover:text-purple-custom'/>
+                            <FaTrashCan onClick={() => removeHistory(market.market_id)} className='hover:text-purple-custom cursor-pointer'/>
                         </div>
                     );
                 })}

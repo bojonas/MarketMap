@@ -46,7 +46,8 @@ export default function LayoutViewer({ zoom }) {
                       height: `${scale}px`, 
                       width: `${scale}px`, 
                       border: `${scale/10}px solid #171717`,
-                      borderRadius: `${scale/5}px`
+                      borderRadius: `${scale/5}px`,
+                      transform: `rotate(${layout[i][j]['rotation']}deg)`,
                     }}
                   />
                   { productsInMarket.filter(product => product.row === i && product.column === j).map(product => {

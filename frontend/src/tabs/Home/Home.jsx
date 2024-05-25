@@ -4,6 +4,7 @@ import SearchBar from '../../atoms/SearchBar'
 import { requestGetMarkets, requestUpdateHistory } from "../../requests/homeRequests";
 import MapViewer from "./MapViewer";
 import SearchHistory from "./SearchHistory";
+import ShoppingCarts from "./ShoppingCarts";
 
 export default function Home(){
     const user_id = localStorage.getItem('user_id');
@@ -84,6 +85,7 @@ export default function Home(){
                     ))}
                 </div>}
                 <SearchHistory user_id={user_id} markets={markets} setMarket={setMarket}/>
+                <ShoppingCarts/>
             </div>}
         </React.Fragment>
     );

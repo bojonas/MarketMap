@@ -43,9 +43,7 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
     setDroppedItem(deleteCells.length === 0 ? item : null);
 
     const { rootCoordinates } = item;
-    if (rootCoordinates && isEqualArray(cord, rootCoordinates)) {
-      return;
-    }
+    if (rootCoordinates && isEqualArray(cord, rootCoordinates)) return;
     // update layout
     setLayout(prev => {
       const newLayout = [...prev];
@@ -72,14 +70,12 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
   }
 
   const rotateCell = (e) => {
-    if (type !== 'empty') return;
     e.preventDefault();
-    setLayout(prev => {
-      const newLayout = [...prev];
-
-      newLayout[cord[0]][cord[1]]['rotation'] = (newLayout[cord[0]][cord[1]]['rotation'] + 90) % 360;
-      return newLayout;
-    });
+    e.stopPropagation();
+    if (type === 'empty') return;
+    const newLayout = JSON.parse(JSON.stringify(layout));
+    newLayout[cord[0]][cord[1]]['rotation'] = 'rotation' in newLayout[cord[0]][cord[1]] ? (newLayout[cord[0]][cord[1]]['rotation'] + 90) % 360 : 90;
+    setLayout(newLayout);
   }
 
   return (

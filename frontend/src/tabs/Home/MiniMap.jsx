@@ -10,7 +10,7 @@ export default function MiniMap({ layout, market, setMarket }) {
   return (
     <div className='flex flex-col justify-center items-center h-full w-[15svh]'>
         <div ref={ref} className='w-[10svw] h-[10svh]'>
-          <div onClick={() => setMarket(market)}className='grid w-fit h-fit bg-darkgray-custom overflow-hidden rounded-xl hover:border-purple-custom border-[0.4svh]' 
+          <div onClick={() => setMarket(market)}className='grid w-fit h-fit bg-darkgray-custom overflow-hidden rounded-xl cursor-pointer hover:border-purple-custom border-[0.4svh]' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
               gridTemplateRows: `repeat(${layout.length}, ${scale}px)`
@@ -24,7 +24,8 @@ export default function MiniMap({ layout, market, setMarket }) {
                       height: `${scale}px`, 
                       width: `${scale}px`, 
                       border: `${scale/10}px solid #171717`,
-                      borderRadius: `${scale/5}px`
+                      borderRadius: `${scale/5}px`,
+                      transform: `rotate(${layout[i][j]['rotation']}deg)`,
                     }}
                   />
               ))
