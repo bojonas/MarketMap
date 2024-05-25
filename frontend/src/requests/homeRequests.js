@@ -50,6 +50,23 @@ export async function requestGetHistory(user_id) {
     const response = await axiosInstance.post('/get_histories', data);
     return response.data
   } catch (error) {
-    console.error('Error getting products:', error);
+    console.error('Error getting history:', error);
+  }
+}
+
+// request to /delete_histories
+export async function requestRemoveHistory(user_id, market_id) {
+  if (!user_id || !market_id) return console.error('Invalid parameters');
+
+  const data = {
+    user_id: user_id,
+    market_id: market_id
+  }
+
+  try {
+    const response = await axiosInstance.post('/delete_histories', data);
+    return response.data
+  } catch (error) {
+    console.error('Error removing history:', error);
   }
 }

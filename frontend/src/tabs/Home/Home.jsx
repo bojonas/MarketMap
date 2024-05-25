@@ -66,24 +66,25 @@ export default function Home(){
     return (
         <React.Fragment>
             { market ? <MapViewer market={market}/>
-            :<div className='relative flex flex-col items-center text-center w-full h-full'>
-                    <div className='flex flex-col items-center text-center w-1/2 h-fit p-[2%] pb-0'>
-                        <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
-                    </div>
-                    { searchClicked && <div className='z-10 flex flex-col gap-[0.5svh] p-[1svh] w-[32%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
-                        { filteredMarkets.map((market, i) => (
-                            <div key={i} onClick={() => setMarket(market)} 
-                                className='h-[7svh] p-[1svw] flex gap-[2%] items-center text-black bg-offwhite rounded-lg border-[0.3svh] hover:border-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
-                                <p className='font-bold'>{market.market_name}</p>
-                                <p className='ml-4'>{market.address},</p>
-                                <p>{market.postal_code},</p>
-                                <p>{market.city},</p>
-                                <p>{market.country}</p>
-                            </div>
-                        ))}
-                    </div>}
-                    <SearchHistory user_id={user_id} markets={markets}/>
+            : <div className='relative flex flex-col items-center text-center w-full h-full'>
+                <div className='flex flex-col items-center text-center w-1/2 h-fit p-[2%] pb-0'>
+                    <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
+                </div>
+                { searchClicked && <div className='z-10 flex flex-col gap-[0.5svh] p-[1svh] w-[32%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
+                    { filteredMarkets.map((market, i) => (
+                        <div key={i} onClick={() => setMarket(market)} 
+                            className='h-[7svh] p-[5%] flex gap-[2%] items-center text-black text-[2svh] bg-offwhite rounded-lg border-[0.3svh] hover:border-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
+                            {'market_image_url' in market && <div className='rounded-lg p-[5%] mr-[2%] bg-gray-custom border-darkgray-custom border-[0.4svh]'></div>}
+                            <p className=' ont-bold'>{market.market_name}</p>
+                            <p className='ml-[4%]'>{market.address},</p>
+                            <p>{market.postal_code},</p>
+                            <p>{market.city},</p>
+                            <p>{market.country}</p>
+                        </div>
+                    ))}
                 </div>}
+                <SearchHistory user_id={user_id} markets={markets} setMarket={setMarket}/>
+            </div>}
         </React.Fragment>
     );
 }

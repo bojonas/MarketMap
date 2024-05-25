@@ -37,8 +37,8 @@ export default function Toolbar({ setEditMode }) {
         </div>
       </div>
       <div className='bg-purple-custom w-full h-full flex gap-5 items-center justify-center content-center float-end end-full'>
-        <button onClick={handleSave} className='custom-button bg-offwhite border-offwhite hover:border-darkgray-custom text-black w-[5svw] h-[5svh] text-[2.2svh]'>Save</button>
-        <button onClick={() => setEditMode(false)} className='custom-button bg-darkgray-custom border-darkgray-custom hover:border-offwhite w-[5svw] h-[5svh] text-[2.2svh]'>Back</button>
+        <button onClick={handleSave} className='custom-button shadow-none bg-offwhite border-offwhite hover:border-darkgray-custom text-black w-[5svw] h-[5svh] text-[2.2svh]'>Save</button>
+        <button onClick={() => setEditMode(false)} className='custom-button shadow-none bg-darkgray-custom border-darkgray-custom hover:border-offwhite w-[5svw] h-[5svh] text-[2.2svh]'>Back</button>
       </div>
     </div>
   );  

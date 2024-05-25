@@ -7,8 +7,8 @@ import { getLayoutIndex } from '../../helper/getLayoutIndex';
 export default function LayoutViewer({ zoom }) {
   const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
   const ref = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
+  const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const scale = Math.min(width/ layout[0].length, height / layout.length);
 
   // fix scrollbars after zoom

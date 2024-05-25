@@ -31,7 +31,7 @@ export default function App() {
   const userPermission = 'admin';
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
-    <div className='flex flex-col h-[100svh] w-[100svw] bg-darkgray-custom' >
+    <div className='flex flex-col w-[100svw] h-[100svh] bg-darkgray-custom'>
       <Router>
         <div className='relative flex items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
           <TabContext.Provider value={{ activeTab, setActiveTab }}>

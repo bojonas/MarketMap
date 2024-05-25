@@ -106,4 +106,18 @@ async function getHistory(user_id, postgres_pool) {
     }
 }
 
-module.exports = { getMarkets, getProducts, putHistory, getHistory }
+async function deleteHistory(user_id, market_id, postgres_pool) {
+    try {
+        const query = `
+            DELETE FROM market_map.histories
+            WHERE user_id = $1
+            AND market_id = $2;`;
+
+        const result = await postgres_pool.query(query, [user_id, market_id]);
+        return result.rowCount;
+    } catch (error) {
+        console.error('Error querying history:', error);
+    }
+}
+
+module.exports = { getMarkets, getProducts, putHistory, getHistory, deleteHistory }

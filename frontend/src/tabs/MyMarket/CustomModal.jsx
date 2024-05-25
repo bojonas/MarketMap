@@ -35,25 +35,25 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
       style={{
         content: {
           backgroundColor: '#171717',
-          width: '50svw',
+          width: '40svw',
           height: '50svh',
-          top: '16svh',
-          left: '40%',
+          top: '19%',
+          left: '51%',
           display: 'flex',
           flexDirection: 'column',
           content: 'center',
           alignItems: 'center'
         },
         overlay: {
-          backgroundColor: '#ffffff8e'
+          backgroundColor: 'transparent'
         }
       }}
     >
       <p className='font-bold text-lg'>Settings</p>
       { layout 
-        ? <div className='w-[80%] h-[40%] flex flex-col gap-5 justify-center text-center items-center'>
-            <div className='flex gap-2 items-center justify-center w-[70%]'>
-                <p className='absolute left-[8svw] font-bold'>Width:</p>
+        ? <div className='w-full h-[40%] flex flex-col gap-[20%] justify-center text-center items-center'>
+            <div className='flex gap-[2%] items-center justify-center w-[80%]'>
+                <p className='absolute left-[6svw] font-bold'>Width:</p>
                 <button className='add_remove_button p-0 leading-none' onClick={() => { setInputColumns(inputColumns > 1 ? inputColumns - 1 : inputColumns) }}>-</button>
                 <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center hover:border-purple-custom outline-none' 
                   value={inputColumns <= 130 ? inputColumns : 130} 
@@ -64,8 +64,8 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
                 />
                 <button className='add_remove_button' onClick={() => setInputColumns(inputColumns < 130 ? inputColumns + 1 : 130)}>+</button>
             </div>
-            <div className='flex gap-2 items-center w-[70%] justify-center'>
-                <p className='absolute left-[8svw] font-bold'>Height:</p>
+            <div className='flex gap-[2%] items-center w-[80%] justify-center'>
+                <p className='absolute left-[6svw] font-bold'>Height:</p>
                 <button className='add_remove_button p-0 leading-none' onClick={() => setInputRows(inputRows > 1 ? inputRows - 1 : inputRows)}>-</button>
                 <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center hover:border-purple-custom outline-none' 
                   value={inputRows <= 130 ? inputRows : 130} 
@@ -78,21 +78,21 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
             </div>
           </div>
         : null }
-        <div className='w-[80%] h-[40%] flex flex-col gap-5 justify-center text-center items-center'>
-          <div className='flex gap-2 items-center justify-center w-[70%]'>
+        <div className='w-full h-[40%] flex flex-col gap-5 justify-center text-center items-center'>
+          <div className='flex items-center justify-center w-[70%]'>
             <p className='absolute left-[8svw] font-bold'>Duplicate Mode:</p> 
             <p onClick={changeDuplicateMode} className={`${duplicateMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700 p-1 text-sm hover:border-purple-custom hover:cursor-pointer`}>
                 {duplicateMode ? 'On' : 'Off'}
             </p>
           </div>
-          <div className='flex gap-2 items-center justify-center w-[70%]'>
+          <div className='flex items-center justify-center w-[70%]'>
             <p className='absolute left-[8svw] font-bold'>Delete Mode:</p>
             <p onClick={changeDeleteMode} className={`${deleteMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700 p-1 text-sm hover:border-purple-custom hover:cursor-pointer`}>
                 {deleteMode ? 'On' : 'Off'}
             </p>
           </div>
         </div>
-      <button className='custom-button text-base w-[10%] h-[10%] shadow-slate-700 mt-5' onClick={closeModal}>Close</button>
+      <button className='custom-button text-[2svh] w-[11%] h-[11%] shadow-slate-700 mt-5' onClick={closeModal}>Close</button>
     </Modal>
   );
 }

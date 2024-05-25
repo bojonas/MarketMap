@@ -38,10 +38,15 @@ process.on('SIGINT', async () => {
 /**** Home Routes ****/
 
 // import home routes
-const { getMarkets, getProducts, putHistory, getHistory } = require('./routes/homeRoutes');
+const { getMarkets, getProducts, putHistory, getHistory, deleteHistory } = require('./routes/homeRoutes');
 
 const History = Joi.object({
     timestamp: Joi.date().iso().required(),
+    user_id: Joi.number().required(),
+    market_id: Joi.number().required(),
+});
+
+const UserIdMarketId = Joi.object({
     user_id: Joi.number().required(),
     market_id: Joi.number().required(),
 });
@@ -93,6 +98,23 @@ app.post('/get_histories', async (req, res) => {
     const { user_id } = req.body;
     try {
         const result = await getHistory(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+app.post('/delete_histories', async (req, res) => {
+    const { error } = UserIdMarketId.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    
+    const { user_id, market_id } = req.body;
+    try {
+        const result = await deleteHistory(user_id, market_id, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
@@ -238,10 +260,6 @@ const UpdateData = Joi.object({
     data: Joi.string().required()
 })
 
-const UserIdObject = Joi.object({
-    user_id: Joi.number().required()
-})
-
 //endpoints for My Profile
 app.put('/update_data', async (req, res) => {
     const {error} = UpdateData.validate(req.body)
@@ -261,7 +279,7 @@ app.put('/update_data', async (req, res) => {
 });
 
 app.post('/get_user', async (req, res) => {
-    const {error} = UserIdObject.validate(req.body)
+    const {error} = UserId.validate(req.body)
 
     if (error) {
         console.error(error.details[0].message);
@@ -280,7 +298,7 @@ app.post('/get_user', async (req, res) => {
 });
 
 app.post('/get_market', async (req, res) => {
-    const {error} = UserIdObject.validate(req.body)
+    const {error} = UserId.validate(req.body)
 
     if (error) {
         console.error(error.details[0].message);
