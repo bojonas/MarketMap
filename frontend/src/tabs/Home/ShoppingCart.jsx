@@ -3,13 +3,13 @@ import SearchBar from "../../atoms/SearchBar";
 import { requestGetProducts } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
 import { MapViewerContext } from "../../DimensionContext";
-import { useProductState } from '../../hooks/useProductState';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
+import { IoArrowBack } from "react-icons/io5";
 
-export default function ShoppingCart({ setShoppingCart }) {
+export default function ShoppingCart({ setShoppingCart, removeMarket }) {
     const [search, setSearch] = useState('');
     const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
-    const [products, setProducts] = useProductState();
+    const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
@@ -24,7 +24,7 @@ export default function ShoppingCart({ setShoppingCart }) {
           if (data) setProducts(data);
         }
         getProducts();
-    }, [setProducts]);
+    }, []);
 
     useEffect(() => {
         const results = products.filter(({ product_name_en, brand_name, category_en, type_en }) => 
@@ -86,7 +86,7 @@ export default function ShoppingCart({ setShoppingCart }) {
                     )}
                 </div>}
             </div>
-            <div className='absolute bottom-[10svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-[75%] max-h-1/2 rounded-xl'>
+            <div className='absolute bottom-[11svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-3/4 rounded-xl'>
                 <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
                 <div className='flex flex-col justify-start items-start w-full h-full p-[1svh] bg-offwhite overflow-y-scroll rounded-b-xl'>
                     { shoppingCart.map((product, i) => {
@@ -108,6 +108,7 @@ export default function ShoppingCart({ setShoppingCart }) {
                     )}
                 </div>
             </div>
+            { removeMarket && <IoArrowBack onClick={removeMarket} size={45} className='text-white bg-darkgray-custom absolute bottom-[2svh] rounded-full p-[2%] border-[0.3svh] border-purple-custom hover:border-offwhite'/>}
         </div>
     );
 }

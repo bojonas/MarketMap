@@ -5,7 +5,7 @@ import { findProducts } from '../../helper/findProducts';
 import { MapViewerContext } from '../../DimensionContext';
 import { colors } from './colors';
 
-export default function MapViewer({ market }) {
+export default function MapViewer({ market, setMarket }) {
     const layout = market.map_layout
     const [shoppingCart, setShoppingCart] = useState([]);
     const productsInMarket = findProducts(layout);
@@ -33,7 +33,7 @@ export default function MapViewer({ market }) {
     return !layout ? null :(
       <MapViewerContext.Provider value={{ shoppingCart, layout, productsInMarket, colors }}>
         <div className='flex w-full h-full'>
-          <ShoppingCart setShoppingCart={setShoppingCart}/>
+          <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null}/>
           <div className='flex flex-col items-center justify-center'>
             <p className='text-3xl font-bold mb-[3svh]'>{market.market_name}</p>
             <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>

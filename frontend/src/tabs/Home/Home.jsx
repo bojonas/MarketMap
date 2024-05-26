@@ -61,12 +61,16 @@ export default function Home(){
         const now = new Date();
         const offset = now.getTimezoneOffset() * 60000;
         const timestamp = (new Date(now - offset)).toISOString().slice(0,-1);
-        requestUpdateHistory(timestamp, user_id, market.market_id);
+
+        const updateHistory = async () => {
+            await requestUpdateHistory(timestamp, user_id, market.market_id);
+        };
+        updateHistory();
     }, [market, user_id]);
 
     return (
         <React.Fragment>
-            { market ? <MapViewer market={market}/>
+            { market ? <MapViewer market={market} setMarket={setMarket}/>
             : <div className='relative flex flex-col items-center text-center w-full h-full'>
                 <div className='flex flex-col items-center text-center w-1/2 h-fit p-[2%] pb-0'>
                     <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>

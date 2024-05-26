@@ -3,11 +3,21 @@ import Modal from 'react-modal';
 import debounce from 'lodash.debounce';
 import { MapEditorContext } from '../../DimensionContext';
 import SearchBar from '../../atoms/SearchBar';
+import { requestGetProducts } from '../../requests/homeRequests';
 
-export default function CustomModal({ products, openCell, closeCell }) {
+export default function CustomModal({ openCell, closeCell }) {
     const { setLayout } = useContext(MapEditorContext);
     const [search, setSearch] = useState('');
+    const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+
+    useEffect(() => {
+        const getProducts = async () => {
+          const data = await requestGetProducts();
+          if (data) setProducts(data);
+        }
+        getProducts();
+    }, []);
 
     const debouncedSearch = debounce(value => {
         setSearch(value);

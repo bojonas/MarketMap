@@ -9,7 +9,7 @@ import { MyMarketContext } from '../../DimensionContext';
 import { useChangeDragMode } from '../../hooks/useChangeDragMode';
 
 export default function MapEditor({ setEditMode }) {
-  const { market, products } = useContext(MyMarketContext);
+  const market = useContext(MyMarketContext);
   const [layout, setLayout] = useState(market ? JSON.parse(JSON.stringify(market.map_layout)) : null);
   const [settingsIsOpen, setSettingsIsOpen] = useState(false);
   const [openCell, setOpenCell] = useState(null);
@@ -91,7 +91,6 @@ export default function MapEditor({ setEditMode }) {
           changeDuplicateMode={changeDuplicateMode} 
           changeDeleteMode={changeDeleteMode}/>
         <ProductModal 
-          products={products}
           openCell={openCell} 
           closeCell={() => setOpenCell(null)}/>
       </div>

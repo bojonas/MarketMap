@@ -8,7 +8,7 @@ import { MapEditorContext, MyMarketContext } from '../../DimensionContext';
 export default function Toolbar({ setEditMode }) {
   const [search, setSearch] = useState('');
   const images = Object.entries(getItemImages()).filter(([type]) => type.toLowerCase().includes(search));
-  const { market } = useContext(MyMarketContext);
+  const market = useContext(MyMarketContext);
   const { layout } = useContext(MapEditorContext);
 
   const handleSave = async () => {
