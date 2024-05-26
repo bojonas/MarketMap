@@ -10,15 +10,25 @@ export default function MyAccount(){
     const [isLoggedIn, setIsLoggedIn] = useState(true)
 
 
+    const loadData = async () => {
+      const user_id = localStorage.getItem("user_id");
+      if(!user_id) return;
+      setContent("MP"); //todo: get_initials function
+      setIsLoggedIn(true);
+    }
+
     const toggleDropdown = () => {
         setIsVisible(!isVisible);
+        loadData();
     };
+
 
     useEffect(() => {
       const loadData = async () => {
           const user_id = localStorage.getItem("user_id")
           if(!user_id) return;
           setContent("MP") //todo: get_initials function
+          setIsLoggedIn(true)
       }
       loadData();
   }, []);
@@ -40,6 +50,8 @@ export default function MyAccount(){
     const logout = () =>{
       localStorage.removeItem("user_id")
       setIsLoggedIn(false)
+      setContent("Login")
+      navigate("/")
     }
 
   return (
