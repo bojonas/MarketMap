@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import SearchBar from "../../atoms/SearchBar";
-import { requestGetProducts, requestPostShoppingCart } from "../../requests/homeRequests";
+import { requestGetProducts, requestPostShoppingCart, requestGetShoppingCarts } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
 import { MapViewerContext } from "../../DimensionContext";
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
@@ -8,10 +8,12 @@ import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 
 export default function ShoppingCart({ setShoppingCart, removeMarket }) {
+    const user_id = localStorage.getItem('user_id')
     const [search, setSearch] = useState('');
     const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [shoppingCarts, setShoppingCarts] = useState([]);
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
     
@@ -56,7 +58,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
 
     const handleShoppingCart = (product) => {
         let productExists = false;
-        const newShoppingCart = shoppingCart.map((item) => {
+        const newShoppingCart = shoppingCart.map(item => {
             if (item.product_id === product.product_id) {
                 productExists = true;
                 return { ...item, count: item.count + 1 };
@@ -70,10 +72,16 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
         }
         setShoppingCart(newShoppingCart);
     }    
+
+    const getShoppingCarts = async () => {
+        if (shoppingCarts.length > 0) return;
+        const data = await requestGetShoppingCarts(user_id);
+        if (data) setShoppingCarts(data);
+    }
     
     const saveShoppingCart = async () => {
         if (shoppingCart.length === 0) return;
-        await requestPostShoppingCart('', localStorage.getItem('user_id'), shoppingCart.map(product => ({ product_id: product.product_id, product_count: product.count })))
+        await requestPostShoppingCart('', user_id, shoppingCart.map(product => ({ product_id: product.product_id, product_count: product.count })))
     }
 
     return (
@@ -88,13 +96,16 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                             className='h-[5svh] p-[1svh] flex items-center text-black bg-darkoffwhite border-l-[0.5svh] border-darkoffwhite hover:bg-offwhite hover:border-l-purple-custom hover:cursor-pointer'>
                             <p className='font-bold'>{product.product_name_en}</p>
                         </div>
-                    )}
-                    )}
+                    )})}
                 </div>}
             </div>
             <div className='absolute bottom-[11svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-3/4 rounded-xl'>
                 <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
-                <div className='flex flex-col items-center w-full h-full p-[1svh] bg-offwhite overflow-y-scroll'>
+                <div className='relative flex flex-col items-center w-full h-full p-[1svh] bg-offwhite overflow-y-scroll'>
+                    <p onClick={getShoppingCarts} className='cursor-pointer'>Select</p>
+                        { shoppingCarts && shoppingCarts.map(cart => (
+                            <div className='absolute'>{cart.cart_name || 'not named'}</div>
+                        ))}
                     { shoppingCart.map((product, i) => {
                         const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
                         return (
