@@ -67,9 +67,8 @@ export default function Register({setLoginFlag}){
                 Register
               </button>
               <div className="text-black">
-                {"Already got an account? "} 
                 <button className="custom-button-forgotPw" onClick={login}>
-                  Login
+                  Sign In
                 </button>
 
               </div>

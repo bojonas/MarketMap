@@ -21,7 +21,7 @@ async function getUserId(token){
         if (err) {
             return 'Invalid token';
         }
-       return { message: 'This is the decoded data', user: decoded.user_id };
+       return { message: 'This is the user_id', user: decoded.user_id };
     });
 }
 

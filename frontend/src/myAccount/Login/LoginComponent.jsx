@@ -88,9 +88,8 @@ export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag
             Login
           </button>
           <div className="text-black">
-            {"Don't have an account yet? "}
-            <button className="custom-button-forgotPw" onClick={register}>
-              Register
+            <button className="custom-button-forgotPw mt-2" onClick={register}>
+              Create Account
             </button>
 
           </div>

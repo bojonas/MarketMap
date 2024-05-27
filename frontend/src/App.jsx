@@ -46,9 +46,9 @@ export default function App() {
           {tabs.map(({ tab, Component, permission }, index) => 
             (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Route key={index} path={`/${tab}`} element={<Component/>}/>
           )}
-          <Route path={"/login"} element={<Login setIsLoggedIn={setIsLoggedIn} setContent={setContent}/>}/>
-          <Route path={"/register"} element={<Register/>}/>
-          <Route path={"/my_profile"} element={<MyProfile/>}/>
+          {!isLoggedIn&&<Route path={"/login"} element={<Login setIsLoggedIn={setIsLoggedIn} setContent={setContent}/>}/>}
+          {!isLoggedIn&&<Route path={"/register"} element={<Register/>}/>}
+          {isLoggedIn&&<Route path={"/my_profile"} element={<MyProfile/>}/>}
         </Routes>
       </Router>
     </div>

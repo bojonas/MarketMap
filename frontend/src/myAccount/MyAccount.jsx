@@ -11,7 +11,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn, content, setConten
     const loadData = async () => {
       const user_id = localStorage.getItem("user_id");
       if(!user_id) return;
-      setContent("My Profile"); //todo: get_initials function
+      setContent("B"); //todo: get_initials function
       setIsLoggedIn(true);
     }
 
@@ -22,8 +22,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn, content, setConten
       else{
         setIsVisible(!isVisible);
         loadData();
-      }
-        
+      }  
     };
 
 
@@ -31,7 +30,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn, content, setConten
       const loadData = async () => {
           const user_id = localStorage.getItem("user_id")
           if(!user_id) return;
-          setContent("My Profile") //todo: get_initials function
+          setContent("B") //todo: get_initials function
           setIsLoggedIn(true)
       }
       loadData();
