@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {requestCheckCredentials} from '../../requests/loginRequests';
 
-export default function LoginComponent({setForgotPw}) {
+export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag, setContent}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorUser, setUserError] = useState(false);
@@ -20,11 +20,13 @@ export default function LoginComponent({setForgotPw}) {
       const result = await requestCheckCredentials(username, password)
       if(result.isLoggedIn){
         localStorage.setItem("user_id", result.user_id);
+        localStorage.setItem("permission", result.permission)
+        setIsLoggedIn(true);
         setErrorMessage("");
         setUsername("");
         setPassword("");
+        setContent("My Profile")
         navigate('/');
-
       }
       else{
         if(result.message === "Invalid Password"){
@@ -37,6 +39,10 @@ export default function LoginComponent({setForgotPw}) {
     
     
   };
+
+  const register = ()=>{
+    setLoginFlag(false);
+  }
 
   const forgotPassword = () => {
     return(
@@ -81,6 +87,14 @@ export default function LoginComponent({setForgotPw}) {
           <button className="custom-button" onClick={login}>
             Login
           </button>
+          <div className="text-black">
+            {"Don't have an account yet? "}
+            <button className="custom-button-forgotPw" onClick={register}>
+              Register
+            </button>
+
+          </div>
+          
           <button className="custom-button-forgotPw" onClick={forgotPassword}>
             Forgot Password?
           </button>

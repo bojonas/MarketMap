@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {requestCreateUser} from '../../requests/loginRequests';
 import { useNavigate } from "react-router-dom";
-export default function Register(){
+export default function Register({setLoginFlag}){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -21,6 +21,8 @@ export default function Register(){
         
         
     }
+
+    const login = ()=>{setLoginFlag(true)}
 
     return (
         <div className="flex items-center justify-center h-full">
@@ -64,6 +66,14 @@ export default function Register(){
               <button className="custom-button" onClick={register}>
                 Register
               </button>
+              <div className="text-black">
+                {"Already got an account? "} 
+                <button className="custom-button-forgotPw" onClick={login}>
+                  Login
+                </button>
+
+              </div>
+              
               
               {errorMessage?<p className="text-red-700">{errorMessage}</p>:null}
             </div>

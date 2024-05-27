@@ -28,6 +28,10 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(null);
   const springStyle = useSpring(activeTab || { width: 0 });
 
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [content, setContent] = useState("Login")
+
   const userPermission = 'admin';
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
@@ -36,7 +40,7 @@ export default function App() {
         <div className='relative flex items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
           <TabContext.Provider value={{ activeTab, setActiveTab }}>
             <div className='flex h-full w-[25svw] items-center pl-[1svw] bg-purple-custom'>
-              <MyAccount/>
+              <MyAccount isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} content={content} setContent={setContent}/>
             </div>
             <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end pl-[1svw] border-b-[0.5svh] border-gray-custom'>
               {tabs.map(({ name, tab, Icon, permission }) => 
@@ -50,7 +54,7 @@ export default function App() {
           {tabs.map(({ tab, Component, permission }, index) => 
             (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Route key={index} path={`/${tab}`} element={<Component/>}/>
           )}
-          <Route path={"/login"} element={<Login/>}/>
+          <Route path={"/login"} element={<Login setIsLoggedIn={setIsLoggedIn} setContent={setContent}/>}/>
           <Route path={"/register"} element={<Register/>}/>
           <Route path={"/my_profile"} element={<MyProfile/>}/>
         </Routes>

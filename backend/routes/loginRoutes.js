@@ -57,15 +57,16 @@ async function getPermission(user_id, postgres_pool) {
 async function checkUserLogin(username, password, postgres_pool){
   try{
     const query =`
-      SELECT user_id, password
-      FROM market_map.users
+      SELECT user_id, password, permission
+      FROM market_map.users u
+      INNER JOIN market_map.permissions p ON u.permission_id = p.permission_id
       WHERE username = $1
     `
     const result = await postgres_pool.query(query,[username])
 
     if(result.rows[0]){
       if(result.rows[0].password === password){
-        return {message: "User Logged in", isLoggedIn: true, user_id: result.rows[0].user_id}
+        return {message: "User Logged in", isLoggedIn: true, user_id: result.rows[0].user_id, permission: result.rows[0].permission}
       }
       return {message: 'Invalid Password', isLoggedIn: false}
     }

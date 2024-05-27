@@ -2,24 +2,28 @@ import DropdownMenu from "./DropdownMenu";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function MyAccount(){
+export default function MyAccount({isLoggedIn, setIsLoggedIn, content, setContent}){
 
   const navigate = useNavigate()
     const [isVisible, setIsVisible] = useState(false);
-    const [content, setContent] =  useState("Login")
-    const [isLoggedIn, setIsLoggedIn] = useState(true)
 
 
     const loadData = async () => {
       const user_id = localStorage.getItem("user_id");
       if(!user_id) return;
-      setContent("MP"); //todo: get_initials function
+      setContent("My Profile"); //todo: get_initials function
       setIsLoggedIn(true);
     }
 
     const toggleDropdown = () => {
+      if(content === "Login"){
+        login()
+      }
+      else{
         setIsVisible(!isVisible);
         loadData();
+      }
+        
     };
 
 
@@ -27,19 +31,14 @@ export default function MyAccount(){
       const loadData = async () => {
           const user_id = localStorage.getItem("user_id")
           if(!user_id) return;
-          setContent("MP") //todo: get_initials function
+          setContent("My Profile") //todo: get_initials function
           setIsLoggedIn(true)
       }
       loadData();
-  }, []);
+  }, [setIsLoggedIn, setContent]);
 
     const login = ()=>{
       navigate("/login")
-      setIsVisible(false)
-    }
-
-    const register=()=>{
-      navigate("/register")
       setIsVisible(false)
     }
 
@@ -49,7 +48,9 @@ export default function MyAccount(){
     }
     const logout = () =>{
       localStorage.removeItem("user_id")
+      localStorage.removeItem("permission")
       setIsLoggedIn(false)
+      setIsVisible(false)
       setContent("Login")
       navigate("/")
     }
@@ -63,8 +64,6 @@ export default function MyAccount(){
         {content}
       </button>
       <DropdownMenu isVisible={isVisible}>
-        {isLoggedIn?null:<div className="dropdown-content" onClick={login}>Login</div>}
-        {isLoggedIn?null: <div className="dropdown-content" onClick={register}>Register</div>}
         {isLoggedIn?<div className="dropdown-content" onClick={myProfile}>My Profile</div>:null}
         {isLoggedIn?<div className="dropdown-content" onClick={logout}>Logout</div>:null}
       </DropdownMenu>
