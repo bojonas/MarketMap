@@ -101,10 +101,10 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
             </div>
             <div className='absolute bottom-[11svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-3/4 rounded-xl'>
                 <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
-                <div className='relative flex flex-col items-center w-full h-full p-[1svh] bg-offwhite overflow-y-scroll'>
+                <div className='flex flex-col items-center w-full h-full p-[1svh] bg-offwhite overflow-y-scroll'>
                     <p onClick={getShoppingCarts} className='cursor-pointer'>Select</p>
                         { shoppingCarts && shoppingCarts.map(cart => (
-                            <div className='absolute'>{cart.cart_name || 'not named'}</div>
+                            <div className=''>{cart.cart_name || 'not named'}</div>
                         ))}
                     { shoppingCart.map((product, i) => {
                         const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
