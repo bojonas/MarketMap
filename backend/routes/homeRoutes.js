@@ -117,42 +117,42 @@ async function deleteHistory(user_id, market_id, postgres_pool) {
     }
 }
 
-async function postShoppingCart(cart_name, user_id, product_ids, postgres_pool) {
+async function postShoppingCart(cart_name, user_id, products, postgres_pool) {
     try { 
         const query = `
             INSERT INTO market_map.shopping_carts (cart_name, user_id)
             VALUES ($1, $2)
             RETURNING cart_id;`;
 
-        const result = await postgres_pool.query(query, [cart_name || null, user_id]);
+        const result = await postgres_pool.query(query, [cart_name, user_id]);
             
-        await insertProductsInCart(result.rows[0].cart_id, product_ids, postgres_pool)
-        return { message: 'Shopping Cart added successfully' }
+        if (products.length > 0 ) await insertProductsInCart(result.rows[0].cart_id, products, postgres_pool);
+        return result.rows[0];
     } catch (error) {
         console.error('Error posting shopping cart:', error);
     }
 }
 
-async function putShoppingCart(cart_id, cart_name, product_ids, postgres_pool) {
+async function putShoppingCart(cart_id, cart_name, products, postgres_pool) {
     try { 
-        if (cart_name) {
+        if (cart_name || cart_name === '') {
             const query = `
-                UPDATE INTO market_map.shopping_carts (user_id)
-                VALUES ($1)
-                RETURNING cart_id;`;
+                UPDATE  market_map.shopping_carts
+                SET cart_name = ($1)
+                WHERE cart_id = $2;`;
             
-            const result = await postgres_pool.query(query, [user_id]);
+            const result = await postgres_pool.query(query, [cart_name, cart_id]);
             return result.rows;
         } 
         
-        if (product_ids.length > 0) {
+        if (products.length > 0) {
             const query = `
                 DELETE FROM market_map.carts_products
                 WHERE cart_id = $1;`;
 
             await postgres_pool.query(query, [cart_id]);
 
-            await insertProductsInCart(cart_id, product_ids, postgres_pool);
+            await insertProductsInCart(cart_id, products, postgres_pool);
             return { message: 'Shopping Cart updated successfully' }
         }
     } catch (error) {
@@ -160,34 +160,57 @@ async function putShoppingCart(cart_id, cart_name, product_ids, postgres_pool) {
     }
 }
 
-async function insertProductsInCart(cart_id, product_ids, postgres_pool) {
+// helper function
+async function insertProductsInCart(cart_id, products, postgres_pool) {
     try {
-        const values = product_ids.map((id, i) => `(${cart_id}, $${i + 1})`).join(', ');
+        const values = products.map((product, i) => `(${cart_id}, $${2*i + 1}, $${2*i + 2})`).join(', ');
         const query = `
-            INSERT INTO market_map.carts_products (cart_id, product_id)
+            INSERT INTO market_map.carts_products (cart_id, product_id, product_count)
             VALUES ${values};`;
 
-        await postgres_pool.query(query, product_ids);
+        await postgres_pool.query(query, products.flatMap(product => [product.product_id, product.product_count]));
     } catch (error) {
         console.error('Error inserting products:', error);
     }
 }
 
-async function getShoppingCart(user_id, postgres_pool) {
+async function deleteShoppingCart(cart_id, postgres_pool) {
     try {
         const query = `
-            SELECT cart_id, cart_name, product_id, product_name_en
-            FROM market_map.carts_products cp
-            JOIN market_map.shopping_cart s ON s.cart_id = cp.cart_id
-            JOIN market_map.products p ON p.product_id = cp.product_id 
-            WHERE user_id = $1
-            ORDER BY cart_name;`;
+            DELETE FROM market_map.shopping_carts
+            WHERE cart_id = $1;`;
 
-        const result = await postgres_pool.query(query, [user_id]);
-        return result.rows;
+        const result = await postgres_pool.query(query, [cart_id]);
+        return result.rowCount;
     } catch (error) {
         console.error('Error querying history:', error);
     }
 }
 
-module.exports = { getMarkets, getProducts, putHistory, getHistory, deleteHistory, postShoppingCart, putShoppingCart, getShoppingCart }
+async function getShoppingCarts(user_id, postgres_pool) {
+    try {
+        const query = `
+            SELECT s.cart_id, cart_name, p.product_id, product_name_en
+            FROM market_map.shopping_carts s
+            LEFT JOIN market_map.carts_products cp ON s.cart_id = cp.cart_id
+            LEFT JOIN market_map.products p ON p.product_id = cp.product_id
+            WHERE user_id = $1
+            ORDER BY cart_name;`;
+
+        const result = await postgres_pool.query(query, [user_id]);
+
+        const groupedResult = result.rows.reduce((acc, row) => {
+            const key = `${row.cart_id}-${row.cart_name}`;
+            if (!acc[key]) acc[key] = { cart_id: row.cart_id, cart_name: row.cart_name, products: [] };
+            
+            if ('product_id' in row) acc[key].products.push({ product_id: row.product_id, product_name_en: row.product_name_en });
+            return acc;
+        }, {});
+
+        return Object.values(groupedResult);
+    } catch (error) {
+        console.error('Error querying history:', error);
+    }
+}
+
+module.exports = { getMarkets, getProducts, putHistory, getHistory, deleteHistory, postShoppingCart, putShoppingCart, getShoppingCarts, deleteShoppingCart }

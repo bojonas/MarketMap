@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import SearchBar from "../../atoms/SearchBar";
-import { requestGetProducts } from "../../requests/homeRequests";
+import { requestGetProducts, requestPostShoppingCart } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
 import { MapViewerContext } from "../../DimensionContext";
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
@@ -71,8 +71,9 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
         setShoppingCart(newShoppingCart);
     }    
     
-    const handleSave = () => {
-        
+    const saveShoppingCart = async () => {
+        if (shoppingCart.length === 0) return;
+        await requestPostShoppingCart('', localStorage.getItem('user_id'), shoppingCart.map(product => ({ product_id: product.product_id, product_count: product.count })))
     }
 
     return (
@@ -113,7 +114,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                     )}
                 </div>
                 <div className='flex flex-col w-full p-[5%] bg-offwhite overflow-y-scroll rounded-b-xl'>
-                    <div onClick={handleSave} className='flex items-center justify-center gap-[4%] bg-offwhite border-offwhite hover:text-purple-custom h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                    <div onClick={saveShoppingCart} className='flex items-center justify-center gap-[4%] bg-offwhite border-offwhite hover:text-purple-custom h-[5.5svh] text-[2.2svh] cursor-pointer'>
                         <FaRegSave size={25} />
                         <p>Save</p>
                     </div>
