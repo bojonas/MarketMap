@@ -25,7 +25,7 @@ export default function MyMarket() {
                 : editMode ? <MapEditor setEditMode={setEditMode}/>
                     : <React.Fragment>
                         <MapViewer market={market}/>
-                        <div onClick={() => setEditMode(true)} className='absolute flex right-[2.5svw] top-[2.2svw] p-[1svh] pl-[2svh] pr-[2svh] hover:text-purple-custom hover:bg-gray-custom rounded-full cursor-pointer'>
+                        <div onClick={() => setEditMode(true)} className='absolute flex right-[6.5svw] top-[3svw] hover:text-purple-custom cursor-pointer'>
                             <FaEdit size={24}/>
                             <p className='ml-[0.5svw]'>Edit</p>
                         </div>

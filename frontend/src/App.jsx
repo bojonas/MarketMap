@@ -9,15 +9,8 @@ import MyAccount from './myAccount/MyAccount';
 import Login from './myAccount/Login/Login';
 import Register from './myAccount/Register/Register';
 import MyProfile from './myAccount/MyProfile/MyProfile';
+import { tabPermission } from './tabPermission';
 
-// define permission for tabs
-const tabPermission = [
-  { name: 'Home', permission: 'all' },
-  { name: 'My Market', permission: 'market' },
-  { name: 'Login', permission: 'all' },
-  { name: 'Register', permission: 'all' },
-  { name: 'My Profile', permission: 'user' }
-];
 // custom navigation order
 const order = [];
 for (const tab of tabPermission) {
@@ -25,14 +18,13 @@ for (const tab of tabPermission) {
 }
 
 export default function App() {
+  const userPermission = localStorage.getItem('permission');
   const [activeTab, setActiveTab] = useState(null);
   const springStyle = useSpring(activeTab || { width: 0 });
-
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [content, setContent] = useState("Login")
 
-  const userPermission = 'admin';
   const tabs = sortObject(getTabs(tabPermission), order);
   return (
     <div className='flex flex-col w-[100svw] h-[100svh] bg-darkgray-custom'>

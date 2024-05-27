@@ -17,7 +17,7 @@ async function putMapLayout(user_id, layout, postgres_pool) {
 async function getMyMarket(user_id, postgres_pool) {
     try {
         const query = `
-            SELECT market_name, address, postal_code, city, country, map_layout 
+            SELECT market_name, address, postal_code, city, country, market_image_url, map_layout
             FROM market_map.markets m
             JOIN market_map.users_markets um ON m.market_id = um.market_id
             WHERE um.user_id = $1;`;

@@ -74,12 +74,12 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
         <div className='relative flex flex-col items-center w-full h-full bg-purple-custom gap-[5%]'>
             <div className='flex flex-col items-center w-full'>
                 <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search products...'} contrast='purple'/>
-                { searchClicked && <div className='flex flex-col gap-[0.3svh] z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-sm'>
+                { searchClicked && <div className='flex flex-col z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-sm'>
                     { filteredProducts.map(product => {
                          const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
                         return !marketProduct ? null : (
                         <div key={`filtered-${product.product_id}`} onClick={() => handleShoppingCart(product)} 
-                            className='h-[5svh] p-[1svh] flex gap-1 items-center text-black bg-darkoffwhite border-white border-[0.3svh] rounded-sm hover:bg-offwhite hover:border-purple-custom hover:cursor-pointer'>
+                            className='h-[5svh] p-[1svh] flex items-center text-black bg-darkoffwhite border-l-[0.5svh] border-darkoffwhite hover:bg-offwhite hover:border-l-purple-custom hover:cursor-pointer'>
                             <p className='font-bold'>{product.product_name_en}</p>
                         </div>
                     )}
@@ -108,7 +108,11 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                     )}
                 </div>
             </div>
-            { removeMarket && <IoArrowBack onClick={removeMarket} size={45} className='text-white bg-darkgray-custom absolute bottom-[2svh] rounded-full p-[2%] border-[0.3svh] border-purple-custom hover:border-offwhite'/>}
+            { removeMarket && 
+            <div onClick={removeMarket} className='custom-button absolute bottom-[2svh] flex items-center justify-center gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                <IoArrowBack size={25}/>
+                <p>Back</p>
+            </div>}
         </div>
     );
 }

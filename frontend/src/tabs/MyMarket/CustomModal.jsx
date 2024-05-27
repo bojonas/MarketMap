@@ -38,7 +38,7 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
           width: '40svw',
           height: '50svh',
           top: '19%',
-          left: '51%',
+          left: '47%',
           display: 'flex',
           flexDirection: 'column',
           content: 'center',
@@ -55,7 +55,7 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
             <div className='flex gap-[2%] items-center justify-center w-[80%]'>
                 <p className='absolute left-[6svw] font-bold'>Width:</p>
                 <button className='add_remove_button p-0 leading-none' onClick={() => { setInputColumns(inputColumns > 1 ? inputColumns - 1 : inputColumns) }}>-</button>
-                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center hover:border-purple-custom outline-none' 
+                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] text-center hover:border-purple-custom outline-none' 
                   value={inputColumns <= 130 ? inputColumns : 130} 
                   onChange={(e) => {
                     const value = Number(e.target.value > 0 ? e.target.value : 0);
@@ -67,7 +67,7 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
             <div className='flex gap-[2%] items-center w-[80%] justify-center'>
                 <p className='absolute left-[6svw] font-bold'>Height:</p>
                 <button className='add_remove_button p-0 leading-none' onClick={() => setInputRows(inputRows > 1 ? inputRows - 1 : inputRows)}>-</button>
-                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] shadow-md shadow-slate-700 text-center hover:border-purple-custom outline-none' 
+                <input className='bg-gray-custom border-2 border-white rounded-lg w-[50%] text-center hover:border-purple-custom outline-none' 
                   value={inputRows <= 130 ? inputRows : 130} 
                   onChange={(e) => {
                     const value = Number(e.target.value > 0 ? e.target.value : 0);
@@ -81,13 +81,13 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
         <div className='w-full h-[40%] flex flex-col gap-5 justify-center text-center items-center'>
           <div className='flex items-center justify-center w-[70%]'>
             <p className='absolute left-[8svw] font-bold'>Duplicate Mode:</p> 
-            <p onClick={changeDuplicateMode} className={`${duplicateMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700 p-1 text-sm hover:border-purple-custom hover:cursor-pointer`}>
+            <p onClick={changeDuplicateMode} className={`${duplicateMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg p-[2%] pr-[3%] pl-[3%] text-sm hover:border-purple-custom hover:cursor-pointer`}>
                 {duplicateMode ? 'On' : 'Off'}
             </p>
           </div>
           <div className='flex items-center justify-center w-[70%]'>
             <p className='absolute left-[8svw] font-bold'>Delete Mode:</p>
-            <p onClick={changeDeleteMode} className={`${deleteMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg w-[15%] shadow-md shadow-slate-700 p-1 text-sm hover:border-purple-custom hover:cursor-pointer`}>
+            <p onClick={changeDeleteMode} className={`${deleteMode ? 'text-green-500' : 'text-red-500'} bg-gray-custom border-2 border-white rounded-lg p-[2%] pr-[3%] pl-[3%] text-sm hover:border-purple-custom hover:cursor-pointer`}>
                 {deleteMode ? 'On' : 'Off'}
             </p>
           </div>

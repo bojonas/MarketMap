@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
 import SearchBar from '../../atoms/SearchBar'
 import { requestGetMarkets, requestUpdateHistory } from "../../requests/homeRequests";
@@ -72,19 +72,19 @@ export default function Home(){
         <React.Fragment>
             { market ? <MapViewer market={market} setMarket={setMarket}/>
             : <div className='relative flex flex-col items-center text-center w-full h-full'>
-                <div className='flex flex-col items-center text-center w-1/2 h-fit p-[2%] pb-0'>
+                <div className='flex flex-col items-center text-center w-2/5 h-fit p-[2%] pb-0'>
                     <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
                 </div>
-                { searchClicked && <div className='z-10 flex flex-col gap-[0.5svh] p-[1svh] w-[32%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
+                { searchClicked && <div className='z-10 flex flex-col gap-[1%] p-[1svh] w-[24%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
                     { filteredMarkets.map((market, i) => (
                         <div key={i} onClick={() => setMarket(market)} 
-                            className='h-[7svh] p-[5%] flex gap-[2%] items-center text-black text-[2svh] bg-offwhite rounded-lg border-[0.3svh] hover:border-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
-                            {'market_image_url' in market && <div className='rounded-lg p-[5%] mr-[2%] bg-gray-custom border-darkgray-custom border-[0.4svh]'></div>}
-                            <p className=' ont-bold'>{market.market_name}</p>
-                            <p className='ml-[4%]'>{market.address},</p>
-                            <p>{market.postal_code},</p>
-                            <p>{market.city},</p>
-                            <p>{market.country}</p>
+                            className='h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-black text-[2svh] bg-offwhite rounded-lg border-offwhite border-l-[0.6svh] hover:border-l-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
+                            <div className='flex items-center w-[40%] h-full gap-[6%]'>
+                                { market.market_image_url && <div className='flex items-center justify-center rounded-lg p-[3%] w-[2.5svw] h-[5svh] bg-gray-custom border-darkgray-custom border-[0.4svh]'><img alt='' src={market.market_image_url}/></div>}
+                                <p className='font-bold text-[2.1svh]'>{market.market_name}</p>
+                            </div>
+                            <p className='ml-[3%]'>{market.address},</p>
+                            <p>{market.postal_code}</p>
                         </div>
                     ))}
                 </div>}

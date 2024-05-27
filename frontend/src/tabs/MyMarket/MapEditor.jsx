@@ -76,12 +76,19 @@ export default function MapEditor({ setEditMode }) {
     <MapEditorContext.Provider value={contextValue}>
       <div className='flex h-full w-full'>
         <Toolbar setEditMode={setEditMode}/>
-        <div className='min-w-[75svw] max-w-[75svw] flex flex-col content-center justify-center items-center text-center' 
-          style={{ cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
-          <p className='text-3xl font-bold mb-[3svh]'>{market.market_name}</p>
-          <Layout zoom={zoom}/>
+        <div className='flex flex-col items-center justify-center gap-[1%]' style={{ cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
+          <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
+            { market.market_image_url && 
+            <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
+                <img alt='' src={market.market_image_url}/>
+            </div>}
+            <p className='text-3xl font-bold'>{market.market_name}</p>
+          </div>
+          <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
+            <Layout zoom={zoom}/>
+          </div>
         </div>
-        <div onClick={() => setSettingsIsOpen(true)} className='flex absolute h-fit w-fit p-[1svh] right-[2.5svw] top-[2.2svw] hover:bg-gray-custom rounded-full cursor-pointer hover:text-purple-custom'>
+        <div onClick={() => setSettingsIsOpen(true)} className='absolute flex right-[6.5svw] top-[3svw] hover:text-purple-custom cursor-pointer'>
           <IoMdSettings size={24}/>
           <p className='ml-[0.5svw]'>Settings</p>
         </div>

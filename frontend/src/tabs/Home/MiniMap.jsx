@@ -1,15 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 
 export default function MiniMap({ layout, market, setMarket }) {
+  const [dimensions, setDimensions] = useState({ width: '10svw', height: '10svh' });
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
-  const scale = Math.min(width/ layout[0].length, height / layout.length);
+  const scale = Math.min(width/ layout[0].length, height / layout.length);  
+
+    // update dimensions after initial render
+    useEffect(() => {
+      setDimensions({ width: 'fit-content', height: 'fit-content' });
+    }, []);  
+  
 
   return (
-    <div className='flex flex-col justify-center items-center h-full w-[15svh]'>
-        <div ref={ref} className='w-[10svw] h-[10svh]'>
+    <div className='flex items-center justify-center w-[30%]'>
+        <div ref={ref} style={dimensions}>
           <div onClick={() => setMarket(market)}className='grid w-fit h-fit bg-darkgray-custom overflow-hidden rounded-xl cursor-pointer hover:border-purple-custom border-[0.4svh]' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 

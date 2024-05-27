@@ -34,8 +34,14 @@ export default function MapViewer({ market, setMarket }) {
       <MapViewerContext.Provider value={{ shoppingCart, layout, productsInMarket, colors }}>
         <div className='flex w-full h-full'>
           <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null}/>
-          <div className='flex flex-col items-center justify-center'>
-            <p className='text-3xl font-bold mb-[3svh]'>{market.market_name}</p>
+          <div className='flex flex-col items-center justify-center gap-[1%]'>
+            <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
+              { market.market_image_url && 
+              <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
+                  <img alt='' src={market.market_image_url}/>
+              </div>}
+              <p className='text-3xl font-bold'>{market.market_name}</p>
+            </div>
             <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
               <LayoutViewer zoom={zoom}/>
             </div>
