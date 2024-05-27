@@ -152,6 +152,23 @@ app.post('/post_shopping_carts', async (req, res) => {
     }
 });
 
+app.post('/get_shopping_carts', async (req, res) => {
+    const { error } = UserId.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    
+    const { user_id } = req.body;
+    try {
+        const result = await getHistory(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
 app.put('/put_shopping_carts', async (req, res) => {
     const { error } = ShoppinCartPut.validate(req.body);
     if (error) {
@@ -168,6 +185,7 @@ app.put('/put_shopping_carts', async (req, res) => {
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
 });
+
 
 
 /**** Login Routes ****/

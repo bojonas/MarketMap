@@ -173,4 +173,21 @@ async function insertProductsInCart(cart_id, product_ids, postgres_pool) {
     }
 }
 
-module.exports = { getMarkets, getProducts, putHistory, getHistory, deleteHistory, postShoppingCart, putShoppingCart }
+async function getShoppingCart(user_id, postgres_pool) {
+    try {
+        const query = `
+            SELECT cart_id, cart_name, product_id, product_name_en
+            FROM market_map.carts_products cp
+            JOIN market_map.shopping_cart s ON s.cart_id = cp.cart_id
+            JOIN market_map.products p ON p.product_id = cp.product_id 
+            WHERE user_id = $1
+            ORDER BY cart_name;`;
+
+        const result = await postgres_pool.query(query, [user_id]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error querying history:', error);
+    }
+}
+
+module.exports = { getMarkets, getProducts, putHistory, getHistory, deleteHistory, postShoppingCart, putShoppingCart, getShoppingCart }

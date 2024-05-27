@@ -79,7 +79,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
         <div className='relative flex flex-col items-center w-full h-full bg-purple-custom gap-[5%]'>
             <div className='flex flex-col items-center w-full'>
                 <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search products...'} contrast='purple'/>
-                { searchClicked && <div className='flex flex-col z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-sm'>
+                { searchClicked && <div className='flex flex-col z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-xl'>
                     { filteredProducts.map(product => {
                          const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
                         return !marketProduct ? null : (
