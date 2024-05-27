@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const Joi = require('joi');
+
+
 // import connection functions
 const openPostgresConnection = require('./connect/openPostgresConnection');
 const closePostgresConnection = require('./connect/closePostgresConnection');
