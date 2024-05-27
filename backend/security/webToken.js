@@ -12,6 +12,24 @@ async function checkToken(token){
         if (err) {
             return 'Invalid token';
         }
-       return { message: 'This is a protected route', user: decoded };
+       return { message: 'This is the decoded data', user: decoded };
+    });
+}
+
+async function getUserId(token){
+    jwt.verify(token, secretKey, (err, decoded) => {
+        if (err) {
+            return 'Invalid token';
+        }
+       return { message: 'This is the decoded data', user: decoded.user_id };
+    });
+}
+
+async function getPermission(token){
+    jwt.verify(token, secretKey, (err, decoded) => {
+        if (err) {
+            return 'Invalid token';
+        }
+       return { message: 'This is the decoded data', user: decoded.permission };
     });
 }
