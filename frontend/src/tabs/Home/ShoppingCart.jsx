@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef, useContext } from 'react';
 import SearchBar from "../../atoms/SearchBar";
 import { requestGetProducts } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
 import { MapViewerContext } from "../../DimensionContext";
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { IoArrowBack } from "react-icons/io5";
+import { FaRegSave } from "react-icons/fa";
 
 export default function ShoppingCart({ setShoppingCart, removeMarket }) {
     const [search, setSearch] = useState('');
@@ -69,6 +70,10 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
         }
         setShoppingCart(newShoppingCart);
     }    
+    
+    const handleSave = () => {
+        
+    }
 
     return (
         <div className='relative flex flex-col items-center w-full h-full bg-purple-custom gap-[5%]'>
@@ -88,24 +93,30 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
             </div>
             <div className='absolute bottom-[11svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-3/4 rounded-xl'>
                 <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
-                <div className='flex flex-col justify-start items-start w-full h-full p-[1svh] bg-offwhite overflow-y-scroll rounded-b-xl'>
+                <div className='flex flex-col items-center w-full h-full p-[1svh] bg-offwhite overflow-y-scroll'>
                     { shoppingCart.map((product, i) => {
                         const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
                         return (
-                        <div key={`cart-${product.product_id}`} className='flex justify-between gap-[5%] p-[2svh] w-full'>
-                        <div className='flex gap-[5%] w-4/5'>
-                            <p className='font-bold'>{i+1}.</p>
-                            <p>{product.product_name_en}</p>
-                        </div>
-                        <div className='flex gap-[30%] w-1/5'>
-                            <p>{product.count}x</p>
-                            { marketProduct && <p className='rounded-full w-fit h-fit p-[15%] self-center'
-                            style={{ backgroundColor: colors[getLayoutIndex(layout)[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
-                        </div>
-                        </div>
+                            <div key={`cart-${product.product_id}`} className='flex justify-between p-[5%] w-full'>
+                                <div className='flex gap-[5%] w-3/4'>
+                                    <p className='font-bold'>{i+1}.</p>
+                                    <p>{product.product_name_en}</p>
+                                </div>
+                                <div className='flex gap-[20%] w-1/4'>
+                                    <p>{product.count}x</p>
+                                    { marketProduct && <div className='rounded-full w-fit h-fit p-[12%] self-center'
+                                    style={{ backgroundColor: colors[getLayoutIndex(layout)[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
+                                </div>
+                            </div>
                         );
                     }
                     )}
+                </div>
+                <div className='flex flex-col w-full p-[5%] bg-offwhite overflow-y-scroll rounded-b-xl'>
+                    <div onClick={handleSave} className='flex items-center justify-center gap-[4%] bg-offwhite border-offwhite hover:text-purple-custom h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                        <FaRegSave size={25} />
+                        <p>Save</p>
+                    </div>
                 </div>
             </div>
             { removeMarket && 

@@ -80,7 +80,7 @@ export default function MapEditor({ setEditMode }) {
           <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
             { market.market_image_url && 
             <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
-                <img alt='' src={market.market_image_url}/>
+                <img draggable='false' alt='' src={market.market_image_url}/>
             </div>}
             <p className='text-3xl font-bold'>{market.market_name}</p>
           </div>

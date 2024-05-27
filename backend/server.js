@@ -40,7 +40,7 @@ process.on('SIGINT', async () => {
 /**** Home Routes ****/
 
 // import home routes
-const { getMarkets, getProducts, putHistory, getHistory, deleteHistory } = require('./routes/homeRoutes');
+const { getMarkets, getProducts, putHistory, getHistory, deleteHistory, postShoppingCart, putShoppingCart } = require('./routes/homeRoutes');
 
 const History = Joi.object({
     timestamp: Joi.date().iso().required(),
@@ -51,6 +51,17 @@ const History = Joi.object({
 const UserIdMarketId = Joi.object({
     user_id: Joi.number().required(),
     market_id: Joi.number().required(),
+});
+
+const ShoppinCartPost = Joi.object({
+    user_id: Joi.number().required(),
+    product_ids: Joi.array().required(),
+});
+
+const ShoppinCartPut = Joi.object({
+    cart_id: Joi.string().required(),
+    cart_name: Joi.string(),
+    product_ids: Joi.array(),
 });
 
 app.get('/get_markets', async (req, res) => {
@@ -123,6 +134,41 @@ app.post('/delete_histories', async (req, res) => {
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
 });
+
+app.post('/post_shopping_carts', async (req, res) => {
+    const { error } = ShoppinCartPost.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { user_id, product_ids } = req.body;
+    try {
+        const result = await postShoppingCart(user_id, product_ids, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+app.put('/put_shopping_carts', async (req, res) => {
+    const { error } = ShoppinCartPut.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { cart_id, cart_name, product_ids } = req.body;
+    try {
+        const result = await putShoppingCart(cart_id, cart_name, product_ids, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
 
 /**** Login Routes ****/
 

@@ -36,8 +36,8 @@ export default function SearchHistory({ user_id, markets, setMarket }) {
                             <MiniMap layout={market.map_layout} market={market} setMarket={setMarket}/>
                             <div className='flex items-center justify-center gap-[10%] w-[35%]'>
                                 { market.market_image_url && 
-                                <div className='flex items-center justify-center rounded-lg p-[3%] w-[2.5svw] h-[5svh] bg-gray-custom border-darkgray-custom border-[0.4svh]'>
-                                    <img alt='' src={market.market_image_url}/>
+                                <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] border-[0.5svh] border-darkgray-custom bg-gray-custom'>
+                                    <img draggable='false' alt='' src={market.market_image_url}/>
                                 </div>
                                 }
                                 <p className='font-bold'>{market.market_name}</p>

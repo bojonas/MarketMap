@@ -80,7 +80,7 @@ export default function Home(){
                         <div key={i} onClick={() => setMarket(market)} 
                             className='h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-black text-[2svh] bg-offwhite rounded-lg border-offwhite border-l-[0.6svh] hover:border-l-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
                             <div className='flex items-center w-[40%] h-full gap-[6%]'>
-                                { market.market_image_url && <div className='flex items-center justify-center rounded-lg p-[3%] w-[2.5svw] h-[5svh] bg-gray-custom border-darkgray-custom border-[0.4svh]'><img alt='' src={market.market_image_url}/></div>}
+                                { market.market_image_url && <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] bg-gray-custom border-darkgray-custom border-[0.5svh]'><img draggable='false' alt='' src={market.market_image_url}/></div>}
                                 <p className='font-bold text-[2.1svh]'>{market.market_name}</p>
                             </div>
                             <p className='ml-[3%]'>{market.address},</p>
