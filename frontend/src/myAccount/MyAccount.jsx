@@ -2,9 +2,10 @@ import DropdownMenu from "./DropdownMenu";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function MyAccount({isLoggedIn, setIsLoggedIn, content, setContent}){
+export default function MyAccount({isLoggedIn, setIsLoggedIn}){
 
   const navigate = useNavigate()
+  const [content, setContent] = useState("Login");
     const [isVisible, setIsVisible] = useState(false);
 
 
@@ -34,7 +35,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn, content, setConten
           setIsLoggedIn(true)
       }
       loadData();
-  }, [setIsLoggedIn, setContent]);
+  }, [isLoggedIn, setIsLoggedIn, setContent]);
 
     const login = ()=>{
       navigate("/login")

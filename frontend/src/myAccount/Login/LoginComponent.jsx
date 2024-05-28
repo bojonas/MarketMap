@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {requestCheckCredentials} from '../../requests/loginRequests';
 
-export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag, setContent}) {
+export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorUser, setUserError] = useState(false);
@@ -25,7 +25,6 @@ export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag
         setErrorMessage("");
         setUsername("");
         setPassword("");
-        setContent("My Profile")
         navigate('/');
       }
       else{
