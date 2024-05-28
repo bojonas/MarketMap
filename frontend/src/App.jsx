@@ -22,8 +22,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(null);
   const springStyle = useSpring(activeTab || { width: 0 });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [content, setContent] = useState("Login")
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [content, setContent] = useState("Login");
 
   const tabs = sortObject(getTabs(tabPermission), order);
   return (

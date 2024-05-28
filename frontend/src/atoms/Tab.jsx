@@ -2,9 +2,8 @@ import React, { useContext, useRef, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { TabContext } from "../DimensionContext";
 
-export default function Tab({ name, Icon, tab }) {
-  let location = useLocation();
-  let isActive = location.pathname === `/${tab}`;
+const Tab = React.memo(({ name, Icon, tab }) => {
+  const isActive = useLocation().pathname === `/${tab}`;
   const { setActiveTab } = useContext(TabContext);
   const tabRef = useRef(null);
 
@@ -34,4 +33,6 @@ export default function Tab({ name, Icon, tab }) {
       : <p style={{ color: isActive ? '' : '#707070' }}>{name}</p> }
     </NavLink>
   );
-}
+});
+
+export default Tab;
