@@ -7,7 +7,7 @@ import { colors } from './colors';
 
 export default function MapViewer({ market, setMarket }) {
     const layout = market.map_layout
-    const [shoppingCart, setShoppingCart] = useState([]);
+    const [shoppingCart, setShoppingCart] = useState({ cart_name : '' , products: [] });
     const productsInMarket = findProducts(layout);
     const [zoom, setZoom] = useState(1);
 

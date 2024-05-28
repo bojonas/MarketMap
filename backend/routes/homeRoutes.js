@@ -190,12 +190,13 @@ async function deleteShoppingCart(cart_id, postgres_pool) {
 async function getShoppingCarts(user_id, postgres_pool) {
     try {
         const query = `
-            SELECT s.cart_id, cart_name, p.product_id, product_name_en
+            SELECT s.cart_id, cart_name, p.product_id, product_name_en, product_count
             FROM market_map.shopping_carts s
             LEFT JOIN market_map.carts_products cp ON s.cart_id = cp.cart_id
             LEFT JOIN market_map.products p ON p.product_id = cp.product_id
             WHERE user_id = $1
-            ORDER BY cart_name;`;
+            GROUP BY s.cart_id, cart_name, p.product_id, product_name_en, product_count
+            ORDER BY count(p.product_id) DESC;`;
 
         const result = await postgres_pool.query(query, [user_id]);
 
@@ -203,10 +204,9 @@ async function getShoppingCarts(user_id, postgres_pool) {
             const key = `${row.cart_id}-${row.cart_name}`;
             if (!acc[key]) acc[key] = { cart_id: row.cart_id, cart_name: row.cart_name, products: [] };
             
-            if ('product_id' in row) acc[key].products.push({ product_id: row.product_id, product_name_en: row.product_name_en });
+            if (row.product_id) acc[key].products.push({ product_id: row.product_id, product_name_en: row.product_name_en, product_count: row.product_count });
             return acc;
         }, {});
-
         return Object.values(groupedResult);
     } catch (error) {
         console.error('Error querying history:', error);

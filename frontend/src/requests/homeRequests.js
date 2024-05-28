@@ -83,7 +83,7 @@ export async function requestPostShoppingCart(cart_name, user_id, products) {
   
   try {
     const response = await axiosInstance.post('/post_shopping_carts', data);
-    return response.data
+    return response.data.cart_id
   } catch (error) {
     console.error('Error posting shopping cart:', error);
   }

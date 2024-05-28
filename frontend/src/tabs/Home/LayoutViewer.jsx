@@ -51,7 +51,7 @@ export default function LayoutViewer({ zoom }) {
                     }}
                   />
                   { productsInMarket.filter(product => product.row === i && product.column === j).map(product => {
-                    const shoppingCartProduct = shoppingCart.find(marketProduct => marketProduct.product_id === product.product_id);
+                    const shoppingCartProduct = shoppingCart.products.find(marketProduct => marketProduct.product_id === product.product_id);
                     return !shoppingCartProduct ? null : (
                     <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
                       style={{ 
