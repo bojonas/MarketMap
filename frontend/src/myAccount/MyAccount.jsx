@@ -6,32 +6,14 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
   const navigate = useNavigate()
     const [isVisible, setIsVisible] = useState(false);
 
-
-    const loadData = async () => {
-      const user_id = localStorage.getItem("user_id");
-      if(!user_id) return;
-      setIsLoggedIn(true);
-    }
-
     const toggleDropdown = () => {
       if(!isLoggedIn){
         login()
       }
       else{
         setIsVisible(!isVisible);
-        loadData();
       }  
     };
-
-
-    useEffect(() => {
-      const loadData = async () => {
-          const user_id = localStorage.getItem("user_id")
-          if(!user_id) return;
-          setIsLoggedIn(true)
-      }
-      loadData();
-  }, [setIsLoggedIn]);
 
     const login = ()=>{
       navigate("/login")

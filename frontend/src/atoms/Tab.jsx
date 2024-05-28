@@ -2,7 +2,8 @@ import React, { useContext, useRef, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { TabContext } from "../DimensionContext";
 
-const Tab = React.memo(({ name, Icon, tab }) => {
+export default function Tab({ name, Icon, tab }) {
+  const user_id = localStorage.getItem('user_id')
   const isActive = useLocation().pathname === `/${tab}`;
   const { setActiveTab } = useContext(TabContext);
   const tabRef = useRef(null);
@@ -14,7 +15,7 @@ const Tab = React.memo(({ name, Icon, tab }) => {
         width: tabRef.current.offsetWidth
       });
     }
-  }, [isActive, setActiveTab]);
+  }, [isActive, setActiveTab, user_id]);
 
   return (
     <NavLink to={`/${tab}`} className='custom-button mr-[0.75svw] ml-[0.75svw] w-fit h-fit text-sm border-none rounded-xl' 
@@ -33,6 +34,4 @@ const Tab = React.memo(({ name, Icon, tab }) => {
       : <p style={{ color: isActive ? '' : '#707070' }}>{name}</p> }
     </NavLink>
   );
-});
-
-export default Tab;
+};
