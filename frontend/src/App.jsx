@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useSpring, animated } from 'react-spring';
-import Tab from './atoms/Tab';
 import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
-import { TabContext } from './DimensionContext';
-import MyAccount from './myAccount/MyAccount';
 import Login from './myAccount/Login/Login';
 import Register from './myAccount/Register/Register';
 import MyProfile from './myAccount/MyProfile/MyProfile';
 import { tabPermission } from './tabPermission';
+import Navbar from './atoms/Navbar';
 
 // custom navigation order
 const order = [];
@@ -19,25 +16,13 @@ for (const tab of tabPermission) {
 
 export default function App() {
   const userPermission = localStorage.getItem('permission');
-  const [activeTab, setActiveTab] = useState(null);
-  const springStyle = useSpring(activeTab || { width: 0 });
-
   const [isLoggedIn, setIsLoggedIn] = useState(userPermission ? true : false);
-
   const tabs = sortObject(getTabs(tabPermission), order);
-  console.log(tabs)
+
   return (
     <div className='flex flex-col w-[100svw] h-[100svh] bg-darkgray-custom'>
       <Router>
-        <div className='relative flex items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
-          <div className='flex h-full w-[25svw] items-center pl-[1svw] bg-purple-custom'>
-            <MyAccount isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-          </div>
-          <TabContext.Provider value={{ activeTab, setActiveTab }}>
-           
-          </TabContext.Provider>
-          <animated.div className='absolute h-[0.5svh] -bottom-0 bg-purple-custom rounded-lg' style={{ ...springStyle }}/>
-        </div>
+        <Navbar tabs={tabs} userPermission={userPermission} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>
           {tabs.map(({ tab, Component, permission }, index) => 
             (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Route key={index} path={`/${tab}`} element={<Component/>}/>

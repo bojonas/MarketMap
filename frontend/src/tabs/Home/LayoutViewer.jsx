@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
-import { MapViewerContext } from '../../DimensionContext';
+import { MapViewerContext } from '../../context/MapViewerContext';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
 
 export default function LayoutViewer({ zoom }) {

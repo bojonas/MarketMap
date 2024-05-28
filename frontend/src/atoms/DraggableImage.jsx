@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { MapEditorContext } from "../DimensionContext";
+import { MapEditorContext } from "../context/MapEditorContext";
 
 export default function DraggableImage({ alt, source, cellCoordinates, setDroppedItem, duplicate }) {
   const [isDuplicating, setisDuplicating] = useState(true);

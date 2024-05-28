@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import SearchBar from "../../atoms/SearchBar";
 import { requestGetProducts, requestPostShoppingCart, requestGetShoppingCarts, requestUpdateShoppingCart } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
-import { MapViewerContext } from "../../DimensionContext";
+import { MapViewerContext } from "../../context/MapViewerContext";
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";

@@ -4,8 +4,8 @@ import Toolbar from './Toolbar';
 import { IoMdSettings } from "react-icons/io";
 import CustomModal from './CustomModal';
 import ProductModal from './ProductModal';
-import { MapEditorContext } from '../../DimensionContext';
-import { MyMarketContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../context/MapEditorContext';
+import { MyMarketContext } from '../../context/MyMarketContext';
 import { useChangeDragMode } from '../../hooks/useChangeDragMode';
 
 export default function MapEditor({ setEditMode }) {

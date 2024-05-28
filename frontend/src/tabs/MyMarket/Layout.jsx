@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Cell from './Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import { useContext } from 'react';
-import { MapEditorContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function Layout({ zoom }) {
   const ref = useRef(null);

@@ -3,7 +3,7 @@ import { requestGetMyMarket } from "../../requests/myMarketRequests";
 import MapViewer from "../Home/MapViewer";
 import MapEditor from "./MapEditor";
 import { FaEdit } from "react-icons/fa";
-import { MyMarketContext } from "../../DimensionContext";
+import { MyMarketContext } from "../../context/MyMarketContext";
 
 export default function MyMarket() {
     const user_id = localStorage.getItem('user_id');

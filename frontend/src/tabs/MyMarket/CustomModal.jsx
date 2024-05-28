@@ -2,7 +2,7 @@ import Modal from 'react-modal';
 import { useContext, useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import { addRow, addColumn, removeRow, removeColumn } from '../../helper/editLayout'
-import { MapEditorContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
   const { layout, setLayout, duplicateMode, deleteMode } = useContext(MapEditorContext); 

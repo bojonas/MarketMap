@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import LayoutViewer from './LayoutViewer';
 import ShoppingCart from './ShoppingCart';
 import { findProducts } from '../../helper/findProducts';
-import { MapViewerContext } from '../../DimensionContext';
+import { MapViewerContext } from '../../context/MapViewerContext';
 import { colors } from './colors';
 
 export default function MapViewer({ market, setMarket }) {

@@ -1,11 +1,9 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { TabContext } from "../DimensionContext";
 
-export default function Tab({ name, Icon, tab }) {
+export default function Tab({ name, Icon, tab, setActiveTab }) {
   const user_id = localStorage.getItem('user_id')
   const isActive = useLocation().pathname === `/${tab}`;
-  const { setActiveTab } = useContext(TabContext);
   const tabRef = useRef(null);
 
   useEffect(() => {

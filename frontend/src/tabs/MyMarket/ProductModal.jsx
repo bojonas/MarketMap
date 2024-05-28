@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import Modal from 'react-modal';
 import debounce from 'lodash.debounce';
-import { MapEditorContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../context/MapEditorContext';
 import SearchBar from '../../atoms/SearchBar';
 import { requestGetProducts } from '../../requests/homeRequests';
 

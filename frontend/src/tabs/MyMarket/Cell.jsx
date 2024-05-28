@@ -1,7 +1,7 @@
 import React, { useState, useContext, memo } from 'react';
 import DraggableImage from "../../atoms/DraggableImage";
 import LoadImage from "../../atoms/LoadImage"
-import { MapEditorContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../context/MapEditorContext';
 import { isEqualArray } from '../../helper/isEqualArray';
 
 const Cell = memo(({ type, scale, cellCoordinates }) => {

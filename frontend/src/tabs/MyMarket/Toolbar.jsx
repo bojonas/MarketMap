@@ -3,7 +3,8 @@ import { getItemImages } from "../../helper/getItemImages";
 import SearchBar from "../../atoms/SearchBar";
 import DraggableImage from '../../atoms/DraggableImage';
 import { requestUpdateMapLayout } from '../../requests/myMarketRequests';
-import { MapEditorContext, MyMarketContext } from '../../DimensionContext';
+import { MapEditorContext } from '../../context/MapEditorContext';
+import { MyMarketContext } from '../../context/MyMarketContext';
 import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 
