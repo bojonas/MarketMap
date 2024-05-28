@@ -142,7 +142,6 @@ async function putShoppingCart(cart_id, cart_name, products, postgres_pool) {
                 WHERE cart_id = $2;`;
             
             const result = await postgres_pool.query(query, [cart_name, cart_id]);
-            return result.rows;
         } 
         
         if (products.length > 0) {
