@@ -93,30 +93,28 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
     const saveShoppingCart = async () => {
         if (shoppingCart.products.length === 0) return;
         const name = cartName.trim();
+        const newShoppingCart = { ...shoppingCart, cart_name: name }
         if ('cart_id' in shoppingCart) {    
-            setShoppingCart({ ...shoppingCart, cart_name: name })
             // filter shopping carts
             const filteredShoppingCart = shoppingCarts.filter(cart => cart.cart_id === shoppingCart.cart_id)[0];
             // shopping carts are different
-            if (JSON.stringify(shoppingCart) !== JSON.stringify(filteredShoppingCart)) {
-                return await requestUpdateShoppingCart(
-                    shoppingCart.cart_id, 
-                    cartName.trim(), 
-                    shoppingCart.products.map(product => ({ product_id: product.product_id, product_count: product.product_count }))
+            if (JSON.stringify(newShoppingCart) !== JSON.stringify(filteredShoppingCart)) {
+                await requestUpdateShoppingCart(
+                    newShoppingCart.cart_id, 
+                    name, 
+                    newShoppingCart.products.map(product => ({ product_id: product.product_id, product_count: product.product_count }))
                 );
-            }
-            return;
+                setShoppingCart(newShoppingCart);
+                setShoppingCarts(shoppingCarts.map(cart => cart.cart_id === newShoppingCart.cart_id ? newShoppingCart : cart));
+            } return;
         }
         // add new cart
         if (shoppingCarts.length === 10) return;
         const cart_id = await requestPostShoppingCart(name, user_id, shoppingCart.products.map(product => ({ product_id: product.product_id, product_count: product.product_count })))
-        setShoppingCart({ ...shoppingCart, cart_id: cart_id, cart_name: name});
-        setShoppingCarts([...shoppingCarts, { ...shoppingCart, cart_id: cart_id, cart_name: name }]);
+        newShoppingCart.cart_id = cart_id;
+        setShoppingCart(newShoppingCart);
+        setShoppingCarts([ ...shoppingCarts, newShoppingCart ]);
     }    
-
-    const handleInputChange = (e) => {
-        setCartName(e.target.value);
-    };
     
     return (
         <div className='relative flex flex-col items-center w-full h-full bg-purple-custom gap-[5%]'>
@@ -124,7 +122,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                 <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search products...'} contrast='purple'/>
                 { searchClicked && <div className='flex flex-col z-10 w-[65%] max-h-[50svh] overflow-y-scroll bg-gray-custom border-gray-custom border-[0.8svh] rounded-b-xl'>
                     { filteredProducts.map(product => {
-                         const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
+                        const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
                         return !marketProduct ? null : (
                         <div key={`filtered-${product.product_id}`} onClick={() => addProduct(product)} 
                             className='h-[5svh] p-[1svh] flex items-center text-black bg-darkoffwhite border-l-[0.5svh] border-darkoffwhite hover:bg-offwhite hover:border-l-purple-custom hover:cursor-pointer'>
@@ -151,7 +149,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                     <div className='flex flex-col items-center text-center w-full h-full pt-[15%] overflow-y-scroll'>
                         <input 
                             value={cartName} 
-                            onChange={e => handleInputChange(e)}
+                            onChange={e => setCartName(e.target.value)}
                             placeholder='not named' 
                             className='w-fit font-bold bg-offwhite text-center outline-none rounded-lg placeholder:italic placeholder-gray-700'/>
                         { shoppingCart.products.length > 0 && shoppingCart.products.map((product, i) => {

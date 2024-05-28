@@ -2,28 +2,38 @@ import { useState, useEffect } from 'react';
 import { requestGetShoppingCarts, requestPostShoppingCart, requestRemoveShoppingCart, requestUpdateShoppingCart } from "../../requests/homeRequests";
 import { FaTrashCan } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
-import { FaShoppingCart } from "react-icons/fa";
+import { BsCart4 } from "react-icons/bs";
 
 export default function ShoppingCarts() {
     const user_id = localStorage.getItem('user_id')
     const [shoppingCarts, setShoppingCarts] = useState([]);
+    const [cartNames, setCartNames] = useState([])
 
     useEffect(() => {
         const getShoppingCarts = async () => {
-          const data = await requestGetShoppingCarts(user_id);
-          if (data) setShoppingCarts(data);
+            const data = await requestGetShoppingCarts(user_id);
+            if (!data) return;
+            setShoppingCarts(data);
+            setCartNames(data.map(cart => cart.cart_name))
+
         }
         getShoppingCarts();
     }, [user_id]);
 
     const handleInputChange = (e, i) => {
-        const cart = [...shoppingCarts];
-        cart[i].cart_name = e.target.value;
-        setShoppingCarts(cart);
-    };
+        const newCartNames = [...cartNames];
+        newCartNames[i] = e.target.value;
+        setCartNames(newCartNames);
+    };    
 
-    const updateCartName = async (e, cart_id) => {
-        await requestUpdateShoppingCart(cart_id, e.target.value.trim())
+    const updateCartName = async (e, i, cartName, cart_id, prevCartName) => {
+        const name = cartName.trim();
+        if (name === prevCartName) return;
+
+        await requestUpdateShoppingCart(cart_id, name);
+        const newShoppingCarts = [...shoppingCarts];
+        newShoppingCarts[i].cart_name = name;
+        setShoppingCarts(newShoppingCarts);
     }
 
     const removeShoppingCart = async (cart_id) => {
@@ -34,8 +44,8 @@ export default function ShoppingCarts() {
 
     const addShoppingCart = async () => {
         if (shoppingCarts.length === 9) return;
-        const result = await requestPostShoppingCart('', user_id, []);
-        if ('cart_id' in result) setShoppingCarts([...shoppingCarts, { cart_id: result.cart_id, cart_name: '', products: [] }]);
+        const cart_id = await requestPostShoppingCart('', user_id, []);
+        if (cart_id) setShoppingCarts([...shoppingCarts, { cart_id: cart_id, cart_name: '', products: [] }]);
     }
 
     return (
@@ -46,18 +56,18 @@ export default function ShoppingCarts() {
                     <div key={i} className='flex justify-center items-center gap-[10%] w-full'>
                         <input 
                             placeholder='not named'
-                            onBlur={(e) => updateCartName(e, shoppingCart.cart_id)} 
-                            onChange={e => handleInputChange(e, i)} value={shoppingCart.cart_name} 
+                            onBlur={(e) => updateCartName(e, i, cartNames[i], shoppingCart.cart_id, shoppingCart.cart_name)} 
+                            onChange={e => handleInputChange(e, i)} value={cartNames[i]} 
                             className='placeholder:italic placeholder-gray-700 font-bold bg-offwhite rounded-lg w-[19%] border-[0.4svh] border-offwhite hover:border-purple-custom outline-none'
                         />
-                        <FaShoppingCart size={20} className='hover:text-purple-custom cursor-pointer'/>
+                        <BsCart4 size={20} className='hover:text-purple-custom cursor-pointer'/>
                         <FaTrashCan onClick={() => removeShoppingCart(shoppingCart.cart_id)} className='hover:text-purple-custom cursor-pointer'/>
                     </div>
                 ))}
             </div>
             <div className='flex justify-center items-center w-full h-[20%] bg-darkoffwhite rounded-b-xl'>
                 <div onClick={addShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] hover:text-purple-custom cursor-pointer'>
-                    <FaCartPlus size={25}/>
+                    <FaCartPlus size={24}/>
                     <p>Add Cart</p>
                 </div>
             </div>
