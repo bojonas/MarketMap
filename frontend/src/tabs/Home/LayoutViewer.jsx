@@ -5,6 +5,7 @@ import { MapViewerContext } from '../../context/MapViewerContext';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { getWaypoints } from '../../helper/getWaypoints';
 import { requestFindPath } from '../../requests/homeRequests';
+import { isEqualArray } from '../../helper/isEqualArray';
 
 export default function LayoutViewer({ zoom }) {
   const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
@@ -22,12 +23,11 @@ export default function LayoutViewer({ zoom }) {
 
       const waypoints = getWaypoints(productsInMarket, shoppingCart);
       const start = [0, 0];
-      const end = [0, 0];
+      const end = [layout.length-1, 1];
       const data = await requestFindPath(layout, start, end, waypoints);
       if (data) {
         data.unshift(start);
         setPath(data);
-        console.log(data)
       }
     }
     getPath();
@@ -96,6 +96,7 @@ export default function LayoutViewer({ zoom }) {
 }
 
 function Path({ path, currentRow, currentCol, scale }) {
+  if (path.length === 0 || isEqualArray(path[0], [currentRow, currentCol])) return;
   const coordIndex = path.findIndex(([row, col]) => row === currentRow && col === currentCol);
 
   if (coordIndex === -1) {
@@ -103,8 +104,6 @@ function Path({ path, currentRow, currentCol, scale }) {
   }
   
   let orientation = 'horizontal';
-  let corner = '';
-  let direction = '';
   if (coordIndex < path.length - 1) {
     const nextCoord = path[coordIndex + 1];
     if (nextCoord[0] === currentRow) {
@@ -112,33 +111,73 @@ function Path({ path, currentRow, currentCol, scale }) {
     } else if (nextCoord[1] === currentCol) {
       orientation = 'vertical';
     }
-
-    // Check for corner case
-    if (coordIndex > 0 && coordIndex < path.length - 1) {
-      const prevCoord = path[coordIndex - 1];
-      if (prevCoord[0] === currentRow && nextCoord[1] === currentCol) {
-        corner = 'corner';
-        direction = 'top-right';
-      } else if (prevCoord[1] === currentCol && nextCoord[0] === currentRow) {
-        corner = 'corner';
-        direction = 'top-left';
-      }
-    }
   }
 
-  const cornerStyle = corner === 'corner' ? {
-    borderTopRightRadius: direction === 'top-right' ? '50%' : '0',
-    borderTopLeftRadius: direction === 'top-left' ? '50%' : '0',
-  } : {};
-
-  return (
-    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom ${corner} ${direction}`} 
+  // Check for corner case
+  let cornerType = '';
+  if (coordIndex > 0 && coordIndex < path.length - 1) {
+    const prevCoord = path[coordIndex - 1];
+    const nextCoord = path[coordIndex + 1];
+    if (prevCoord[0] === currentRow && nextCoord[1] === currentCol) {
+      cornerType = `${prevCoord[1] > currentCol ? 'left' : 'right'}-${nextCoord[0] > currentRow ? 'bottom' : 'top'}`;
+    } else if (prevCoord[1] === currentCol && nextCoord[0] === currentRow) {
+      cornerType = `${prevCoord[0] > currentRow ? 'top' : 'bottom'}-${nextCoord[1] > currentCol ? 'right' : 'left'}`;
+    }
+  }
+  
+  if (!cornerType) return (
+    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom`} 
       style={{ 
         width: orientation === 'horizontal' ? `${scale}px` : `${scale/10}px`,
         height: orientation === 'vertical' ? `${scale}px` : `${scale/10}px`,
         transform: 'translate(-50%, -50%)',
-        ...cornerStyle,
       }}
     />
   );
+
+  let horizontalStyle = '';
+  let verticalStyle = '';
+  if (['top-right', 'left-bottom'].includes(cornerType)) {
+    horizontalStyle = 'translate(-0%, -50%)';
+    verticalStyle = 'translate(-50%, -0%)';
+  }
+  if (['top-left', 'left-top', 'bottom-left', 'right-top'].includes(cornerType)) {
+    horizontalStyle = 'translate(-100%, -50%)';
+    verticalStyle = 'translate(-50%, -100%)';
+  }
+  if (['right-bottom'].includes(cornerType)) {
+    horizontalStyle = 'translate(-100%, -50%)';
+    verticalStyle = 'translate(-50%, -0%)';
+  }
+  if (['bottom-right'].includes(cornerType)) {
+    horizontalStyle = 'translate(-0%, -50%)';
+    verticalStyle = 'translate(-50%, -100%)';
+  }
+
+  const horizontalDiv = (
+    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom`} 
+      style={{ 
+        width: `${scale/2}px`,
+        height: `${scale/10}px`,
+        transform: horizontalStyle,
+      }}
+    />
+  );
+  
+  const verticalDiv = (
+    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom`} 
+      style={{ 
+        width: `${scale/10}px`,
+        height: `${scale/2}px`,
+        transform: verticalStyle,
+      }}
+    />
+  );
+  
+  return (
+    <div>
+      {horizontalDiv}
+      {verticalDiv}
+    </div>
+  );  
 }

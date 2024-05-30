@@ -238,19 +238,20 @@ function distance(a, b) {
 }
 
 function findPath(layout, start, end, waypoints) {
-    waypoints = waypoints.map(waypoint => adjustWaypoint(waypoint, start, layout));
-
     let grid = [];
     for(let x = 0; x < layout.length; x++) {
         grid[x] = [];
         for(let y = 0; y < layout[x].length; y++) {
-            grid[x][y] = new Node(x, y, layout[x][y].type !== 'empty');
+            grid[x][y] = new Node(x, y, x !== end[0] && y !== end[1] && layout[x][y].type !== 'empty');
         }
     }
 
-    waypoints = [start, ...waypoints, end];
+    waypoints = waypoints.map(waypoint => adjustWaypoint(waypoint, start, layout));
+    waypoints = [start, ...waypoints];
+    
     // convert to node
     let waypointNodes = waypoints.map(point => grid[point[0]][point[1]]);
+    let endNode = grid[end[0]][end[1]];
 
     let path = [];
     let current = waypointNodes[0];
@@ -267,7 +268,14 @@ function findPath(layout, start, end, waypoints) {
         path = path.concat(segmentPath);
         current = closest;
     }
+
+    // After visiting all waypoints, go to the end point
+    let finalSegmentPath = astar.search(grid, current, endNode);
+    if (finalSegmentPath.length === 0) {
+        return [];
+    }
+    path = path.concat(finalSegmentPath);
+
     return path.map(node => [node.pos.x, node.pos.y]);
 }
-
 module.exports = findPath;
