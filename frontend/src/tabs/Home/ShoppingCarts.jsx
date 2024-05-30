@@ -8,15 +8,16 @@ import { BsCart4 } from "react-icons/bs";
 export default function ShoppingCarts() {
     const user_id = localStorage.getItem('user_id')
     const [shoppingCarts, setShoppingCarts] = useState([]);
-    const [cartNames, setCartNames] = useState([])
+    const [cartNames, setCartNames] = useState([]);
+    const [isDataFetched, setIsDataFetched] = useState(false);
 
     useEffect(() => {
         const getShoppingCarts = async () => {
             const data = await requestGetShoppingCarts(user_id);
             if (!data) return;
             setShoppingCarts(data);
-            setCartNames(data.map(cart => cart.cart_name))
-
+            setCartNames(data.map(cart => cart.cart_name || ''));
+            setIsDataFetched(true);
         }
         getShoppingCarts();
     }, [user_id]);
@@ -53,7 +54,7 @@ export default function ShoppingCarts() {
         <div className='absolute z-0 bottom-[5%] right-[10%] flex flex-col w-1/3 h-2/3 text-black bg-darkoffwhite rounded-xl'>
             <p className='p-[3svh] text-[2.5svh] font-bold'>My Carts:</p>
             <div className='flex flex-col w-full h-full p-[4%] pl-[10%] pr-[5%] gap-[5%] bg-offwhite overflow-scroll'>
-                { shoppingCarts.map((shoppingCart, i) => (
+                { isDataFetched && shoppingCarts.map((shoppingCart, i) => (
                     <div key={i} className='flex justify-between items-center w-full'>
                         <input 
                             placeholder='not named'

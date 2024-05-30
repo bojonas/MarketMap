@@ -41,6 +41,7 @@ process.on('SIGINT', async () => {
 
 // import home routes
 const { getMarkets, getProducts, putHistory, getHistory, deleteHistory, postShoppingCart, putShoppingCart, getShoppingCarts, deleteShoppingCart } = require('./routes/homeRoutes');
+const findPath = require('./helper/findPath');
 
 const History = Joi.object({
     timestamp: Joi.date().iso().required(),
@@ -63,6 +64,13 @@ const ShoppinCartPut = Joi.object({
     cart_id: Joi.number().required(),
     cart_name: Joi.string().allow(''),
     products: Joi.array(),
+});
+
+const getPath = Joi.object({
+    layout: Joi.array().required(),
+    start: Joi.array().required(),
+    end: Joi.array().required(),
+    waypoints: Joi.array().required()
 });
 
 app.get('/get_markets', async (req, res) => {
@@ -198,6 +206,23 @@ app.post('/get_shopping_carts', async (req, res) => {
     const { user_id } = req.body;
     try {
         const result = await getShoppingCarts(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+app.post('/get_paths', async (req, res) => {
+    const { error } = getPath.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    
+    const { layout, start, end, waypoints } = req.body;
+    try {
+        const result = findPath(layout, start, end, waypoints);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);

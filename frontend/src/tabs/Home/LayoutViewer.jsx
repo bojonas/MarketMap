@@ -3,6 +3,8 @@ import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 import { MapViewerContext } from '../../context/MapViewerContext';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
+import { getWaypoints } from '../../helper/getWaypoints';
+import { requestFindPath } from '../../requests/homeRequests';
 
 export default function LayoutViewer({ zoom }) {
   const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
@@ -10,6 +12,26 @@ export default function LayoutViewer({ zoom }) {
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
+  const [path, setPath] = useState([]);
+
+  useEffect(() => {
+    //if (productsInMarket.length === 0 || shoppingCart.products.length === 0) return;
+
+    const getPath = async () => {
+      if (productsInMarket.length === 0 || shoppingCart.products.length === 0) return;
+
+      const waypoints = getWaypoints(productsInMarket, shoppingCart);
+      const start = [0, 0];
+      const end = [0, 0];
+      const data = await requestFindPath(layout, start, end, waypoints);
+      if (data) {
+        data.unshift(start);
+        setPath(data);
+        console.log(data)
+      }
+    }
+    getPath();
+  }, [layout, productsInMarket, shoppingCart]);
 
   // fix scrollbars after zoom
   useEffect(() => {
@@ -50,6 +72,7 @@ export default function LayoutViewer({ zoom }) {
                       transform: `rotate(${layout[i][j]['rotation']}deg)`,
                     }}
                   />
+                  <Path path={path} currentRow={i} currentCol={j} scale={scale}/>
                   { productsInMarket.filter(product => product.row === i && product.column === j).map(product => {
                     const shoppingCartProduct = shoppingCart.products.find(marketProduct => marketProduct.product_id === product.product_id);
                     return !shoppingCartProduct ? null : (
@@ -69,5 +92,53 @@ export default function LayoutViewer({ zoom }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function Path({ path, currentRow, currentCol, scale }) {
+  const coordIndex = path.findIndex(([row, col]) => row === currentRow && col === currentCol);
+
+  if (coordIndex === -1) {
+    return null;
+  }
+  
+  let orientation = 'horizontal';
+  let corner = '';
+  let direction = '';
+  if (coordIndex < path.length - 1) {
+    const nextCoord = path[coordIndex + 1];
+    if (nextCoord[0] === currentRow) {
+      orientation = 'horizontal';
+    } else if (nextCoord[1] === currentCol) {
+      orientation = 'vertical';
+    }
+
+    // Check for corner case
+    if (coordIndex > 0 && coordIndex < path.length - 1) {
+      const prevCoord = path[coordIndex - 1];
+      if (prevCoord[0] === currentRow && nextCoord[1] === currentCol) {
+        corner = 'corner';
+        direction = 'top-right';
+      } else if (prevCoord[1] === currentCol && nextCoord[0] === currentRow) {
+        corner = 'corner';
+        direction = 'top-left';
+      }
+    }
+  }
+
+  const cornerStyle = corner === 'corner' ? {
+    borderTopRightRadius: direction === 'top-right' ? '50%' : '0',
+    borderTopLeftRadius: direction === 'top-left' ? '50%' : '0',
+  } : {};
+
+  return (
+    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom ${corner} ${direction}`} 
+      style={{ 
+        width: orientation === 'horizontal' ? `${scale}px` : `${scale/10}px`,
+        height: orientation === 'vertical' ? `${scale}px` : `${scale/10}px`,
+        transform: 'translate(-50%, -50%)',
+        ...cornerStyle,
+      }}
+    />
   );
 }

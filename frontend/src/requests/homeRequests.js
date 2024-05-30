@@ -138,3 +138,22 @@ export async function requestGetShoppingCarts(user_id) {
     console.error('Error getting shopping carts:', error);
   }
 }
+
+// request to /get_paths
+export async function requestFindPath(layout, start, end, waypoints) {
+  if (!layout || !start || !end || !waypoints) return console.error('Invalid parameters');
+
+  const data = {
+    layout: layout,
+    start: start,
+    end: end,
+    waypoints: waypoints
+  }
+
+  try {
+    const response = await axiosInstance.post('/get_paths', data);
+    return response.data
+  } catch (error) {
+    console.error('Error getting find path:', error);
+  }
+}

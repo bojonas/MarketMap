@@ -18,6 +18,7 @@ export default function MyMarket() {
         }
         getMarkets();
     }, [user_id]);
+    
     return (
         <MyMarketContext.Provider value={ market }>
             <div className='relative flex w-full h-full'>

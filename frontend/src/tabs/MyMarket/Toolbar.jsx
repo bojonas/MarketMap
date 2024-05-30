@@ -9,6 +9,7 @@ import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 
 export default function Toolbar({ setEditMode }) {
+  const user_id = localStorage.getItem('user_id')
   const [search, setSearch] = useState('');
   const images = Object.entries(getItemImages()).filter(([type]) => type.toLowerCase().includes(search));
   const market = useContext(MyMarketContext);
@@ -18,7 +19,7 @@ export default function Toolbar({ setEditMode }) {
     setEditMode(false);
     if (JSON.stringify(layout) === JSON.stringify(market.map_layout)) return alert('No Changes');
     market.map_layout = layout
-    alert(await requestUpdateMapLayout(3, layout));
+    alert(await requestUpdateMapLayout(user_id, layout));
   }
 
   return (

@@ -20,7 +20,6 @@ export function addColumn(layout, side='right') {
             }
         }
     }
-    console.log(layout)
     return updateCoordinates(layout);
 };  
 
