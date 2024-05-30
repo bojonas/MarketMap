@@ -141,7 +141,7 @@ async function putShoppingCart(cart_id, cart_name, products, postgres_pool) {
                 SET cart_name = ($1)
                 WHERE cart_id = $2;`;
             
-            const result = await postgres_pool.query(query, [cart_name, cart_id]);
+            await postgres_pool.query(query, [cart_name, cart_id]);
         } 
         
         if (products.length > 0) {
@@ -193,9 +193,7 @@ async function getShoppingCarts(user_id, postgres_pool) {
             FROM market_map.shopping_carts s
             LEFT JOIN market_map.carts_products cp ON s.cart_id = cp.cart_id
             LEFT JOIN market_map.products p ON p.product_id = cp.product_id
-            WHERE user_id = $1
-            GROUP BY s.cart_id, cart_name, p.product_id, product_name_en, product_count
-            ORDER BY count(p.product_id) DESC;`;
+            WHERE user_id = $1;`;
 
         const result = await postgres_pool.query(query, [user_id]);
 

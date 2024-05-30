@@ -101,7 +101,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
             if (JSON.stringify(newShoppingCart) !== JSON.stringify(filteredShoppingCart)) {
                 await requestUpdateShoppingCart(
                     newShoppingCart.cart_id, 
-                    name === shoppingCart.name ? name : null, 
+                    name === shoppingCart.name ? null : name, 
                     newShoppingCart.products.map(product => ({ product_id: product.product_id, product_count: product.product_count }))
                 );
                 setShoppingCart(newShoppingCart);
