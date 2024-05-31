@@ -242,7 +242,7 @@ function findPath(layout, start, end, waypoints) {
     for(let x = 0; x < layout.length; x++) {
         grid[x] = [];
         for(let y = 0; y < layout[x].length; y++) {
-            grid[x][y] = new Node(x, y, x !== end[0] && y !== end[1] && layout[x][y].type !== 'empty');
+            grid[x][y] = new Node(x, y, (x !== end[0] || y !== end[1]) && layout[x][y].type !== 'empty');
         }
     }
 
