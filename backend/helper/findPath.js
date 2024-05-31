@@ -246,7 +246,7 @@ function findPath(layout, start, end, waypoints) {
         }
     }
 
-    waypoints = waypoints.map(waypoint => adjustWaypoint(waypoint, start, layout));
+    waypoints = waypoints.map((waypoint, i) => adjustWaypoint(waypoint, start, layout));
     waypoints = [start, ...waypoints];
     
     // convert to node

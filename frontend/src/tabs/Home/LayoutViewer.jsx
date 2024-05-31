@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useContext } from 'react';
+import { Tooltip } from 'react-tooltip';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 import { MapViewerContext } from '../../context/MapViewerContext';
@@ -16,14 +17,12 @@ export default function LayoutViewer({ zoom }) {
   const [path, setPath] = useState([]);
 
   useEffect(() => {
-    //if (productsInMarket.length === 0 || shoppingCart.products.length === 0) return;
+    if (productsInMarket.length === 0 || shoppingCart.products.length === 0) return;
 
     const getPath = async () => {
-      if (productsInMarket.length === 0 || shoppingCart.products.length === 0) return;
-
       const waypoints = getWaypoints(productsInMarket, shoppingCart);
-      const start = [0, 0];
-      const end = [layout.length-1, 1];
+      const start = [layout.length-1, 1];
+      const end = [0, 0];
       const data = await requestFindPath(layout, start, end, waypoints);
       if (data) {
         data.unshift(start);
@@ -76,14 +75,20 @@ export default function LayoutViewer({ zoom }) {
                   { productsInMarket.filter(product => product.row === i && product.column === j).map(product => {
                     const shoppingCartProduct = shoppingCart.products.find(marketProduct => marketProduct.product_id === product.product_id);
                     return !shoppingCartProduct ? null : (
-                    <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
-                      style={{ 
-                        width: `${scale/2}px`, 
-                        height: `${scale/2}px`,
-                        backgroundColor: colors[getLayoutIndex(layout)[product.row.toString() + product.column.toString()]],
-                        transform: 'translate(-50%, -50%)',
-                    }}/>
-                  );}
+                      <React.Fragment>
+                        <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
+                          style={{ 
+                            width: `${scale/2}px`, 
+                            height: `${scale/2}px`,
+                            backgroundColor: colors[getLayoutIndex(layout)[product.row.toString() + product.column.toString()]],
+                            transform: 'translate(-50%, -50%)',
+                          }}
+                          data-tooltip-id={`info-${i}`} 
+                          data-tooltip-html={product.product_id}
+                        />
+                        <Tooltip id={`info-${i}`} place='top'/>
+                      </React.Fragment>
+                    )}
                   )}
                 </div>
               ))
@@ -96,7 +101,7 @@ export default function LayoutViewer({ zoom }) {
 }
 
 function Path({ path, currentRow, currentCol, scale }) {
-  if (path.length === 0 || isEqualArray(path[0], [currentRow, currentCol])) return;
+  if (path.length === 0 || isEqualArray(path[0], [currentRow, currentCol]) || isEqualArray(path[path.length-1], [currentRow, currentCol])) return;
   const coordIndex = path.findIndex(([row, col]) => row === currentRow && col === currentCol);
 
   if (coordIndex === -1) {
@@ -141,15 +146,15 @@ function Path({ path, currentRow, currentCol, scale }) {
     horizontalStyle = 'translate(-0%, -50%)';
     verticalStyle = 'translate(-50%, -0%)';
   }
-  if (['top-left', 'left-top', 'bottom-left', 'right-top'].includes(cornerType)) {
+  if (['bottom-left', 'right-top'].includes(cornerType)) {
     horizontalStyle = 'translate(-100%, -50%)';
     verticalStyle = 'translate(-50%, -100%)';
   }
-  if (['right-bottom'].includes(cornerType)) {
+  if (['right-bottom', 'top-left'].includes(cornerType)) {
     horizontalStyle = 'translate(-100%, -50%)';
     verticalStyle = 'translate(-50%, -0%)';
   }
-  if (['bottom-right'].includes(cornerType)) {
+  if (['bottom-right', 'left-top'].includes(cornerType)) {
     horizontalStyle = 'translate(-0%, -50%)';
     verticalStyle = 'translate(-50%, -100%)';
   }
