@@ -269,7 +269,7 @@ function findPath(layout, start, end, waypoints) {
         current = closest;
     }
 
-    // After visiting all waypoints, go to the end point
+    // after visiting all waypoints go to end
     let finalSegmentPath = astar.search(grid, current, endNode);
     if (finalSegmentPath.length === 0) {
         return [];
