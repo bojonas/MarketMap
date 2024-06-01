@@ -5,8 +5,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 
-export default function ShoppingCarts() {
-    const user_id = localStorage.getItem('user_id')
+export default function ShoppingCarts({ user_id }) {
     const [shoppingCarts, setShoppingCarts] = useState([]);
     const [cartNames, setCartNames] = useState([]);
     const [isDataFetched, setIsDataFetched] = useState(false);
@@ -28,7 +27,7 @@ export default function ShoppingCarts() {
         setCartNames(newCartNames);
     };    
 
-    const updateCartName = async (e, i, cartName, cart_id, prevCartName) => {
+    const updateCartName = async (i, cartName, cart_id, prevCartName) => {
         const name = cartName.trim();
         if (name === prevCartName) return;
 
@@ -58,8 +57,8 @@ export default function ShoppingCarts() {
                     <div key={i} className='flex justify-between items-center w-full'>
                         <input 
                             placeholder='not named'
-                            onBlur={(e) => updateCartName(e, i, cartNames[i], shoppingCart.cart_id, shoppingCart.cart_name)} 
-                            onChange={e => handleInputChange(e, i)} value={cartNames[i]} 
+                            onBlur={(e) => updateCartName(i, cartNames[i], shoppingCart.cart_id, shoppingCart.cart_name)} 
+                            onChange={e => handleInputChange(e, i)} value={cartNames[i] || ''} 
                             className='placeholder:italic placeholder-gray-700 font-bold text-center bg-offwhite rounded-lg border-[0.4svh] border-offwhite hover:border-purple-custom outline-none'
                         />
                         <BsCart4 

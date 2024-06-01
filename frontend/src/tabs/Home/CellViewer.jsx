@@ -6,7 +6,7 @@ const CellViewer = memo(({ type, cellStyle }) => {
   const source = images[type];
   return (
     <React.Fragment>
-      {type !== 'empty' 
+      { type !== 'empty' 
       ? <div className='flex justify-center items-center bg-[#d9d9d9] p-[5%]' style={cellStyle}>
           <img draggable='false' src={source} alt={type}/>
       </div>

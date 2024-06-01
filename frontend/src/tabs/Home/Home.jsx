@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import debounce from 'lodash.debounce';
 import SearchBar from '../../atoms/SearchBar'
 import { requestGetMarkets, requestUpdateHistory } from "../../requests/homeRequests";
@@ -11,33 +11,31 @@ export default function Home() {
     const [search, setSearch] = useState('');
     const [markets, setMarkets] = useState([]);
     const [market, setMarket] = useState(null)
-    const [filteredMarkets, setFilteredMarkets] = useState([]);
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
 
     const debouncedSearch = debounce(value => {
         setSearch(value);
     }, 200);
-
+    
     useEffect(() => {
         const getMarkets = async () => {
-          const data = await requestGetMarkets();
-          if (data) setMarkets(data);
+            const data = await requestGetMarkets();
+            if (data) setMarkets(data);
         }
         getMarkets();
     }, []);
-
-    useEffect(() => {
-        const results = markets.filter(({ market_name, address, postal_code, city, country }) => 
+    
+    const filteredMarkets = useMemo(() => {
+        return markets.filter(({ market_name, address, postal_code, city, country }) => 
             market_name.toLowerCase().includes(search) ||
             address.toLowerCase().includes(search) ||
             postal_code.toLowerCase().includes(search) ||
             city.toLowerCase().includes(search) ||
             country.toLowerCase().includes(search)
         );
-        setFilteredMarkets(results);
     }, [search, markets]);
-
+    
     const handleOnFocus = () => {
         setSearchClicked(prevsearchClicked => !prevsearchClicked);
     }
@@ -56,13 +54,13 @@ export default function Home() {
     }, []);
 
     const selectMarket = async (market) => {
+        setMarket(market);
         if (!user_id) return;
         // update history 
         const now = new Date();
         const offset = now.getTimezoneOffset() * 60000;
         const timestamp = (new Date(now - offset)).toISOString().slice(0,-1);
         await requestUpdateHistory(timestamp, user_id, market.market_id);
-        setMarket(market);
     };
 
     return (
@@ -90,7 +88,7 @@ export default function Home() {
                     ))}
                 </div>}
                 <SearchHistory user_id={user_id} markets={markets} selectMarket={selectMarket}/>
-                <ShoppingCarts/>
+                <ShoppingCarts user_id={user_id}/>
             </div>}
         </React.Fragment>
     );
