@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Zone } from './Zone';
+import { useAdjustScale } from '../hooks/useAdjustScale';
 import { getItemImages } from '../helper/getItemImages';
 
 export default function ZoneCreator() {
-    const [rowCount, ] = useState(10);
-    const [colCount, ] = useState(10);
+    const [dimensions, ] = useState({ width: '75svw', height: '75svh' });
+    const ref = useRef(null);
+    const { width, height } = useAdjustScale(ref);
+
+    const [rowCount, ] = useState(30);
+    const [colCount, ] = useState(30);
     const [zone, setZone] = useState(new Zone(0, Array(rowCount).fill().map(() => Array(colCount).fill(true)), {}));
     const [selectedCells, setSelectedCells] = useState(new Set());
 
@@ -28,30 +33,37 @@ export default function ZoneCreator() {
         setSelectedCells(new Set(selectedCells));
     };
 
+    const scale = Math.min(width/ colCount, height / rowCount);  
     return (
         <div className='text-black flex flex-col items-center justify-center w-full h-full'>
-            <div className='grid w-[75svw] h-[75svh] gap-[1%]'
-                style={{ 
-                    gridTemplateColumns: `repeat(${rowCount}, 1fr)`, 
-                    gridTemplateRows: `repeat(${colCount}, 1fr)`
-                }}>
-                { zone.shape.map((row, rowIndex) => (
-                    row.map((cell, colIndex) => {
-                        const isSelected = selectedCells.has(`${rowIndex},${colIndex}`);
-                        const inZone = zone.shape[rowIndex][colIndex];
-                        return (
-                            <div key={colIndex} onClick={() => toggleCell(rowIndex, colIndex)}>
-                                { inZone && <ZoneCell 
-                                    type={'empty'}
-                                    cellStyle={{ 
-                                        //transform: `rotate(${layout[i][j]['rotation']}deg)`,
-                                        backgroundColor: isSelected ? '#715DF2' : ''
-                                    }}
-                                />}
-                            </div>
-                        );
-                    })
-                ))}
+            <div ref={ref} style={dimensions}>
+                <div className='grid w-full h-full items-center justify-center'
+                    style={{ 
+                        gridTemplateColumns: `repeat(${rowCount}, ${scale}px)`, 
+                        gridTemplateRows: `repeat(${colCount}, ${scale}px)`
+                    }}>
+                    { zone.shape.map((row, rowIndex) => (
+                        row.map((cell, colIndex) => {
+                            const isSelected = selectedCells.has(`${rowIndex},${colIndex}`);
+                            const inZone = zone.shape[rowIndex][colIndex];
+                            return (
+                                <div key={colIndex} onClick={() => toggleCell(rowIndex, colIndex)}>
+                                    { inZone && <ZoneCell 
+                                        type={'empty'}
+                                        cellStyle={{ 
+                                            //transform: `rotate(${layout[i][j]['rotation']}deg)`,
+                                            height: `${scale}px`, 
+                                            width: `${scale}px`, 
+                                            border: `${scale/10}px solid #171717`,
+                                            borderRadius: `${scale/5}px`,
+                                            backgroundColor: isSelected ? '#715DF2' : ''
+                                        }}
+                                    />}
+                                </div>
+                            );
+                        })
+                    ))}
+                </div>
             </div>
             <button onClick={createZone} className='text-white'>Create Zone</button>
         </div>
