@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from 'react';
+import React, { useRef, useEffect, useState, useContext, useMemo } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
@@ -6,7 +6,7 @@ import { MapViewerContext } from '../../context/MapViewerContext';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { getWaypoints } from '../../helper/getWaypoints';
 import { requestFindPath } from '../../requests/homeRequests';
-import { isEqualArray } from '../../helper/isEqualArray';
+import Path from '../../atoms/Path';
 
 export default function LayoutViewer({ zoom }) {
   const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
@@ -14,13 +14,16 @@ export default function LayoutViewer({ zoom }) {
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
+  const [layoutIndex, ] = useState(getLayoutIndex(layout));
   const [path, setPath] = useState([]);
 
+  const waypoints = useMemo(() => {
+    return productsInMarket.length !== 0 || shoppingCart.products.length !== 0 ? getWaypoints(productsInMarket, shoppingCart) : [];
+  }, [productsInMarket, shoppingCart]);
+  
   useEffect(() => {
     if (productsInMarket.length === 0 || shoppingCart.products.length === 0) return;
-
     const getPath = async () => {
-      const waypoints = getWaypoints(productsInMarket, shoppingCart);
       const start = [layout.length-1, 1];
       const end = [0, 0];
       const data = await requestFindPath(layout, start, end, waypoints);
@@ -30,7 +33,7 @@ export default function LayoutViewer({ zoom }) {
       }
     }
     getPath();
-  }, [layout, productsInMarket, shoppingCart]);
+  }, [layout, productsInMarket, shoppingCart, waypoints]);
 
   // fix scrollbars after zoom
   useEffect(() => {
@@ -71,25 +74,33 @@ export default function LayoutViewer({ zoom }) {
                       transform: `rotate(${layout[i][j]['rotation']}deg)`,
                     }}
                   />
-                  <Path path={path} currentRow={i} currentCol={j} scale={scale}/>
                   { productsInMarket.filter(product => product.row === i && product.column === j).map(product => {
                     const shoppingCartProduct = shoppingCart.products.find(marketProduct => marketProduct.product_id === product.product_id);
                     return !shoppingCartProduct ? null : (
-                      <React.Fragment>
-                        <div key={product.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
+                      <React.Fragment key={product.product_id}>
+                        <div className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
                           style={{ 
                             width: `${scale/2}px`, 
                             height: `${scale/2}px`,
-                            backgroundColor: colors[getLayoutIndex(layout)[product.row.toString() + product.column.toString()]],
+                            backgroundColor: colors[layoutIndex[product.row.toString() + product.column.toString()]],
                             transform: 'translate(-50%, -50%)',
                           }}
-                          data-tooltip-id={`info-${i}`} 
+                          data-tooltip-id={`info-${i}-${j}`} 
                           data-tooltip-html={product.product_id}
                         />
-                        <Tooltip id={`info-${i}`} place='top'/>
+                        <Tooltip id={`info-${i}-${j}`} place='top'/>
                       </React.Fragment>
                     )}
                   )}
+                  <Path 
+                  path={path} 
+                  currentRow={i} 
+                  currentCol={j} 
+                  waypoints={waypoints.filter(([pointRow, pointCol]) => { 
+                    return (Math.abs(pointRow - i) === 1 && pointCol === j) || (Math.abs(pointCol - j) === 1 && pointRow === i);
+                  })} 
+                  scale={scale}
+                />
                 </div>
               ))
             ))}
@@ -98,91 +109,4 @@ export default function LayoutViewer({ zoom }) {
       </div>
     </div>
   );
-}
-
-function Path({ path, currentRow, currentCol, scale }) {
-  if (path.length === 0 || isEqualArray(path[0], [currentRow, currentCol]) || isEqualArray(path[path.length-1], [currentRow, currentCol])) return;
-  const coordIndex = path.findIndex(([row, col]) => row === currentRow && col === currentCol);
-
-  if (coordIndex === -1) {
-    return null;
-  }
-  
-  let orientation = 'horizontal';
-  if (coordIndex < path.length - 1) {
-    const nextCoord = path[coordIndex + 1];
-    if (nextCoord[0] === currentRow) {
-      orientation = 'horizontal';
-    } else if (nextCoord[1] === currentCol) {
-      orientation = 'vertical';
-    }
-  }
-
-  // Check for corner case
-  let cornerType = '';
-  if (coordIndex > 0 && coordIndex < path.length - 1) {
-    const prevCoord = path[coordIndex - 1];
-    const nextCoord = path[coordIndex + 1];
-    if (prevCoord[0] === currentRow && nextCoord[1] === currentCol) {
-      cornerType = `${prevCoord[1] > currentCol ? 'left' : 'right'}-${nextCoord[0] > currentRow ? 'bottom' : 'top'}`;
-    } else if (prevCoord[1] === currentCol && nextCoord[0] === currentRow) {
-      cornerType = `${prevCoord[0] > currentRow ? 'top' : 'bottom'}-${nextCoord[1] > currentCol ? 'right' : 'left'}`;
-    }
-  }
-  
-  if (!cornerType) return (
-    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom`} 
-      style={{ 
-        width: orientation === 'horizontal' ? `${scale}px` : `${scale/10}px`,
-        height: orientation === 'vertical' ? `${scale}px` : `${scale/10}px`,
-        transform: 'translate(-50%, -50%)',
-      }}
-    />
-  );
-
-  let horizontalStyle = '';
-  let verticalStyle = '';
-  if (['top-right', 'left-bottom'].includes(cornerType)) {
-    horizontalStyle = 'translate(-0%, -50%)';
-    verticalStyle = 'translate(-50%, -0%)';
-  }
-  if (['bottom-left', 'right-top'].includes(cornerType)) {
-    horizontalStyle = 'translate(-100%, -50%)';
-    verticalStyle = 'translate(-50%, -100%)';
-  }
-  if (['right-bottom', 'top-left'].includes(cornerType)) {
-    horizontalStyle = 'translate(-100%, -50%)';
-    verticalStyle = 'translate(-50%, -0%)';
-  }
-  if (['bottom-right', 'left-top'].includes(cornerType)) {
-    horizontalStyle = 'translate(-0%, -50%)';
-    verticalStyle = 'translate(-50%, -100%)';
-  }
-
-  const horizontalDiv = (
-    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom`} 
-      style={{ 
-        width: `${scale/2}px`,
-        height: `${scale/10}px`,
-        transform: horizontalStyle,
-      }}
-    />
-  );
-  
-  const verticalDiv = (
-    <div className={`z-20 absolute top-1/2 left-1/2 bg-purple-custom`} 
-      style={{ 
-        width: `${scale/10}px`,
-        height: `${scale/2}px`,
-        transform: verticalStyle,
-      }}
-    />
-  );
-  
-  return (
-    <div>
-      {horizontalDiv}
-      {verticalDiv}
-    </div>
-  );  
 }

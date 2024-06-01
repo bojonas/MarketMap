@@ -5,7 +5,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import { getTimePassed } from "../../helper/getTimePassed";
 import { requestRemoveHistory } from "../../requests/homeRequests";
 
-export default function SearchHistory({ user_id, markets, setMarket }) {
+export default function SearchHistory({ user_id, markets, selectMarket }) {
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function SearchHistory({ user_id, markets, setMarket }) {
                     const [time, entity] = getTimePassed(hist.hist_timestamp)
                     return (
                         <div key={market.market_id} className='flex w-full items-center justify-between pl-[2%] pr-[2%]'>
-                            <MiniMap layout={market.map_layout} market={market} setMarket={setMarket}/>
+                            <MiniMap layout={market.map_layout} market={market} selectMarket={selectMarket}/>
                             <div className='flex items-center justify-center gap-[10%] w-[35%]'>
                                 { market.market_image_url && 
                                 <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] border-[0.5svh] border-darkgray-custom bg-gray-custom'>

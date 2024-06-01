@@ -55,18 +55,15 @@ export default function Home() {
         }
     }, []);
 
-    // update history when a market is opened
-    useEffect(() => {
-        if (!market || !user_id) return;
+    const selectMarket = async (market) => {
+        if (!user_id) return;
+        // update history 
         const now = new Date();
         const offset = now.getTimezoneOffset() * 60000;
         const timestamp = (new Date(now - offset)).toISOString().slice(0,-1);
-
-        const updateHistory = async () => {
-            await requestUpdateHistory(timestamp, user_id, market.market_id);
-        };
-        updateHistory();
-    }, [market, user_id]);
+        await requestUpdateHistory(timestamp, user_id, market.market_id);
+        setMarket(market);
+    };
 
     return (
         <React.Fragment>
@@ -77,7 +74,7 @@ export default function Home() {
                 </div>
                 { searchClicked && <div className='z-10 flex flex-col gap-[1%] p-[1svh] w-[24%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
                     { filteredMarkets.map((market, i) => (
-                        <div key={i} onClick={() => setMarket(market)} 
+                        <div key={i} onClick={() => selectMarket(market)} 
                             className='h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-black text-[2svh] bg-offwhite rounded-lg border-offwhite border-l-[0.6svh] hover:border-l-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
                             <div className='flex items-center w-[40%] h-full gap-[6%]'>
                                 { market.market_image_url && 
@@ -92,7 +89,7 @@ export default function Home() {
                         </div>
                     ))}
                 </div>}
-                <SearchHistory user_id={user_id} markets={markets} setMarket={setMarket}/>
+                <SearchHistory user_id={user_id} markets={markets} selectMarket={selectMarket}/>
                 <ShoppingCarts/>
             </div>}
         </React.Fragment>
