@@ -1,12 +1,15 @@
 import { useState } from "react"
 import Color from "./SettingOptions/Color/Color"
+import MyProfile from "../MyProfile/MyProfile";
 
 export default function Settings(){
     const [content, setContent] = useState({header: "Error", body: ("Error")})
 
     const colorButton = ()=>{
         setContent({header: "Color", body: (<Color/>)})
-    }
+    };
+
+    const myProfile = ()=> setContent({header: "My Profile", body: (<MyProfile/>)})
 
     return (
         <div className="bg-blue-100 w-full h-full">
@@ -15,8 +18,9 @@ export default function Settings(){
             </div>
 
             <div className=" flex h-full pt-4">
-                <div className="text-2xl bg-red-600 w-3/12">
+                <div className="text-2xl bg-red-600 w-3/12 flex flex-col">
                     <button onClick={colorButton}>Color</button>
+                    <button onClick={myProfile}>My Profile</button>
                 </div>
                 <div className="text-2xl bg-orange-600 w-3/4">
                     <div className="bg-gray-800">{content["header"]}</div>
