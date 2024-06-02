@@ -32,6 +32,11 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
       navigate("/")
     }
 
+    const settings = ()=>{
+      navigate("/settings")
+      setIsVisible(false)
+    }
+
   return (
     <div className="relative p-5">
       <button 
@@ -44,6 +49,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
       </button>
       <DropdownMenu isVisible={isVisible}>
         {isLoggedIn?<div className="dropdown-content" onClick={myProfile}>My Profile</div>:null}
+        {isLoggedIn?<div className="dropdown-content" onClick={settings}>Settings</div>:null}
         {isLoggedIn?<div className="dropdown-content" onClick={logout}>Logout</div>:null}
       </DropdownMenu>
     </div>

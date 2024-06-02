@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { requestUpdateData, requestUser } from "../../requests/myProfileRequests";
-import { useNavigate } from "react-router-dom";
 import ContentRow from "./ContentRow";
 
 export default function MyProfileComponent(){
@@ -15,7 +14,6 @@ export default function MyProfileComponent(){
     const[email, setEmail] = useState("no user logged in")
     const[firstName, setFirstName] = useState("no user logged in")
     const[lastName, setLastName] = useState("no user logged in")
-    var navigator = useNavigate()
 
     useEffect(() => {
         const loadData = async () => {
@@ -61,11 +59,6 @@ export default function MyProfileComponent(){
         setShowPopup(false);
     };
 
-    const logout = ()=>{   
-        localStorage.removeItem("user_id")
-        navigator("/")
-    }
-
     
 
     return (
@@ -78,10 +71,6 @@ export default function MyProfileComponent(){
                     <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"First Name"} content = {firstName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/> 
-                </div>
-                <div className="flex w-1/4 mx-auto flex-col">
-                    <button className="custom-button items-center" onClick={logout}>Logout</button>
-                    
                 </div>
 
                 
