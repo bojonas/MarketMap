@@ -4,11 +4,15 @@ import { useEffect } from "react";
 import { ChromePicker } from 'react-color';
 import { requestGetPersonalColor, requestPostPersonalColor } from "../../../../requests/settingsRequests";
 
+
+
 export default function ColorElement({label}){
+    const user_id = localStorage.getItem("user_id")
     const [color, setColor] = useState('#000000');
     
     const [editedColor, setEditedColor] = useState('#000000')
     const [editable, setEditable] = useState(false);
+    
 
     const handleColorChange = (color) => {
         setEditedColor(color.hex);
@@ -20,7 +24,7 @@ export default function ColorElement({label}){
 
     const handleSave = async() => {
         setColor(editedColor)
-        await requestPostPersonalColor(localStorage.getItem("user_id"), color)
+        await requestPostPersonalColor(user_id, color)
         setEditable(false)
     };
 
@@ -31,11 +35,11 @@ export default function ColorElement({label}){
     useEffect(()=>{
         const initColor = async ()=>{
             if(label === "Personal"){
-                setColor(await requestGetPersonalColor(localStorage.getItem("user_id")))
+                setColor(await requestGetPersonalColor(user_id))
             }
         }
         initColor()
-    },[label, setColor])
+    },[label, setColor, user_id])
 
     return(
         <React.Fragment>
