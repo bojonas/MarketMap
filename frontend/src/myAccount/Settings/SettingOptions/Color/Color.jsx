@@ -8,7 +8,10 @@ export default function Color(){
                     <ColorElement label={"Personal"}/>
                 </div>
                 <div className="flex flex-row mt-6">
-                    <ColorElement label={"Market"}/>
+                    <ColorElement label={"Market Primary"}/>
+                </div>
+                <div className="flex flex-row mt-6">
+                    <ColorElement label={"Market Secondary"}/>
                 </div>
         </div>
     )

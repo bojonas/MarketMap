@@ -37,6 +37,9 @@ export default function ColorElement({label}){
             if(label === "Personal"){
                 setColor(await requestGetPersonalColor(user_id))
             }
+            else if(label === "Primary Market"){
+
+            }
         }
         initColor()
     },[label, setColor, user_id])
@@ -45,7 +48,7 @@ export default function ColorElement({label}){
         <React.Fragment>
                 <p className="text-offwhite text-xl mt-2 w-30 h-5 ml-10">{label}</p>
                 <div 
-                    className="ml-4 w-10 h-10 rounded-full border-2 hover:cursor-pointer" 
+                    className="ml-4 w-10 h-10 rounded-full border-2 cursor-pointer hover:border-purple-custom" 
                     style={{ backgroundColor: color }}
                     onClick={openColorEditor}
                 ></div>
