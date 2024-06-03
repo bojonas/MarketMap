@@ -93,14 +93,14 @@ export default function LayoutViewer({ zoom }) {
                     )}
                   )}
                   <Path 
-                  path={path} 
-                  currentRow={i} 
-                  currentCol={j} 
-                  waypoints={waypoints.filter(([pointRow, pointCol]) => { 
-                    return (Math.abs(pointRow - i) === 1 && pointCol === j) || (Math.abs(pointCol - j) === 1 && pointRow === i);
-                  })} 
-                  scale={scale}
-                />
+                    path={path} 
+                    currentRow={i} 
+                    currentCol={j} 
+                    waypoints={waypoints.filter(([pointRow, pointCol]) => { 
+                      return (Math.abs(pointRow - i) === 1 && pointCol === j) || (Math.abs(pointCol - j) === 1 && pointRow === i);
+                    })} 
+                    scale={scale}
+                  />
                 </div>
               ))
             ))}

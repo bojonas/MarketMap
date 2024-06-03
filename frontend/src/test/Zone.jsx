@@ -1,20 +1,10 @@
 export class Zone {
-    constructor(id, shape, data) {
+    constructor(id, name, layout, color) {
         this.id = id;
-        this.shape = shape;
-        this.data = data; 
-        this.neighbors = [];
-    }
-
-    // connect zone to another
-    connect(otherZone) {
-        this.neighbors.push(otherZone);
-        otherZone.neighbors.push(this);
-    }
-
-    // disconnect zone from another
-    disconnect(otherZone) {
-        this.neighbors = this.neighbors.filter(zone => zone.id !== otherZone.id);
-        otherZone.neighbors = otherZone.neighbors.filter(zone => zone.id !== this.id);
+        this.name = name;
+        this.layout = layout;
+        this.color = color;
+        this.rows = layout.length;
+        this.columns = this.rows > 0 ? layout[0].length : 0;
     }
 }

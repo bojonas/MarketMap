@@ -7,8 +7,8 @@ import Register from './myAccount/Register/Register';
 import MyProfile from './myAccount/MyProfile/MyProfile';
 import { tabPermission } from './tabPermission';
 import Navbar from './atoms/Navbar';
-import ZoneCreator from './test/ZoneCreator';
 import Settings from './myAccount/Settings/Settings';
+import MapLayoutEditor from './test/MapLayoutEditor';
 
 // custom navigation order
 const order = [];
@@ -33,7 +33,7 @@ export default function App() {
           {!isLoggedIn&&<Route path={"/register"} element={<Register/>}/>}
           {isLoggedIn&&<Route path={"/settings"} element={<Settings/>}/>}
           {isLoggedIn&&<Route path={"/my_profile"} element={<MyProfile/>}/>}
-          <Route path={'/test'} element={<ZoneCreator/>}/>
+          <Route path={'/test'} element={<MapLayoutEditor/>}/>
         </Routes>
       </Router>
     </div>
