@@ -10,7 +10,6 @@ export default function MyMarketComponent(){
     const [popupContent, setPopupContent] = useState("")
 
     const [user_id,] = useState(parseInt(localStorage.getItem("user_id"), 10))
-    const[market_id, setMarketId] = useState(parseInt(localStorage.getItem("user_id"), 10))
     const[market_name, setMarketName] = useState("no user logged in")
     const[address, setAddress] = useState("no user logged in")
     const[postal_code, setPostalCode] = useState("no user logged in")
@@ -21,7 +20,6 @@ export default function MyMarketComponent(){
         const loadData = async () => {
             if(!user_id) return;
             const result = await requestMarket(user_id);
-            setMarketId(result.market_id);
             setMarketName(result.market_name);
             setAddress(result.address);
             setPostalCode(result.postal_code);
@@ -34,7 +32,6 @@ export default function MyMarketComponent(){
     const loadData = async () => {
         if(!user_id) return;
         const result = await requestMarket(user_id);
-        setMarketId(result.market_id);
         setMarketName(result.market_name);
         setAddress(result.address);
         setPostalCode(result.postal_code);
@@ -74,8 +71,6 @@ export default function MyMarketComponent(){
           <div className=" rounded-md p-6 w-full items-center">
                 
                 <div>
-                    <ContentRow label = {"User id"} content = {user_id} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    <ContentRow label = {"Market id"} content = {market_id} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Name"} content = {market_name} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Street"} content = {address} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Zip"} content = {postal_code} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/> 
