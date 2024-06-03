@@ -9,6 +9,7 @@ import { tabPermission } from './tabPermission';
 import Navbar from './atoms/Navbar';
 import Settings from './myAccount/Settings/Settings';
 import MapLayoutEditor from './test/MapLayoutEditor';
+import Uploader from './uploader/Uploader';
 
 // custom navigation order
 const order = [];
@@ -34,6 +35,7 @@ export default function App() {
           {isLoggedIn&&<Route path={"/settings"} element={<Settings/>}/>}
           {isLoggedIn&&<Route path={"/my_profile"} element={<MyProfile/>}/>}
           <Route path={'/test'} element={<MapLayoutEditor/>}/>
+          <Route path={'/uploader'} element={<Uploader/>}/>
         </Routes>
       </Router>
     </div>

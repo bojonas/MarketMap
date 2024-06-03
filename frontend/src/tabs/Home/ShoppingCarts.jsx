@@ -5,10 +5,14 @@ import { FaTrashCan } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 
+import { useNavigate } from 'react-router-dom';
+
 export default function ShoppingCarts({ user_id }) {
     const [shoppingCarts, setShoppingCarts] = useState([]);
     const [cartNames, setCartNames] = useState([]);
     const [isDataFetched, setIsDataFetched] = useState(false);
+
+    const navigator = useNavigate()
 
     useEffect(() => {
         const getShoppingCarts = async () => {
@@ -49,6 +53,10 @@ export default function ShoppingCarts({ user_id }) {
         if (cart_id) setShoppingCarts([...shoppingCarts, { cart_id: cart_id, cart_name: '', products: [] }]);
     }
 
+    const uploadShoppingCart = async () => {
+        navigator('/uploader')
+    }
+
     return (
         <div className='absolute z-0 bottom-[5%] right-[10%] flex flex-col w-1/3 h-2/3 text-black bg-darkoffwhite rounded-xl'>
             <p className='p-[3svh] text-[2.5svh] font-bold'>My Carts:</p>
@@ -76,6 +84,10 @@ export default function ShoppingCarts({ user_id }) {
                 <div onClick={addShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] hover:text-purple-custom cursor-pointer'>
                     <FaCartPlus size={24}/>
                     <p>Add Cart</p>
+                </div>
+                <div onClick={uploadShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] hover:text-purple-custom cursor-pointer'>
+                    <FaCartPlus size={24}/>
+                    <p>Upload Cart</p>
                 </div>
             </div>
         </div>
