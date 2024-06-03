@@ -426,6 +426,54 @@ app.post('/get_market', async (req, res) => {
     }
 });
 
+/**** Setting Routes ****/
+
+// import setting routes
+const {getColorPersonal, postColorPersonal} = require('./routes/settingRoutes')
+
+//schemas to validate setting routes
+    //const user_id already implemented in Section Login
+const UserIdColor = Joi.object({
+    user_id: Joi.number().required(),
+    color: Joi.string().required(),
+});
+
+app.post('/get_color_personal', async (req, res)=>{
+    const { error } = UserId.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { user_id } = req.body;
+
+    try {
+        const result = await getColorPersonal(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+})
+
+app.post('/post_color_personal', async (req, res)=>{
+    const { error } = UserIdColor.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { user_id, color } = req.body;
+
+    try {
+        const result = await postColorPersonal(user_id, color, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+})
+
 
 
 

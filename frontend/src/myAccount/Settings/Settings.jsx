@@ -1,32 +1,20 @@
 import { useState } from "react"
-import Color from "./SettingOptions/Color/Color"
-import MyProfile from "../MyProfile/MyProfile";
+
+import Sidebar from "./Sidebar";
+import Color from "./SettingOptions/Color/Color";
+import SettingContent from "./SettingContent";
 
 export default function Settings(){
-    const [content, setContent] = useState({header: "Error", body: ("Error")})
-
-    const colorButton = ()=>{
-        setContent({header: "Color", body: (<Color/>)})
-    };
-
-    const myProfile = ()=> setContent({header: "My Profile", body: (<MyProfile/>)})
+    const [content, setContent] = useState({header: "Color", body: (<Color label={"Personal"}/>)})
 
     return (
-        <div className="bg-blue-100 w-full h-full">
-            <div className="flex justify-left bg-green-300">
-                <h1 className="text-4xl text-black px-4 py-2 rounded-md">Settings</h1>
+        <div className="w-full h-full">
+            <div className="flex justify-left text-4xl text-offwhite px-4 py-2 rounded-md">
+                Settings
             </div>
-
             <div className=" flex h-full pt-4">
-                <div className="text-2xl bg-red-600 w-3/12 flex flex-col">
-                    <button onClick={colorButton}>Color</button>
-                    <button onClick={myProfile}>My Profile</button>
-                </div>
-                <div className="text-2xl bg-orange-600 w-3/4">
-                    <div className="bg-gray-800">{content["header"]}</div>
-                    {content["body"]}
-                </div>
-
+                <Sidebar setContent={setContent}/>
+                <SettingContent content={content}/>
             </div>
         </div>
     )
