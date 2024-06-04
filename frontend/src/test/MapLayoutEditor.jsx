@@ -23,10 +23,12 @@ export default function MapLayoutEditor() {
         dragItemNode.current = null;
     }
 
-    const handleDragEnter = (e, targetItem) => {
+    const handleDrop = (e, targetItem) => {
         if (dragItemNode.current !== e.target) {
             setMapLayout(oldMapLayout => {
-                const newMapLayout = JSON.parse(JSON.stringify(oldMapLayout));
+                const newMapLayout = new MapLayout();
+                newMapLayout.zones = new Map(oldMapLayout.zones);
+                newMapLayout.idCounter = oldMapLayout.idCounter; 
                 newMapLayout.swapZones(dragItem.current.id, targetItem.id);
                 return newMapLayout;
             });
@@ -35,16 +37,17 @@ export default function MapLayoutEditor() {
 
     return (
         <MapLayoutContext.Provider value={{ mapLayout, setMapLayout, setCreateZone }}>
-            <div className='flex items-center justify-center w-full h-full'>
-                <div className='flex items-center justify-center w-[80svw] h-[80svh] gap-[1svw] overflow-scroll'>
+            <div className='flex items-center justify-center'>
+                <div className='flex items-center justify-center w-[80svw] h-[80svh]'>
                     { createZone ? <ZoneCreator setMapLayout={setMapLayout} rows={15} columns={15}/> 
-                    : <React.Fragment>
+                    : <div className='gap-[5%] flex items-center justify-center overflow-scroll'>
                         { mapLayout && Array.from(mapLayout.zones.values()).map(zone => (
-                            <div key={zone.id} className='flex flex-col content-center items-center justify-center gap-[4%]'>
+                            <div key={zone.id} className='flex flex-col content-center items-center justify-center gap-[4%] transition-all duration-500 ease-in-out'>
                                 {zone.name || 'Zone not named'}
                                 <div draggable className='rounded-xl border-darkgray-custom border-[0.5svh] hover:border-purple-custom cursor-pointer'
                                     onDragStart={(e) => handleDragStart(e, zone)}
-                                    onDragEnter={dragItem.current !== null ? (e) => handleDragEnter(e, zone) : null}
+                                    onDragOver={(e) => e.preventDefault()}
+                                    onDrop={(e) => handleDrop(e, zone)}
                                 >
                                     <ZoneViewer layout={zone.layout} rows={zone.rows} columns={zone.columns}/>
                                 </div>
@@ -54,8 +57,7 @@ export default function MapLayoutEditor() {
                             <p className='text-[4svh]'>+</p>
                             <p>add Zone</p>
                         </div>
-                    </React.Fragment>
-                    }
+                    </div>}
                 </div>
             </div>
         </MapLayoutContext.Provider>
