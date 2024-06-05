@@ -15,13 +15,17 @@ export default function Uploader(){
         if (file) {
             if(file.name.endsWith('.txt')){
                 test = await parseFile(file, "txt")
+                console.log(test)
 
             }
-            else{
+            else if(file.name.endsWith('.docx')){
                 test = await parseFile(file, "docx")
+                console.log(test)
+            }
+            else{
+                console.error("Invalid File Type")
             }
             
-            console.log(test)
         }
     };
     return(
