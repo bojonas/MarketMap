@@ -50,4 +50,3 @@ const ZoneCellViewer = React.memo(({ type, cellStyle }) => {
     </React.Fragment>
   );
 });
-

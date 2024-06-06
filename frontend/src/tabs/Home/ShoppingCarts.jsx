@@ -80,12 +80,12 @@ export default function ShoppingCarts({ user_id }) {
                     </div>              
                 ))}
             </div>
-            <div className='flex justify-center items-center w-full h-[20%] bg-darkoffwhite rounded-b-xl'>
+            <div className='flex justify-center items-center w-full h-[20%] gap-[5%] bg-darkoffwhite rounded-b-xl'>
                 <div onClick={addShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] hover:text-purple-custom cursor-pointer'>
                     <FaCartPlus size={24}/>
                     <p>Add Cart</p>
                 </div>
-                <div onClick={uploadShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] hover:text-purple-custom cursor-pointer'>
+                <div onClick={uploadShoppingCart} className='flex justify-center items-center gap-[5%] w-[25%] hover:text-purple-custom cursor-pointer'>
                     <FaCartPlus size={24}/>
                     <p>Upload Cart</p>
                 </div>
