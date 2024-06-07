@@ -18,7 +18,7 @@ export default function ZoneViewer({ layout, rows, columns }) {
                     row.map((cell, j) => {
                         return (
                             <div key={j}>
-                                { cell.filled && <ZoneCellViewer 
+                                { cell && <ZoneCellViewer 
                                     type={cell.type}
                                     cellStyle={{ 
                                         height: `${scale}px`, 

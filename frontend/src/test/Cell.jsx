@@ -1,6 +1,6 @@
 export class Cell {
-    constructor(filled, type, x, y, products) {
-        this.filled = filled;
+    constructor(zoneid, type, x, y, products) {
+        this.zoneid = zoneid
         this.type = type;
         this.x = x;
         this.y = y;

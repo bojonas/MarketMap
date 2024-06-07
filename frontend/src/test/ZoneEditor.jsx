@@ -1,16 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { useAdjustScale } from '../hooks/useAdjustScale';
 import { getItemImages } from '../helper/getItemImages';
+import { Cell } from './Cell';
 
-export default function ZoneEditor({ zone }) {
+export default function ZoneEditor({ zone, setEditZone }) {
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
     const scale = Math.min(width/ zone.columns, height / zone.rows);  
     const [name, setName] = useState(zone.name);
 
+    const saveZone = () => {
+        setEditZone(null);
+    }
+
     return (
         <div className='flex flex-col items-center justify-center w-full h-full gap-[2%] p-[2%]'>
-            <input value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
+            <input value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
             <div ref={ref} className='w-full h-full p-[1svh] flex flex-col items-center justify-center'>
                 <div className='grid items-center justify-center content-center w-full h-full'
                     style={{ 
@@ -18,10 +23,9 @@ export default function ZoneEditor({ zone }) {
                         gridTemplateRows: `repeat(${zone.rows}, ${scale}px)`
                     }}>
                     { zone.layout.map((row, i) => (
-                        row.map((cell, j) => {
-                            return (
+                        row.map((cell, j) => (
                                 <div key={j}>
-                                    { cell.filled && <ZoneCellViewer 
+                                    { cell instanceof Cell && <ZoneCellViewer 
                                         type={cell.type}
                                         cellStyle={{ 
                                             height: `${scale}px`, 
@@ -31,11 +35,12 @@ export default function ZoneEditor({ zone }) {
                                         }}
                                     />}
                                 </div>
-                            );
-                        })
+                            )
+                        )
                     ))}
                 </div>
             </div>
+            <button onClick={saveZone}>Save</button>
         </div>
     );     
 };

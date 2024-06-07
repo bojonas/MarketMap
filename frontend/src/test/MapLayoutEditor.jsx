@@ -4,9 +4,11 @@ import ZoneCreator from "./ZoneCreator";
 import { MapLayoutContext } from '../context/MapLayoutContext';
 import ZoneViewer from './ZoneViewer';
 import ZoneEditor from './ZoneEditor';
+import { getItemImages } from '../helper/getItemImages';
 
 export default function MapLayoutEditor() {
-    const [mapLayout, setMapLayout] = useState(new MapLayout());
+    const images = getItemImages();
+    const [mapLayout, setMapLayout] = useState(new MapLayout(15, 15));
     const [createZone, setCreateZone] = useState(false);
     const [editZone, setEditZone] = useState(null);
 
@@ -38,7 +40,7 @@ export default function MapLayoutEditor() {
     }
 
     return (
-        <MapLayoutContext.Provider value={{ mapLayout, setMapLayout, setCreateZone }}>
+        <MapLayoutContext.Provider value={{ mapLayout, setMapLayout, setCreateZone, images }}>
             <div className='flex items-center justify-center'>
                 <div className='flex items-center justify-center w-[80svw] h-[80svh]'>
                     { editZone ? <ZoneEditor zone={editZone}/> 

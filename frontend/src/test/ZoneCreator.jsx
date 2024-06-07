@@ -2,59 +2,62 @@ import React, { useState, useRef, useContext } from 'react';
 import { MapLayout } from './MapLayout';
 import { Cell } from './Cell';
 import { useAdjustScale } from '../hooks/useAdjustScale';
-import { getItemImages } from '../helper/getItemImages';
 import { MapLayoutContext } from '../context/MapLayoutContext';
+import { colors } from '../tabs/Home/colors';
 
 export default function ZoneCreator({ rows, columns }) {
+    const { mapLayout, setMapLayout, setCreateZone } = useContext(MapLayoutContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
     const scale = Math.min(width/ columns, height / rows);  
 
-    const { mapLayout, setMapLayout, setCreateZone } = useContext(MapLayoutContext);
-    const layout = Array(rows).fill().map(() => Array(columns).fill(true));
+    const layout = mapLayout.map_layout
     const [selectedCells, setSelectedCells] = useState(new Set());
     const [name, setName] = useState('');
 
     const saveZone = () => {
-        const emptyLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(false, null, i, j, null)));
+        // copy mapLayout
+        const newMapLayout = new MapLayout(rows, columns);
+        newMapLayout.map_layout = mapLayout.map_layout;
+        newMapLayout.zones = new Map(mapLayout.zones);
+        newMapLayout.idCounter = mapLayout.idCounter;
+
+        let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => true));
         selectedCells.forEach(cell => {
             const [row, col] = cell.split(',').map(Number);
-            emptyLayout[row][col] = new Cell(true, 'empty', row, col, []);
+            newLayout[row][col] = new Cell(newMapLayout.idCounter, 'empty', row, col, []);
         });
-        // remove not filled rows and columns
-        let newLayout = JSON.parse(JSON.stringify(emptyLayout));
+
+        // remove not selected rows and columns
         let rowsToKeep = new Set();
         let colsToKeep = new Set();
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
-                if (newLayout[i][j].filled) {
-                    rowsToKeep.add(i);
-                    colsToKeep.add(j);
-                }
+                if (newLayout[i][j] === true) continue;
+                rowsToKeep.add(i);
+                colsToKeep.add(j);
             }
         }
         newLayout = newLayout.filter((_, i) => rowsToKeep.has(i));
-        newLayout = newLayout.map(row => row.filter((_, j) => colsToKeep.has(j)));
-        // copy mapLayout
-        const newMapLayout = new MapLayout();
-        newMapLayout.zones = new Map(mapLayout.zones);
-        newMapLayout.idCounter = mapLayout.idCounter; 
-        
+        newLayout = newLayout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
+
+        // get top left position of zone
+        let minRow = rows, minCol = columns;
+        selectedCells.forEach(cell => {
+            const [row, col] = cell.split(',').map(Number);
+            minRow = Math.min(minRow, row);
+            minCol = Math.min(minCol, col);
+        });
         // add zone to mapLayout
-        newMapLayout.addZone(name, newLayout);
+        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol });
         setMapLayout(newMapLayout);
         setCreateZone(false);
-        
-        setSelectedCells(new Set());
     };    
 
     const toggleCell = (row, col) => {
         const cell = `${row},${col}`;
-        if (selectedCells.has(cell)) {
-            selectedCells.delete(cell);
-        } else {
-            selectedCells.add(cell);
-        }
+        if (selectedCells.has(cell))  selectedCells.delete(cell);
+        else selectedCells.add(cell);
         setSelectedCells(new Set(selectedCells));
     };
 
@@ -71,6 +74,25 @@ export default function ZoneCreator({ rows, columns }) {
         setSelectedCells(new Set(selectedCells));
     };
 
+    const handleMouseUp = () => {    
+        // floodfill algorithm
+        const selectedCoordinates = Array.from(selectedCells).map(cell => cell.split(',').map(Number));
+        const avgRow = Math.round(selectedCoordinates.reduce((sum, coord) => sum + coord[0], 0) / selectedCoordinates.length);
+        const avgCol = Math.round(selectedCoordinates.reduce((sum, coord) => sum + coord[1], 0) / selectedCoordinates.length);
+    
+        const stack = [[avgRow, avgCol]];
+        while (stack.length) {
+            const [row, col] = stack.pop();
+            if (row > 0 && !selectedCells.has(`${row - 1},${col}`) && (layout[row - 1][col] || selectedCells.has(`${row - 1},${col}`))) stack.push([row - 1, col]);
+            if (row < rows - 1 && !selectedCells.has(`${row + 1},${col}`) && (layout[row + 1][col] || selectedCells.has(`${row + 1},${col}`))) stack.push([row + 1, col]);
+            if (col > 0 && !selectedCells.has(`${row},${col - 1}`) && (layout[row][col - 1] || selectedCells.has(`${row},${col - 1}`))) stack.push([row, col - 1]);
+            if (col < columns - 1 && !selectedCells.has(`${row},${col + 1}`) && (layout[row][col + 1] || selectedCells.has(`${row},${col + 1}`))) stack.push([row, col + 1]);
+            selectedCells.add(`${row},${col}`);
+        }
+        setSelectedCells(new Set(selectedCells));
+        setIsMouseDown(false);
+    };
+    
     return (
         <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center w-full h-full gap-[2%] p-[2%]'>
             <input value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
@@ -88,17 +110,17 @@ export default function ZoneCreator({ rows, columns }) {
                                 <div 
                                     key={j} 
                                     onMouseDown={() => handleMouseDown(i, j)}
-                                    onMouseUp={() => setIsMouseDown(false)}
+                                    onMouseUp={handleMouseUp}
                                     onMouseOver={() => handleMouseOver(i, j)}
                                 >
                                     { inLayout && <ZoneCell 
-                                        type={'empty'}
+                                        type={cell.type || 'empty'}
                                         cellStyle={{ 
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 
                                             border: `${scale/10}px solid #171717`,
                                             borderRadius: `${scale/5}px`,
-                                            backgroundColor: isSelected ? '#715DF2' : ''
+                                            backgroundColor: isSelected ? '#715DF2' : colors[cell.zoneid]
                                         }}
                                     />}
                                 </div>
@@ -113,16 +135,16 @@ export default function ZoneCreator({ rows, columns }) {
 };
 
 const ZoneCell = React.memo(({ type, cellStyle }) => {
-  const images = getItemImages();
-  const source = images[type];
-  return (
+    const { images } = useContext(MapLayoutContext);
+    const source = images[type];
+    return (
     <React.Fragment>
-      { type !== 'empty' 
-      ? <div className='flex justify-center items-center bg-[#d9d9d9] p-[5%] rounded-[5%] w-full h-full' style={cellStyle}>
-          <img draggable='false' src={source} alt={type}/>
-      </div>
-      : <div className='flex justify-center items-center bg-gray-custom p-[5%] rounded-[5%] w-full h-full' style={cellStyle}/>
-      }
+        { type !== 'empty' 
+        ? <div className='flex justify-center items-center bg-[#d9d9d9] p-[5%] rounded-[5%] w-full h-full' style={cellStyle}>
+            <img draggable='false' src={source} alt={type}/>
+        </div>
+        : <div className='flex justify-center items-center bg-gray-custom p-[5%] rounded-[5%] w-full h-full' style={cellStyle}/>
+        }
     </React.Fragment>
-  );
+    );
 });
