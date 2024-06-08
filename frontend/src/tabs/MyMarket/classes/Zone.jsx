@@ -1,5 +1,3 @@
-import { Cell } from "./Cell";
-
 export class Zone {
     constructor(id, name, layout, position, color) {
         this.id = id;
@@ -17,7 +15,7 @@ export class Zone {
                 const row = overlappingPosition.row + i - this.position.row;
                 const col = overlappingPosition.column + j - this.position.column;
                 if (row >= 0 && row < this.rows && col >= 0 && col < this.columns) {
-                    if (overlappingLayout[i][j] instanceof Cell) this.layout[row][col] = true;
+                    if (typeof overlappingLayout[i][j] === 'number') this.layout[row][col] = true;
                 }
             }
         }

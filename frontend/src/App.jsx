@@ -9,7 +9,7 @@ import { tabPermission } from './tabPermission';
 import Navbar from './atoms/Navbar';
 import Settings from './myAccount/Settings/Settings';
 import Uploader from './uploader/Uploader';
-import MapLayoutViewer from './test/MapLayoutViewer';
+import MapLayoutViewer from './tabs/MyMarket/MapLayoutViewer';
 
 // custom navigation order
 const order = [];
@@ -27,7 +27,7 @@ export default function App() {
       <Router>
         <Navbar tabs={tabs} userPermission={userPermission} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>
-          {tabs.map(({ tab, Component, permission }, index) => 
+          { tabs.map(({ tab, Component, permission }, index) => 
             (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Route key={index} path={`/${tab}`} element={<Component/>}/>
           )}
           {!isLoggedIn&&<Route path={"/login"} element={<Login setIsLoggedIn={setIsLoggedIn}/>}/>}

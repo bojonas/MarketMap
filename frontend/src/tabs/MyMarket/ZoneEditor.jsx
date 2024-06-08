@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { useAdjustScale } from '../hooks/useAdjustScale';
-import { getItemImages } from '../helper/getItemImages';
-import { Cell } from './Cell';
+import { useAdjustScale } from '../../hooks/useAdjustScale';
+import { getItemImages } from '../../helper/getItemImages';
 
 export default function ZoneEditor({ zone, setEditZone }) {
     const ref = useRef(null);
@@ -25,7 +24,7 @@ export default function ZoneEditor({ zone, setEditZone }) {
                     { zone.layout.map((row, i) => (
                         row.map((cell, j) => (
                                 <div key={j}>
-                                    { cell instanceof Cell && <ZoneCellViewer 
+                                    { typeof cell.zoneid === 'number' && <ZoneCellViewer 
                                         type={cell.type}
                                         cellStyle={{ 
                                             height: `${scale}px`, 

@@ -3,7 +3,7 @@ import { Cell } from "./Cell";
 
 export class MapLayout {
   constructor(rows, columns) {
-    this.map_layout = Array(rows).fill().map(() => Array(columns).fill(true));
+    this.map_layout =  Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
     this.zones = new Map(); 
     this.idCounter = 0;
   }
@@ -12,12 +12,12 @@ export class MapLayout {
     return this.zones.get(id);
   }
 
-  addZone(name, layout, position) {
+  addZone(name, layout, position, color) {
     const id = this.idCounter++;
-    const newZone = new Zone(id, name, layout, position);
+    const newZone = new Zone(id, name, layout, position, color);
     for (let zone of this.zones.values()) {
       zone.updateLayout(layout, position);
-      if (!zone.layout.some(row => row.some(cell => cell instanceof Cell))) this.removeZone(zone.id);
+      if (!zone.layout.some(row => row.some(cell => typeof cell.zoneid !== 'number'))) this.removeZone(zone.id);
     }
     this.zones.set(id, newZone);
     this.updateMapLayout(newZone);
@@ -44,14 +44,14 @@ export class MapLayout {
     for (let i = 0; i < zone.layout.length; i++) {
         for (let j = 0; j < zone.layout[i].length; j++) {
           const cell = zone.layout[i][j];
-          if (!(cell instanceof Cell)) continue;
+          if (typeof cell.zoneid !== 'number') continue;
           this.map_layout[zone.position.row + i][zone.position.column + j] = new Cell(cell.zoneid, cell.type, cell.x, cell.y, cell.products);
         }
     }
   }
 
   recreateMapLayout() {
-    this.map_layout = Array(this.map_layout.length).fill().map(() => Array(this.map_layout[0].length).fill(true));
+    this.map_layout = Array(this.map_layout.length).fill().map((_, i) => Array(this.map_layout[0].length).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
     for (let zone of this.zones.values()) {
       this.updateMapLayout(zone);
     }

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { MapLayout } from "./MapLayout";
+import { MapLayout } from "./classes/MapLayout";
 import ZoneCreator from "./ZoneCreator";
-import { MapLayoutContext } from '../context/MapLayoutContext';
+import { MapLayoutContext } from '../../context/MapLayoutContext';
 import ZoneViewer from './ZoneViewer';
 import ZoneEditor from './ZoneEditor';
-import { getItemImages } from '../helper/getItemImages';
+import { getItemImages } from '../../helper/getItemImages';
 
 export default function MapLayoutEditor() {
     const images = getItemImages();

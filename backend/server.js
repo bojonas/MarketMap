@@ -480,12 +480,13 @@ app.post('/post_color_personal', async (req, res)=>{
 /**** MyMarket Routes ****/
 
 // import map editor routes
-const { putMapLayout, getMyMarket } = require('./routes/myMarketRoutes')
+const { putMapLayout, getMyMarket, getMarketZones, putMarketZones } = require('./routes/myMarketRoutes')
 
 // shemas to validate map editor jsons 
 const Map = Joi.object({
     user_id: Joi.number().required(),
-    layout: Joi.array().required()
+    layout: Joi.array(),
+    zones: Joi.array()
 });
 
 app.put('/put_map_layouts', async (req, res) => {
@@ -498,6 +499,23 @@ app.put('/put_map_layouts', async (req, res) => {
     const { user_id, layout } = req.body;
     try {
         const result = await putMapLayout(user_id, layout, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+app.put('/put_market_zones', async (req, res) => {
+    const { error } = Map.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { user_id, zones } = req.body;
+    try {
+        const result = await putMarketZones(user_id, zones, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
@@ -522,6 +540,22 @@ app.post('/get_my_markets', async (req, res) => {
     }
 })
 
+app.post('/get_market_zones', async (req, res) => {
+    const { error } = UserId.validate(req.body)
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { user_id } = req.body;
+    try {
+        const result = await getMarketZones(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+})
 
 // pwd hashing
 const bcrypt = require('bcrypt');

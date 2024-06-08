@@ -1,17 +1,19 @@
 import React, { useState, useRef, useContext } from 'react';
-import { MapLayout } from './MapLayout';
-import { Cell } from './Cell';
-import { useAdjustScale } from '../hooks/useAdjustScale';
-import { MapLayoutContext } from '../context/MapLayoutContext';
-import { colors } from '../tabs/Home/colors';
+import { MapLayout } from './classes/MapLayout';
+import { Cell } from './classes/Cell';
+import { useAdjustScale } from '../../hooks/useAdjustScale';
+import { MapLayoutContext } from '../../context/MapLayoutContext';
+import { colors } from '../Home/colors';
 
-export default function ZoneCreator({ rows, columns }) {
-    const { mapLayout, setMapLayout, setCreateZone } = useContext(MapLayoutContext);
+export default function ZoneCreator({ setCreateZone }) {
+    const { mapLayout, setMapLayout } = useContext(MapLayoutContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
-    const scale = Math.min(width/ columns, height / rows);  
 
     const layout = mapLayout.map_layout
+    const rows = layout.length;
+    const columns = layout[0].length
+    const scale = Math.min(width/ columns, height / rows);  
     const [selectedCells, setSelectedCells] = useState(new Set());
     const [name, setName] = useState('');
 
@@ -22,10 +24,10 @@ export default function ZoneCreator({ rows, columns }) {
         newMapLayout.zones = new Map(mapLayout.zones);
         newMapLayout.idCounter = mapLayout.idCounter;
 
-        let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => true));
+        let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
         selectedCells.forEach(cell => {
             const [row, col] = cell.split(',').map(Number);
-            newLayout[row][col] = new Cell(newMapLayout.idCounter, 'empty', row, col, []);
+            newLayout[row][col] = new Cell(newMapLayout.idCounter, newMapLayout.map_layout[row][col].type || 'empty', row, col, newMapLayout.map_layout[row][col].products || []);
         });
 
         // remove not selected rows and columns
@@ -33,7 +35,7 @@ export default function ZoneCreator({ rows, columns }) {
         let colsToKeep = new Set();
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
-                if (newLayout[i][j] === true) continue;
+                if (typeof newLayout[i][j].zoneid !== 'number') continue;
                 rowsToKeep.add(i);
                 colsToKeep.add(j);
             }
@@ -49,7 +51,7 @@ export default function ZoneCreator({ rows, columns }) {
             minCol = Math.min(minCol, col);
         });
         // add zone to mapLayout
-        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol });
+        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol }, colors[newMapLayout.idCounter]);
         setMapLayout(newMapLayout);
         setCreateZone(false);
     };    
@@ -94,7 +96,7 @@ export default function ZoneCreator({ rows, columns }) {
     };
     
     return (
-        <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center w-full h-full gap-[2%] p-[2%]'>
+        <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center w-full h-full gap-[2%]'>
             <input value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
             <div ref={ref} className='flex w-full h-full items-center justify-center'>
                 <div className='grid w-fit h-fit items-center justify-center'

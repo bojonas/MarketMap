@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { useAdjustScale } from '../hooks/useAdjustScale';
-import { getItemImages } from '../helper/getItemImages';
+import { useAdjustScale } from '../../hooks/useAdjustScale';
+import { getItemImages } from '../../helper/getItemImages';
 
 export default function ZoneViewer({ layout, rows, columns }) {
     const ref = useRef(null);
