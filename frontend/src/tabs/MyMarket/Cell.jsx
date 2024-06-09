@@ -117,12 +117,11 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
 
   return (
     <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} onContextMenu={rotateCell} onDoubleClick={() => { if (type !== 'empty') setOpenCell(layout[row][col]) }}
-      className='flex justify-center items-center p-[5%]' 
+      className={`flex justify-center items-center p-[5%] ${type !== 'empty' ? 'bg-[#d9d9d9]' : 'bg-gray-custom'}`}
       style={{
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'pointer',
-        backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#242424',
-        transform: `rotate(${layout[row][col]['rotation']}deg)`,
-        ...cellStyle
+        backgroundColor: isOver ? '#715DF2' : '',
+        ...cellStyle,
       }}>
       { type === 'empty' ? null
       : droppedItem

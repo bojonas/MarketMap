@@ -21,3 +21,36 @@ export const colors = [
     'darkseagreen', 'darkslateblue', 'darkslategray', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 
     'dimgray', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite'
 ]
+
+export const colorArray = [
+    '255, 0, 0', // red
+    '0, 128, 0', // green
+    '0, 0, 255', // blue
+    '255, 255, 0', // yellow
+    '0, 255, 255', // aqua
+    '255, 0, 255', // fuchsia
+    '0, 255, 0', // lime
+    '128, 0, 0', // maroon
+    '0, 0, 128', // navy
+    '128, 128, 0', // olive
+    '128, 0, 128', // purple
+    '0, 128, 128', // teal
+    '240, 255, 255', // azure
+    '245, 245, 220', // beige
+    '255, 228, 196', // bisque
+    '0, 0, 0', // black
+    '255, 235, 205', // blanchedalmond
+    '138, 43, 226', // blueviolet
+    '165, 42, 42', // brown
+    '222, 184, 135', // burlywood
+    '95, 158, 160', // cadetblue
+    '127, 255, 0', // chartreuse
+    '210, 105, 30', // chocolate
+    '255, 127, 80', // coral
+    '100, 149, 237', // cornflowerblue
+    '255, 248, 220', // cornsilk
+    '220, 20, 60', // crimson
+    '0, 255, 255', // cyan
+    '0, 0, 139', // darkblue
+    '0, 139, 139', // darkcyan
+];

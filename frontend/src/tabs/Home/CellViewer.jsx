@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
-import { getItemImages } from '../../helper/getItemImages';
 
-const CellViewer = memo(({ type, cellStyle }) => {
-  const images = getItemImages();
-  const source = images[type];
+const CellViewer = memo(({ type, source, cellStyle }) => {
   return (
     <React.Fragment>
       { type !== 'empty' 

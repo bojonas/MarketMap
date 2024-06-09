@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 
-export default function MiniMap({ layout, market, selectMarket }) {
+export default function MiniMap({ layout, market, selectMarket, images }) {
   const [dimensions, setDimensions] = useState({ width: '10svw', height: '10svh' });
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
@@ -26,6 +26,7 @@ export default function MiniMap({ layout, market, selectMarket }) {
                   <CellViewer
                     key={cell.y} 
                     type={cell.type} 
+                    source={images[cell.type]}
                     cellStyle={{ 
                       height: `${scale}px`, 
                       width: `${scale}px`, 

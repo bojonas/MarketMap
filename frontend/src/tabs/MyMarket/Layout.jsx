@@ -3,8 +3,6 @@ import Cell from './Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import { useContext } from 'react';
 import { MyMarketContext } from '../../context/MyMarketContext';
-import { getBorderStyle } from './getBorderStyle';
-import { getNonBorderStyle } from './getNonBorderStyle';
 import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function Layout({ zoom }) {
@@ -42,22 +40,22 @@ export default function Layout({ zoom }) {
               transformOrigin: '0 0'
             }}>
             {layout.map((row, i) => (
-              row.map((cell, j) => {
-                let borderStyle = getNonBorderStyle(scale);
-                if (borderCells.size && typeof cell.zone_id === 'number') borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), i, j, scale);
-                return (<div key={cell.y} onClick={() => typeof cell.zone_id === 'number' ? setEditZone(cell.zone_id) : null} className='cursor-pointer'>
-                    { cell && <Cell 
-                      type={cell.type} 
-                      coordinates={`${cell.x}-${cell.y}`}
-                      cellStyle={{ 
-                        height: `${scale}px`, 
-                        width: `${scale}px`, 
-                        ...borderStyle
-                      }}
-                    />}
-                  </div>
-                );
-            })
+              row.map((cell, j) => (
+                <div key={cell.y} onClick={() => typeof cell.zone_id === 'number' ? setEditZone(cell.zone_id) : null} className='cursor-pointer'>
+                  { cell && <Cell 
+                    type={cell.type} 
+                    coordinates={`${cell.x}-${cell.y}`}
+                    cellStyle={{ 
+                      height: `${scale}px`, 
+                      width: `${scale}px`, 
+                      transform: `rotate(${layout[i][j]['rotation']}deg)`,
+                      border: `${scale/10}px solid #171717`,
+                      borderRadius: `${scale/5}px`,
+                      backgroundColor: borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, 0.3)` : ''
+                    }}
+                  />}
+                </div>
+              ))
             ))}
           </div>
         </div>

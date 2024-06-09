@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import { MapLayout } from './classes/MapLayout';
 import { Cell } from './classes/Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
-import { colors } from '../Home/colors';
+import { colorArray } from '../Home/colors';
 import ZoneCellViewer from './ZoneCellViewer';
 import { getBorderStyle } from './getBorderStyle';
 import { getNonBorderStyle } from './getNonBorderStyle';
@@ -57,7 +57,7 @@ export default function ZoneCreator({ setAddZone }) {
             minCol = Math.min(minCol, col);
         });
         // add zone to mapLayout
-        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol }, colors[newMapLayout.idCounter]); // color picker
+        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol }, colorArray[newMapLayout.idCounter]); // color picker
         setMapLayout(newMapLayout);
         const zone = newMapLayout.getZone(newMapLayout.idCounter-1);
         if (zone) {

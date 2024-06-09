@@ -8,7 +8,7 @@ import { requestFindPath } from '../../requests/homeRequests';
 import Path from '../../atoms/Path';
 
 export default function LayoutViewer({ zoom }) {
-  const { shoppingCart, layout, productsInMarket, colors, layoutIndex } = useContext(MapViewerContext);
+  const { shoppingCart, layout, productsInMarket, colors, layoutIndex, borderCells, setViewZone, images } = useContext(MapViewerContext);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
@@ -58,38 +58,41 @@ export default function LayoutViewer({ zoom }) {
               transform: `scale(${zoom})`,
               transformOrigin: '0 0'
             }}>
-            {layout.map((row, i) => (
+            { layout.map((row, i) => (
               row.map((cell, j) => (
-                <div key={`cell-${i}-${j}`} className='relative'>
+                <div key={`cell-${i}-${j}`} onClick={() => setViewZone(cell.zone_id)} className={`relative ${typeof cell.zone_id === 'number' ? 'cursor-pointer' : ''}`}>
                   <CellViewer
-                    key={cell['coordinates']} 
-                    type={cell['type']} 
+                    key={cell.y} 
+                    type={cell.type} 
+                    source={images[cell.type]}
                     cellStyle={{ 
                       height: `${scale}px`, 
                       width: `${scale}px`, 
+                      transform: `rotate(${layout[i][j]['rotation']}deg)`,
                       border: `${scale/10}px solid #171717`,
                       borderRadius: `${scale/5}px`,
-                      transform: `rotate(${layout[i][j]['rotation']}deg)`,
+                      backgroundColor: borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, 0.3)` : ''
                     }}
                   />
-                  { productsInMarket.filter(product => product.row === i && product.column === j).map(product => {
-                    const shoppingCartProduct = shoppingCart.products.find(marketProduct => marketProduct.product_id === product.product_id);
-                    return !shoppingCartProduct ? null : (
-                      <React.Fragment key={product.product_id}>
-                        <div className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
-                          style={{ 
-                            width: `${scale/2}px`, 
-                            height: `${scale/2}px`,
-                            backgroundColor: colors[layoutIndex[product.row.toString() + product.column.toString()]],
-                            transform: 'translate(-50%, -50%)',
-                          }}
-                          data-tooltip-id={`info-${i}-${j}`} 
-                          data-tooltip-html={product.product_id}
-                        />
-                        <Tooltip id={`info-${i}-${j}`} place='top'/>
-                      </React.Fragment>
-                    )}
-                  )}
+                  { productsInMarket.filter(product => product.row === i && product.column === j).flatMap(marketProduct => {
+                      const shoppingCartProducts = shoppingCart.products.filter(cartProduct => cartProduct.product_id === marketProduct.product_id);
+                      return shoppingCartProducts.length === 0 ? null : (
+                        <React.Fragment key={marketProduct.product_id}>
+                          <div className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
+                            style={{ 
+                              width: `${scale/2}px`, 
+                              height: `${scale/2}px`,
+                              backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]],
+                              transform: 'translate(-50%, -50%)',
+                            }}
+                            data-tooltip-id={`info-${i}-${j}`} 
+                            data-tooltip-html={shoppingCartProducts.map(product => product.product_name_en).join('<br/>')}
+                          />
+                          <Tooltip id={`info-${i}-${j}`} place='top'/>
+                        </React.Fragment>
+                      )
+                    })
+                  }
                   <Path 
                     path={path} 
                     currentRow={i} 

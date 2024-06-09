@@ -7,13 +7,17 @@ import SearchHistory from "./SearchHistory";
 import ShoppingCarts from "./ShoppingCarts";
 import { MapLayout } from '../MyMarket/classes/MapLayout';
 import { requestGetMarketZones } from '../../requests/myMarketRequests';
+import { findBorderCells } from '../MyMarket/findBorderCells';
+import { getItemImages } from '../../helper/getItemImages';
 
 export default function Home() {
     const user_id = localStorage.getItem('user_id');
+    const images = getItemImages();
     const [search, setSearch] = useState('');
     const [markets, setMarkets] = useState([]);
     const [market, setMarket] = useState(null);
     const [mapLayout, setMapLayout] = useState(null);
+    const [borderCells, setBorderCells] = useState(new Map());
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
     
@@ -65,6 +69,11 @@ export default function Home() {
         const newMapLayout = new MapLayout(newLayout.length, newLayout[0].length)
         newMapLayout.build(newLayout, zones);
         setMapLayout(newMapLayout);
+        const newBorderCells = new Map();
+        for (const zone of zones) {
+            newBorderCells.set(zone.zone_id, { border: findBorderCells(zone.zone_layout), zone_color: zone.zone_color });
+        }   
+        setBorderCells(newBorderCells);
         if (!user_id) return;
 
         // update history 
@@ -76,7 +85,7 @@ export default function Home() {
 
     return (
         <React.Fragment>
-            { market ? <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} setMarket={setMarket}/>
+            { market ? <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} setMarket={setMarket} borderCells={borderCells} images={images}/>
             : <div className='relative flex flex-col items-center text-center w-full h-full'>
                 <div className='flex flex-col items-center text-center w-2/5 h-fit p-[2%] pb-0'>
                     <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
@@ -98,7 +107,7 @@ export default function Home() {
                         </div>
                     ))}
                 </div>}
-                <SearchHistory user_id={user_id} markets={markets} selectMarket={selectMarket}/>
+                <SearchHistory user_id={user_id} markets={markets} selectMarket={selectMarket} images={images}/>
                 <ShoppingCarts user_id={user_id}/>
             </div>}
         </React.Fragment>
