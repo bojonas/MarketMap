@@ -1,52 +1,45 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
-import { getItemImages } from '../../helper/getItemImages';
+import ZoneCellViewer from './ZoneCellViewer';
 
-export default function ZoneViewer({ layout, rows, columns }) {
+export default function ZoneViewer({ zone, setViewZone }) {
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
-    const scale = Math.min(width/ columns, height / rows);  
+    const scale = Math.min(width/ zone.columns, height / zone.rows);  
+    const [name, setName] = useState(zone.name);
+
+    const handleBack = () => {
+        setViewZone(null);
+    }
 
     return (
-        <div ref={ref} className='w-[20svw] h-[40svh] p-[1svh] flex flex-col items-center justify-center'>
-            <div className='grid items-center justify-center content-center w-full h-full'
-                style={{ 
-                    gridTemplateColumns: `repeat(${columns}, ${scale}px)`, 
-                    gridTemplateRows: `repeat(${rows}, ${scale}px)`
-                }}>
-                { layout.map((row, i) => (
-                    row.map((cell, j) => {
-                        return (
-                            <div key={j}>
-                                { cell && <ZoneCellViewer 
-                                    type={cell.type}
-                                    cellStyle={{ 
-                                        height: `${scale}px`, 
-                                        width: `${scale}px`, 
-                                        border: `${scale/10}px solid #171717`,
-                                        borderRadius: `${scale/5}px`,
-                                    }}
-                                />}
-                            </div>
-                        );
-                    })
-                ))}
+        <div className='flex flex-col items-center justify-center w-full h-full gap-[2%] p-[2%]'>
+            <input value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
+            <div ref={ref} className='w-full h-full p-[1svh] flex flex-col items-center justify-center'>
+                <div className='grid items-center justify-center content-center w-full h-full'
+                    style={{ 
+                        gridTemplateColumns: `repeat(${zone.columns}, ${scale}px)`, 
+                        gridTemplateRows: `repeat(${zone.rows}, ${scale}px)`
+                    }}>
+                    { zone.zone_layout.map((row, i) => (
+                        row.map((cell, j) => (
+                                <div key={j}>
+                                    { typeof cell.zone_id === 'number' && <ZoneCellViewer
+                                        type={cell.type}
+                                        cellStyle={{ 
+                                            height: `${scale}px`, 
+                                            width: `${scale}px`, 
+                                            border: `${scale/10}px solid #171717`,
+                                            borderRadius: `${scale/5}px`,
+                                        }}
+                                    />}
+                                </div>
+                            )
+                        )
+                    ))}
+                </div>
             </div>
+            <button onClick={handleBack}>Back</button>
         </div>
     );     
 };
-
-const ZoneCellViewer = React.memo(({ type, cellStyle }) => {
-  const images = getItemImages();
-  const source = images[type];
-  return (
-    <React.Fragment>
-      { type !== 'empty' 
-      ? <div className='flex justify-center items-center bg-[#d9d9d9] p-[5%] rounded-[5%] w-full h-full' style={cellStyle}>
-          <img draggable='false' src={source} alt={type}/>
-        </div>
-      : <div className='flex justify-center items-center bg-gray-custom p-[5%] rounded-[5%] w-full h-full' style={cellStyle}/>
-      }
-    </React.Fragment>
-  );
-});

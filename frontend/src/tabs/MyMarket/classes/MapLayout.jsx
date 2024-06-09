@@ -10,13 +10,13 @@ export class MapLayout {
 
   build (map_layout, zones) {
     for (const zone of zones) {
-        this.addZone(zone.name, zone.layout, zone.position);
+      this.addZone(zone.zone_name, zone.zone_layout, zone.zone_position, zone.zone_color);
     }
     // add cells that are not in zone
     for (let i = 0; i < map_layout.length; i++) {
       for (let j = 0; j < map_layout[i].length; j++) {
         const cell = map_layout[i][j];
-        if (typeof cell.zoneid === 'number') continue;
+        if (typeof cell.zone_id === 'number') continue;
         if (!cell) {
           this.map_layout[i][j] = cell;
           continue;
@@ -27,44 +27,45 @@ export class MapLayout {
     }
   }
   
-  getZone(id) {
-    return this.zones.get(id);
+  getZone(zone_id) {
+    return this.zones.get(zone_id);
   }
 
-  addZone(name, layout, position, color) {
-    const id = this.idCounter++;
-    const newZone = new Zone(id, name, layout, position, color);
-    for (let zone of this.zones.values()) {
-      zone.updateLayout(layout, position);
-      if (!zone.layout.some(row => row.some(cell => typeof cell.zoneid !== 'number'))) this.removeZone(zone.id);
+  addZone(zone_name, zone_layout, zone_position, zone_color) {
+    const zone_id = this.idCounter++;
+    const newZone = new Zone(zone_id, zone_name, zone_layout, zone_position, zone_color);
+    for (const zone of this.zones.values()) {
+      zone.updateLayout(zone_layout, zone_position);
+      if (!zone.zone_layout.some(row => row.some(cell => typeof cell.zone_id === 'number'))) this.removeZone(zone.zone_id);
     }
-    this.zones.set(id, newZone);
+    this.zones.set(zone_id, newZone);
     this.updateMapLayout(newZone);
   }
 
-  removeZone(id) {
-    if (!this.zones.get(id)) return;
-    this.zones.delete(id);
+
+  removeZone(zone_id) {
+    if (!this.zones.get(zone_id)) return;
+    this.zones.delete(zone_id);
     this.recreateMapLayout();
   }
 
-  swapZones(id1, id2) {
-    const zone1 = this.zones.get(id1);
-    const zone2 = this.zones.get(id2);
+  swapZones(zone_id1, zone_id2) {
+    const zone1 = this.zones.get(zone_id1);
+    const zone2 = this.zones.get(zone_id2);
     if (!zone1 || !zone2) return;
-    const newZone1 = new Zone(zone2.id, zone1.name, zone1.layout, zone1.color);
-    const newZone2 = new Zone(zone1.id, zone2.name, zone2.layout, zone2.color);
-    this.zones.set(id2, newZone1);
-    this.zones.set(id1, newZone2);
+    const newZone1 = new Zone(zone2.zone_id, zone1.zone_name, zone1.zone_layout, zone1.zone_color);
+    const newZone2 = new Zone(zone1.zone_id, zone2.zone_name, zone2.zone_layout, zone2.zone_color);
+    this.zones.set(zone_id2, newZone1);
+    this.zones.set(zone_id1, newZone2);
     this.recreateMapLayout();
   }
 
   updateMapLayout(zone) {
-    for (let i = 0; i < zone.layout.length; i++) {
-        for (let j = 0; j < zone.layout[i].length; j++) {
-          const cell = zone.layout[i][j];
-          if (typeof cell.zoneid !== 'number') continue;
-          this.map_layout[zone.position.row + i][zone.position.column + j] = new Cell(cell.zoneid, cell.type, cell.x, cell.y, cell.products);
+    for (let i = 0; i < zone.zone_layout.length; i++) {
+        for (let j = 0; j < zone.zone_layout[i].length; j++) {
+          const cell = zone.zone_layout[i][j];
+          if (typeof cell.zone_id !== 'number') continue;
+          this.map_layout[zone.zone_position.row + i][zone.zone_position.column + j] = new Cell(cell.zone_id, cell.type, cell.x, cell.y, cell.products);
         }
     }
   }

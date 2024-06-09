@@ -4,13 +4,14 @@ import LoadImage from "../../atoms/LoadImage"
 import { MapEditorContext } from '../../context/MapEditorContext';
 import { isEqualArray } from '../../helper/isEqualArray';
 
-const Cell = memo(({ type, scale, coordinates }) => {
+const Cell = memo(({ type, coordinates, cellStyle }) => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [isOver, setIsOver] = useState(false);
   const [row, col] = coordinates.split('-').map(Number);
   const { 
     layout,
-    setLayout, 
+    setLayout,
+    setEditedZones,
     duplicateCells, 
     setDuplicateCells, 
     deleteCells, 
@@ -68,8 +69,39 @@ const Cell = memo(({ type, scale, coordinates }) => {
         newCell.type = 'empty';
         newCell.products = [];
       }
+
       return newLayout;
     });
+
+    setEditedZones(prev => {
+      const newZones = [...prev];
+      for (const zone in newZones) {
+        const cell = layout[row][col];
+        if (typeof cell.zone_id !== 'number' || cell.zone_id !== zone.zone_id) return;
+        // add item to current cell 
+        zone[row][col].type = item.alt;
+
+        // remove item from drag start cell
+        if (rootCoordinates) {
+          const newCell = zone[rootCoordinates[0]][rootCoordinates[1]];
+          newCell.type = 'empty';
+          newCell.products = [];
+        }
+
+        // add/remove items with modes
+        for (const cell of duplicateCells) {
+          const [x, y] = cell.split('-').map(Number);
+          zone[x][y].type = item.alt;
+        }
+        for (const cell of deleteCells) {
+          const [x, y] = cell.split('-').map(Number);
+          zone[x][y].type = 'empty';
+          zone[x][y].products = [];
+        }
+
+        return newZones;
+      }
+    })
 
     return deleteCells.length === 0 ? { name: type } : null;
   }
@@ -87,13 +119,10 @@ const Cell = memo(({ type, scale, coordinates }) => {
     <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} onContextMenu={rotateCell} onDoubleClick={() => { if (type !== 'empty') setOpenCell(layout[row][col]) }}
       className='flex justify-center items-center p-[5%]' 
       style={{
-        height: `${scale}px`,
-        width: `${scale}px`,
-        border: `${scale/10}px solid #171717`,
-        borderRadius: `${scale/5}px`,
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'pointer',
         backgroundColor: isOver ? '#715DF2' : type !== 'empty' ? '#d9d9d9' : '#242424',
         transform: `rotate(${layout[row][col]['rotation']}deg)`,
+        ...cellStyle
       }}>
       { type === 'empty' ? null
       : droppedItem

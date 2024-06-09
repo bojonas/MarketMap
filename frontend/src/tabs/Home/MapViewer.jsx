@@ -14,28 +14,28 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
       return { layout: mapLayout.map_layout, productsInMarket: findProducts(mapLayout.map_layout) };
     }, [mapLayout.map_layout]);
 
-    // zoom effect on layout
-    useEffect(() => {
-        const handleWheel = (e) => {
-        if (e.ctrlKey) {
-            e.preventDefault();
-            const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
-            setZoom(newZoom < 1 ? 1 : newZoom);
-        }
-        };
-
-        const container = document.querySelector('#layoutViewer');
-        if (container) {
-        container.addEventListener('wheel', handleWheel, { passive: false });
-        return () => {
-            container.removeEventListener('wheel', handleWheel);
-        };
-        }
-    }, [zoom]); 
-
     const layoutIndex = useMemo(() => {
       return getLayoutIndex(layout);
     }, [layout]);
+
+    // zoom effect on layout
+    useEffect(() => {
+      const handleWheel = (e) => {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
+          setZoom(newZoom < 1 ? 1 : newZoom);
+        }
+      };
+
+      const container = document.querySelector('#layoutViewer');
+      if (container) {
+        container.addEventListener('wheel', handleWheel, { passive: false });
+        return () => {
+          container.removeEventListener('wheel', handleWheel);
+        };
+      }
+    }, [zoom]); 
 
     return !layout ? null :(
       <MapViewerContext.Provider value={{ shoppingCart, layout, productsInMarket, colors, layoutIndex }}>

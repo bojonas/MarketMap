@@ -2,22 +2,28 @@ import React, { useState, useRef, useContext } from 'react';
 import { MapLayout } from './classes/MapLayout';
 import { Cell } from './classes/Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
-import { MapLayoutContext } from '../../context/MapLayoutContext';
 import { colors } from '../Home/colors';
+import ZoneCellViewer from './ZoneCellViewer';
+import { getBorderStyle } from './getBorderStyle';
+import { getNonBorderStyle } from './getNonBorderStyle';
+import { MyMarketContext } from '../../context/MyMarketContext';
+import { IoArrowBack } from "react-icons/io5";
+import { FaRegSave } from "react-icons/fa";
+import { requestUpdateMarketZones } from '../../requests/myMarketRequests';
 
-export default function ZoneCreator({ setCreateZone }) {
-    const { mapLayout, setMapLayout } = useContext(MapLayoutContext);
+export default function ZoneCreator({ setAddZone }) {
+    const { mapLayout, setMapLayout, borderCells } = useContext(MyMarketContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
 
-    const layout = mapLayout.map_layout
+    const layout = mapLayout.map_layout;
     const rows = layout.length;
     const columns = layout[0].length
     const scale = Math.min(width/ columns, height / rows);  
     const [selectedCells, setSelectedCells] = useState(new Set());
     const [name, setName] = useState('');
 
-    const saveZone = () => {
+    const saveZone = async () => {
         // copy mapLayout
         const newMapLayout = new MapLayout(rows, columns);
         newMapLayout.map_layout = mapLayout.map_layout;
@@ -29,13 +35,13 @@ export default function ZoneCreator({ setCreateZone }) {
             const [row, col] = cell.split(',').map(Number);
             newLayout[row][col] = new Cell(newMapLayout.idCounter, newMapLayout.map_layout[row][col].type || 'empty', row, col, newMapLayout.map_layout[row][col].products || []);
         });
-
+        
         // remove not selected rows and columns
         let rowsToKeep = new Set();
         let colsToKeep = new Set();
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
-                if (typeof newLayout[i][j].zoneid !== 'number') continue;
+                if (typeof newLayout[i][j].zone_id !== 'number') continue;
                 rowsToKeep.add(i);
                 colsToKeep.add(j);
             }
@@ -51,9 +57,14 @@ export default function ZoneCreator({ setCreateZone }) {
             minCol = Math.min(minCol, col);
         });
         // add zone to mapLayout
-        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol }, colors[newMapLayout.idCounter]);
+        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol }, colors[newMapLayout.idCounter]); // color picker
         setMapLayout(newMapLayout);
-        setCreateZone(false);
+        const zone = newMapLayout.getZone(newMapLayout.idCounter-1);
+        if (zone) {
+            await requestUpdateMarketZones(localStorage.getItem('user_id'), [zone]);
+            alert('Zone created');
+        }
+        setAddZone(false);
     };    
 
     const toggleCell = (row, col) => {
@@ -65,12 +76,14 @@ export default function ZoneCreator({ setCreateZone }) {
 
     const [isMouseDown, setIsMouseDown] = useState(false);
 
-    const handleMouseDown = (row, col) => {
+    const handleMouseDown = (e, row, col) => {
+        e.preventDefault();
         setIsMouseDown(true);
         toggleCell(row, col);
     };
 
-    const handleMouseOver = (row, col) => {
+    const handleMouseOver = (e, row, col) => {
+        e.preventDefault();
         if (!isMouseDown || selectedCells.has(`${row},${col}`)) return;
         selectedCells.add(`${row},${col}`);
         setSelectedCells(new Set(selectedCells));
@@ -94,9 +107,8 @@ export default function ZoneCreator({ setCreateZone }) {
         setSelectedCells(new Set(selectedCells));
         setIsMouseDown(false);
     };
-    
     return (
-        <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center w-full h-full gap-[2%]'>
+        <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center p-[1%] gap-[4%] w-full h-full'>
             <input value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
             <div ref={ref} className='flex w-full h-full items-center justify-center'>
                 <div className='grid w-fit h-fit items-center justify-center'
@@ -107,22 +119,22 @@ export default function ZoneCreator({ setCreateZone }) {
                     { layout.map((row, i) => (
                         row.map((cell, j) => {
                             const isSelected = selectedCells.has(`${i},${j}`);
-                            const inLayout = layout[i][j];
+                            let borderStyle = getNonBorderStyle(scale);
+                            if (borderCells.size && typeof cell.zone_id === 'number') borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), i, j, scale);
                             return (
                                 <div 
                                     key={j} 
-                                    onMouseDown={() => handleMouseDown(i, j)}
+                                    onMouseDown={(e) => handleMouseDown(e, i, j)}
                                     onMouseUp={handleMouseUp}
-                                    onMouseOver={() => handleMouseOver(i, j)}
+                                    onMouseOver={(e) => handleMouseOver(e, i, j)}
                                 >
-                                    { inLayout && <ZoneCell 
+                                    { cell && <ZoneCellViewer
                                         type={cell.type || 'empty'}
                                         cellStyle={{ 
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 
-                                            border: `${scale/10}px solid #171717`,
-                                            borderRadius: `${scale/5}px`,
-                                            backgroundColor: isSelected ? '#715DF2' : colors[cell.zoneid]
+                                            backgroundColor: isSelected ? '#715DF2' : '',
+                                            ...borderStyle
                                         }}
                                     />}
                                 </div>
@@ -131,22 +143,16 @@ export default function ZoneCreator({ setCreateZone }) {
                     ))}
                 </div>
             </div>
-            <button onClick={saveZone}>Save</button>
+            <div className='w-full flex gap-[5%] items-center justify-center content-center'>
+                <div onClick={() => setAddZone(false)} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                    <IoArrowBack size={25}/>
+                    <p>Back</p>
+                </div>
+                <div onClick={saveZone} className='custom-button gap-[10%] bg-offwhite border-offwhite hover:border-darkgray-custom text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                    <FaRegSave size={25}/>
+                    <p>Create</p>
+                </div>
+            </div>
         </div>
     );     
 };
-
-const ZoneCell = React.memo(({ type, cellStyle }) => {
-    const { images } = useContext(MapLayoutContext);
-    const source = images[type];
-    return (
-    <React.Fragment>
-        { type !== 'empty' 
-        ? <div className='flex justify-center items-center bg-[#d9d9d9] p-[5%] rounded-[5%] w-full h-full' style={cellStyle}>
-            <img draggable='false' src={source} alt={type}/>
-        </div>
-        : <div className='flex justify-center items-center bg-gray-custom p-[5%] rounded-[5%] w-full h-full' style={cellStyle}/>
-        }
-    </React.Fragment>
-    );
-});

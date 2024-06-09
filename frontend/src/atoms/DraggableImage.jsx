@@ -24,7 +24,6 @@ export default function DraggableImage({ alt, source, coordinates, setDroppedIte
   };
 
   return !isDuplicating ? null : (
-    <img draggable onDragStart={handleDragStart} onDragEnter={handleDragEnter} onDragEnd={handleDragEnd} 
-      src={source} alt={alt}/>
+    <img draggable onDragStart={handleDragStart} onDragEnter={handleDragEnter} onDragEnd={handleDragEnd} src={source} alt={alt}/>
   );
 }

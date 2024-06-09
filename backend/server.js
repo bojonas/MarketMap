@@ -489,6 +489,10 @@ const Map = Joi.object({
     zones: Joi.array()
 });
 
+const MarketId = Joi.object({
+    market_id: Joi.number().required()
+});
+
 app.put('/put_map_layouts', async (req, res) => {
     const { error } = Map.validate(req.body);
     if (error) {
@@ -541,15 +545,15 @@ app.post('/get_my_markets', async (req, res) => {
 })
 
 app.post('/get_market_zones', async (req, res) => {
-    const { error } = UserId.validate(req.body)
+    const { error } = MarketId.validate(req.body)
     if (error) {
         console.error(error.details[0].message);
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { user_id } = req.body;
+    const { market_id } = req.body;
     try {
-        const result = await getMarketZones(user_id, postgres_pool);
+        const result = await getMarketZones(market_id, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);

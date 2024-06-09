@@ -2,14 +2,19 @@ import React, { useRef, useEffect, useState } from 'react';
 import Cell from './Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import { useContext } from 'react';
+import { MyMarketContext } from '../../context/MyMarketContext';
+import { getBorderStyle } from './getBorderStyle';
+import { getNonBorderStyle } from './getNonBorderStyle';
 import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function Layout({ zoom }) {
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
-  const { layout } = useContext(MapEditorContext);
-  const scale = Math.min(width/ layout[0].length, height / layout.length);
+  const { mapLayout, borderCells } = useContext(MyMarketContext);
+  const { setEditZone } = useContext(MapEditorContext);
+  const layout = mapLayout.map_layout;
+  const scale = Math.min(width / layout[0].length, height / layout.length);
 
   // adjust scrollbars after zoom
   useEffect(() => {
@@ -36,16 +41,23 @@ export default function Layout({ zoom }) {
               transform: `scale(${zoom})`,
               transformOrigin: '0 0'
             }}>
-            {layout.map((row) => (
-              row.map((cell) => (
-                <div key={cell.y}>
-                  { cell && <Cell 
-                    type={cell.type} 
-                    scale={scale} 
-                    coordinates={`${cell.x}-${cell.y}`}
-                  />}
-                </div>
-              ))
+            {layout.map((row, i) => (
+              row.map((cell, j) => {
+                let borderStyle = getNonBorderStyle(scale);
+                if (borderCells.size && typeof cell.zone_id === 'number') borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), i, j, scale);
+                return (<div key={cell.y} onClick={() => typeof cell.zone_id === 'number' ? setEditZone(cell.zone_id) : null} className='cursor-pointer'>
+                    { cell && <Cell 
+                      type={cell.type} 
+                      coordinates={`${cell.x}-${cell.y}`}
+                      cellStyle={{ 
+                        height: `${scale}px`, 
+                        width: `${scale}px`, 
+                        ...borderStyle
+                      }}
+                    />}
+                  </div>
+                );
+            })
             ))}
           </div>
         </div>

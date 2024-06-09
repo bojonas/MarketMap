@@ -1,8 +1,7 @@
-export function getBorderStyle(borderInZone, x, y) {
-    let borderStyle = {};
-    for (let borderCell of borderInZone.border) {
+export function getBorderStyle(borderStyle, borderInZone, x, y) {    
+    for (const borderCell of borderInZone.border) {
         if (borderCell.x !== x || borderCell.y !== y) continue;
-        for (let direction of borderCell.direction) {
+        for (const direction of borderCell.direction) {
             if (direction === 'top') {
                 borderStyle.borderTopColor = borderInZone.color;
                 borderStyle.borderTopLeftRadius = 0;
@@ -24,5 +23,6 @@ export function getBorderStyle(borderInZone, x, y) {
                 borderStyle.borderBottomRightRadius = 0;
             }                                                    
         } break;
-    } return borderStyle;
+    } 
+    return borderStyle;
 }

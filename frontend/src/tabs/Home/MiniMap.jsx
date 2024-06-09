@@ -24,8 +24,8 @@ export default function MiniMap({ layout, market, selectMarket }) {
             {layout.map((row, i) => (
                 row.map((cell, j) => (
                   <CellViewer
-                    key={cell['coordinates']} 
-                    type={cell['type']} 
+                    key={cell.y} 
+                    type={cell.type} 
                     cellStyle={{ 
                       height: `${scale}px`, 
                       width: `${scale}px`, 

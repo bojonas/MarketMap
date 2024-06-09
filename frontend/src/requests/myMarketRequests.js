@@ -30,7 +30,7 @@ export async function requestUpdateMarketZones(user_id, zones) {
     const response = await axiosInstance.put('/put_market_zones', data);
     return response.data.message
   } catch (error) {
-    console.error('Error updating map layouts:', error);
+    console.error('Error updating market zones:', error);
   }
 }
 
@@ -53,13 +53,13 @@ export async function requestGetMyMarket(user_id) {
 }
 
 // request to /get_market_zones
-export async function requestGetMarketZones(user_id) {
-  if (!user_id) {
+export async function requestGetMarketZones(market_id) {
+  if (!market_id) {
     return console.error('Invalid parameters');
   }
 
   const data = {
-    user_id: user_id
+    market_id: market_id
   };
 
   try {

@@ -15,6 +15,7 @@ export function useAdjustScale(ref) {
                 clearTimeout(debounceTimeout.current);
             }
             debounceTimeout.current = setTimeout(() => {
+                if (!ref) return;
                 setDimensions({
                     width: ref.current.clientWidth,
                     height: ref.current.clientHeight

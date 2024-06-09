@@ -5,18 +5,17 @@ import { requestGetMarkets, requestUpdateHistory } from "../../requests/homeRequ
 import MapViewer from "./MapViewer";
 import SearchHistory from "./SearchHistory";
 import ShoppingCarts from "./ShoppingCarts";
+import { MapLayout } from '../MyMarket/classes/MapLayout';
+import { requestGetMarketZones } from '../../requests/myMarketRequests';
 
 export default function Home() {
     const user_id = localStorage.getItem('user_id');
     const [search, setSearch] = useState('');
     const [markets, setMarkets] = useState([]);
-    const [market, setMarket] = useState(null)
+    const [market, setMarket] = useState(null);
+    const [mapLayout, setMapLayout] = useState(null);
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
-
-    const debouncedSearch = debounce(value => {
-        setSearch(value);
-    }, 200);
     
     useEffect(() => {
         const getMarkets = async () => {
@@ -46,6 +45,10 @@ export default function Home() {
         }, 200);
     }
 
+    const debouncedSearch = debounce(value => {
+        setSearch(value);
+    }, 200);
+
     // clear timeout
     useEffect(() => {
         return () => {
@@ -54,8 +57,16 @@ export default function Home() {
     }, []);
 
     const selectMarket = async (market) => {
+        const zones = await requestGetMarketZones(market.market_id);
         setMarket(market);
+        if (!zones) return;
+
+        const newLayout = market.map_layout;
+        const newMapLayout = new MapLayout(newLayout.length, newLayout[0].length)
+        newMapLayout.build(newLayout, zones);
+        setMapLayout(newMapLayout);
         if (!user_id) return;
+
         // update history 
         const now = new Date();
         const offset = now.getTimezoneOffset() * 60000;
@@ -65,7 +76,7 @@ export default function Home() {
 
     return (
         <React.Fragment>
-            { market ? <MapViewer market={market} setMarket={setMarket}/>
+            { market ? <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} setMarket={setMarket}/>
             : <div className='relative flex flex-col items-center text-center w-full h-full'>
                 <div className='flex flex-col items-center text-center w-2/5 h-fit p-[2%] pb-0'>
                     <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
