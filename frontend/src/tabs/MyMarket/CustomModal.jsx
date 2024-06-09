@@ -1,31 +1,30 @@
 import Modal from 'react-modal';
 import { useContext, useState, useEffect } from 'react';
-import debounce from 'lodash.debounce';
-import { addRow, addColumn, removeRow, removeColumn } from '../../helper/editLayout'
 import { MapEditorContext } from '../../context/MapEditorContext';
+import { MyMarketContext } from '../../context/MyMarketContext';
 
 export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
-  const { layout, setLayout, duplicateMode, deleteMode } = useContext(MapEditorContext); 
+  const { duplicateMode, deleteMode } = useContext(MapEditorContext); 
+  const { mapLayout } = useContext(MyMarketContext); 
+  const layout = mapLayout.map_layout;
   const [inputRows, setInputRows] = useState(layout.length);
   const [inputColumns, setInputColumns] = useState(layout[0].length);
 
-  const debouncedSetLayout = debounce(setLayout, 1000);
-
   useEffect(() => {
-    if(!inputRows || !inputColumns) return;
-    while(inputRows > layout.length) {
-      debouncedSetLayout(addRow(layout));
+    if (!inputRows || !inputColumns) return;
+    while (inputRows > layout.length) {
+      mapLayout.addRow();
     }
-    while(inputRows < layout.length) {
-      debouncedSetLayout(removeRow(layout));
+    while (inputRows < layout.length) {
+      mapLayout.removeRow();
     }
-    while(inputColumns > layout[0].length) {
-      debouncedSetLayout(addColumn(layout));
+    while (inputColumns > layout[0].length) {
+      mapLayout.addColumn();
     }
-    while(inputColumns < layout[0].length) {
-      debouncedSetLayout(removeColumn(layout));
+    while (inputColumns < layout[0].length) {
+      mapLayout.removeColumn();
     }
-  }, [inputRows, inputColumns, layout, setLayout, debouncedSetLayout]);
+  }, [mapLayout, inputRows, inputColumns, layout]);
 
   return (
     <Modal

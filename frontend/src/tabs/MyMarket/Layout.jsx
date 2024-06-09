@@ -38,12 +38,13 @@ export default function Layout({ zoom }) {
             }}>
             {layout.map((row) => (
               row.map((cell) => (
-                <Cell 
-                  key={cell['coordinates']} 
-                  type={cell['type']} 
-                  scale={scale} 
-                  cellCoordinates={cell['coordinates']}
-                /> 
+                <div key={cell.y}>
+                  { cell && <Cell 
+                    type={cell.type} 
+                    scale={scale} 
+                    coordinates={`${cell.x}-${cell.y}`}
+                  />}
+                </div>
               ))
             ))}
           </div>

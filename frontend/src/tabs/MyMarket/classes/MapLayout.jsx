@@ -3,9 +3,28 @@ import { Cell } from "./Cell";
 
 export class MapLayout {
   constructor(rows, columns) {
-    this.map_layout =  Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
+    this.map_layout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
     this.zones = new Map(); 
     this.idCounter = 0;
+  }
+
+  build (map_layout, zones) {
+    for (const zone of zones) {
+        this.addZone(zone.name, zone.layout, zone.position);
+    }
+    // add cells that are not in zone
+    for (let i = 0; i < map_layout.length; i++) {
+      for (let j = 0; j < map_layout[i].length; j++) {
+        const cell = map_layout[i][j];
+        if (typeof cell.zoneid === 'number') continue;
+        if (!cell) {
+          this.map_layout[i][j] = cell;
+          continue;
+        }
+        this.map_layout[i][j].type = cell.type;
+        this.map_layout[i][j].products = cell.type !== 'empty' ? cell.products : null;
+      }
+    }
   }
   
   getZone(id) {
@@ -55,5 +74,49 @@ export class MapLayout {
     for (let zone of this.zones.values()) {
       this.updateMapLayout(zone);
     }
+  }
+
+  updateCoordinates() {
+    if (this.map_layout.length === 0 || this.map_layout[0].length === 0) return;
+    // update cell coordinates
+    for (let i = 0; i < this.map_layout.length; i++) {
+        for (let j = 0; j < this.map_layout[i].length; j++) {
+          this.map_layout[i][j].x = i;
+          this.map_layout[i][j].y = j;
+        }
+    }
+  }
+
+  addRow(side='bottom') {
+    if (side !== 'top' && side !== 'bottom') return;
+    const newRow = Array.from({length: this.map_layout[0].length}, () => ({ type: 'empty', coordinates: '' }));
+    if (side === 'top') this.map_layout.unshift(newRow);
+    else this.map_layout.push(newRow);
+    this.updateCoordinates(this.map_layout);
+  }
+
+  addColumn(side='right') {
+    if (side !== 'left' && side !== 'right') return;
+    for (let i = 0; i < this.map_layout.length; i++) {
+      if (side === 'left')  this.map_layout[i].unshift({ type: 'empty' });
+      else  this.map_layout[i].push({ type: 'empty' });
+    }
+    this.updateCoordinates(this.map_layout);
+  } 
+  
+  removeRow(side='bottom') {
+    if ((side !== 'top' && side !== 'bottom') || this.map_layout.length <= 1) return;
+    if (side === 'top') this.map_layout.shift();
+    else this.map_layout.pop();
+    this.updateCoordinates(this.map_layout);
+  }
+
+  removeColumn(side='right') {
+    if ((side !== 'left' && side !== 'right') || this.map_layout[0].length <= 1) return;
+    for (let i = 0; i < this.map_layout.length; i++) { 
+      if (side === 'left') this.map_layout[i].shift();
+      else this.map_layout[i].pop();
+    }
+    this.updateCoordinates(this.map_layout);
   }
 }

@@ -2,7 +2,7 @@ import { getItemImages } from "../helper/getItemImages";
 import DraggableImage from "./DraggableImage";
 
 // loads an image from image folder
-export default function LoadImage({ type, cellCoordinates, setDroppedItem, isCommandKey }) {
+export default function LoadImage({ type, coordinates, setDroppedItem, isCommandKey }) {
     const images = getItemImages();
     const source = images[type];
 
@@ -10,7 +10,7 @@ export default function LoadImage({ type, cellCoordinates, setDroppedItem, isCom
         <DraggableImage 
             source={source} 
             alt={type} 
-            cellCoordinates={cellCoordinates} 
+            coordinates={coordinates} 
             setDroppedItem={setDroppedItem} 
             isCommandKey={!isCommandKey}
         />

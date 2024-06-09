@@ -8,8 +8,7 @@ export function getLayoutIndex(layout) {
  
   let layoutIndex = {};
   filteredLayout.forEach((cell, index) => {
-      const [row, col] = cell.coordinates.split('-').map(Number);
-      layoutIndex[row.toString() + col.toString()] = index;
+      layoutIndex[cell.x.toString() + cell.y.toString()] = index;
   });
   return layoutIndex;
 }

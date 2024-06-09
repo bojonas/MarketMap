@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, useMemo } from 'react';
 import Layout from './Layout';
 import Toolbar from './Toolbar';
 import { IoMdSettings } from "react-icons/io";
@@ -9,8 +9,8 @@ import { MyMarketContext } from '../../context/MyMarketContext';
 import { useChangeDragMode } from '../../hooks/useChangeDragMode';
 
 export default function MapEditor({ setEditMode }) {
-  const market = useContext(MyMarketContext);
-  const [layout, setLayout] = useState(market ? JSON.parse(JSON.stringify(market.map_layout)) : null);
+  const { market, mapLayout } = useContext(MyMarketContext);
+  const [layout, setLayout] = useState(mapLayout.map_layout);
   const [settingsIsOpen, setSettingsIsOpen] = useState(false);
   const [openCell, setOpenCell] = useState(null);
   const [zoom, setZoom] = useState(1);
@@ -25,7 +25,7 @@ export default function MapEditor({ setEditMode }) {
   const [overruledDelete, setOverruledDelete] = useState(false);
   useChangeDragMode(setDuplicateMode, setDeleteMode, overruledDuplicate, overruledDelete);
 
-  const contextValue = React.useMemo(() => ({
+  const contextValue = useMemo(() => ({
     layout,
     setLayout,
     duplicateCells, 
