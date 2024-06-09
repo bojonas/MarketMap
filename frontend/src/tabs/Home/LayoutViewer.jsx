@@ -3,18 +3,16 @@ import { Tooltip } from 'react-tooltip';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 import { MapViewerContext } from '../../context/MapViewerContext';
-import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { getWaypoints } from '../../helper/getWaypoints';
 import { requestFindPath } from '../../requests/homeRequests';
 import Path from '../../atoms/Path';
 
 export default function LayoutViewer({ zoom }) {
-  const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
+  const { shoppingCart, layout, productsInMarket, colors, layoutIndex } = useContext(MapViewerContext);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
-  const [layoutIndex, ] = useState(getLayoutIndex(layout));
   const [path, setPath] = useState([]);
 
   const waypoints = useMemo(() => {
@@ -25,7 +23,7 @@ export default function LayoutViewer({ zoom }) {
     if (productsInMarket.length === 0 || shoppingCart.products.length === 0) return;
     const getPath = async () => {
       const start = [layout.length-1, 1];
-      const end = [0, 0];
+      const end = [1, 1];
       const data = await requestFindPath(layout, start, end, waypoints);
       if (data) {
         data.unshift(start);

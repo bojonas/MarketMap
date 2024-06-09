@@ -14,5 +14,10 @@ export const colors = [
     'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred', 'papayawhip', 'peachpuff', 'peru', 
     'pink', 'plum', 'powderblue', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen', 'seashell', 
     'sienna', 'silver', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow', 'springgreen', 'steelblue', 'tan', 'thistle', 
-    'tomato', 'turquoise', 'violet', 'wheat', 'white', 'whitesmoke', 'yellowgreen'
+    'tomato', 'turquoise', 'violet', 'wheat', 'white', 'whitesmoke', 'yellowgreen', 'aliceblue', 'antiquewhite', 'aquamarine', 'blanchedalmond', 'blueviolet', 'brick', 'brightpink', 'bronze', 
+    'brown', 'buff', 'burgundy', 'burntsienna', 'camel', 'champagne', 'charcoal', 'chartreuse', 'cherry', 
+    'chestnut', 'chocolate', 'cobalt', 'copper', 'coral', 'cornflower', 'cream', 'crimson', 'cyan', 'darkblue', 
+    'darkgreen', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon', 
+    'darkseagreen', 'darkslateblue', 'darkslategray', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 
+    'dimgray', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite'
 ]

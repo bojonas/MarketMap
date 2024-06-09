@@ -3,7 +3,6 @@ import SearchBar from "../../atoms/SearchBar";
 import { requestGetProducts, requestPostShoppingCart, requestGetShoppingCarts, requestUpdateShoppingCart } from "../../requests/homeRequests";
 import debounce from 'lodash.debounce';
 import { MapViewerContext } from "../../context/MapViewerContext";
-import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 import { FaCartArrowDown } from "react-icons/fa";
@@ -12,7 +11,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
     const user_id = localStorage.getItem('user_id')
     const timeoutId = useRef();
     const [search, setSearch] = useState('');
-    const { shoppingCart, layout, productsInMarket, colors } = useContext(MapViewerContext);
+    const { shoppingCart, productsInMarket, colors, layoutIndex } = useContext(MapViewerContext);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [shoppingCarts, setShoppingCarts] = useState([]);
@@ -26,8 +25,8 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
 
     useEffect(() => {
         const getProducts = async () => {
-          const data = await requestGetProducts();
-          if (data) setProducts(data);
+            const data = await requestGetProducts();
+            if (data) setProducts(data);
         }
         const getShoppingCarts = async () => {
             const data = await requestGetShoppingCarts(user_id);
@@ -163,7 +162,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                                     <div className='flex gap-[20%] w-1/4'>
                                         <p>{product.product_count}x</p>
                                         { marketProduct && <div className='rounded-full w-fit h-fit p-[12%] self-center'
-                                        style={{ backgroundColor: colors[getLayoutIndex(layout)[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
+                                        style={{ backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
                                     </div>
                                 </div>
                             );

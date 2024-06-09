@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import LayoutViewer from './LayoutViewer';
 import ShoppingCart from './ShoppingCart';
 import { findProducts } from '../../helper/findProducts';
 import { MapViewerContext } from '../../context/MapViewerContext';
 import { colors } from './colors';
+import { getLayoutIndex } from '../../helper/getLayoutIndex';
 
 export default function MapViewer({ market, setMarket }) {
-    const layout = market.map_layout
+    const layout = market.map_layout;
     const [shoppingCart, setShoppingCart] = useState({ cart_name : '' , products: [] });
     const productsInMarket = findProducts(layout);
     const [zoom, setZoom] = useState(1);
@@ -30,8 +31,12 @@ export default function MapViewer({ market, setMarket }) {
         }
     }, [zoom, layout]); 
 
+    const layoutIndex = useMemo(() => {
+      return getLayoutIndex(layout);
+    }, [layout]);
+
     return !layout ? null :(
-      <MapViewerContext.Provider value={{ shoppingCart, layout, productsInMarket, colors }}>
+      <MapViewerContext.Provider value={{ shoppingCart, layout, productsInMarket, colors, layoutIndex }}>
         <div className='flex w-full h-full'>
           <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null}/>
           <div className='flex flex-col items-center justify-center gap-[1%]'>

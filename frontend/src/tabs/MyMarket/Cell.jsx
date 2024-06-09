@@ -52,7 +52,11 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
       newLayout[cord[0]][cord[1]]['type'] = item.alt;
 
       // remove item from drag start cell
-      if (rootCoordinates) newLayout[rootCoordinates[0]][rootCoordinates[1]]['type'] = 'empty';
+      if (rootCoordinates) {
+        const newCell = newLayout[rootCoordinates[0]][rootCoordinates[1]];
+        newCell.type = 'empty';
+        newCell.products = [];
+      }
 
       // add/remove items with modes
       for (const cell of duplicateCells) {
@@ -61,7 +65,9 @@ const Cell = memo(({ type, scale, cellCoordinates }) => {
       }
       for (const cell of deleteCells) {
         const c = cell.split('-').map(Number);
-        newLayout[c[0]][c[1]]['type'] = 'empty';
+        const newCell = newLayout[c[0]][c[1]];
+        newCell.type = 'empty';
+        newCell.products = [];
       }
       return newLayout;
     });
