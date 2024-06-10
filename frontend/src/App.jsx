@@ -33,7 +33,7 @@ export default function App() {
           {!isLoggedIn&&<Route path={"/register"} element={<Register/>}/>}
           {isLoggedIn&&<Route path={"/settings"} element={<Settings/>}/>}
           {isLoggedIn&&<Route path={"/my_profile"} element={<MyProfile/>}/>}
-          <Route path={'/uploader'} element={<Uploader/>}/>
+          {isLoggedIn&&<Route path={'/uploader'} element={<Uploader/>}/>}
         </Routes>
       </Router>
     </div>
