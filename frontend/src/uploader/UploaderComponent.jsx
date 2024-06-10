@@ -12,7 +12,7 @@ export default function UploaderComponent({setMapping, setUploaderComponentDone,
     
     const handleUpload = async()=>{
         if(!content){alert("Insert Shoping List"); return}
-        let mappingVar = await assignProducts(contentArray);
+        const mappingVar = await assignProducts(contentArray);
         setMapping(mappingVar);
         setUploaderComponentDone(true);
         setDisplayMapping(prepareList(mappingVar))
