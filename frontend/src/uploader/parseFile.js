@@ -13,7 +13,7 @@ export async function parseFile(file, type){
                     result = e.target.result;
                 }
                 const output = parseFileHelper(result)
-                resolve(output); 
+                resolve({output: output, text: result}); 
             };
             reader.onerror = (e) => {
                 reject(e); 
@@ -31,26 +31,30 @@ export async function parseFile(file, type){
         });
     }
 
-    const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 
-    function parseFileHelper(text){
-        var rawData = text.split('\n');
-        var output = [];
-        for(let i=0; i<rawData.length; i++){
-            
-            if(rawData[i][0] in numbers){
-                let j = 0
-                while((rawData[i][j] in numbers)){
-                    j+=1;
-                }
+function parseFileHelper(text){
+    var rawData = text.split('\n');
+    var output = [];
+    for(let i=0; i<rawData.length; i++){
+        
+        if(rawData[i][0] in numbers){
+            let j = 0
+            while((rawData[i][j] in numbers)){
+                j+=1;
+            }
 
-                output.push({product: rawData[i].substring(j+1,rawData[i].length).trim(), amount: Number(rawData[i].substring(0,j))});
-            }
-            else if(rawData[i]===""){} //ignore empty lines
-            else{
-                output.push({product: rawData[i].trim(), amount: 1});
-            }
+            output.push({id: i, product: rawData[i].substring(j+1,rawData[i].length).trim(), amount: Number(rawData[i].substring(0,j))});
         }
-
-        return output
+        else if(rawData[i]===""){} //ignore empty lines
+        else{
+            output.push({id: i, product: rawData[i].trim(), amount: 1});
+        }
     }
+
+    return output
+}
+
+export function parseText(text){
+    return parseFileHelper(text)
+}

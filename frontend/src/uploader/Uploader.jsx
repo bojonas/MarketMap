@@ -1,56 +1,90 @@
 import { useState, React } from "react"
-import { parseFile } from "./parseFile";
+import UploaderComponent from "./UploaderComponent";
+//import { requestPostShoppingCart } from "../requests/homeRequests";
+
 
 export default function Uploader(){
-    const [content, setContent] = useState()
-    if(content) console.log(content);
-    const handleUpload = ()=>{
+    const [mapping, setMapping] = useState();
+    const [uploaderComponentDone,setUploaderComponentDone] = useState(false);
 
+    const [displayMapping, setDisplayMapping] = useState();
+    const [selectedItem, setSelectedItem] = useState({})
 
-    }
+    
 
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        var test;
-        if (file) {
-            if(file.name.endsWith('.txt')){
-                test = await parseFile(file, "txt")
-                console.log(test)
-
-            }
-            else if(file.name.endsWith('.docx')){
-                test = await parseFile(file, "docx")
-                console.log(test)
-            }
-            else{
-                console.error("Invalid File Type")
-            }
-            
-        }
+    if(mapping) {
+       //console.log(mapping);
     };
+
+    
+   
+
+    
+
+    const adjustItem = (index, item)=>{
+        //listItem_id, listItem, product_id, product_name, isAssigned
+        
+        const handleChange = (event)=>{
+            let newInput = selectedItem
+            newInput[index] = event.target.value
+
+            console.log(newInput)
+            setSelectedItem(newInput);
+        }
+    
+        return (
+            <div className="flex flex-row">
+                <div className=" w-1/3">
+                    {item["listItem"]}
+                </div>
+                <select value={selectedItem[item["listItem"]]} onChange={handleChange}>
+                    {item["assignedItems"].map((item, index) => (
+                    <option key={index} value={item}>
+                        {item}
+                    </option>
+                    ))}
+                </select>
+            </div>
+        );
+    }
+   
+    const handleUpload = async()=>{
+        let upload = [] //Wie sieht die liste aus?
+        console.log(upload)
+        console.log(displayMapping)
+        console.log(selectedItem)
+        //await requestPostShoppingCart("new shopping cart",localStorage.getItem("user_id"),upload)
+    }
+    
+
+    
     return(
         <div className="w-1/2 h-1/2 m-auto bg-white flex flex-col items-center justify-center text-black">
-            <div className="flex flex-row h-3/4 w-full">
-                <input 
-                    type="text" 
-                    className="w-1/2 h-full bg-red-300 placeholder-black" 
-                    placeholder="Copy Shopping list here"
-                    onChange={(e)=>{setContent(e.target.value)}}
-                />
-                <input 
-                    type="file" 
-                    className="w-1/2 h-full bg-yellow-300 placeholder-black" 
-                    placeholder="Copy Shopping list here"
-                    onChange={handleFileChange}
-                />
-            </div>
-            <div className="h-1/4 w-full flex">
-                <button className="bg-blue-700 w-1/2 h-1/2 m-auto rounded-2xl hover:bg-green-500"
-                    onClick={handleUpload}>
-                    Upload
-                </button>
-            </div>
+            {!uploaderComponentDone?
+            <UploaderComponent setMapping={setMapping} setUploaderComponentDone={setUploaderComponentDone} setDisplayMapping={setDisplayMapping} setSelectedItem={setSelectedItem}/>
+            
+            :
+            <div className="overflow-auto w-full h-full">
+                <div className="h-3/4 w-full bg-blue-300">
+                    {displayMapping.map((item, index) => (
+                        <div key={displayMapping[index]["listItem"]}>{adjustItem(index, item)}</div>
+                    ))}
+                </div>
+                <div className="flex h-1/4 w-full bg-green-300 ">
+                    <button className="bg-blue-700 w-1/2 h-1/2 m-auto hover:bg-green-100" onClick={handleUpload}>
+                        Upload Cart
+                    </button>
+                </div>
+            </div>}
             
         </div>
     )
 }
+
+
+
+
+
+
+
+
