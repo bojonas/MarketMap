@@ -10,7 +10,7 @@ import { FaRegSave } from "react-icons/fa";
 import { requestUpdateMarketZones } from '../../requests/myMarketRequests';
 
 export default function ZoneCreator({ setAddZone }) {
-    const { mapLayout, setMapLayout, borderCells } = useContext(MyMarketContext);
+    const { mapLayout, setMapLayout, setZones, borderCells } = useContext(MyMarketContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
 
@@ -57,6 +57,7 @@ export default function ZoneCreator({ setAddZone }) {
         // add zone to mapLayout
         newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol }, colorArray[newMapLayout.idCounter]); // color picker
         setMapLayout(newMapLayout);
+        setZones(Array.from(newMapLayout.zones.values()));
         const zone = newMapLayout.getZone(newMapLayout.idCounter-1);
         if (zone) {
             await requestUpdateMarketZones(localStorage.getItem('user_id'), [zone]);

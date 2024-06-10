@@ -1,30 +1,42 @@
 import Modal from 'react-modal';
 import { useContext, useState, useEffect } from 'react';
 import { MapEditorContext } from '../../context/MapEditorContext';
+import { addColumn, addRow, removeColumn, removeRow } from './modifyLayout';
 import { MyMarketContext } from '../../context/MyMarketContext';
+import { MapLayout } from './classes/MapLayout';
 
 export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
-  const { duplicateMode, deleteMode } = useContext(MapEditorContext); 
-  const { mapLayout } = useContext(MyMarketContext); 
-  const layout = mapLayout.map_layout;
+  const { layout, duplicateMode, deleteMode } = useContext(MapEditorContext); 
+  const { setMapLayout } = useContext(MyMarketContext);
   const [inputRows, setInputRows] = useState(layout.length);
   const [inputColumns, setInputColumns] = useState(layout[0].length);
 
   useEffect(() => {
     if (!inputRows || !inputColumns) return;
-    while (inputRows > layout.length) {
-      mapLayout.addRow();
-    }
-    while (inputRows < layout.length) {
-      mapLayout.removeRow();
-    }
-    while (inputColumns > layout[0].length) {
-      mapLayout.addColumn();
-    }
-    while (inputColumns < layout[0].length) {
-      mapLayout.removeColumn();
-    }
-  }, [mapLayout, inputRows, inputColumns, layout]);
+  
+    setMapLayout(oldMapLayout => {
+      // copy mapLayout
+      const newMapLayout = new MapLayout(oldMapLayout.map_layout.length, oldMapLayout.map_layout[0].length);
+      newMapLayout.map_layout = oldMapLayout.map_layout;
+      newMapLayout.zones = new Map(oldMapLayout.zones);
+      newMapLayout.idCounter = oldMapLayout.idCounter;
+      const newLayout = newMapLayout.map_layout;
+  
+      while (inputRows > newLayout.length) {
+        addRow(newLayout);
+      }
+      while (inputRows < newLayout.length) {
+        removeRow(newLayout);
+      }
+      while (inputColumns > newLayout[0].length) {
+        addColumn(newLayout);
+      }
+      while (inputColumns < newLayout[0].length) {
+        removeColumn(newLayout);
+      }
+      return newMapLayout;
+    });
+  }, [inputRows, inputColumns, setMapLayout]);  
 
   return (
     <Modal

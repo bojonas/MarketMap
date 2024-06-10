@@ -76,48 +76,4 @@ export class MapLayout {
       this.updateMapLayout(zone);
     }
   }
-
-  updateCoordinates() {
-    if (this.map_layout.length === 0 || this.map_layout[0].length === 0) return;
-    // update cell coordinates
-    for (let i = 0; i < this.map_layout.length; i++) {
-        for (let j = 0; j < this.map_layout[i].length; j++) {
-          this.map_layout[i][j].x = i;
-          this.map_layout[i][j].y = j;
-        }
-    }
-  }
-
-  addRow(side='bottom') {
-    if (side !== 'top' && side !== 'bottom') return;
-    const newRow = Array.from({length: this.map_layout[0].length}, () => ({ type: 'empty', coordinates: '' }));
-    if (side === 'top') this.map_layout.unshift(newRow);
-    else this.map_layout.push(newRow);
-    this.updateCoordinates(this.map_layout);
-  }
-
-  addColumn(side='right') {
-    if (side !== 'left' && side !== 'right') return;
-    for (let i = 0; i < this.map_layout.length; i++) {
-      if (side === 'left')  this.map_layout[i].unshift({ type: 'empty' });
-      else  this.map_layout[i].push({ type: 'empty' });
-    }
-    this.updateCoordinates(this.map_layout);
-  } 
-  
-  removeRow(side='bottom') {
-    if ((side !== 'top' && side !== 'bottom') || this.map_layout.length <= 1) return;
-    if (side === 'top') this.map_layout.shift();
-    else this.map_layout.pop();
-    this.updateCoordinates(this.map_layout);
-  }
-
-  removeColumn(side='right') {
-    if ((side !== 'left' && side !== 'right') || this.map_layout[0].length <= 1) return;
-    for (let i = 0; i < this.map_layout.length; i++) { 
-      if (side === 'left') this.map_layout[i].shift();
-      else this.map_layout[i].pop();
-    }
-    this.updateCoordinates(this.map_layout);
-  }
 }

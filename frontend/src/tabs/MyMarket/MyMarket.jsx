@@ -47,7 +47,7 @@ export default function MyMarket() {
     }, [mapLayout]);
 
     return (
-        <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, images, borderCells, addZone, setAddZone }}>
+        <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, setZones, images, borderCells, addZone, setAddZone }}>
             <div className='relative flex w-full h-full'>
                 { !market ? null
                 : editMode ? addZone ? <ZoneCreator setAddZone={setAddZone}/> : <MapEditor setEditMode={setEditMode}/>

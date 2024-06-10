@@ -38,10 +38,26 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
       return setMapLayout(newMapLayout);
     }
 
-    setEditMode(false);
     if (checkChanges(layout, market.map_layout)) return alert('No Changes');
+
+    const zonesToUpdate = [];
+    for (const zone of zones) {
+      const editedZone = editedZones[zone.zone_id];
+      if (
+        checkChanges(zone.zone_layout, editedZone.zone_layout) && 
+        zone.zone_name.trim() === editedZone.zone_name && 
+        zone.zone_position.row === editedZone.zone_position.row &&
+        zone.zone_position.column === editedZone.zone_position.column && 
+        zone.zone_color === editedZone.zone_color
+      ) continue;
+      console.log('changed', zone, editedZone)
+      zonesToUpdate.push(editedZone)
+    }
+
     newMapLayout.build(layout, Array.from(mapLayout.zones.values()));
+    await requestUpdateMarketZones(user_id, zonesToUpdate)
     alert(await requestUpdateMapLayout(user_id, newMapLayout.map_layout));
+    setEditMode(false);
     return setMapLayout(newMapLayout);
   }
 
