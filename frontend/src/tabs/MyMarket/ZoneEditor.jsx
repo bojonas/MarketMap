@@ -1,8 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import Cell from './Cell';
+import ProductModal from './ProductModal';
+import { getNonBorderStyle } from './getNonBorderStyle';
+import { getBorderStyle } from './getBorderStyle';
+import { MyMarketContext } from '../../context/MyMarketContext';
+import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function ZoneEditor({ zone }) {
+    const { borderCells } = useContext(MyMarketContext);
+    const { openCell, setOpenCell, products} = useContext(MapEditorContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
     const scale = Math.min(width / zone.columns, height / zone.rows);  
@@ -18,7 +25,10 @@ export default function ZoneEditor({ zone }) {
                         gridTemplateRows: `repeat(${zone.rows}, ${scale}px)`
                     }}>
                     { zone.zone_layout.map((row, i) => (
-                        row.map((cell, j) => (
+                        row.map((cell, j) => {
+                            let borderStyle = getNonBorderStyle(scale);
+                            if (borderCells.size && typeof cell.zone_id === 'number') borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), cell.x, cell.y)
+                            return (
                                 <div key={j}>
                                     { typeof cell.zone_id === 'number' && <Cell
                                         type={cell.type}
@@ -26,16 +36,19 @@ export default function ZoneEditor({ zone }) {
                                         cellStyle={{ 
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 
-                                            border: `${scale/10}px solid #171717`,
-                                            borderRadius: `${scale/5}px`,
+                                            ...borderStyle
                                         }}
                                     />}
                                 </div>
                             )
-                        )
+                        })
                     ))}
                 </div>
             </div>
+            <ProductModal
+                openCell={openCell} 
+                closeCell={() => setOpenCell(null)}
+                products={products}/>
         </div>
     );     
 };

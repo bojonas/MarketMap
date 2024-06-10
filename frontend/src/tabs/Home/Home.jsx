@@ -17,7 +17,6 @@ export default function Home() {
     const [markets, setMarkets] = useState([]);
     const [market, setMarket] = useState(null);
     const [mapLayout, setMapLayout] = useState(null);
-    const [borderCells, setBorderCells] = useState(new Map());
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
     
@@ -69,11 +68,6 @@ export default function Home() {
         const newMapLayout = new MapLayout(newLayout.length, newLayout[0].length)
         newMapLayout.build(newLayout, zones);
         setMapLayout(newMapLayout);
-        const newBorderCells = new Map();
-        for (const zone of zones) {
-            newBorderCells.set(zone.zone_id, { border: findBorderCells(zone.zone_layout), zone_color: zone.zone_color });
-        }   
-        setBorderCells(newBorderCells);
         if (!user_id) return;
 
         // update history 
@@ -82,6 +76,16 @@ export default function Home() {
         const timestamp = (new Date(now - offset)).toISOString().slice(0,-1);
         await requestUpdateHistory(timestamp, user_id, market.market_id);
     };
+
+    const borderCells = useMemo(() => {
+        const newBorderCells = new Map();
+        if (!mapLayout) return newBorderCells;
+
+        for (const zone of Array.from(mapLayout.zones.values())) {
+            newBorderCells.set(zone.zone_id, { border: findBorderCells(zone.zone_layout), zone_color: zone.zone_color });
+        }   
+        return newBorderCells;
+    }, [mapLayout]);
 
     return (
         <React.Fragment>

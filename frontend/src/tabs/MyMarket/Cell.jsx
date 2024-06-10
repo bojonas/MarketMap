@@ -120,8 +120,7 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
       className={`flex justify-center items-center p-[5%] ${type !== 'empty' ? 'bg-[#d9d9d9]' : 'bg-gray-custom'}`}
       style={{
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'pointer',
-        backgroundColor: isOver ? '#715DF2' : '',
-        ...cellStyle,
+        ...(isOver ? { ...cellStyle, backgroundColor: '#715DF2' } : cellStyle),
       }}>
       { type === 'empty' ? null
       : droppedItem

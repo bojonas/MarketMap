@@ -1,15 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import LayoutViewer from './LayoutViewer';
 import ShoppingCart from './ShoppingCart';
-import ZoneViewer from '../MyMarket/ZoneViewer';
+import ZoneViewer from './ZoneViewer';
 import { findProducts } from '../../helper/findProducts';
 import { MapViewerContext } from '../../context/MapViewerContext';
 import { colors } from './colors';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
+import { getWaypoints } from '../../helper/getWaypoints';
+import { requestFindPath } from '../../requests/homeRequests';
 
 export default function MapViewer({ market_name, market_image_url, mapLayout, setMarket, borderCells, images }) {
     const [shoppingCart, setShoppingCart] = useState({ cart_name : '' , products: [] });
     const [viewZone, setViewZone] = useState(null);
+    const [showPath, setShowPath] = useState(false);
+    const [path, setPath] = useState([]);
+
     const [zoom, setZoom] = useState(1);
 
     const { layout, productsInMarket } = useMemo(() => {
@@ -19,6 +24,42 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
     const layoutIndex = useMemo(() => {
       return getLayoutIndex(layout);
     }, [layout]);
+
+    const waypoints = useMemo(() => {
+      return productsInMarket.length !== 0 || shoppingCart.products.length !== 0 ? getWaypoints(productsInMarket, shoppingCart) : [];
+    }, [productsInMarket, shoppingCart]);
+    
+    useEffect(() => {
+      if (!showPath) return;
+      const getPath = async (start=[layout.length-1, 1], end=[1, 1]) => {
+        const data = await requestFindPath(layout, start, end, waypoints);
+        if (!data) return;
+        data.unshift(start);
+        setPath(data);
+      }
+      getPath();
+    }, [showPath, layout, waypoints])
+
+    const handlePath = () => {
+      if (showPath) setPath([]);
+      setShowPath(prev => !prev);
+    }
+
+    const contextValue = useMemo(() => (
+      {
+        shoppingCart, 
+        layout, 
+        productsInMarket, 
+        colors, 
+        layoutIndex, 
+        borderCells, 
+        viewZone, 
+        setViewZone, 
+        images, 
+        path,
+        waypoints
+      }
+    ), [shoppingCart, layout, productsInMarket, layoutIndex, borderCells, viewZone, images, path, waypoints]);
 
     // zoom effect on layout
     useEffect(() => {
@@ -40,11 +81,11 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
     }, [zoom]); 
 
     return !layout ? null :(
-      <MapViewerContext.Provider value={{ shoppingCart, layout, productsInMarket, colors, layoutIndex, borderCells, setViewZone, images }}>
+      <MapViewerContext.Provider value={contextValue}>
         <div className='flex w-full h-full'>
-          <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null}/>
+          <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null} handlePath={handlePath}/>
             <div className='flex flex-col items-center justify-center gap-[1%]'>
-              { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)} setViewZone={setViewZone}/> 
+              { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)}/> 
                 : <React.Fragment>
                   <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
                   { market_image_url && 

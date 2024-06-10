@@ -3,21 +3,11 @@ import Modal from 'react-modal';
 import debounce from 'lodash.debounce';
 import { MapEditorContext } from '../../context/MapEditorContext';
 import SearchBar from '../../atoms/SearchBar';
-import { requestGetProducts } from '../../requests/homeRequests';
 
-export default function CustomModal({ openCell, closeCell }) {
-    const { setLayout } = useContext(MapEditorContext);
+export default function CustomModal({ openCell, closeCell, products }) {
+    const { setLayout, editedZones, setEditedZones } = useContext(MapEditorContext);
     const [search, setSearch] = useState('');
-    const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-
-    useEffect(() => {
-        const getProducts = async () => {
-          const data = await requestGetProducts();
-          if (data) setProducts(data);
-        }
-        getProducts();
-    }, []);
 
     const debouncedSearch = debounce(value => {
         setSearch(value);
@@ -34,29 +24,62 @@ export default function CustomModal({ openCell, closeCell }) {
     }, [search, products]);
 
     const addProduct = (product_id) => {
-        const [i, j] = openCell.coordinates.split('-').map(Number);
         setLayout(prev => {
             const newLayout = [...prev];
-            const prevProducts = newLayout[i][j]['products'];
+            const prevProducts = newLayout[openCell.x][openCell.y].products;
 
-            if (!prevProducts) newLayout[i][j]['products'] = [product_id];
+            if (!prevProducts) newLayout[openCell.x][openCell.y].products = [product_id];
             if (!prevProducts.includes(product_id)) prevProducts.push(product_id);
             return newLayout;
         });
+
+        // add product to editedZones
+        for (const zone of editedZones) {
+            if (typeof openCell.zone_id !== 'number' || zone.zone_id !== openCell.zone_id) continue;
+            
+            setEditedZones(prev => {
+                const newZones = [...prev];
+                const prevZoneLayout = newZones[zone.zone_id].zone_layout;
+                const x = openCell.x - zone.zone_position.row;
+                const y = openCell.y - zone.zone_position.column;
+
+                const prevZoneProducts = prevZoneLayout[x][y].products;
+
+                if (!prevZoneProducts) prevZoneLayout[x][y].products = [product_id];
+                if (!prevZoneProducts.includes(product_id)) prevZoneProducts.push(product_id);
+                return newZones;
+            });
+        }
     }
 
     const removeProduct = (product_id) => {
-        const [i, j] = openCell.coordinates.split('-').map(Number);
         setLayout(prev => {
             const newLayout = [...prev];
-            const prevProducts = newLayout[i][j]['products'];
+            const prevProducts = newLayout[openCell.x][openCell.y].products;
 
-            if (prevProducts) {
-                const index = prevProducts.indexOf(product_id);
-                if (index > -1) prevProducts.splice(index, 1);
-            }
+            if (!prevProducts) return;
+            const index = prevProducts.indexOf(product_id);
+            if (index > -1) prevProducts.splice(index, 1);
             return newLayout;
         })
+
+        // remove product to editedZones
+        for (const zone of editedZones) {
+            if (typeof openCell.zone_id !== 'number' || zone.zone_id !== openCell.zone_id) continue;
+            setEditedZones(prev => {
+                const newZones = [...prev];
+                const prevZone = newZones[zone.zone_id];
+                const x = openCell.x - zone.zone_position.row;
+                const y = openCell.y - zone.zone_position.column;
+
+                const prevZoneProducts = prevZone.zone_layout[x][y].products;
+                if (!prevZoneProducts) return;
+
+                const index = prevZoneProducts.indexOf(product_id);
+                if (index > -1) prevZoneProducts.splice(index, 1);
+                return newZones;
+            });
+        }
     }
 
     return (

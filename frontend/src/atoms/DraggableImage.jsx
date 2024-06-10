@@ -3,7 +3,7 @@ import { MapEditorContext } from "../context/MapEditorContext";
 
 export default function DraggableImage({ alt, source, coordinates, setDroppedItem, duplicate }) {
   const [isDuplicating, setisDuplicating] = useState(true);
-  const { setDuplicateCells, setDeleteCells, duplicateCells } = useContext(MapEditorContext);
+  const { setDuplicateCells, setDeleteCells, duplicateCells, deleteCells } = useContext(MapEditorContext);
 
   const handleDragStart = (e) => {
     setDuplicateCells([]);
@@ -20,7 +20,7 @@ export default function DraggableImage({ alt, source, coordinates, setDroppedIte
 
   const handleDragEnd = (e) => {
     setisDuplicating(duplicateCells.length > 0 || duplicate);
-    if (!duplicate) setDroppedItem(null);
+    if (!duplicate || deleteCells.length > 0) setDroppedItem(null);
   };
 
   return !isDuplicating ? null : (

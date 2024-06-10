@@ -20,7 +20,6 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   const handleSave = async () => {
     // copy mapLayout
     const newMapLayout = new MapLayout(layout.length, layout[0].length);
-    newMapLayout.idCounter = mapLayout.idCounter;
 
     if (typeof editZone === 'number') {
       setEditZone(null);
@@ -33,10 +32,12 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
         zone.zone_position.column === oldZone.zone_position.column && 
         zone.zone_color === oldZone.zone_color
       ) return alert('No Changes');
-      newMapLayout.build(layout, Array.from(editedZones));
+      newMapLayout.build(layout, editedZones);
+      await requestUpdateMapLayout(user_id, newMapLayout.map_layout)
       alert(await requestUpdateMarketZones(user_id, [zone]));
       return setMapLayout(newMapLayout);
     }
+
     setEditMode(false);
     if (checkChanges(layout, market.map_layout)) return alert('No Changes');
     newMapLayout.build(layout, Array.from(mapLayout.zones.values()));
@@ -62,12 +63,12 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
           </div>
         </div>
       </div>
-      { !addZone && <div onClick={() => setAddZone(true)} className='flex items-center justify-center rounded-full p-[3%] bg-offwhite border-offwhite border-[0.3svh] hover:border-darkgray-custom text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
-          <SlFrame size={24}/>
+      { !addZone && <div onClick={() => setAddZone(true)} className='flex items-center justify-center rounded-full p-[4%] bg-darkgray-custom border-darkgray-custom border-[0.3svh] hover:border-offwhite h-[6svh] text-[2.2svh] cursor-pointer'>
+          <SlFrame size={20}/>
           <p className='ml-[0.5svw]'>Add Zone</p>
         </div>
       }
-      <div className='w-full h-full flex gap-[5%] items-center justify-center content-center float-end end-full'>
+      <div className='w-full h-full flex gap-[5%] items-center justify-center content-center pb-[5%]'>
         <div onClick={() => addZone ? setAddZone(false) : typeof editZone === 'number' ? setEditZone(null) : setEditMode(false)} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
           <IoArrowBack size={25}/>
           <p>Back</p>

@@ -24,33 +24,23 @@ export const colors = [
 
 export const colorArray = [
     '255, 0, 0', // red
-    '0, 128, 0', // green
+    '0, 255, 0', // lime
     '0, 0, 255', // blue
     '255, 255, 0', // yellow
     '0, 255, 255', // aqua
     '255, 0, 255', // fuchsia
-    '0, 255, 0', // lime
-    '128, 0, 0', // maroon
-    '0, 0, 128', // navy
-    '128, 128, 0', // olive
-    '128, 0, 128', // purple
-    '0, 128, 128', // teal
-    '240, 255, 255', // azure
-    '245, 245, 220', // beige
-    '255, 228, 196', // bisque
-    '0, 0, 0', // black
-    '255, 235, 205', // blanchedalmond
-    '138, 43, 226', // blueviolet
-    '165, 42, 42', // brown
-    '222, 184, 135', // burlywood
-    '95, 158, 160', // cadetblue
-    '127, 255, 0', // chartreuse
-    '210, 105, 30', // chocolate
-    '255, 127, 80', // coral
-    '100, 149, 237', // cornflowerblue
-    '255, 248, 220', // cornsilk
-    '220, 20, 60', // crimson
-    '0, 255, 255', // cyan
-    '0, 0, 139', // darkblue
-    '0, 139, 139', // darkcyan
+    '255, 165, 0', // orange
+    '255, 192, 203', // pink
+    '255, 105, 180', // hotpink
+    '173, 216, 230', // lightblue
+    '152, 251, 152', // palegreen
+    '255, 255, 224', // lightyellow
+    '144, 238, 144', // lightgreen
+    '240, 230, 140', // khaki
+    '230, 230, 250', // lavender
+    '255, 240, 245', // lavenderblush
+    '255, 228, 225', // mistyrose
+    '255, 218, 185', // peachpuff
+    '176, 224, 230', // powderblue
+    '255, 160, 122', // lightsalmon
 ];

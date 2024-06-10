@@ -8,6 +8,7 @@ import ProductModal from './ProductModal';
 import { MapEditorContext } from '../../context/MapEditorContext';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { useChangeDragMode } from '../../hooks/useChangeDragMode';
+import { requestGetProducts } from '../../requests/homeRequests';
 
 export default function MapEditor({ setEditMode }) {
   const { market, mapLayout } = useContext(MyMarketContext);
@@ -15,6 +16,7 @@ export default function MapEditor({ setEditMode }) {
   const [editedZones, setEditedZones] = useState(JSON.parse(JSON.stringify(Array.from(mapLayout.zones.values()))));
   const [settingsIsOpen, setSettingsIsOpen] = useState(false);
   const [openCell, setOpenCell] = useState(null);
+  const [products, setProducts] = useState([]);
   const [editZone, setEditZone] = useState(null);
   const [zoom, setZoom] = useState(1);
   const zoomRef = useRef(zoom);
@@ -28,6 +30,14 @@ export default function MapEditor({ setEditMode }) {
   const [overruledDelete, setOverruledDelete] = useState(false);
   useChangeDragMode(setDuplicateMode, setDeleteMode, overruledDuplicate, overruledDelete);
 
+  useEffect(() => {
+    const getProducts = async () => {
+      const data = await requestGetProducts();
+      if (data) setProducts(data);
+    }
+    getProducts()
+  }, [openCell]);
+
   const contextValue = useMemo(() => ({
     layout,
     setLayout,
@@ -39,9 +49,11 @@ export default function MapEditor({ setEditMode }) {
     setDeleteCells, 
     duplicateMode, 
     deleteMode, 
+    openCell,
     setOpenCell,
     setEditZone,
-  }), [duplicateCells, deleteCells, duplicateMode, deleteMode, layout, editedZones]);  
+    products
+  }), [duplicateCells, deleteCells, duplicateMode, deleteMode, openCell, layout, editedZones, products]);  
 
   // change Mode
   const changeDuplicateMode = () => {
@@ -106,7 +118,8 @@ export default function MapEditor({ setEditMode }) {
                 changeDeleteMode={changeDeleteMode}/>
               <ProductModal 
                 openCell={openCell} 
-                closeCell={() => setOpenCell(null)}/>
+                closeCell={() => setOpenCell(null)}
+                products={products}/>
             </React.Fragment>}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { requestGetMarketZones, requestGetMyMarket } from "../../requests/myMarketRequests";
 import MapViewer from "../Home/MapViewer";
 import MapEditor from "./MapEditor";
@@ -15,7 +15,6 @@ export default function MyMarket() {
     const [market, setMarket] = useState(null);
     const [mapLayout, setMapLayout] = useState(null);
     const [zones, setZones] = useState([]);
-    const [borderCells, setBorderCells] = useState(new Map());
     const [editMode, setEditMode] = useState(false);
     const [addZone, setAddZone] = useState(false);
 
@@ -33,14 +32,19 @@ export default function MyMarket() {
             const newMapLayout = new MapLayout(newLayout.length, newLayout[0].length)
             newMapLayout.build(newLayout, newZones);
             setMapLayout(newMapLayout);
-            const newBorderCells = new Map();
-            for (const zone of newZones) {
-                newBorderCells.set(zone.zone_id, { border: findBorderCells(zone.zone_layout), zone_color: zone.zone_color });
-            }   
-            setBorderCells(newBorderCells);
         }
         getMarket();
     }, [user_id]);
+
+    const borderCells = useMemo(() => {
+        const newBorderCells = new Map();
+        if (!mapLayout) return newBorderCells;
+
+        for (const zone of Array.from(mapLayout.zones.values())) {
+            newBorderCells.set(zone.zone_id, { border: findBorderCells(zone.zone_layout), zone_color: zone.zone_color });
+        }   
+        return newBorderCells;
+    }, [mapLayout]);
 
     return (
         <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, images, borderCells, addZone, setAddZone }}>

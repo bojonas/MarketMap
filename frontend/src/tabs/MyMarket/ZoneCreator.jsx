@@ -4,8 +4,6 @@ import { Cell } from './classes/Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import { colorArray } from '../Home/colors';
 import ZoneCellViewer from './ZoneCellViewer';
-import { getBorderStyle } from './getBorderStyle';
-import { getNonBorderStyle } from './getNonBorderStyle';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
@@ -119,8 +117,6 @@ export default function ZoneCreator({ setAddZone }) {
                     { layout.map((row, i) => (
                         row.map((cell, j) => {
                             const isSelected = selectedCells.has(`${i},${j}`);
-                            let borderStyle = getNonBorderStyle(scale);
-                            if (borderCells.size && typeof cell.zone_id === 'number') borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), i, j, scale);
                             return (
                                 <div 
                                     key={j} 
@@ -129,12 +125,13 @@ export default function ZoneCreator({ setAddZone }) {
                                     onMouseOver={(e) => handleMouseOver(e, i, j)}
                                 >
                                     { cell && <ZoneCellViewer
-                                        type={cell.type || 'empty'}
+                                        type={cell.type}
                                         cellStyle={{ 
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 
-                                            backgroundColor: isSelected ? '#715DF2' : '',
-                                            ...borderStyle
+                                            border: `${scale/10}px solid #171717`,
+                                            borderRadius: `${scale/5}px`,
+                                            backgroundColor: isSelected ? '#715DF2' : borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, 0.3)` : ''
                                         }}
                                     />}
                                 </div>

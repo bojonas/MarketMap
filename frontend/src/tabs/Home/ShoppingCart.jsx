@@ -6,19 +6,21 @@ import { MapViewerContext } from "../../context/MapViewerContext";
 import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 import { FaCartArrowDown } from "react-icons/fa";
+import { PiPath } from "react-icons/pi";
+import { FaPerson } from "react-icons/fa6";
 
-export default function ShoppingCart({ setShoppingCart, removeMarket }) {
+export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath }) {
     const user_id = localStorage.getItem('user_id')
     const timeoutId = useRef();
     const [search, setSearch] = useState('');
-    const { shoppingCart, productsInMarket, colors, layoutIndex } = useContext(MapViewerContext);
+    const { shoppingCart, productsInMarket, colors, layoutIndex, viewZone, setViewZone } = useContext(MapViewerContext);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [shoppingCarts, setShoppingCarts] = useState([]);
     const [openSelect, setOpenSelect] = useState(false);
     const [searchClicked, setSearchClicked] = useState(false);
     const [cartName, setCartName] = useState(''); 
-    
+
     const debouncedSearch = debounce(value => {
         setSearch(value);
     }, 200);
@@ -130,7 +132,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                     )})}
                 </div>}
             </div>
-            <div className='absolute bottom-[11svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-3/4 rounded-xl'>
+            <div className='absolute bottom-[18svh] z-0 flex flex-col items-center bg-darkoffwhite text-black w-3/4 h-2/3 rounded-xl'>
                 <p className='p-[2svh] text-[2.5svh] font-bold'>Shopping Cart:</p>
                 <div className='flex flex-col items-center w-full h-full p-[1svh] bg-offwhite'>
                     <div className='absolute w-full flex flex-col justify-center items-center'>
@@ -145,29 +147,31 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                             : <p>No carts yet</p>}
                         </div>}
                     </div>
-                    <div className='flex flex-col items-center text-center w-full h-full pt-[15%] overflow-y-scroll'>
+                    <div className='flex flex-col items-center text-center w-full h-full pt-[15%]'>
                         <input 
                             value={cartName} 
                             onChange={e => setCartName(e.target.value)}
                             placeholder='not named' 
-                            className='w-fit font-bold bg-offwhite text-center outline-none rounded-lg placeholder:italic placeholder-gray-700'/>
-                        { shoppingCart.products.length > 0 && shoppingCart.products.map((product, i) => {
-                            const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
-                            return (
-                                <div key={`cart-${product.product_id}`} className='flex justify-between p-[5%] w-full'>
-                                    <div className='flex gap-[5%] w-3/4'>
-                                        <p className='font-bold'>{i+1}.</p>
-                                        <p>{product.product_name_en}</p>
+                            className='w-fit font-bold bg-offwhite text-center text-[2.5svh] outline-none rounded-lg placeholder:italic placeholder-gray-700'/>
+                        <div className='flex flex-col items-center text-center w-full h-[34svh] overflow-y-scroll'>
+                            { shoppingCart.products.length > 0 && shoppingCart.products.map((product, i) => {
+                                const marketProduct = productsInMarket.find(marketProduct => marketProduct.product_id === product.product_id);
+                                return (
+                                    <div key={`cart-${product.product_id}`} className='flex justify-between p-[5%] w-full'>
+                                        <div className='flex gap-[5%] w-3/4'>
+                                            <p className='font-bold'>{i+1}.</p>
+                                            <p>{product.product_name_en}</p>
+                                        </div>
+                                        <div className='flex gap-[20%] w-1/4'>
+                                            <p>{product.product_count}x</p>
+                                            { marketProduct && <div className='rounded-full w-fit h-fit p-[12%] self-center'
+                                            style={{ backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
+                                        </div>
                                     </div>
-                                    <div className='flex gap-[20%] w-1/4'>
-                                        <p>{product.product_count}x</p>
-                                        { marketProduct && <div className='rounded-full w-fit h-fit p-[12%] self-center'
-                                        style={{ backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>}
-                                    </div>
-                                </div>
-                            );
-                        }
-                        )}
+                                );
+                            }
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div className='flex flex-col w-full p-[5%] bg-offwhite overflow-y-scroll rounded-b-xl'>
@@ -177,11 +181,23 @@ export default function ShoppingCart({ setShoppingCart, removeMarket }) {
                     </div>
                 </div>
             </div>
-            { removeMarket && 
-            <div onClick={removeMarket} className='custom-button absolute bottom-[2svh] flex items-center justify-center gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
-                <IoArrowBack size={25}/>
-                <p>Back</p>
-            </div>}
+            <div className='absolute bottom-[2svh] flex flex-col items-center justify-center gap-[20%] w-full h-[15svh]'>
+                <div className='flex items-center justify-center gap-[20%]'>
+                    <div onClick={handlePath} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                        <PiPath size={25}/>
+                        <p>Path</p>
+                    </div>
+                    <div onClick={null} className='hover:text-darkgray-custom cursor-pointer'>
+                        <FaPerson size={25}/>
+                    </div>
+                </div>
+                { (removeMarket || typeof viewZone === 'number') &&
+                    <div onClick={typeof viewZone === 'number' ? () => setViewZone(null) : removeMarket} className='custom-button flex items-center justify-center gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                        <IoArrowBack size={25}/>
+                        <p>Back</p>
+                    </div>
+                }
+            </div>
         </div>
     );
 }
