@@ -8,6 +8,7 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [isOver, setIsOver] = useState(false);
   const [row, col] = coordinates.split('-').map(Number);
+
   const { 
     layout,
     setLayout,
@@ -44,6 +45,7 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
 
     const { rootCoordinates } = item;
     if (rootCoordinates && isEqualArray([row, col], rootCoordinates)) return;
+
     // update layout
     setLayout(prev => {
       const newLayout = [...prev];
@@ -75,15 +77,18 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
 
     setEditedZones(prev => {
       const newZones = [...prev];
-      for (const zone in newZones) {
+      for (const zone of newZones) {
+        const x = row - zone.zone_position.row;
+        const y = col - zone.zone_position.column;
         const cell = layout[row][col];
-        if (typeof cell.zone_id !== 'number' || cell.zone_id !== zone.zone_id) return;
+        if (typeof cell.zone_id !== 'number' || cell.zone_id !== zone.zone_id) continue;
+
         // add item to current cell 
-        zone[row][col].type = item.alt;
+        zone.zone_layout[x][y].type = item.alt;
 
         // remove item from drag start cell
         if (rootCoordinates) {
-          const newCell = zone[rootCoordinates[0]][rootCoordinates[1]];
+          const newCell = zone.zone_layout[rootCoordinates[0] - zone.zone_position.row][rootCoordinates[1] - zone.zone_position.column];
           newCell.type = 'empty';
           newCell.products = [];
         }
@@ -91,16 +96,15 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
         // add/remove items with modes
         for (const cell of duplicateCells) {
           const [x, y] = cell.split('-').map(Number);
-          zone[x][y].type = item.alt;
+          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = item.alt;
         }
         for (const cell of deleteCells) {
           const [x, y] = cell.split('-').map(Number);
-          zone[x][y].type = 'empty';
-          zone[x][y].products = [];
+          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = 'empty';
+          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].products = [];
         }
-
-        return newZones;
       }
+      return newZones;
     })
 
     return deleteCells.length === 0 ? { name: type } : null;

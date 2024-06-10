@@ -12,7 +12,7 @@ import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   const user_id = localStorage.getItem('user_id');
-  const { market, mapLayout, setMapLayout, zones, images, addZone, setAddZone } = useContext(MyMarketContext);
+  const { market, setMapLayout, zones, images, addZone, setAddZone } = useContext(MyMarketContext);
   const { layout, editedZones } = useContext(MapEditorContext);
   const [search, setSearch] = useState('');
   const filteredImages = Object.entries(images).filter(([type]) => type.toLowerCase().includes(search));
@@ -38,6 +38,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
       return setMapLayout(newMapLayout);
     }
 
+    setEditMode(false);
     if (checkChanges(layout, market.map_layout)) return alert('No Changes');
 
     const zonesToUpdate = [];
@@ -54,10 +55,9 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
       zonesToUpdate.push(editedZone)
     }
 
-    newMapLayout.build(layout, Array.from(mapLayout.zones.values()));
+    newMapLayout.build(layout, editedZones);
     await requestUpdateMarketZones(user_id, zonesToUpdate)
     alert(await requestUpdateMapLayout(user_id, newMapLayout.map_layout));
-    setEditMode(false);
     return setMapLayout(newMapLayout);
   }
 

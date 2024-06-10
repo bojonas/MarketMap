@@ -95,7 +95,7 @@ export default function MapEditor({ setEditMode }) {
       <div className='flex h-full w-full'>
         <Toolbar setEditMode={setEditMode} setEditZone={setEditZone} editZone={editZone}/>
         <div className='flex flex-col items-center justify-center gap-[1%]' style={{ cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
-            { typeof editZone === 'number' ? <ZoneEditor zone={mapLayout.getZone(editZone)}/>
+            { typeof editZone === 'number' ? <ZoneEditor zone={editedZones[editZone]}/>
             : <React.Fragment>
               <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
                 { market.market_image_url && 

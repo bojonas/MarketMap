@@ -3,10 +3,9 @@ import { useContext, useState, useEffect } from 'react';
 import { MapEditorContext } from '../../context/MapEditorContext';
 import { addColumn, addRow, removeColumn, removeRow } from './modifyLayout';
 import { MyMarketContext } from '../../context/MyMarketContext';
-import { MapLayout } from './classes/MapLayout';
 
 export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
-  const { layout, duplicateMode, deleteMode } = useContext(MapEditorContext); 
+  const { layout, setLayout, duplicateMode, deleteMode } = useContext(MapEditorContext); 
   const { setMapLayout } = useContext(MyMarketContext);
   const [inputRows, setInputRows] = useState(layout.length);
   const [inputColumns, setInputColumns] = useState(layout[0].length);
@@ -14,13 +13,8 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
   useEffect(() => {
     if (!inputRows || !inputColumns) return;
   
-    setMapLayout(oldMapLayout => {
-      // copy mapLayout
-      const newMapLayout = new MapLayout(oldMapLayout.map_layout.length, oldMapLayout.map_layout[0].length);
-      newMapLayout.map_layout = oldMapLayout.map_layout;
-      newMapLayout.zones = new Map(oldMapLayout.zones);
-      newMapLayout.idCounter = oldMapLayout.idCounter;
-      const newLayout = newMapLayout.map_layout;
+    setLayout(prev => {
+      const newLayout = [...prev]
   
       while (inputRows > newLayout.length) {
         addRow(newLayout);
@@ -34,9 +28,9 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
       while (inputColumns < newLayout[0].length) {
         removeColumn(newLayout);
       }
-      return newMapLayout;
+      return newLayout;
     });
-  }, [inputRows, inputColumns, setMapLayout]);  
+  }, [inputRows, inputColumns, setMapLayout, setLayout]);  
 
   return (
     <Modal

@@ -9,7 +9,7 @@ import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function ZoneEditor({ zone }) {
     const { borderCells } = useContext(MyMarketContext);
-    const { openCell, setOpenCell, products} = useContext(MapEditorContext);
+    const { openCell, setOpenCell, products } = useContext(MapEditorContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
     const scale = Math.min(width / zone.columns, height / zone.rows);  
@@ -32,7 +32,7 @@ export default function ZoneEditor({ zone }) {
                                 <div key={j}>
                                     { typeof cell.zone_id === 'number' && <Cell
                                         type={cell.type}
-                                        coordinates={`${cell.x}-${cell.y}`}
+                                        coordinates={`${cell.x + zone.zone_position.row}-${cell.y + zone.zone_position.column}`}
                                         cellStyle={{ 
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 

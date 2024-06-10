@@ -9,9 +9,8 @@ export default function Layout({ zoom }) {
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
-  const { mapLayout, borderCells } = useContext(MyMarketContext);
-  const { setEditZone } = useContext(MapEditorContext);
-  const layout = mapLayout.map_layout;
+  const { borderCells } = useContext(MyMarketContext);
+  const { setEditZone, layout } = useContext(MapEditorContext);
   const scale = Math.min(width / layout[0].length, height / layout.length);
 
   // adjust scrollbars after zoom

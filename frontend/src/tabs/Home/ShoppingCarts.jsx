@@ -3,6 +3,7 @@ import { Tooltip } from 'react-tooltip';
 import { requestGetShoppingCarts, requestPostShoppingCart, requestRemoveShoppingCart, requestUpdateShoppingCart } from "../../requests/homeRequests";
 import { FaTrashCan } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
+import { FaCartArrowDown } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 
 import { useNavigate } from 'react-router-dom';
@@ -86,7 +87,7 @@ export default function ShoppingCarts({ user_id }) {
                     <p>Add Cart</p>
                 </div>
                 <div onClick={uploadShoppingCart} className='flex justify-center items-center gap-[5%] w-[25%] hover:text-purple-custom cursor-pointer'>
-                    <FaCartPlus size={24}/>
+                    <FaCartArrowDown size={24}/>
                     <p>Upload Cart</p>
                 </div>
             </div>
