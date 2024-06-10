@@ -7,12 +7,17 @@ export default function Tab({ name, Icon, tab, setActiveTab }) {
   const tabRef = useRef(null);
 
   useEffect(() => {
-    if (tabRef.current && isActive) {
-      setActiveTab({
-        left: tabRef.current.offsetLeft,
-        width: tabRef.current.offsetWidth
-      });
-    }
+    const handleResize = () => {
+      if (tabRef.current && isActive) {
+        setActiveTab({
+          left: tabRef.current.offsetLeft,
+          width: tabRef.current.offsetWidth
+        });
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [isActive, setActiveTab, user_id]);
 
   return (

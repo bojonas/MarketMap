@@ -55,7 +55,7 @@ export default function ShoppingCarts({ user_id }) {
 
     const uploadShoppingCart = async () => {
         navigator('/uploader')
-    }
+    }   
 
     return (
         <div className='absolute z-0 bottom-[5%] right-[10%] flex flex-col w-1/3 h-2/3 text-black bg-darkoffwhite rounded-xl'>
