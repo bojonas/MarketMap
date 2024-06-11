@@ -2,6 +2,8 @@ import DropdownMenu from "./DropdownMenu";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { FaUserCircle } from "react-icons/fa";
+
 export default function MyAccount({isLoggedIn, setIsLoggedIn}){
   const navigate = useNavigate()
     const [isVisible, setIsVisible] = useState(false);
@@ -38,15 +40,19 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
     }
 
   return (
-    <div className="relative p-5">
+    <div className=" w-1/2 justify-center relative flex">
+      {isLoggedIn ? <FaUserCircle 
+        onClick={toggleDropdown}
+        className=" text-black hover:text-offwhite cursor-pointer"
+        size={35}/> :
       <button 
         onClick={toggleDropdown}
         className="px-4 py-2 bg-gray-custom text-white rounded-full hover:bg-blue-600"
       >
         {
-        isLoggedIn ? 'B' : 'Login'//todo: get_initials function instead of 'B'
+         'Login'//todo: get_initials function instead of 'B'
         }
-      </button>
+      </button>}
       <DropdownMenu isVisible={isVisible}>
         {isLoggedIn?<div className="dropdown-content" onClick={myProfile}>My Profile</div>:null}
         {isLoggedIn?<div className="dropdown-content" onClick={settings}>Settings</div>:null}

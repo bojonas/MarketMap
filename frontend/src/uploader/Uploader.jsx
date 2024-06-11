@@ -1,5 +1,6 @@
 import { useState, React } from "react"
 import UploaderComponent from "./UploaderComponent";
+import { requestPostShoppingCart } from "../requests/homeRequests";
 //import { requestPostShoppingCart } from "../requests/homeRequests";
 
 
@@ -40,6 +41,7 @@ export default function Uploader(){
                 <select value={selectedItem[item["listItem"]]} onChange={handleChange}>
                     {item["assignedItems"].map((item, index) => (
                     <option key={index} value={item}>
+                        {/*todo: logik für bild*/}
                         {item}
                     </option>
                     ))}
@@ -50,10 +52,14 @@ export default function Uploader(){
    
     const handleUpload = async()=>{
         let upload = [] //Wie sieht die liste aus?
+        //--> [{product_id, product_count, product_name_en}]
         console.log(upload)
         console.log(displayMapping)
         console.log(selectedItem)
-        //await requestPostShoppingCart("new shopping cart",localStorage.getItem("user_id"),upload)
+
+
+        await requestPostShoppingCart("",localStorage.getItem("user_id"),upload)
+        //setShoppingCarts(prev => [...prev,upload])
     }
     
 

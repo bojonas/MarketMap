@@ -9,7 +9,7 @@ export default function Navbar({ tabs, userPermission, isLoggedIn, setIsLoggedIn
 
     return (
         <div className='relative flex items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
-            <div className='flex h-full w-[25svw] items-center pl-[1svw] bg-purple-custom'>
+            <div className='flex h-full w-[25svw] items-center bg-purple-custom'>
                 <MyAccount isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             </div>
                 <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end pl-[1svw] border-b-[0.5svh] border-gray-custom'>
