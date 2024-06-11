@@ -27,7 +27,7 @@ export default function App() {
         <Navbar tabs={tabs} userPermission={userPermission} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>
           { tabs.map(({ tab, Component, permission }, index) => 
-            (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Route key={index} path={`/${tab}`} element={<Component/>}/>
+            (permission === 'all' || userPermission === 'admin' || permission.includes(userPermission)) && <Route key={index} path={`/${tab}`} element={<Component/>}/>
           )}
           {!isLoggedIn&&<Route path={"/login"} element={<Login setIsLoggedIn={setIsLoggedIn}/>}/>}
           {!isLoggedIn&&<Route path={"/register"} element={<Register/>}/>}

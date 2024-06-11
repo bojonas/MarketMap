@@ -13,7 +13,9 @@ export default function ZoneViewer({ zone }) {
 
     return (
         <div className='flex flex-col items-center justify-center w-full h-full gap-[2%] p-[2%]'>
-            <p style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%] w-[8svw]'>{zone.zone_name}</p>
+            <p style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%] pr-[2%] pl-[2%]'>
+                {zone.zone_name || 'Zone not named'}
+            </p>
             <div ref={ref} className='p-[1svh] flex flex-col items-center justify-center w-[75svw] h-[75svh]'>
                 <div className='grid items-center justify-center content-center w-full h-full'
                     style={{ 

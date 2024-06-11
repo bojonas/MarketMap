@@ -141,7 +141,14 @@ export async function requestGetShoppingCarts(user_id) {
 
 // request to /get_paths
 export async function requestFindPath(layout, start, end, waypoints) {
-  if (!layout || !start || !end || !waypoints) return console.error('Invalid parameters');
+  if (
+    !layout || 
+    !start || 
+    !end || 
+    !waypoints ||
+    (start.length > 0 && (start[0] >= layout.length || start[1] >= layout[0].length)) ||
+    (end.length > 0 && (end[0] >= layout.length || end[1] >= layout[0].length))
+  ) return console.error('Invalid parameters');
 
   const data = {
     layout: layout,

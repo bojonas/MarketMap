@@ -1,3 +1,5 @@
+import { Cell } from '../classes/Cell';
+
 export class Zone {
     constructor(zone_id, zone_name, zone_layout, zone_position, zone_color) {
         this.zone_id = zone_id;
@@ -15,7 +17,9 @@ export class Zone {
                 const row = overlappingPosition.row + i - this.zone_position.row;
                 const col = overlappingPosition.column + j - this.zone_position.column;
                 if (row >= 0 && row < this.rows && col >= 0 && col < this.columns) {
-                    if (typeof overlappingLayout[i][j] === 'number') this.zone_layout[row][col] = true;
+                    const cell = overlappingLayout[i][j];
+                    if (typeof cell.zone_id !== 'number') continue;
+                    this.zone_layout[row][col] = new Cell(cell.zone_id, cell.type, cell.x, cell.y, cell.products);
                 }
             }
         }

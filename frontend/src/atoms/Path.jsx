@@ -52,21 +52,21 @@ export default function Path({ path, currentRow, currentCol, waypoints, scale })
             divs = [
                 <div key='initial' className='absolute top-1/2 left-1/2 bg-purple-custom' 
                 style={{ 
-                    width: orientation === 'horizontal' ? `${scale/2}px` : `${scale/10}px`,
-                    height: orientation === 'vertical' ? `${scale/2}px` : `${scale/10}px`,
+                    width: orientation === 'horizontal' ? `${scale/1.9}px` : `${scale/10}px`,
+                    height: orientation === 'vertical' ? `${scale/1.9}px` : `${scale/10}px`,
                     transform: `translate(${translateX}%, ${translateY}%)`,
                 }}/>
             ];
         } else divs = [
             <div key='initial' className='absolute top-1/2 left-1/2 bg-purple-custom' 
             style={{ 
-                width: orientation === 'horizontal' ? `${scale}px` : `${scale/10}px`,
-                height: orientation === 'vertical' ? `${scale}px` : `${scale/10}px`,
+                width: orientation === 'horizontal' ? `${scale*1.1}px` : `${scale/10}px`,
+                height: orientation === 'vertical' ? `${scale*1.1}px` : `${scale/10}px`,
                 transform: 'translate(-50%, -50%)',
             }}/>
         ];
     } else {
-        let divWidth = scale/2, divHeight = scale/2;
+        let divWidth = scale/1.9, divHeight = scale/1.9;
         // check if more than 1 adjacent cell in path
         let adjacentsSet = new Set();
         path.forEach(([i, j]) => {
@@ -126,8 +126,8 @@ export default function Path({ path, currentRow, currentCol, waypoints, scale })
             divs.push(
                 <div key={`waypoint-${i}`} className='absolute top-1/2 left-1/2 bg-purple-custom' 
                 style={{ 
-                    width: row === currentRow ? `${scale/2}px` : `${scale/10}px`,
-                    height: col === currentCol ? `${scale/2}px` : `${scale/10}px`,
+                    width: row === currentRow ? `${scale/1.9}px` : `${scale/10}px`,
+                    height: col === currentCol ? `${scale/1.9}px` : `${scale/10}px`,
                     transform: `translate(${translateX}%, ${translateY}%)`,
                 }}/>
             );

@@ -17,7 +17,7 @@ export default function ZoneEditor({ zone }) {
 
     return (
         <div className='flex flex-col items-center justify-center w-full h-full gap-[2%] p-[2%]'>
-            <input value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
+            <input value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
             <div ref={ref} className='p-[1svh] flex flex-col items-center justify-center w-[75svw] h-[75svh]'>
                 <div className='grid items-center justify-center content-center w-full h-full'
                     style={{ 
@@ -32,13 +32,13 @@ export default function ZoneEditor({ zone }) {
                                 <div key={j}>
                                     { typeof cell.zone_id === 'number' && <Cell
                                         type={cell.type}
-                                        coordinates={`${cell.x - zone.zone_position.row}-${cell.y - zone.zone_position.column}`}
+                                        row={cell.x}
+                                        col={cell.y}
                                         cellStyle={{ 
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 
                                             ...borderStyle
                                         }}
-                                        editZone={zone}
                                     />}
                                 </div>
                             )

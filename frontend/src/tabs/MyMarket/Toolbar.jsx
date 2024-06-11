@@ -9,6 +9,7 @@ import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 import { SlFrame } from "react-icons/sl";
 import { MapEditorContext } from '../../context/MapEditorContext';
+import { titleCase } from '../../helper/titleCase';
 
 export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   const user_id = localStorage.getItem('user_id');
@@ -68,12 +69,12 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
     <div className='flex flex-col items-center text-center w-full h-full bg-purple-custom gap-[5%]'>
       <SearchBar onSearch={setSearch} placeholder={'Search items...'} contrast='purple'/>
       <div className='bg-gray-custom flex flex-col items-center text-center h-full rounded-lg'>
-        <div className='min-h-[55svh] max-h-[55svh]'>
-          <div className='grid grid-cols-3 gap-[5%] text-center rounded-lg m-2 overflow-y-scroll w-[15svw] p-[2%]'>
+        <div className='w-[15svw] h-[55svh] rounded-lg p-[5%]'>
+          <div className='w-full grid grid-cols-3 overflow-y-scroll text-center'>
             {filteredImages.map(([type, source], index) => (
-              <div key={index} className='bg-offwhite w-fit h-fit flex flex-col items-center rounded-lg border-1 border-gray-custom pb-2 pr-1 pl-1'> 
-                <span className='text-black text-[0.6svw]'>{type.replace('_', ' ')}</span>
-                <div className='w-3/4 h-fit rounded-lg hover:border-[0.5svh] hover:border-gray-button'
+              <div key={index} className='bg-offwhite w-fit h-fit flex flex-col items-center rounded-lg border-[0.5svh] border-gray-custom pb-[10%] pr-[3%] pl-[3%]'> 
+                <span className='text-black text-[0.6svw] overflow-auto whitespace-nowrap text-overflow-ellipsis'>{titleCase(type).replace('_', ' ')}</span>
+                <div className='w-3/4 h-fit rounded-lg hover:border-[0.5svh] hover:border-gray-button cursor-pointer'
                   style={{ boxShadow: '0 5px 2px -1px #303030' }}>
                   <DraggableImage alt={type} source={source} duplicate={true}/>
                 </div>

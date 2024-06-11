@@ -40,10 +40,11 @@ export default function Layout({ zoom }) {
             }}>
             {layout.map((row, i) => (
               row.map((cell, j) => (
-                <div key={cell.y} onClick={() => typeof cell.zone_id === 'number' ? setEditZone(cell.zone_id) : null} className='cursor-pointer'>
+                <div key={cell.y} onClick={() => typeof cell.zone_id === 'number' ? setEditZone(cell.zone_id) : null}>
                   { cell && <Cell 
                     type={cell.type} 
-                    coordinates={`${cell.x}-${cell.y}`}
+                    row={cell.x}
+                    col={cell.y}
                     cellStyle={{ 
                       height: `${scale}px`, 
                       width: `${scale}px`, 
@@ -52,7 +53,6 @@ export default function Layout({ zoom }) {
                       borderRadius: `${scale/5}px`,
                       backgroundColor: borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, ${cell.type === 'empty' ? '0.3' : '0.6'})` : ''
                     }}
-                    editZone={null}
                   />}
                 </div>
               ))

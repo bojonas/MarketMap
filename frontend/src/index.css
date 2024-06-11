@@ -11,7 +11,7 @@
         border-purple-custom border-2  hover:border-offwhite;
     }
     .custom-button-forgotPw {
-        @apply text-black hover:text-gray-400 ;
+        @apply hover:text-black text-gray-standard ;
     }
 
     .custom-input {

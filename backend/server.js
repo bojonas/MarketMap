@@ -42,6 +42,7 @@ process.on('SIGINT', async () => {
 // import home routes
 const { getMarkets, getProducts, putHistory, getHistory, deleteHistory, postShoppingCart, putShoppingCart, getShoppingCarts, deleteShoppingCart } = require('./routes/homeRoutes');
 const findPath = require('./helper/findPath');
+const getStartandEnd = require('./helper/getStartandEnd');
 
 const History = Joi.object({
     timestamp: Joi.date().iso().required(),
@@ -221,8 +222,9 @@ app.post('/get_paths', async (req, res) => {
     }
     
     const { layout, start, end, waypoints } = req.body;
+    const [newStart, newEnd] = getStartandEnd(layout, waypoints, start.length > 0 ? start : null, end.length > 0 ? end : null);
     try {
-        const result = findPath(layout, start, end, waypoints);
+        const result = findPath(layout, newStart, newEnd, waypoints);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);

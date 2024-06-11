@@ -19,7 +19,7 @@ export default function LayoutViewer({ zoom }) {
       container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
       container.scrollTop = (container.scrollHeight - container.clientHeight) / 2;
     }
-  }, [zoom]);
+  }, [zoom, layout]);
 
   // update dimensions after initial render
   useEffect(() => {

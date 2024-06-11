@@ -275,7 +275,9 @@ function findPath(layout, start, end, waypoints) {
         return [];
     }
     path = path.concat(finalSegmentPath);
+    path = path.map(node => [node.pos.x, node.pos.y]);
+    path.unshift(start);
 
-    return path.map(node => [node.pos.x, node.pos.y]);
+    return path;
 }
 module.exports = findPath;

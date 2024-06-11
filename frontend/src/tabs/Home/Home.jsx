@@ -61,13 +61,13 @@ export default function Home() {
 
     const selectMarket = async (market) => {
         const zones = await requestGetMarketZones(market.market_id);
-        setMarket(market);
         if (!zones) return;
 
         const newLayout = market.map_layout;
         const newMapLayout = new MapLayout(newLayout.length, newLayout[0].length)
         newMapLayout.build(newLayout, zones);
         setMapLayout(newMapLayout);
+        setMarket(market);
         if (!user_id) return;
 
         // update history 

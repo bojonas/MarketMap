@@ -93,17 +93,19 @@ export default function ZoneCreator({ setAddZone }) {
         const selectedCoordinates = Array.from(selectedCells).map(cell => cell.split(',').map(Number));
         const avgRow = Math.round(selectedCoordinates.reduce((sum, coord) => sum + coord[0], 0) / selectedCoordinates.length);
         const avgCol = Math.round(selectedCoordinates.reduce((sum, coord) => sum + coord[1], 0) / selectedCoordinates.length);
-    
+
         const stack = [[avgRow, avgCol]];
+        const tempSelectedCells = new Set(selectedCells);
         while (stack.length) {
             const [row, col] = stack.pop();
-            if (row > 0 && !selectedCells.has(`${row - 1},${col}`) && (layout[row - 1][col] || selectedCells.has(`${row - 1},${col}`))) stack.push([row - 1, col]);
-            if (row < rows - 1 && !selectedCells.has(`${row + 1},${col}`) && (layout[row + 1][col] || selectedCells.has(`${row + 1},${col}`))) stack.push([row + 1, col]);
-            if (col > 0 && !selectedCells.has(`${row},${col - 1}`) && (layout[row][col - 1] || selectedCells.has(`${row},${col - 1}`))) stack.push([row, col - 1]);
-            if (col < columns - 1 && !selectedCells.has(`${row},${col + 1}`) && (layout[row][col + 1] || selectedCells.has(`${row},${col + 1}`))) stack.push([row, col + 1]);
-            selectedCells.add(`${row},${col}`);
+            if (row > 0 && !tempSelectedCells.has(`${row - 1},${col}`) && (layout[row - 1][col] || tempSelectedCells.has(`${row - 1},${col}`))) stack.push([row - 1, col]);
+            if (row < rows - 1 && !tempSelectedCells.has(`${row + 1},${col}`) && (layout[row + 1][col] || tempSelectedCells.has(`${row + 1},${col}`))) stack.push([row + 1, col]);
+            if (col > 0 && !tempSelectedCells.has(`${row},${col - 1}`) && (layout[row][col - 1] || tempSelectedCells.has(`${row},${col - 1}`))) stack.push([row, col - 1]);
+            if (col < columns - 1 && !tempSelectedCells.has(`${row},${col + 1}`) && (layout[row][col + 1] || tempSelectedCells.has(`${row},${col + 1}`))) stack.push([row, col + 1]);
+            tempSelectedCells.add(`${row},${col}`);
         }
-        setSelectedCells(new Set(selectedCells));
+
+        if (tempSelectedCells.size !== rows * columns) setSelectedCells(tempSelectedCells);
         setIsMouseDown(false);
     };
     return (

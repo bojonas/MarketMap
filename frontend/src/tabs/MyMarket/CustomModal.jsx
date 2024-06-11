@@ -2,11 +2,9 @@ import Modal from 'react-modal';
 import { useContext, useState, useEffect } from 'react';
 import { MapEditorContext } from '../../context/MapEditorContext';
 import { addColumn, addRow, removeColumn, removeRow } from './modifyLayout';
-import { MyMarketContext } from '../../context/MyMarketContext';
 
 export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMode, changeDeleteMode}) {
-  const { layout, setLayout, duplicateMode, deleteMode } = useContext(MapEditorContext); 
-  const { setMapLayout } = useContext(MyMarketContext);
+  const { layout, setLayout, setEditedZones, duplicateMode, deleteMode } = useContext(MapEditorContext); 
   const [inputRows, setInputRows] = useState(layout.length);
   const [inputColumns, setInputColumns] = useState(layout[0].length);
 
@@ -30,7 +28,39 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
       }
       return newLayout;
     });
-  }, [inputRows, inputColumns, setMapLayout, setLayout]);  
+
+    setEditedZones(prev => {
+      const newZones = [...prev];
+
+      for (const zone of newZones) {
+        const zoneLayout = zone.zone_layout;
+        const zonePosition = zone.zone_position;
+        let zoneAffected = false;
+
+        for (let i = 0; i < zoneLayout.length; i++) {
+          for (let j = 0; j < zoneLayout[i].length; j++) {
+            const row = zonePosition.row + i;
+            const col = zonePosition.column + j;
+            if (row >= inputRows || col >= inputColumns) {
+              zoneAffected = true;
+              break;
+            }
+          }
+          if (zoneAffected) break;
+        }
+
+        if (!zoneAffected) continue;
+        while (zoneLayout.length > 0 && inputRows < zoneLayout.length) {
+          removeRow(zoneLayout);
+        }
+        while (zoneLayout[0] && inputColumns < zoneLayout[0].length) {
+          removeColumn(zoneLayout);
+        }   
+      }
+
+      return newZones;
+    })
+  }, [inputRows, inputColumns, setLayout, setEditedZones]);  
 
   return (
     <Modal
@@ -55,8 +85,8 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
       }}
     >
       <p className='font-bold text-lg'>Settings</p>
-      { layout 
-        ? <div className='w-full h-[40%] flex flex-col gap-[20%] justify-center text-center items-center'>
+      { !layout ? null 
+        : <div className='w-full h-[40%] flex flex-col gap-[20%] justify-center text-center items-center'>
             <div className='flex gap-[2%] items-center justify-center w-[80%]'>
                 <p className='absolute left-[6svw] font-bold'>Width:</p>
                 <button className='add_remove_button p-0 leading-none' onClick={() => { setInputColumns(inputColumns > 1 ? inputColumns - 1 : inputColumns) }}>-</button>
@@ -81,8 +111,7 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
                 />
                 <button className='add_remove_button' onClick={() => setInputRows(inputRows < 130 ? inputRows + 1 : 130)}>+</button>
             </div>
-          </div>
-        : null }
+          </div>}
         <div className='w-full h-[40%] flex flex-col gap-5 justify-center text-center items-center'>
           <div className='flex items-center justify-center w-[70%]'>
             <p className='absolute left-[8svw] font-bold'>Duplicate Mode:</p> 

@@ -24,7 +24,7 @@ export default function MiniMap({ layout, market, selectMarket, images }) {
             {layout.map((row, i) => (
                 row.map((cell, j) => (
                   <CellViewer
-                    key={cell.y} 
+                    key={j} 
                     type={cell.type} 
                     source={images[cell.type]}
                     cellStyle={{ 
