@@ -1,6 +1,5 @@
 import { useState, React } from "react"
 import UploaderComponent from "./UploaderComponent";
-import { requestPostShoppingCart } from "../requests/homeRequests";
 //import { requestPostShoppingCart } from "../requests/homeRequests";
 
 
@@ -10,6 +9,8 @@ export default function Uploader(){
 
     const [displayMapping, setDisplayMapping] = useState();
     const [selectedItem, setSelectedItem] = useState({})
+
+    const [cartName, setCartName] = useState("New Shopping Cart")
 
     
 
@@ -53,12 +54,16 @@ export default function Uploader(){
     const handleUpload = async()=>{
         let upload = [] //Wie sieht die liste aus?
         //--> [{product_id, product_count, product_name_en}]
+        for(let i = 0; i<displayMapping.length;i++){
+            console.log({product_id: "/", product_count: displayMapping[i]["amount"], product_name_en: selectedItem[i]})
+        }
         console.log(upload)
+        console.log(mapping)
         console.log(displayMapping)
         console.log(selectedItem)
 
 
-        await requestPostShoppingCart("",localStorage.getItem("user_id"),upload)
+        //await requestPostShoppingCart(cartName,localStorage.getItem("user_id"),upload)
         //setShoppingCarts(prev => [...prev,upload])
     }
     
@@ -71,12 +76,14 @@ export default function Uploader(){
             
             :
             <div className="overflow-auto w-full h-full">
-                <div className="h-3/4 w-full bg-blue-300">
+                <input type="text" className=" h-[10%] w-full" value={cartName} onChange={(event)=>{setCartName(event.target.value)}}/>
+
+                <div className="h-[70%] w-full bg-blue-300">
                     {displayMapping.map((item, index) => (
                         <div key={displayMapping[index]["listItem"]}>{adjustItem(index, item)}</div>
                     ))}
                 </div>
-                <div className="flex h-1/4 w-full bg-green-300 ">
+                <div className="flex h-[20%] w-full bg-green-300 ">
                     <button className="bg-blue-700 w-1/2 h-1/2 m-auto hover:bg-green-100" onClick={handleUpload}>
                         Upload Cart
                     </button>
