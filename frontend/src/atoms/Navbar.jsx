@@ -14,7 +14,7 @@ export default function Navbar({ tabs, userPermission, isLoggedIn, setIsLoggedIn
             </div>
                 <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end pl-[1svw] border-b-[0.5svh] border-gray-custom'>
                 {tabs.map(({ name, tab, Icon, permission }) => 
-                    (permission === 'all' || userPermission === 'admin' || userPermission === permission) && <Tab key={name} tab={tab} name={name} Icon={Icon} setActiveTab={setActiveTab}/>
+                    (permission === 'all' || userPermission === 'admin' || permission.includes(userPermission)) && <Tab key={name} tab={tab} name={name} Icon={Icon} setActiveTab={setActiveTab}/>
                 )}
             </div>
             <animated.div className='absolute h-[0.5svh] -bottom-0 bg-purple-custom rounded-lg' style={{ ...springStyle }}/>
