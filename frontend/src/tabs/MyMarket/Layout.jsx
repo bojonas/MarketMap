@@ -51,7 +51,7 @@ export default function Layout({ zoom }) {
                       transform: `rotate(${layout[i][j]['rotation']}deg)`,
                       border: `${scale/10}px solid #171717`,
                       borderRadius: `${scale/5}px`,
-                      backgroundColor: borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, ${cell.type === 'empty' ? '0.3' : '0.6'})` : ''
+                      backgroundColor: borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, ${cell.type === 'empty' ? '0.3' : '0.8'})` : ''
                     }}
                   />}
                 </div>
