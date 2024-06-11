@@ -32,12 +32,13 @@ export default function ZoneEditor({ zone }) {
                                 <div key={j}>
                                     { typeof cell.zone_id === 'number' && <Cell
                                         type={cell.type}
-                                        coordinates={`${cell.x + zone.zone_position.row}-${cell.y + zone.zone_position.column}`}
+                                        coordinates={`${cell.x - zone.zone_position.row}-${cell.y - zone.zone_position.column}`}
                                         cellStyle={{ 
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 
                                             ...borderStyle
                                         }}
+                                        editZone={zone}
                                     />}
                                 </div>
                             )

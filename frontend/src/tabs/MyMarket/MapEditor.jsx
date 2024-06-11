@@ -14,10 +14,12 @@ export default function MapEditor({ setEditMode }) {
   const { market, mapLayout } = useContext(MyMarketContext);
   const [layout, setLayout] = useState(JSON.parse(JSON.stringify(mapLayout.map_layout)));
   const [editedZones, setEditedZones] = useState(JSON.parse(JSON.stringify(Array.from(mapLayout.zones.values()))));
+
   const [settingsIsOpen, setSettingsIsOpen] = useState(false);
   const [openCell, setOpenCell] = useState(null);
   const [products, setProducts] = useState([]);
   const [editZone, setEditZone] = useState(null);
+
   const [zoom, setZoom] = useState(1);
   const zoomRef = useRef(zoom);
 

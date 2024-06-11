@@ -52,6 +52,7 @@ export default function Layout({ zoom }) {
                       borderRadius: `${scale/5}px`,
                       backgroundColor: borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, ${cell.type === 'empty' ? '0.3' : '0.6'})` : ''
                     }}
+                    editZone={null}
                   />}
                 </div>
               ))

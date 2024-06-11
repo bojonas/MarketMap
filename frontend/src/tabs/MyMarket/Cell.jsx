@@ -4,7 +4,7 @@ import LoadImage from "../../atoms/LoadImage"
 import { MapEditorContext } from '../../context/MapEditorContext';
 import { isEqualArray } from '../../helper/isEqualArray';
 
-const Cell = memo(({ type, coordinates, cellStyle }) => {
+const Cell = memo(({ type, coordinates, cellStyle, editZone }) => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [isOver, setIsOver] = useState(false);
   const [row, col] = coordinates.split('-').map(Number);
@@ -51,11 +51,14 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
       const newLayout = [...prev];
 
       // add item to current cell 
-      newLayout[row][col].type = item.alt;
+      if (editZone) newLayout[row + editZone.zone_position.row][col + editZone.zone_position.column].type = item.alt;
+      else newLayout[row][col].type = item.alt;
 
       // remove item from drag start cell
-      if (rootCoordinates) {
-        const newCell = newLayout[rootCoordinates[0]][rootCoordinates[1]];
+      if (rootCoordinates && duplicateCells.length === 0) {
+        let newCell;
+        if (editZone) newCell = newLayout[rootCoordinates[0] + editZone.zone_position.row][rootCoordinates[1] + editZone.zone_position.column];
+        else newCell = newLayout[rootCoordinates[0]][rootCoordinates[1]];
         newCell.type = 'empty';
         newCell.products = [];
       }
@@ -63,11 +66,14 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
       // add/remove items with modes
       for (const cell of duplicateCells) {
         const [x, y] = cell.split('-').map(Number);
-        newLayout[x][y].type = item.alt;
+        if (editZone) newLayout[x + editZone.zone_position.row][y + editZone.zone_position.column].type = item.alt;
+        else newLayout[x][y].type = item.alt;
       }
       for (const cell of deleteCells) {
         const [x, y] = cell.split('-').map(Number);
-        const newCell = newLayout[x][y];
+        let newCell;
+        if (editZone) newCell = newLayout[x + editZone.zone_position.row][y + editZone.zone_position.column];
+        else newCell = newLayout[x][y];
         newCell.type = 'empty';
         newCell.products = [];
       }
@@ -78,8 +84,11 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
     setEditedZones(prev => {
       const newZones = [...prev];
       for (const zone of newZones) {
-        const x = row - zone.zone_position.row;
-        const y = col - zone.zone_position.column;
+        let x = row, y = col;
+        if (!editZone) {
+          x -= zone.zone_position.row;
+          y -= zone.zone_position.column;
+        } 
         const cell = layout[row][col];
         if (typeof cell.zone_id !== 'number' || cell.zone_id !== zone.zone_id) continue;
 
@@ -87,8 +96,10 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
         zone.zone_layout[x][y].type = item.alt;
 
         // remove item from drag start cell
-        if (rootCoordinates) {
-          const newCell = zone.zone_layout[rootCoordinates[0] - zone.zone_position.row][rootCoordinates[1] - zone.zone_position.column];
+        if (rootCoordinates && duplicateCells.length === 0) {
+          let newCell;
+          if (!editZone) newCell = zone.zone_layout[rootCoordinates[0] - zone.zone_position.row][rootCoordinates[1] - zone.zone_position.column];
+          else  newCell = zone.zone_layout[rootCoordinates[0]][rootCoordinates[1]];
           newCell.type = 'empty';
           newCell.products = [];
         }
@@ -96,12 +107,18 @@ const Cell = memo(({ type, coordinates, cellStyle }) => {
         // add/remove items with modes
         for (const cell of duplicateCells) {
           const [x, y] = cell.split('-').map(Number);
-          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = item.alt;
+          if (editZone) zone.zone_layout[x][y].type = item.alt;
+          else zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = item.alt;
         }
         for (const cell of deleteCells) {
           const [x, y] = cell.split('-').map(Number);
-          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = 'empty';
-          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].products = [];
+          if (editZone) {
+            zone.zone_layout[x][y].type = 'empty';
+            zone.zone_layout[x][y].products = [];
+          } else {
+            zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = 'empty';
+            zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].products = [];
+          }
         }
       }
       return newZones;

@@ -12,7 +12,7 @@ import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   const user_id = localStorage.getItem('user_id');
-  const { market, setMapLayout, zones, images, addZone, setAddZone } = useContext(MyMarketContext);
+  const { mapLayout, setMapLayout, images, addZone, setAddZone } = useContext(MyMarketContext);
   const { layout, editedZones } = useContext(MapEditorContext);
   const [search, setSearch] = useState('');
   const filteredImages = Object.entries(images).filter(([type]) => type.toLowerCase().includes(search));
@@ -20,11 +20,12 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   const handleSave = async () => {
     // copy mapLayout
     const newMapLayout = new MapLayout(layout.length, layout[0].length);
+    const oldZones =  Array.from(mapLayout.zones.values());
 
     if (typeof editZone === 'number') {
       setEditZone(null);
       const zone = editedZones[editZone];
-      const oldZone = zones[editZone];
+      const oldZone = oldZones[editZone];
       if (
         checkChanges(zone.zone_layout, oldZone.zone_layout) && 
         zone.zone_name.trim() === oldZone.zone_name && 
@@ -38,11 +39,13 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
       return setMapLayout(newMapLayout);
     }
 
-    setEditMode(false);
-    if (checkChanges(layout, market.map_layout)) return alert('No Changes');
+    if (checkChanges(layout, mapLayout.map_layout)) {
+      setEditMode(false);
+      return alert('No Changes');
+    }
 
     const zonesToUpdate = [];
-    for (const zone of zones) {
+    for (const zone of oldZones) {
       const editedZone = editedZones[zone.zone_id];
       if (
         checkChanges(zone.zone_layout, editedZone.zone_layout) && 
@@ -51,13 +54,13 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
         zone.zone_position.column === editedZone.zone_position.column && 
         zone.zone_color === editedZone.zone_color
       ) continue;
-      console.log('changed', zone, editedZone)
       zonesToUpdate.push(editedZone)
     }
 
     newMapLayout.build(layout, editedZones);
     await requestUpdateMarketZones(user_id, zonesToUpdate)
     alert(await requestUpdateMapLayout(user_id, newMapLayout.map_layout));
+    setEditMode(false);
     return setMapLayout(newMapLayout);
   }
 
