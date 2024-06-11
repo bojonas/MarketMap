@@ -1,6 +1,7 @@
 import { useState, React } from "react"
 import UploaderComponent from "./UploaderComponent";
-//import { requestPostShoppingCart } from "../requests/homeRequests";
+import { requestPostShoppingCart } from "../requests/homeRequests";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Uploader(){
@@ -10,7 +11,9 @@ export default function Uploader(){
     const [displayMapping, setDisplayMapping] = useState();
     const [selectedItem, setSelectedItem] = useState({})
 
-    const [cartName, setCartName] = useState("New Shopping Cart")
+    const [cartName, setCartName] = useState("New Shopping Cart");
+
+    const navigator = useNavigate()
 
     
 
@@ -30,7 +33,7 @@ export default function Uploader(){
             let newInput = selectedItem
             newInput[index] = event.target.value
 
-            console.log(newInput)
+            //console.log(newInput)
             setSelectedItem(newInput);
         }
     
@@ -42,7 +45,6 @@ export default function Uploader(){
                 <select value={selectedItem[item["listItem"]]} onChange={handleChange}>
                     {item["assignedItems"].map((item, index) => (
                     <option key={index} value={item}>
-                        {/*todo: logik für bild*/}
                         {item}
                     </option>
                     ))}
@@ -55,15 +57,17 @@ export default function Uploader(){
         let upload = [] //Wie sieht die liste aus?
         //--> [{product_id, product_count, product_name_en}]
         for(let i = 0; i<displayMapping.length;i++){
-            console.log({product_id: "/", product_count: displayMapping[i]["amount"], product_name_en: selectedItem[i]})
+            upload.push({product_id: mapping.find(item => item.product_name === selectedItem[i])["product_id"], product_count: displayMapping[i]["amount"], product_name_en: selectedItem[i]})
+            
         }
-        console.log(upload)
+        /*console.log(upload)
         console.log(mapping)
         console.log(displayMapping)
-        console.log(selectedItem)
+        console.log(selectedItem)*/
 
 
-        //await requestPostShoppingCart(cartName,localStorage.getItem("user_id"),upload)
+        await requestPostShoppingCart(cartName,localStorage.getItem("user_id"),upload)
+        navigator("/")
         //setShoppingCarts(prev => [...prev,upload])
     }
     

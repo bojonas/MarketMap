@@ -13,7 +13,7 @@ export default function prepareList(mapping){
                     items.push(mapping[j]["product_name"]);
                 }
             }
-            output.push({listItem: mapping[i]["listItem"], assignedItems: items});
+            output.push({amount: mapping[i]["amount"], listItem: mapping[i]["listItem"], assignedItems: items});
 
         }
         
