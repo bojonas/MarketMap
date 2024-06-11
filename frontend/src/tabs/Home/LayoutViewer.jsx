@@ -30,7 +30,7 @@ export default function LayoutViewer({ zoom }) {
     <div className="flex flex-col items-center">
       <div className="flex items-center">
         <div ref={ref} className='border-[1svh] border-darkgray-custom overflow-scroll' style={dimensions}>
-          <div id='layoutViewer' className='grid w-fit h-fit' 
+          <div id='viewLayout' className='grid w-fit h-fit' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
               gridTemplateRows: `repeat(${layout.length}, ${scale}px)`, 
@@ -66,18 +66,20 @@ export default function LayoutViewer({ zoom }) {
                             }}
                             data-tooltip-id={`info-${i}-${j}`} 
                             data-tooltip-html={
-                              productsInMarket.filter(
-                                product => product.row === i && 
-                                product.column === j && 
-                                shoppingCart.products.filter(cartProduct => cartProduct.product_id === product.product_id)
+                              shoppingCart.products.filter(cartProduct => 
+                                productsInMarket.some(marketProduct => 
+                                    marketProduct.row === i && 
+                                    marketProduct.column === j && 
+                                    cartProduct.product_id === marketProduct.product_id
+                                )
                               ).map(product => product.product_name_en).join('<br/>')
                             }
                           />
-                          <Tooltip id={`info-${i}-${j}`} place='top'/>
                         </React.Fragment>
                       ) : null;
                     })
                   }
+                  <Tooltip id={`info-${i}-${j}`} className='z-10'/>
                   { path.length > 0 && <Path 
                     path={path} 
                     currentRow={i} 

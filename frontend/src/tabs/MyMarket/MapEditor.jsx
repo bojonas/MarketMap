@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import Layout from './Layout';
 import Toolbar from './Toolbar';
 import ZoneEditor from './ZoneEditor';
@@ -21,7 +21,6 @@ export default function MapEditor({ setEditMode }) {
   const [editZone, setEditZone] = useState(null);
 
   const [zoom, setZoom] = useState(1);
-  const zoomRef = useRef(zoom);
 
   // tracking for edit modes
   const [duplicateCells, setDuplicateCells] = useState([]);
@@ -73,31 +72,29 @@ export default function MapEditor({ setEditMode }) {
   }
 
   // zoom effect on layout
-  zoomRef.current = zoom;
   useEffect(() => {
     const handleWheel = (e) => {
-      if (e.ctrlKey) {
-        e.preventDefault();
-        const newZoom = zoomRef.current * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
-        setZoom(newZoom < 1 ? 1 : newZoom);
-      }
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
+      setZoom(newZoom < 1 ? 1 : newZoom);
     };
   
-    const container = document.querySelector('#layoutContainer');
-    if (container) {
-      container.addEventListener('wheel', handleWheel, { passive: false });
-      return () => {
-        container.removeEventListener('wheel', handleWheel);
-      };
-    }
-  }, []);
+    const container = document.querySelector(typeof editZone === 'number' ? '#editZone' : '#editLayout');
+    if (!container) return;
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [zoom, editZone]);
 
   return !layout ? (<div className='w-full h-full'></div>) : (
     <MapEditorContext.Provider value={contextValue}>
       <div className='flex h-full w-full'>
         <Toolbar setEditMode={setEditMode} setEditZone={setEditZone} editZone={editZone}/>
         <div className='flex flex-col items-center justify-center gap-[1%]' style={{ cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
-            { typeof editZone === 'number' ? <ZoneEditor zone={editedZones[editZone]}/>
+            { typeof editZone === 'number' ? <ZoneEditor zone={editedZones[editZone]} zoom={zoom}/>
             : <React.Fragment>
               <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
                 { market.market_image_url && 

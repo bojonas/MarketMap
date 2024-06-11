@@ -63,28 +63,27 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
   // zoom effect on layout
   useEffect(() => {
     const handleWheel = (e) => {
-      if (e.ctrlKey) {
-        e.preventDefault();
-        const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
-        setZoom(newZoom < 1 ? 1 : newZoom);
-      }
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
+      setZoom(newZoom < 1 ? 1 : newZoom);
     };
+  
+    const container = document.querySelector(typeof viewZone === 'number' ? '#viewZone' : '#viewLayout');
+    if (!container) return;
 
-    const container = document.querySelector('#layoutViewer');
-    if (container) {
-      container.addEventListener('wheel', handleWheel, { passive: false });
-      return () => {
-        container.removeEventListener('wheel', handleWheel);
-      };
-    }
-  }, [zoom]); 
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [zoom, viewZone]);
 
   return !layout ? null :(
     <MapViewerContext.Provider value={contextValue}>
       <div className='flex w-full h-full'>
         <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null} handlePath={handlePath}/>
           <div className='flex flex-col items-center justify-center gap-[1%]'>
-            { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)}/> 
+            { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)} zoom={zoom}/> 
               : <React.Fragment>
                 <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
                 { market_image_url && 
