@@ -9,6 +9,7 @@ import { tabPermission } from './tabPermission';
 import Navbar from './atoms/Navbar';
 import Settings from './myAccount/Settings/Settings';
 import Uploader from './uploader/Uploader';
+import { requestgetUserColor } from './requests/myProfileRequests';
 
 // custom navigation order
 const order = [];
@@ -25,8 +26,8 @@ export default function App() {
   useEffect(() => {
     if (!user_id) return;
     const getColor = async () => {
-      const data = 'green' //'#715DF2'
-      document.documentElement.style.setProperty('--custom-color', data);
+      const data = await requestgetUserColor(user_id);
+      document.documentElement.style.setProperty('--custom-color', data.user_color);
     }
     getColor();
   }, [user_id])

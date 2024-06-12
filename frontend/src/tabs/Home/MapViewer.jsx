@@ -9,7 +9,7 @@ import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { getWaypoints } from '../../helper/getWaypoints';
 import { requestFindPath } from '../../requests/homeRequests';
 
-export default function MapViewer({ market_name, market_image_url, mapLayout, setMarket, borderCells, images }) {
+export default function MapViewer({ market_name, market_image_url, mapLayout, removeMarket, borderCells, images }) {
   const [shoppingCart, setShoppingCart] = useState({ cart_name : '' , products: [] });
   const [viewZone, setViewZone] = useState(null);
   const [showPath, setShowPath] = useState(false);
@@ -61,7 +61,7 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
   return !layout ? null :(
     <MapViewerContext.Provider value={contextValue}>
       <div className='flex w-full h-full'>
-        <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null} handlePath={handlePath}/>
+        <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof removeMarket === 'function' ? removeMarket : null} handlePath={handlePath}/>
           <div className='flex flex-col items-center justify-center gap-[1%]'>
             { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)}/> 
               : <React.Fragment>

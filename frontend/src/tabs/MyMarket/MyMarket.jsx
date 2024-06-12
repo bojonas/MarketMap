@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from 'react';
 import { requestGetMarketZones, requestGetMyMarket } from "../../requests/myMarketRequests";
 import MapViewer from "../Home/MapViewer";
 import MapEditor from "./MapEditor";
@@ -23,6 +23,9 @@ export default function MyMarket() {
         const getMarket = async () => {
             const newMarket = await requestGetMyMarket(user_id);
             if (!newMarket) return;
+
+            document.documentElement.style.setProperty('--primary-color', newMarket.primary_market_color);
+            document.documentElement.style.setProperty('--secondary-color', newMarket.secondary_market_color);
             const newZones = await requestGetMarketZones(newMarket.market_id);
             setMarket(newMarket);
             if (!newZones) return;

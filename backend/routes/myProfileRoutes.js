@@ -57,9 +57,19 @@ async function getMarket(user_id, postgres_pool){
     }
 }
 
+//logic for endpoint /get_user_colors
+async function getUserColor(user_id, postgres_pool){
+    try{
+        const query = `
+            SELECT user_color
+            FROM market_map.users
+            WHERE user_id = $1;`
 
+        const result = await postgres_pool.query(query,[user_id]);
+        return result.rows[0];
+    } catch(error){
+        console.error('Error getting user data:', error);
+    }
+}
 
-
-
-
-module.exports = {updateData, getUser, getMarket}
+module.exports = { updateData, getUser, getMarket, getUserColor}

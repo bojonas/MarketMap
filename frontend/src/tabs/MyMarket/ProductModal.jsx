@@ -108,7 +108,7 @@ export default function CustomModal({ openCell, closeCell, products }) {
                 <SearchBar placeholder={'Search products...'} onSearch={debouncedSearch}/>
                 <div className='bg-offwhite text-black w-full h-full flex flex-col items-center gap-[2%] p-[5%] rounded-xl mt-[5%] overflow-scroll'>
                     { filteredProducts.map((product) => (
-                        <div onDoubleClick={() => addProduct(product.product_id)} key={product.product_id} className='flex bg-darkoffwhite border-2 border-darkgray-custom rounded-xl p-[2%] w-full hover:bg-offwhite border-primary-hover hover:cursor-pointer'>
+                        <div onDoubleClick={() => addProduct(product.product_id)} key={product.product_id} className='flex bg-darkoffwhite border-2 border-darkgray-custom rounded-xl p-[2%] w-full hover:bg-offwhite border-secondary-hover hover:cursor-pointer'>
                             <p>{product.product_name_en}</p>
                         </div>  
                         ))
@@ -122,7 +122,7 @@ export default function CustomModal({ openCell, closeCell, products }) {
                     { openCell && openCell.products ? openCell.products.map((product_id) => {
                         products.sort((a, b) => a.product_id - b.product_id)
                         return (
-                            <div onDoubleClick={() => removeProduct(product_id)} key={product_id} className='bg-darkoffwhite border-2 border-darkgray-custom rounded-xl p-[2%] w-full hover:bg-offwhite border-primary-hover hover:cursor-pointer'>
+                            <div onDoubleClick={() => removeProduct(product_id)} key={product_id} className='bg-darkoffwhite border-2 border-darkgray-custom rounded-xl p-[2%] w-full hover:bg-offwhite border-secondary-hover hover:cursor-pointer'>
                                 <p>{products[product_id-1].product_name_en}</p>
                             </div>  
                         );
@@ -130,7 +130,7 @@ export default function CustomModal({ openCell, closeCell, products }) {
                     : null}
                 </div>
             </div>
-            <button className='bg-primary border-primary border-secondary-hover rounded-full  text-[2.5vh] w-[11%] h-[9%] shadow-slate-700 self-center absolute bottom-[3svh] left-1/2 transform -translate-x-1/2' onClick={closeCell}>Close</button>
+            <button className='bg-offwhite text-black border-offwhite border-[0.3svh] border-secondary-hover rounded-full  text-[2.5vh] w-[11%] h-[9%] shadow-slate-700 self-center absolute bottom-[3svh] left-1/2 transform -translate-x-1/2' onClick={closeCell}>Close</button>
         </Modal>
     );
 }

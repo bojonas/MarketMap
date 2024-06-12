@@ -50,7 +50,7 @@ export default function Path({ path, currentRow, currentCol, waypoints, scale })
             if (col < currentCol) translateX = -100;
             if (col > currentCol) translateX = 0;
             divs = [
-                <div key='initial' className='absolute top-1/2 left-1/2 bg-purple-custom' 
+                <div key='initial' className='absolute top-1/2 left-1/2 bg-custom' 
                 style={{ 
                     width: orientation === 'horizontal' ? `${scale/2}px` : `${scale/10}px`,
                     height: orientation === 'vertical' ? `${scale/2}px` : `${scale/10}px`,
@@ -58,7 +58,7 @@ export default function Path({ path, currentRow, currentCol, waypoints, scale })
                 }}/>
             ];
         } else divs = [
-            <div key='initial' className='absolute top-1/2 left-1/2 bg-purple-custom' 
+            <div key='initial' className='absolute top-1/2 left-1/2 bg-custom' 
             style={{ 
                 width: orientation === 'horizontal' ? `${scale}px` : `${scale/10}px`,
                 height: orientation === 'vertical' ? `${scale}px` : `${scale/10}px`,
@@ -99,13 +99,13 @@ export default function Path({ path, currentRow, currentCol, waypoints, scale })
 
         divs = [
             <div key='initial'>
-                <div className='absolute top-1/2 left-1/2 bg-purple-custom'
+                <div className='absolute top-1/2 left-1/2 bg-custom'
                 style={{ 
                     width: `${divWidth}px`,
                     height: `${scale/10}px`,
                     transform: horizontalStyle,
                 }}/>
-                <div className='absolute top-1/2 left-1/2 bg-purple-custom'
+                <div className='absolute top-1/2 left-1/2 bg-custom'
                 style={{ 
                     width: `${scale/10}px`,
                     height: `${divHeight}px`,
@@ -124,7 +124,7 @@ export default function Path({ path, currentRow, currentCol, waypoints, scale })
             if (col < currentCol) translateX = -100;
             if (col > currentCol) translateX = 0;
             divs.push(
-                <div key={`waypoint-${i}`} className='absolute top-1/2 left-1/2 bg-purple-custom' 
+                <div key={`waypoint-${i}`} className='absolute top-1/2 left-1/2 bg-custom' 
                 style={{ 
                     width: row === currentRow ? `${scale/2}px` : `${scale/10}px`,
                     height: col === currentCol ? `${scale/2}px` : `${scale/10}px`,

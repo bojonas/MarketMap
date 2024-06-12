@@ -26,6 +26,8 @@ export default function Home() {
             if (data) setMarkets(data);
         }
         getMarkets();
+        document.documentElement.style.removeProperty('--primary-color');
+        document.documentElement.style.removeProperty('--secondary-color');
     }, []);
     
     const filteredMarkets = useMemo(() => {
@@ -59,7 +61,7 @@ export default function Home() {
         }
     }, []);
 
-    const selectMarket = async (market) => {
+    const selectMarket = async (market) => {  
         const zones = await requestGetMarketZones(market.market_id);
         if (!zones) return;
 
@@ -68,6 +70,8 @@ export default function Home() {
         newMapLayout.build(newLayout, zones);
         setMapLayout(newMapLayout);
         setMarket(market);
+        document.documentElement.style.setProperty('--primary-color', market.primary_market_color);
+        document.documentElement.style.setProperty('--secondary-color', market.secondary_market_color);
         if (!user_id) return;
 
         // update history 
@@ -77,10 +81,15 @@ export default function Home() {
         await requestUpdateHistory(timestamp, user_id, market.market_id);
     };
 
+    const removeMarket = () => {
+        setMarket(null)
+        document.documentElement.style.removeProperty('--primary-color');
+        document.documentElement.style.removeProperty('--secondary-color');
+    }
+
     const borderCells = useMemo(() => {
         const newBorderCells = new Map();
         if (!mapLayout) return newBorderCells;
-
         for (const zone of Array.from(mapLayout.zones.values())) {
             newBorderCells.set(zone.zone_id, { border: findBorderCells(zone.zone_layout), zone_color: zone.zone_color });
         }   
@@ -89,7 +98,7 @@ export default function Home() {
 
     return (
         <React.Fragment>
-            { market ? <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} setMarket={setMarket} borderCells={borderCells} images={images}/>
+            { market ? <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} removeMarket={removeMarket} borderCells={borderCells} images={images}/>
             : <div className='relative flex flex-col items-center text-center w-full h-full'>
                 <div className='flex flex-col items-center text-center w-2/5 h-fit p-[2%] pb-0'>
                     <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>

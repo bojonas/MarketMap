@@ -55,3 +55,22 @@ export async function requestMarket(user_id) {
     console.error('Error getting market:', error);
   }
 }
+
+
+// request to / get_user_colors
+export async function requestgetUserColor(user_id) {
+  if (!user_id) {
+    return console.error('Invalid parameters');
+  }
+
+  const data = {
+    user_id: user_id
+  };
+
+  try {
+    const response = await axiosInstance.post('/get_user_colors', data);
+    return response.data
+  } catch (error) {
+    console.error('Error getting user:', error);
+  }
+}
