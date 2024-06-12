@@ -32,38 +32,42 @@ export default function ZoneEditor({ zone, zoom }) {
     }, []);
 
     return (
-        <div className='flex flex-col items-center gap-[2%]'>
+        <div className='flex flex-col items-center'>
             <input value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] w-[12svw] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl pt-[1svh] pb-[1svh]'/>
             <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
-                <div ref={ref} id='editZone' className='border-[1svh] border-darkgray-custom overflow-scroll' style={dimensions}>
-                    <div className='grid items-center justify-center content-center w-full h-full'>
-                        <div  className='grid w-fit h-fit' 
-                            style={{ 
-                                gridTemplateColumns: `repeat(${zone.columns}, ${scale}px)`, 
-                                gridTemplateRows: `repeat(${zone.rows}, ${scale}px)`,
-                                transform: `scale(${zoom})`,
-                                transformOrigin: '0 0'
-                            }}>
-                            { zone.zone_layout.map((row, i) => (
-                                row.map((cell, j) => {
-                                    let borderStyle = getNonBorderStyle(scale);
-                                    if (borderCells.size && cell.zone_id === zone.zone_id) borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), cell.x, cell.y)
-                                    return (
-                                        <div key={j}>
-                                            { cell.zone_id === zone.zone_id && <Cell
-                                                type={cell.type}
-                                                row={cell.x}
-                                                col={cell.y}
-                                                cellStyle={{ 
-                                                    height: `${scale}px`, 
-                                                    width: `${scale}px`, 
-                                                    ...borderStyle
-                                                }}
-                                            />}
-                                        </div>
-                                    )
-                                })
-                            ))}
+                <div className='flex flex-col items-center'>
+                    <div className='flex items-center'>
+                        <div ref={ref} id='editZone' className='border-[4svh] border-darkgray-custom overflow-scroll' style={dimensions}>
+                            <div className='grid items-center justify-center content-center w-full h-full'>
+                                <div  className='grid w-fit h-fit' 
+                                    style={{ 
+                                        gridTemplateColumns: `repeat(${zone.columns}, ${scale}px)`, 
+                                        gridTemplateRows: `repeat(${zone.rows}, ${scale}px)`,
+                                        transform: `scale(${zoom})`,
+                                        transformOrigin: '0 0'
+                                    }}>
+                                    { zone.zone_layout.map((row, i) => (
+                                        row.map((cell, j) => {
+                                            let borderStyle = getNonBorderStyle(scale);
+                                            if (borderCells.size && cell.zone_id === zone.zone_id) borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), cell.x, cell.y)
+                                            return (
+                                                <div key={j}>
+                                                    { cell.zone_id === zone.zone_id && <Cell
+                                                        type={cell.type}
+                                                        row={cell.x}
+                                                        col={cell.y}
+                                                        cellStyle={{ 
+                                                            height: `${scale}px`, 
+                                                            width: `${scale}px`, 
+                                                            ...borderStyle
+                                                        }}
+                                                    />}
+                                                </div>
+                                            )
+                                        })
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
