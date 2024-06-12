@@ -5,12 +5,31 @@ import CellViewer from './CellViewer';
 import { MapViewerContext } from '../../context/MapViewerContext';
 import Path from '../../atoms/Path';
 
-export default function LayoutViewer({ zoom }) {
+export default function LayoutViewer() {
   const { shoppingCart, layout, productsInMarket, colors, layoutIndex, borderCells, setViewZone, images, path, waypoints } = useContext(MapViewerContext);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
   const scale = Math.min(width/ layout[0].length, height / layout.length);
+  const [zoom, setZoom] = useState(1);
+
+  // zoom effect on layout
+  useEffect(() => {
+    const handleWheel = (e) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
+      setZoom(newZoom < 1 ? 1 : newZoom);
+    };
+  
+    const container = document.querySelector('#viewLayout');
+    if (!container) return;
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [zoom]);
 
   // fix scrollbars after zoom
   useEffect(() => {
@@ -19,7 +38,7 @@ export default function LayoutViewer({ zoom }) {
       container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
       container.scrollTop = (container.scrollHeight - container.clientHeight) / 2;
     }
-  }, [zoom, layout]);
+  }, [zoom]);
 
   // update dimensions after initial render
   useEffect(() => {

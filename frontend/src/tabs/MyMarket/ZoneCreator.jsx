@@ -110,7 +110,7 @@ export default function ZoneCreator({ setAddZone }) {
     };
     return (
         <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center p-[1%] gap-[4%] w-full h-full'>
-            <input value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
+            <input name='zoneName' value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
             <div ref={ref} className='flex w-full h-full items-center justify-center'>
                 <div className='grid w-fit h-fit items-center justify-center'
                     style={{ 
@@ -134,7 +134,9 @@ export default function ZoneCreator({ setAddZone }) {
                                             width: `${scale}px`, 
                                             border: `${scale/10}px solid #171717`,
                                             borderRadius: `${scale/5}px`,
-                                            backgroundColor: isSelected ? '#715DF2' : borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, 0.3)` : ''
+                                            backgroundColor: isSelected 
+                                                ? window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color') 
+                                                : borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, 0.3)` : ''
                                         }}
                                     />}
                                 </div>
@@ -144,11 +146,11 @@ export default function ZoneCreator({ setAddZone }) {
                 </div>
             </div>
             <div className='w-full flex gap-[5%] items-center justify-center content-center'>
-                <div onClick={() => setAddZone(false)} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                <div onClick={() => setAddZone(false)} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom border-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
                     <IoArrowBack size={25}/>
                     <p>Back</p>
                 </div>
-                <div onClick={saveZone} className='custom-button gap-[10%] bg-offwhite border-offwhite hover:border-darkgray-custom text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                <div onClick={saveZone} className='custom-button gap-[10%] bg-offwhite border-offwhite border-primary-hover text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
                     <FaRegSave size={25}/>
                     <p>Create</p>
                 </div>

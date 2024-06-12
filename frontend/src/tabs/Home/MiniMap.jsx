@@ -16,7 +16,7 @@ export default function MiniMap({ layout, market, selectMarket, images }) {
   return (
     <div className='flex items-center justify-center w-[30%]'>
         <div ref={ref} style={dimensions}>
-          <div onClick={() => selectMarket(market)}className='grid w-fit h-fit bg-darkgray-custom overflow-hidden rounded-xl cursor-pointer hover:border-purple-custom border-[0.4svh]' 
+          <div onClick={() => selectMarket(market)}className='grid w-fit h-fit bg-darkgray-custom overflow-hidden rounded-xl cursor-pointer border-custom-hover border-[0.4svh]' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
               gridTemplateRows: `repeat(${layout.length}, ${scale}px)`

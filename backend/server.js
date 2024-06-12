@@ -355,9 +355,6 @@ app.post("/update_password", async (req, res)=>{
         console.error(error.message);
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
-
-    
-
 })
 
 /**** MyProfile Routes ****/
@@ -427,6 +424,10 @@ app.post('/get_market', async (req, res) => {
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
 });
+
+app.post('/get_custom_colors', async (req, re) => {
+    
+})
 
 /**** Setting Routes ****/
 

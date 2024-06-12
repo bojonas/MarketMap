@@ -5,15 +5,34 @@ import { useContext } from 'react';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { MapEditorContext } from '../../context/MapEditorContext';
 
-export default function Layout({ zoom }) {
+export default function LayoutEditor() {
   const ref = useRef(null);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const { width, height } = useAdjustScale(ref);
   const { borderCells } = useContext(MyMarketContext);
   const { setEditZone, layout } = useContext(MapEditorContext);
   const scale = Math.min(width / layout[0].length, height / layout.length);
+  const [zoom, setZoom] = useState(1);
 
-  // adjust scrollbars after zoom
+  // zoom effect on layout
+  useEffect(() => {
+    const handleWheel = (e) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
+      setZoom(newZoom < 1 ? 1 : newZoom);
+    };
+  
+    const container = document.querySelector('#editLayout');
+    if (!container) return;
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [zoom]);
+
+  // fix scrollbars after zoom
   useEffect(() => {
     if (ref.current) {
       const container = ref.current;
@@ -21,6 +40,7 @@ export default function Layout({ zoom }) {
       container.scrollTop = (container.scrollHeight - container.clientHeight) / 2;
     }
   }, [zoom]);
+
 
   // update dimensions after initial render
   useEffect(() => {
@@ -31,7 +51,7 @@ export default function Layout({ zoom }) {
     <div className='flex flex-col items-center'>
       <div className='flex items-center'>
         <div ref={ref} id='editLayout' className='border-[1svh] border-darkgray-custom overflow-scroll' style={dimensions}>
-          <div  className='grid w-fit h-fit' 
+          <div className='grid w-fit h-fit' 
             style={{ 
               gridTemplateColumns: `repeat(${layout[0].length}, ${scale}px)`, 
               gridTemplateRows: `repeat(${layout.length}, ${scale}px)`, 

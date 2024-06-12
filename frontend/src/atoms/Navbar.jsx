@@ -9,7 +9,7 @@ export default function Navbar({ tabs, userPermission, isLoggedIn, setIsLoggedIn
 
     return (
         <div className='relative flex items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
-            <div className='flex h-full w-[25svw] items-center bg-purple-custom'>
+            <div className='flex h-full w-[25svw] items-center bg-custom'>
                 <MyAccount isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             </div>
                 <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end pl-[1svw] border-b-[0.5svh] border-gray-custom'>
@@ -17,7 +17,7 @@ export default function Navbar({ tabs, userPermission, isLoggedIn, setIsLoggedIn
                     (permission === 'all' || userPermission === 'admin' || permission.includes(userPermission)) && <Tab key={name} tab={tab} name={name} Icon={Icon} setActiveTab={setActiveTab}/>
                 )}
             </div>
-            <animated.div className='absolute h-[0.5svh] -bottom-0 bg-purple-custom rounded-lg' style={{ ...springStyle }}/>
+            <animated.div className='absolute h-[0.5svh] -bottom-0 rounded-lg bg-custom' style={{ ...springStyle }}/>
         </div>
     );
 }

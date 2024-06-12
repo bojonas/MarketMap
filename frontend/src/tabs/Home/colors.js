@@ -23,24 +23,24 @@ export const colors = [
 ]
 
 export const colorArray = [
-    '255, 0, 0', // red
-    '0, 255, 0', // lime
-    '0, 0, 255', // blue
-    '255, 255, 0', // yellow
-    '0, 255, 255', // aqua
-    '255, 0, 255', // fuchsia
-    '255, 165, 0', // orange
-    '255, 192, 203', // pink
-    '255, 105, 180', // hotpink
-    '173, 216, 230', // lightblue
-    '152, 251, 152', // palegreen
-    '255, 255, 224', // lightyellow
-    '144, 238, 144', // lightgreen
-    '240, 230, 140', // khaki
-    '230, 230, 250', // lavender
-    '255, 240, 245', // lavenderblush
-    '255, 228, 225', // mistyrose
-    '255, 218, 185', // peachpuff
-    '176, 224, 230', // powderblue
-    '255, 160, 122', // lightsalmon
+    '255, 0, 102', // Neon Red
+    '0, 255, 0', // Neon Green
+    '0, 255, 255', // Neon Cyan
+    '255, 255, 0', // Neon Yellow
+    '204, 0, 204', // Neon Purple
+    '64, 0, 255', // Neon Electric Indigo
+    '255, 128, 0', // Neon Orange
+    '128, 255, 0', // Neon Chartreuse
+    '0, 255, 128', // Neon Spring Green
+    '255, 0, 255', // Neon Magenta
+    '0, 128, 255', // Neon Azure
+    '0, 255, 64', // Neon Harlequin
+    '255, 0, 128', // Neon Rose
+    '255, 64, 0', // Neon Tangerine
+    '0, 64, 255', // Neon Electric Blue
+    '255, 0, 64', // Neon Electric Crimson
+    '128, 0, 255', // Neon Violet
+    '64, 255, 0', // Neon Electric Lime
+    '0, 255, 192', // Neon Electric Mint
+    '255, 192, 0', // Neon Electric Gold
 ];

@@ -130,7 +130,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
       className={`flex justify-center items-center p-[5%] ${type !== 'empty' ? 'bg-[#d9d9d9]' : 'bg-gray-custom'}`}
       style={{
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : typeof layout[row][col].zone_id === 'number' || type !== 'empty' ? 'pointer' : '',
-        ...(isOver ? { ...cellStyle, backgroundColor: '#715DF2' } : cellStyle),
+        ...(isOver ? { ...cellStyle, backgroundColor: window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color') } : cellStyle),
       }}>
       { type === 'empty' ? null
       : droppedItem

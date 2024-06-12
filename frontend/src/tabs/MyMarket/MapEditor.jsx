@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
-import Layout from './Layout';
 import Toolbar from './Toolbar';
+import LayoutEditor from './LayoutEditor';
 import ZoneEditor from './ZoneEditor';
 import { IoMdSettings } from "react-icons/io";
 import CustomModal from './CustomModal';
@@ -19,8 +19,6 @@ export default function MapEditor({ setEditMode }) {
   const [openCell, setOpenCell] = useState(null);
   const [products, setProducts] = useState([]);
   const [editZone, setEditZone] = useState(null);
-
-  const [zoom, setZoom] = useState(1);
 
   // tracking for edit modes
   const [duplicateCells, setDuplicateCells] = useState([]);
@@ -71,32 +69,14 @@ export default function MapEditor({ setEditMode }) {
     setOverruledDuplicate(false);
   }
 
-  // zoom effect on layout
-  useEffect(() => {
-    const handleWheel = (e) => {
-      if (!e.ctrlKey) return;
-      e.preventDefault();
-      const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
-      setZoom(newZoom < 1 ? 1 : newZoom);
-    };
-  
-    const container = document.querySelector(typeof editZone === 'number' ? '#editZone' : '#editLayout');
-    if (!container) return;
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
-  }, [zoom, editZone]);
-
   return !layout ? (<div className='w-full h-full'></div>) : (
     <MapEditorContext.Provider value={contextValue}>
       <div className='flex h-full w-full'>
         <Toolbar setEditMode={setEditMode} setEditZone={setEditZone} editZone={editZone}/>
         <div className='flex flex-col items-center justify-center gap-[1%]' style={{ cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
-            { typeof editZone === 'number' ? <ZoneEditor zone={editedZones[editZone]} zoom={zoom}/>
+            { typeof editZone === 'number' ? <ZoneEditor zone={editedZones[editZone]}/>
             : <React.Fragment>
-              <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
+              <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
                 { market.market_image_url && 
                 <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
                     <img draggable='false' alt='' src={market.market_image_url}/>
@@ -104,9 +84,9 @@ export default function MapEditor({ setEditMode }) {
                 <p className='text-3xl font-bold'>{market.market_name}</p>
               </div>
               <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
-                <Layout zoom={zoom}/>
+                <LayoutEditor/>
               </div>
-              <div onClick={() => setSettingsIsOpen(true)} className='absolute flex right-[6.5svw] top-[3svw] hover:text-purple-custom cursor-pointer'>
+              <div onClick={() => setSettingsIsOpen(true)} className='absolute flex right-[6.5svw] top-[3svw] text-primary-hover cursor-pointer'>
                 <IoMdSettings size={24}/>
                 <p className='ml-[0.5svw]'>Settings</p>
               </div>

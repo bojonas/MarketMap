@@ -44,7 +44,7 @@ export default function SearchHistory({ user_id, markets, selectMarket, images }
                             </div>
                             <p className='w-[20%]'>{time}{entity} ago</p>
                             <div className='flex items-center justify-center'>
-                                <FaTrashCan onClick={() => removeHistory(market.market_id)} className='hover:text-purple-custom cursor-pointer'/>
+                                <FaTrashCan onClick={() => removeHistory(market.market_id)} className='text-custom-hover cursor-pointer'/>
                             </div>
                         </div>
                     );

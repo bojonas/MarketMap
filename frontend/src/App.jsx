@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
@@ -17,12 +17,22 @@ for (const tab of tabPermission) {
 }
 
 export default function App() {
+  const user_id = localStorage.getItem('user_id');
   const userPermission = localStorage.getItem('permission');
   const [isLoggedIn, setIsLoggedIn] = useState(userPermission ? true : false);
   const tabs = sortObject(getTabs(tabPermission), order);
 
+  useEffect(() => {
+    if (!user_id) return;
+    const getColor = async () => {
+      const data = 'green' //'#715DF2'
+      document.documentElement.style.setProperty('--custom-color', data);
+    }
+    getColor();
+  }, [user_id])
+
   return (
-    <div className='flex flex-col w-[100svw] h-[100svh] bg-darkgray-custom'>
+    <div className='flex flex-col w-screen h-screen bg-darkgray-custom'>
       <Router>
         <Navbar tabs={tabs} userPermission={userPermission} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>

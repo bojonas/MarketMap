@@ -65,28 +65,29 @@ export default function ShoppingCarts({ user_id }) {
                 { isDataFetched && shoppingCarts.map((shoppingCart, i) => (
                     <div key={i} className='flex justify-between items-center w-full'>
                         <input 
+                            name={`cartName-${i}`}
                             placeholder='not named'
                             onBlur={(e) => updateCartName(i, cartNames[i], shoppingCart.cart_id, shoppingCart.cart_name)} 
                             onChange={e => handleInputChange(e, i)} value={cartNames[i] || ''} 
-                            className='placeholder:italic placeholder-gray-700 font-bold text-center bg-offwhite rounded-lg border-[0.4svh] border-offwhite hover:border-purple-custom outline-none'
+                            className='placeholder:italic placeholder-gray-700 font-bold text-center bg-offwhite rounded-lg border-[0.4svh] border-offwhite border-custom-hover outline-none'
                         />
                         <BsCart4 
                             size={20} 
-                            className='hover:text-purple-custom cursor-pointer outline-none' 
+                            className='text-custom-hover cursor-pointer outline-none' 
                             data-tooltip-id={`info-${i}`} 
                             data-tooltip-html={shoppingCart.products.length > 0 ? shoppingCart.products.map(product => product.product_name_en).join('<br/>') : 'empty'}
                         />
                         <Tooltip id={`info-${i}`}/>
-                        <FaTrashCan onClick={() => removeShoppingCart(shoppingCart.cart_id)} className='hover:text-purple-custom cursor-pointer'/>
+                        <FaTrashCan onClick={() => removeShoppingCart(shoppingCart.cart_id)} className='text-custom-hover cursor-pointer'/>
                     </div>              
                 ))}
             </div>
             <div className='flex justify-center items-center w-full h-[20%] gap-[5%] bg-darkoffwhite rounded-b-xl'>
-                <div onClick={addShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] hover:text-purple-custom cursor-pointer'>
+                <div onClick={addShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] text-custom-hover cursor-pointer'>
                     <FaCartPlus size={24}/>
                     <p>Add Cart</p>
                 </div>
-                <div onClick={uploadShoppingCart} className='flex justify-center items-center gap-[5%] w-[25%] hover:text-purple-custom cursor-pointer'>
+                <div onClick={uploadShoppingCart} className='flex justify-center items-center gap-[5%] w-[25%] text-custom-hover cursor-pointer'>
                     <FaCartArrowDown size={24}/>
                     <p>Upload Cart</p>
                 </div>

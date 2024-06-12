@@ -97,7 +97,7 @@ export default function Home() {
                 { searchClicked && <div className='z-10 flex flex-col gap-[1%] p-[1svh] w-[24%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
                     { filteredMarkets.map((market, i) => (
                         <div key={i} onClick={() => selectMarket(market)} 
-                            className='h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-black text-[2svh] bg-offwhite rounded-lg border-offwhite border-l-[0.6svh] hover:border-l-purple-custom hover:bg-offwhite-hover hover:cursor-pointer'>
+                            className={`h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-black text-[2svh] bg-offwhite rounded-lg border-offwhite border-l-[0.6svh] border-l-custom-hover hover:bg-offwhite-hover hover:cursor-pointer`}>
                             <div className='flex items-center w-[40%] h-full gap-[6%]'>
                                 { market.market_image_url && 
                                     <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] bg-gray-custom border-darkgray-custom border-[0.5svh]'>

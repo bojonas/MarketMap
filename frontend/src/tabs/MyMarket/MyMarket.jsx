@@ -53,7 +53,7 @@ export default function MyMarket() {
                 : editMode ? addZone ? <ZoneCreator setAddZone={setAddZone}/> : <MapEditor setEditMode={setEditMode}/>
                     : <React.Fragment>
                         <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} borderCells={borderCells} images={images}/>
-                        <div onClick={() => setEditMode(true)} className='absolute flex right-[6.5svw] top-[3svw] hover:text-purple-custom cursor-pointer'>
+                        <div onClick={() => setEditMode(true)} className='absolute flex right-[6.5svw] top-[3svw] text-primary-hover cursor-pointer'>
                             <FaEdit size={24}/>
                             <p className='ml-[0.5svw]'>Edit</p>
                         </div>

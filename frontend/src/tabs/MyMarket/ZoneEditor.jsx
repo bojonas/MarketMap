@@ -7,7 +7,7 @@ import { getBorderStyle } from './getBorderStyle';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { MapEditorContext } from '../../context/MapEditorContext';
 
-export default function ZoneEditor({ zone, zoom }) {
+export default function ZoneEditor({ zone }) {
     const { borderCells } = useContext(MyMarketContext);
     const { openCell, setOpenCell, products } = useContext(MapEditorContext);
 
@@ -16,8 +16,27 @@ export default function ZoneEditor({ zone, zoom }) {
     const { width, height } = useAdjustScale(ref);
     const scale = Math.min(width / zone.columns, height / zone.rows);  
     const [name, setName] = useState(zone.zone_name);
+    const [zoom, setZoom] = useState(1);
 
-    // adjust scrollbars after zoom
+    // zoom effect on layout
+    useEffect(() => {
+        const handleWheel = (e) => {
+        if (!e.ctrlKey) return;
+        e.preventDefault();
+        const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
+        setZoom(newZoom < 1 ? 1 : newZoom);
+        };
+    
+        const container = document.querySelector('#editZone');
+        if (!container) return;
+
+        container.addEventListener('wheel', handleWheel, { passive: false });
+        return () => {
+        container.removeEventListener('wheel', handleWheel);
+        };
+    }, [zoom]);
+
+    // fix scrollbars after zoom
     useEffect(() => {
         if (ref.current) {
         const container = ref.current;
@@ -33,7 +52,7 @@ export default function ZoneEditor({ zone, zoom }) {
 
     return (
         <div className='flex flex-col items-center'>
-            <input value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] w-[12svw] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl pt-[1svh] pb-[1svh]'/>
+            <input name='zoneName' value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] w-[12svw] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl pt-[1svh] pb-[1svh]'/>
             <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
                 <div className='flex flex-col items-center'>
                     <div className='flex items-center'>

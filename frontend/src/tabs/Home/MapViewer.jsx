@@ -15,8 +15,6 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
   const [showPath, setShowPath] = useState(false);
   const [path, setPath] = useState([]);
 
-  const [zoom, setZoom] = useState(1);
-
   const { layout, productsInMarket } = useMemo(() => {
     return { layout: mapLayout.map_layout, productsInMarket: findProducts(mapLayout.map_layout) };
   }, [mapLayout.map_layout]);
@@ -60,32 +58,14 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
     }
   ), [shoppingCart, layout, productsInMarket, layoutIndex, borderCells, viewZone, images, path, waypoints]);
 
-  // zoom effect on layout
-  useEffect(() => {
-    const handleWheel = (e) => {
-      if (!e.ctrlKey) return;
-      e.preventDefault();
-      const newZoom = zoom * (e.deltaY < 0 ? 1 + 0.1 : 1 - 0.1);
-      setZoom(newZoom < 1 ? 1 : newZoom);
-    };
-  
-    const container = document.querySelector(typeof viewZone === 'number' ? '#viewZone' : '#viewLayout');
-    if (!container) return;
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
-  }, [zoom, viewZone]);
-
   return !layout ? null :(
     <MapViewerContext.Provider value={contextValue}>
       <div className='flex w-full h-full'>
         <ShoppingCart setShoppingCart={setShoppingCart} removeMarket={typeof setMarket === 'function' ? () => setMarket(null) : null} handlePath={handlePath}/>
           <div className='flex flex-col items-center justify-center gap-[1%]'>
-            { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)} zoom={zoom}/> 
+            { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)}/> 
               : <React.Fragment>
-                <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-purple-custom shadow-md shadow-purple-custom'>
+                <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
                 { market_image_url && 
                 <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
                     <img draggable='false' alt='' src={market_image_url}/>
@@ -93,7 +73,7 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
                   <p className='text-[4svh] font-bold'>{market_name}</p>
                 </div>
                 <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
-                  <LayoutViewer zoom={zoom}/>
+                  <LayoutViewer/>
                 </div>
               </React.Fragment>
             }

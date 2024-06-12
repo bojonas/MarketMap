@@ -66,7 +66,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   }
 
   return (
-    <div className='flex flex-col items-center text-center w-full h-full bg-purple-custom gap-[5%]'>
+    <div className='flex flex-col items-center text-center w-full h-full bg-primary gap-[5%]'>
       <SearchBar onSearch={setSearch} placeholder={'Search items...'} contrast='purple'/>
       <div className='bg-gray-custom flex flex-col items-center text-center h-full rounded-lg'>
         <div className='w-[15svw] h-[55svh] rounded-lg p-[5%]'>
