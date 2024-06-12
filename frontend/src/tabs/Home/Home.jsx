@@ -70,8 +70,8 @@ export default function Home() {
         newMapLayout.build(newLayout, zones);
         setMapLayout(newMapLayout);
         setMarket(market);
-        document.documentElement.style.setProperty('--primary-color', market.primary_market_color);
-        document.documentElement.style.setProperty('--secondary-color', market.secondary_market_color);
+        if (market.primary_market_color) document.documentElement.style.setProperty('--primary-color', market.primary_market_color);
+        if (market.secondary_market_color) document.documentElement.style.setProperty('--secondary-color', market.secondary_market_color);
         if (!user_id) return;
 
         // update history 

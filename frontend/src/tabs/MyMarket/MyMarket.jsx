@@ -24,8 +24,9 @@ export default function MyMarket() {
             const newMarket = await requestGetMyMarket(user_id);
             if (!newMarket) return;
 
-            document.documentElement.style.setProperty('--primary-color', newMarket.primary_market_color);
-            document.documentElement.style.setProperty('--secondary-color', newMarket.secondary_market_color);
+            if (newMarket.primary_market_color) document.documentElement.style.setProperty('--primary-color', newMarket.primary_market_color);
+            if (newMarket.secondary_market_color) document.documentElement.style.setProperty('--secondary-color', newMarket.secondary_market_color);
+            if (!user_id) return;
             const newZones = await requestGetMarketZones(newMarket.market_id);
             setMarket(newMarket);
             if (!newZones) return;
