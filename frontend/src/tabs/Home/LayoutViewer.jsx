@@ -56,26 +56,24 @@ export default function LayoutViewer({ zoom }) {
                   { productsInMarket.filter(product => product.row === i && product.column === j).flatMap(marketProduct => {
                       const shoppingCartProduct = shoppingCart.products.find(cartProduct => cartProduct.product_id === marketProduct.product_id);
                       return shoppingCartProduct ? (
-                        <React.Fragment key={marketProduct.product_id}>
-                          <div className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
-                            style={{ 
-                              width: `${scale/2}px`, 
-                              height: `${scale/2}px`,
-                              backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]],
-                              transform: 'translate(-50%, -50%)',
-                            }}
-                            data-tooltip-id={`info-${i}-${j}`} 
-                            data-tooltip-html={
-                              shoppingCart.products.filter(cartProduct => 
-                                productsInMarket.some(marketProduct => 
-                                    marketProduct.row === i && 
-                                    marketProduct.column === j && 
-                                    cartProduct.product_id === marketProduct.product_id
-                                )
-                              ).map(product => product.product_name_en).join('<br/>')
-                            }
-                          />
-                        </React.Fragment>
+                        <div key={marketProduct.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
+                          style={{ 
+                            width: `${scale/2}px`, 
+                            height: `${scale/2}px`,
+                            backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]],
+                            transform: 'translate(-50%, -50%)',
+                          }}
+                          data-tooltip-id={`info-${i}-${j}`} 
+                          data-tooltip-html={
+                            shoppingCart.products.filter(cartProduct => 
+                              productsInMarket.some(marketProduct => 
+                                  marketProduct.row === i && 
+                                  marketProduct.column === j && 
+                                  cartProduct.product_id === marketProduct.product_id
+                              )
+                            ).map(product => product.product_name_en).join('<br/>')
+                          }
+                        />
                       ) : null;
                     })
                   }

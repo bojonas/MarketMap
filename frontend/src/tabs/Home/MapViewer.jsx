@@ -90,7 +90,7 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, se
                 <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
                     <img draggable='false' alt='' src={market_image_url}/>
                 </div>}
-                  <p className='text-3xl font-bold'>{market_name}</p>
+                  <p className='text-[4svh] font-bold'>{market_name}</p>
                 </div>
                 <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
                   <LayoutViewer zoom={zoom}/>

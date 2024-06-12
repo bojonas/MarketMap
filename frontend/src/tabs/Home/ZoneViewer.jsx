@@ -1,12 +1,16 @@
 import React, { useRef, useContext, useEffect, useState } from 'react';
+import { Tooltip } from 'react-tooltip';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 import { MapViewerContext } from '../../context/MapViewerContext';
 import { getNonBorderStyle } from '../MyMarket/getNonBorderStyle';
 import { getBorderStyle } from '../MyMarket/getBorderStyle';
+import Path from '../../atoms/Path';
 
 export default function ZoneViewer({ zone, zoom }) {
-    const { images, borderCells} = useContext(MapViewerContext);
+    const { shoppingCart, productsInMarket, colors, layoutIndex, images, borderCells, path, waypoints } = useContext(MapViewerContext);
+    const zonePath = path.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (row <= zone.zone_layout.length && col <= zone.zone_layout[0].length))
+    const zoneWaypoints = waypoints.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (row <= zone.zone_layout.length && col <= zone.zone_layout[0].length))
 
     const ref = useRef(null);
     const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
@@ -26,7 +30,7 @@ export default function ZoneViewer({ zone, zoom }) {
     useEffect(() => {
         setDimensions({ width: 'fit-content', height: 'fit-content' });
     }, []);
-
+    
     return (
         <div className='flex flex-col items-center'>
             <p style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%] pr-[2%] pl-[2%]'>
@@ -48,16 +52,52 @@ export default function ZoneViewer({ zone, zoom }) {
                                         let borderStyle = getNonBorderStyle(scale);
                                         if (borderCells.size && cell.zone_id === zone.zone_id) borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), cell.x, cell.y)
                                         return (
-                                            <div key={j}>
-                                                { cell.zone_id === zone.zone_id && <CellViewer
-                                                    type={cell.type}
-                                                    source={images[cell.type]}
-                                                    cellStyle={{ 
-                                                        height: `${scale}px`, 
-                                                        width: `${scale}px`, 
-                                                        ...borderStyle
-                                                    }}
-                                                />}
+                                            <div key={j} className='relative'>
+                                                { cell.zone_id === zone.zone_id && <React.Fragment>
+                                                    <CellViewer
+                                                        type={cell.type}
+                                                        source={images[cell.type]}
+                                                        cellStyle={{ 
+                                                            height: `${scale}px`, 
+                                                            width: `${scale}px`, 
+                                                            ...borderStyle
+                                                        }}
+                                                    />
+                                                    { productsInMarket.filter(product => product.row === cell.x && product.column === cell.y).flatMap(marketProduct => {
+                                                        const shoppingCartProduct = shoppingCart.products.find(cartProduct => cartProduct.product_id === marketProduct.product_id);
+                                                        return shoppingCartProduct ? (
+                                                            <div key={marketProduct.product_id} className='absolute top-1/2 left-1/2 rounded-full hover:cursor-pointer'
+                                                                style={{ 
+                                                                width: `${scale/2}px`, 
+                                                                height: `${scale/2}px`,
+                                                                backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]],
+                                                                transform: 'translate(-50%, -50%)',
+                                                                }}
+                                                                data-tooltip-id={`info-${i}-${j}`} 
+                                                                data-tooltip-html={
+                                                                shoppingCart.products.filter(cartProduct => 
+                                                                    productsInMarket.some(marketProduct => 
+                                                                        marketProduct.row === cell.x && 
+                                                                        marketProduct.column === cell.y && 
+                                                                        cartProduct.product_id === marketProduct.product_id
+                                                                    )
+                                                                ).map(product => product.product_name_en).join('<br/>')
+                                                                }
+                                                            />
+                                                        ) : null;
+                                                        })
+                                                    }
+                                                    <Tooltip id={`info-${i}-${j}`} className='z-10'/>
+                                                    { zonePath.length > 0 && <Path 
+                                                    path={zonePath} 
+                                                    currentRow={i} 
+                                                    currentCol={j} 
+                                                    waypoints={zoneWaypoints.filter(([pointRow, pointCol]) => { 
+                                                        return (Math.abs(pointRow - i) === 1 && pointCol === j) || (Math.abs(pointCol - j) === 1 && pointRow === i);
+                                                    })} 
+                                                    scale={scale}
+                                                    />}
+                                                </React.Fragment>}
                                             </div>
                                         );
                                     })
