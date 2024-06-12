@@ -9,8 +9,8 @@ import Path from '../../atoms/Path';
 
 export default function ZoneViewer({ zone, zoom }) {
     const { shoppingCart, productsInMarket, colors, layoutIndex, images, borderCells, path, waypoints } = useContext(MapViewerContext);
-    const zonePath = path.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (row <= zone.zone_layout.length && col <= zone.zone_layout[0].length))
-    const zoneWaypoints = waypoints.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (row <= zone.zone_layout.length && col <= zone.zone_layout[0].length))
+    const zonePath = path.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (path[0] || (row >= 0 && col >= 0 && row < zone.zone_layout.length && col < zone.zone_layout[0].length)))
+    const zoneWaypoints = waypoints.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (row >= 0 && col >= 0 && row < zone.zone_layout.length && col < zone.zone_layout[0].length))
 
     const ref = useRef(null);
     const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });

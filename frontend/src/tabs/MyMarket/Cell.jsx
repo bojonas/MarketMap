@@ -75,29 +75,40 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
     setEditedZones(prev => {
       const newZones = [...prev];
       for (const zone of newZones) {
-        const x = row - zone.zone_position.row;
-        const y = col - zone.zone_position.column;
         const cell = layout[row][col];
-        if (typeof cell.zone_id !== 'number' || cell.zone_id !== zone.zone_id) continue;
-
-        // add item to current cell 
-        zone.zone_layout[x][y].type = item.alt;
-
-        // remove item from drag start cell
-        if (rootCoordinates && duplicateCells.length === 0) {
-          const newCell = zone.zone_layout[rootCoordinates[0] - zone.zone_position.row][rootCoordinates[1] - zone.zone_position.column];
-          newCell.type = 'empty';
-          newCell.products = [];
-        }
+        if (typeof cell.zone_id !== 'number') continue;
 
         // add/remove items with modes
         for (const [x, y] of duplicateCells) {
-          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = item.alt;
+          const adjustedX = x - zone.zone_position.row;
+          const adjustedY = y - zone.zone_position.column;
+          if (adjustedX < 0 || adjustedY < 0 || adjustedX >= zone.zone_layout.length || adjustedY >= zone.zone_layout[0].length) continue;
+          zone.zone_layout[adjustedX][adjustedY].type = item.alt;
         }
+       
         for (const [x, y] of deleteCells) {
-          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].type = 'empty';
-          zone.zone_layout[x - zone.zone_position.row][y - zone.zone_position.column].products = [];
+          const adjustedX = x - zone.zone_position.row;
+          const adjustedY = y - zone.zone_position.column;
+          if (adjustedX < 0 || adjustedY < 0 || adjustedX >= zone.zone_layout.length || adjustedY >= zone.zone_layout[0].length) continue;
+          zone.zone_layout[adjustedX][adjustedY].type = 'empty';
+          zone.zone_layout[adjustedX][adjustedY].products = [];
         }
+
+        const x = row - zone.zone_position.row;
+        const y = col - zone.zone_position.column;
+        if (cell.zone_id !== zone.zone_id || x < 0 || y < 0 || x >= zone.zone_layout.length || y >= zone.zone_layout[0].length) continue;
+
+        // add item to current cell 
+        if (deleteCells.length === 0) zone.zone_layout[x][y].type = item.alt;
+
+        // remove item from drag start cell
+        if (!rootCoordinates || duplicateCells.length > 0) continue;
+        const rootX = rootCoordinates[0] - zone.zone_position.row;
+        const rootY = rootCoordinates[1] - zone.zone_position.column;
+        if (rootX < 0 || rootX >= zone.zone_layout.length || rootY < 0 || rootY >= zone.zone_layout[0].length) continue;
+
+        zone.zone_layout[rootX][rootY].type = 'empty';
+        zone.zone_layout[rootX][rootY].products = [];
       }
       return newZones;
     })
