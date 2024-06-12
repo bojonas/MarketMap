@@ -4,7 +4,7 @@
 
 @layer components {
     .sourrounding-div{
-        @apply bg-offwhite px-40 py-10 rounded-xl
+        @apply bg-offwhite px-40 py-10 rounded-xl 
     }
     .custom-button {
         @apply flex items-center content-center justify-center bg-purple-custom text-white rounded-full p-[1.5svh] text-xl font-bold
@@ -15,10 +15,10 @@
     }
 
     .custom-input {
-        @apply rounded-full w-64 px-4 py-2 placeholder-gray-200 bg-purple-custom border-purple-custom border-2
+        @apply rounded-full w-64 px-4 py-2 bg-offwhite placeholder-black-custom border-black-custom border-2 text-black-custom
     }
     .custom-input-error {
-        @apply rounded-full w-64 px-4 py-2 placeholder-gray-200 bg-purple-custom border-red-700 border-2
+        @apply rounded-full w-64 px-4 py-2 bg-offwhite placeholder-black-custom border-red-700 border-2
     }
 
     .add_remove_button {
