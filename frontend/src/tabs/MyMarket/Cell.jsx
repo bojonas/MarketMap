@@ -56,7 +56,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
       if (rootCoordinates && duplicateCells.length === 0) {
         const newCell = newLayout[rootCoordinates[0]][rootCoordinates[1]];
         newCell.type = 'empty';
-        newCell.products = [];
+        newCell.products = null;
       }
 
       // add/remove items with modes
@@ -66,7 +66,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
       for (const [x, y] of deleteCells) {
         const newCell = newLayout[x][y];
         newCell.type = 'empty';
-        newCell.products = [];
+        newCell.products = null;
       }
 
       return newLayout;
@@ -91,7 +91,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
           const adjustedY = y - zone.zone_position.column;
           if (adjustedX < 0 || adjustedY < 0 || adjustedX >= zone.zone_layout.length || adjustedY >= zone.zone_layout[0].length) continue;
           zone.zone_layout[adjustedX][adjustedY].type = 'empty';
-          zone.zone_layout[adjustedX][adjustedY].products = [];
+          zone.zone_layout[adjustedX][adjustedY].products = null;
         }
 
         const x = row - zone.zone_position.row;
@@ -108,7 +108,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
         if (rootX < 0 || rootX >= zone.zone_layout.length || rootY < 0 || rootY >= zone.zone_layout[0].length) continue;
 
         zone.zone_layout[rootX][rootY].type = 'empty';
-        zone.zone_layout[rootX][rootY].products = [];
+        zone.zone_layout[rootX][rootY].products = null;
       }
       return newZones;
     })

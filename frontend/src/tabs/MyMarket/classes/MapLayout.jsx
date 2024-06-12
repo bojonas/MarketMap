@@ -3,7 +3,7 @@ import { Cell } from "./Cell";
 
 export class MapLayout {
   constructor(rows, columns) {
-    this.map_layout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
+    this.map_layout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, null)));
     this.zones = new Map(); 
     this.idCounter = 0;
   }
@@ -71,7 +71,7 @@ export class MapLayout {
   }
 
   recreateMapLayout() {
-    this.map_layout = Array(this.map_layout.length).fill().map((_, i) => Array(this.map_layout[0].length).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
+    this.map_layout = Array(this.map_layout.length).fill().map((_, i) => Array(this.map_layout[0].length).fill().map((_, j) => new Cell(null, 'empty', i, j, null)));
     for (let zone of this.zones.values()) {
       this.updateMapLayout(zone);
     }

@@ -21,7 +21,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   const handleSave = async () => {
     // copy mapLayout
     const newMapLayout = new MapLayout(layout.length, layout[0].length);
-    const oldZones =  Array.from(mapLayout.zones.values());
+    const oldZones = Array.from(mapLayout.zones.values());
 
     if (typeof editZone === 'number') {
       setEditZone(null);
