@@ -74,7 +74,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
             {filteredImages.map(([type, source], index) => (
               <div key={index} className='bg-offwhite w-fit h-fit flex flex-col items-center rounded-lg border-[0.5svh] border-gray-custom pb-[10%] pr-[3%] pl-[3%]'> 
                 <span className='text-black text-[0.6svw] overflow-auto whitespace-nowrap text-overflow-ellipsis'>{titleCase(type).replace('_', ' ')}</span>
-                <div className='w-3/4 h-fit rounded-lg hover:border-[0.5svh] hover:border-gray-button cursor-pointer'
+                <div className='w-3/4 h-fit rounded-lg hover:border-[0.5svh] border-secondary-hover cursor-pointer'
                   style={{ boxShadow: '0 5px 2px -1px #303030' }}>
                   <DraggableImage alt={type} source={source} duplicate={true}/>
                 </div>
@@ -83,17 +83,17 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
           </div>
         </div>
       </div>
-      { !addZone && <div onClick={() => setAddZone(true)} className='flex items-center justify-center rounded-full p-[4%] bg-darkgray-custom border-darkgray-custom border-[0.3svh] hover:border-offwhite h-[6svh] text-[2.2svh] cursor-pointer'>
+      { !addZone && <div onClick={() => setAddZone(true)} className='flex items-center justify-center rounded-full p-[4%] bg-darkgray-custom border-darkgray-custom border-[0.3svh] border-secondary-hover h-[6svh] text-[2.2svh] cursor-pointer'>
           <SlFrame size={20}/>
           <p className='ml-[0.5svw]'>Add Zone</p>
         </div>
       }
       <div className='w-full h-full flex gap-[5%] items-center justify-center content-center pb-[5%]'>
-        <div onClick={() => addZone ? setAddZone(false) : typeof editZone === 'number' ? setEditZone(null) : setEditMode(false)} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+        <div onClick={() => addZone ? setAddZone(false) : typeof editZone === 'number' ? setEditZone(null) : setEditMode(false)} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom border-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
           <IoArrowBack size={25}/>
           <p>Back</p>
         </div>
-        <div onClick={handleSave} className='custom-button gap-[10%] bg-offwhite border-offwhite hover:border-darkgray-custom text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
+        <div onClick={handleSave} className='custom-button gap-[10%] bg-offwhite border-offwhite border-secondary-hover text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
           <FaRegSave size={25}/>
           <p>Save</p>
         </div>

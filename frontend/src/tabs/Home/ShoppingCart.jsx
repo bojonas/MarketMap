@@ -198,16 +198,16 @@ export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath
             </div>
             <div className='absolute bottom-[2svh] flex flex-col items-center justify-center gap-[20%] w-full h-[15svh]'>
                 <div className='flex items-center justify-center gap-[20%]'>
-                    <div onClick={handlePath} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                    <div onClick={handlePath} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom border-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
                         <PiPath size={25}/>
                         <p>Path</p>
                     </div>
-                    <div onClick={null} className='hover:text-darkgray-custom cursor-pointer'>
+                    <div onClick={null} className='text-black text-secondary-hover cursor-pointer'>
                         <FaPerson size={25}/>
                     </div>
                 </div>
                 { (removeMarket || typeof viewZone === 'number') &&
-                    <div onClick={typeof viewZone === 'number' ? () => setViewZone(null) : removeMarket} className='custom-button flex items-center justify-center gap-[10%] bg-darkgray-custom border-darkgray-custom hover:border-offwhite h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                    <div onClick={typeof viewZone === 'number' ? () => setViewZone(null) : removeMarket} className='custom-button flex items-center justify-center gap-[10%] bg-darkgray-custom border-darkgray-custom border-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
                         <IoArrowBack size={25}/>
                         <p>Back</p>
                     </div>
