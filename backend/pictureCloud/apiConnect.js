@@ -1,4 +1,6 @@
 const {google} = require("googleapis")
+const fs = require("fs")
+
 
 console.log("Works")
 const CLIENT_ID = "228723591691-g142a9ud7hvaekuiap9ne29krrm0l37c.apps.googleusercontent.com"
@@ -12,4 +14,61 @@ const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 
 oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
 
+drive = google.drive({version: "v3", auth: oauth2Client})
+
 console.log("End")
+
+const filePath = "/Users/benrohrig/Desktop/HDBW/Semester 4/FDT/Map/backend/pictureCloud/apple_1.jpg"
+
+async function upload_file(){
+    try{
+        const response = await drive.files.create({
+            requestBody: {
+                name: "oan_apfl2.jpg",
+                mimeType: "image/jpg"
+            },
+            media:{
+                mimeType: "image/jpg",
+                body: fs.createReadStream(filePath)
+            }
+        })
+        console.log(response.data)
+        //const link = await get_link(response.data.id)
+        const link = `https://drive.google.com/uc?export=view&id=${response.data.id}`;
+        console.log(link)
+    }
+    catch(e){
+        console.error(e)
+    }
+}
+
+async function get_link(id){
+    try{
+        await drive.permissions.create({
+            fileId: id,
+            requestBody: {
+                role: "reader",
+                type: "anyone"
+            }
+        });
+        
+        const result = await drive.files.get({
+            fileId: id,
+            fields: "webViewLink"
+        });
+    
+        return result.data.webViewLink
+    }
+    catch(error){
+        console.error(error)
+        return null
+    }
+    
+
+
+
+}
+
+//get_link("1rEkAnirELudfPxWoC7UGOkXp8LmeEI4I")
+
+upload_file()
