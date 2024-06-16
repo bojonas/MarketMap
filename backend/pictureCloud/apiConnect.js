@@ -24,7 +24,7 @@ async function upload_file(){
     try{
         const response = await drive.files.create({
             requestBody: {
-                name: "oan_apfl2.jpg",
+                name: "oan_apfl3.jpg",
                 mimeType: "image/jpg"
             },
             media:{
@@ -35,7 +35,7 @@ async function upload_file(){
         console.log(response.data)
         //const link = await get_link(response.data.id)
         const link = `https://drive.google.com/uc?export=view&id=${response.data.id}`;
-        console.log(link)
+        return(link)
     }
     catch(e){
         console.error(e)
