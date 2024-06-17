@@ -27,12 +27,15 @@ export default function ColorElement({label, isVisible=true}){
         try{
             if(label === "Personal"){
                 await requestPostColor(user_id, editedColor, "Personal");
+                document.documentElement.style.setProperty('--custom-color', editedColor);
             }
             else if(label === "Market Primary"){
                 await requestPostColor(user_id, editedColor, "Primary");
+                document.documentElement.style.setProperty('--primary-color', editedColor);
             }
             else if(label === "Market Secondary"){
                 await requestPostColor(user_id, editedColor, "Secondary");
+                document.documentElement.style.setProperty('--secondary-color', editedColor);
             }
         }
         catch(error){
