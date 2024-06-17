@@ -77,7 +77,7 @@
 
 /* custom color logic */
 .bg-custom {
-    background-color: var(--custom-color) !important;
+    background-color: var(--custom-color);
 }
 
 .text-custom-hover:hover {

@@ -64,7 +64,7 @@ export default function ColorElement({label, isVisible=true}){
         <React.Fragment>
                 <p className="text-offwhite text-xl mt-2 w-30 h-5 ml-10">{isVisible&&label}</p>
                 <div 
-                    className="ml-4 w-10 h-10 rounded-full border-2 cursor-pointer hover:border-purple-custom" 
+                    className="ml-4 w-10 h-10 rounded-full border-2 cursor-pointer border-custom-hover" 
                     style={{ backgroundColor: color }}
                     onClick={openColorEditor}
                 ></div>
