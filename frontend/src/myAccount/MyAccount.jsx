@@ -47,10 +47,10 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
     }
 
   return (
-    <div className=" w-1/2 justify-center relative flex">
+    <div className=" w-1/3 justify-center relative flex">
       {isLoggedIn ? <FaUserCircle 
         onClick={toggleDropdown}
-        className=" text-black hover:text-offwhite cursor-pointer"
+        className=" text-profile hover:text-offwhite cursor-pointer"
         size={35}/> :
       <button 
         onClick={toggleDropdown}

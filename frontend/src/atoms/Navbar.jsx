@@ -3,13 +3,13 @@ import { useSpring, animated } from 'react-spring';
 import MyAccount from "../myAccount/MyAccount";
 import Tab from "./Tab";
 
-export default function Navbar({ tabs, userPermission, isLoggedIn, setIsLoggedIn }) {
+export default function Navbar({ tabs, userPermission, isLoggedIn, setIsLoggedIn }) {;
     const [activeTab, setActiveTab] = useState(null);
     const springStyle = useSpring(activeTab || { width: 0 });
 
     return ( 
         <div className='relative flex items-center justify-between bg-darkgray-custom w-full h-[10svh]'>
-            <div className='flex h-full w-[25svw] items-center bg-primary'>
+            <div className='flex h-full w-[25svw] items-center bg-navbar border-b-[0.5svh] border-navbar'>
                 <MyAccount isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             </div>
                 <div className='flex h-full w-[75svw] pr-[1svw] items-center justify-end pl-[1svw] border-b-[0.5svh] border-gray-custom'>

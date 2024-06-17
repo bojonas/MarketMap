@@ -7,6 +7,7 @@ import { MyMarketContext } from "../../context/MyMarketContext";
 import { MapLayout } from "./classes/MapLayout";
 import { getItemImages } from '../../helper/getItemImages';
 import { findBorderCells } from "./findBorderCells";
+import { removeCustomColors } from '../../helper/removeCustomColors';
 
 export default function MyMarket() {
     const user_id = localStorage.getItem('user_id');
@@ -16,12 +17,16 @@ export default function MyMarket() {
     const [zones, setZones] = useState([]);
     const [editMode, setEditMode] = useState(false);
 
+
     useEffect(() => {
         if (!user_id) return;
         const getMarket = async () => {
             const newMarket = await requestGetMyMarket(user_id);
             if (!newMarket) return;
 
+            document.documentElement.style.setProperty('--profile-color', '#171717');
+            if (newMarket.primary_market_color) document.documentElement.style.setProperty('--navbar-color', newMarket.primary_market_color);
+            if (newMarket.primary_market_color) document.documentElement.style.setProperty('--navbar-border-color', newMarket.primary_market_color);
             if (newMarket.primary_market_color) document.documentElement.style.setProperty('--primary-color', newMarket.primary_market_color);
             if (newMarket.secondary_market_color) document.documentElement.style.setProperty('--secondary-color', newMarket.secondary_market_color);
             if (!user_id) return;
@@ -36,6 +41,10 @@ export default function MyMarket() {
             setMapLayout(newMapLayout);
         }
         getMarket();
+
+        return () => {
+            removeCustomColors();
+        };
     }, [user_id]);
 
     const borderCells = useMemo(() => {

@@ -9,6 +9,7 @@ import { MapLayout } from '../MyMarket/classes/MapLayout';
 import { requestGetMarketZones } from '../../requests/myMarketRequests';
 import { findBorderCells } from '../MyMarket/findBorderCells';
 import { getItemImages } from '../../helper/getItemImages';
+import { removeCustomColors } from '../../helper/removeCustomColors';
 
 export default function Home() {
     const user_id = localStorage.getItem('user_id');
@@ -26,8 +27,7 @@ export default function Home() {
             if (data) setMarkets(data);
         }
         getMarkets();
-        document.documentElement.style.removeProperty('--primary-color');
-        document.documentElement.style.removeProperty('--secondary-color');
+        removeCustomColors();
     }, []);
     
     const filteredMarkets = useMemo(() => {
@@ -70,6 +70,10 @@ export default function Home() {
         newMapLayout.build(newLayout, zones);
         setMapLayout(newMapLayout);
         setMarket(market);
+
+        document.documentElement.style.setProperty('--profile-color', '#171717');
+        if (market.primary_market_color) document.documentElement.style.setProperty('--navbar-color', market.primary_market_color);
+        if (market.primary_market_color) document.documentElement.style.setProperty('--navbar-border-color', market.primary_market_color);
         if (market.primary_market_color) document.documentElement.style.setProperty('--primary-color', market.primary_market_color);
         if (market.secondary_market_color) document.documentElement.style.setProperty('--secondary-color', market.secondary_market_color);
         if (!user_id) return;
@@ -83,8 +87,7 @@ export default function Home() {
 
     const removeMarket = () => {
         setMarket(null)
-        document.documentElement.style.removeProperty('--primary-color');
-        document.documentElement.style.removeProperty('--secondary-color');
+        removeCustomColors();
     }
 
     const borderCells = useMemo(() => {
