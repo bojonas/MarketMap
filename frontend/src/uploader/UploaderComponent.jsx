@@ -51,20 +51,20 @@ export default function UploaderComponent({setMapping, setUploaderComponentDone,
         <div className="w-full h-full">
             <div className="flex flex-row h-3/4 w-full">
                 <textarea
-                className="w-1/2 h-full bg-red-300 placeholder-black" 
+                className="w-1/2 h-full bg-white placeholder-black border-offwhite border-2 p-4" 
                 placeholder="Copy Shopping Cart here" 
                 onChange={handleTextChange} 
                 value={content}></textarea>
                 <input
                     type="file" 
-                    className="w-1/2 h-full bg-yellow-300 placeholder-black" 
+                    className="w-1/2 h-full bg-white placeholder-black border-offwhite border-2 p-4" 
                     placeholder="Copy Shopping list here"
                     onChange={handleFileChange}
 
                 />
             </div>
-            <div className="h-1/4 w-full flex">
-                <button className="bg-blue-700 w-1/2 h-1/2 m-auto rounded-2xl hover:bg-green-500"
+            <div className="h-1/4 w-full flex bg-offwhite">
+                <button className="bg-purple-custom w-1/2 h-1/2 m-auto rounded-2xl border-2 hover:bg-white hover:border-purple-custom"
                     onClick={handleUpload}>
                     Upload
                 </button>
