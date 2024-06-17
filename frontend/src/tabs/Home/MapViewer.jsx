@@ -16,7 +16,7 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, re
   const [path, setPath] = useState([]);
 
   const { layout, productsInMarket } = useMemo(() => {
-    return { layout: mapLayout.map_layout, productsInMarket: findProducts(mapLayout.map_layout) };
+    return { layout: mapLayout.map_layout , productsInMarket: findProducts(mapLayout.map_layout) };
   }, [mapLayout.map_layout]);
 
   const layoutIndex = useMemo(() => {

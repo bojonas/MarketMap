@@ -16,14 +16,14 @@ export class Zone {
             for (let j = 0; j < overlappingLayout[i].length; j++) {
                 const row = overlappingPosition.row + i - this.zone_position.row;
                 const col = overlappingPosition.column + j - this.zone_position.column;
-                if (row >= 0 && row < this.rows && col >= 0 && col < this.columns) {
-                    const cell = overlappingLayout[i][j];
-                    if (typeof cell.zone_id !== 'number') continue;
-                    this.zone_layout[row][col] = new Cell(cell.zone_id, cell.type, cell.x, cell.y, cell.products || null);
-                }
+                if (row < 0 || row >= this.rows || col < 0 || col >= this.columns) continue;
+
+                const cell = overlappingLayout[i][j];
+                if (typeof cell.zone_id === 'number') this.zone_layout[row][col] = new Cell(null, cell.type, cell.x, cell.y, cell.products || null);
             }
         }
         this.rows = this.zone_layout.length;
         this.columns = this.rows > 0 ? this.zone_layout[0].length : 0;
     }    
+
 }

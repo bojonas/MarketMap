@@ -9,6 +9,7 @@ import { MapEditorContext } from '../../context/MapEditorContext';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { useChangeDragMode } from '../../hooks/useChangeDragMode';
 import { requestGetProducts } from '../../requests/homeRequests';
+import ZoneCreator from './ZoneCreator';
 
 export default function MapEditor({ setEditMode }) {
   const { market, mapLayout } = useContext(MyMarketContext);
@@ -19,6 +20,7 @@ export default function MapEditor({ setEditMode }) {
   const [openCell, setOpenCell] = useState(null);
   const [products, setProducts] = useState([]);
   const [editZone, setEditZone] = useState(null);
+  const [addZone, setAddZone] = useState(false);
 
   // tracking for edit modes
   const [duplicateCells, setDuplicateCells] = useState([]);
@@ -51,8 +53,10 @@ export default function MapEditor({ setEditMode }) {
     openCell,
     setOpenCell,
     setEditZone,
-    products
-  }), [duplicateCells, deleteCells, duplicateMode, deleteMode, openCell, layout, editedZones, products]);  
+    products,
+    addZone,
+    setAddZone
+  }), [duplicateCells, deleteCells, duplicateMode, deleteMode, openCell, editedZones, layout, products, addZone]);  
 
   // change Mode
   const changeDuplicateMode = () => {
@@ -74,32 +78,37 @@ export default function MapEditor({ setEditMode }) {
       <div className='flex h-full w-full'>
         <Toolbar setEditMode={setEditMode} setEditZone={setEditZone} editZone={editZone}/>
         <div className='flex flex-col items-center justify-center gap-[1%]' style={{ cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
-            { typeof editZone === 'number' ? <ZoneEditor zone={editedZones[editZone]}/>
-            : <React.Fragment>
-              <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
-                { market.market_image_url && 
-                <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
-                    <img draggable='false' alt='' src={market.market_image_url}/>
-                </div>}
-                <p className='text-3xl font-bold'>{market.market_name}</p>
-              </div>
-              <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
-                <LayoutEditor/>
-              </div>
-              <div onClick={() => setSettingsIsOpen(true)} className='absolute flex right-[6.5svw] top-[3svw] text-primary-hover cursor-pointer'>
-                <IoMdSettings size={24}/>
-                <p className='ml-[0.5svw]'>Settings</p>
-              </div>
-              <CustomModal 
-                modalIsOpen={settingsIsOpen} 
-                closeModal={() => setSettingsIsOpen(false)} 
-                changeDuplicateMode={changeDuplicateMode} 
-                changeDeleteMode={changeDeleteMode}/>
-              <ProductModal 
-                openCell={openCell} 
-                closeCell={() => setOpenCell(null)}
-                products={products}/>
-            </React.Fragment>}
+          { addZone 
+            ? <div className='w-[75svw] h-full'>
+              <ZoneCreator setAddZone={setAddZone}/>
+            </div>
+            : typeof editZone === 'number' ? <ZoneEditor zone={editedZones.find(zone => zone.zone_id === editZone)} setEditedZones={setEditedZones}/>
+              : <React.Fragment>
+                <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
+                  { market.market_image_url && 
+                  <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
+                      <img draggable='false' alt='' src={market.market_image_url}/>
+                  </div>}
+                  <p className='text-3xl font-bold'>{market.market_name}</p>
+                </div>
+                <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
+                  <LayoutEditor/>
+                </div>
+                <div onClick={() => setSettingsIsOpen(true)} className='absolute flex right-[6.5svw] top-[3svw] text-primary-hover cursor-pointer'>
+                  <IoMdSettings size={24}/>
+                  <p className='ml-[0.5svw]'>Settings</p>
+                </div>
+                <CustomModal 
+                  modalIsOpen={settingsIsOpen} 
+                  closeModal={() => setSettingsIsOpen(false)} 
+                  changeDuplicateMode={changeDuplicateMode} 
+                  changeDeleteMode={changeDeleteMode}/>
+                <ProductModal 
+                  openCell={openCell} 
+                  closeCell={() => setOpenCell(null)}
+                  products={products}/>
+              </React.Fragment>
+          }
         </div>
       </div>
     </MapEditorContext.Provider>

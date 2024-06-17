@@ -13,8 +13,8 @@ import { titleCase } from '../../helper/titleCase';
 
 export default function Toolbar({ setEditMode, setEditZone, editZone }) {
   const user_id = localStorage.getItem('user_id');
-  const { mapLayout, setMapLayout, images, addZone, setAddZone } = useContext(MyMarketContext);
-  const { layout, editedZones } = useContext(MapEditorContext);
+  const { mapLayout, setMapLayout, images } = useContext(MyMarketContext);
+  const { layout, editedZones, addZone, setAddZone } = useContext(MapEditorContext);
   const [search, setSearch] = useState('');
   const filteredImages = Object.entries(images).filter(([type]) => type.toLowerCase().includes(search));
 
@@ -25,8 +25,8 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
 
     if (typeof editZone === 'number') {
       setEditZone(null);
-      const zone = editedZones[editZone];
-      const oldZone = oldZones[editZone];
+      const zone = editedZones.find(z => z.zone_id === editZone);
+      const oldZone = oldZones.find(z => z.zone_id === editZone);
       if (
         checkChanges(zone.zone_layout, oldZone.zone_layout) && 
         zone.zone_name.trim() === oldZone.zone_name && 
@@ -38,7 +38,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
       await requestUpdateMapLayout(user_id, newMapLayout.map_layout)
       alert(await requestUpdateMarketZones(user_id, [zone]));
       return setMapLayout(newMapLayout);
-    }
+    } 
 
     if (checkChanges(layout, mapLayout.map_layout)) {
       setEditMode(false);
@@ -47,7 +47,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
 
     const zonesToUpdate = [];
     for (const zone of oldZones) {
-      const editedZone = editedZones[zone.zone_id];
+      const editedZone = editedZones.find(z => z.zone_id === zone.zone_id);
       if (
         checkChanges(zone.zone_layout, editedZone.zone_layout) && 
         zone.zone_name.trim() === editedZone.zone_name && 
@@ -59,7 +59,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
     }
 
     newMapLayout.build(layout, editedZones);
-    await requestUpdateMarketZones(user_id, zonesToUpdate)
+    if (zonesToUpdate.length > 0) await requestUpdateMarketZones(user_id, zonesToUpdate)
     alert(await requestUpdateMapLayout(user_id, newMapLayout.map_layout));
     setEditMode(false);
     return setMapLayout(newMapLayout);

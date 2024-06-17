@@ -7,7 +7,7 @@ import { getBorderStyle } from './getBorderStyle';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { MapEditorContext } from '../../context/MapEditorContext';
 
-export default function ZoneEditor({ zone }) {
+export default function ZoneEditor({ zone, setEditedZones }) {
     const { borderCells } = useContext(MyMarketContext);
     const { openCell, setOpenCell, products } = useContext(MapEditorContext);
 
@@ -50,9 +50,22 @@ export default function ZoneEditor({ zone }) {
         setDimensions({ width: 'fit-content', height: 'fit-content' });
     }, []);
 
+    const handleZoneNameChange = (e) => {
+        const updatedZone = { ...zone, zone_name: e.target.value };
+        setEditedZones((prevEditedZones) => {
+            const updatedZones = [...prevEditedZones];
+            const zoneIndex = updatedZones.findIndex((z) => z.zone_id === zone.zone_id);
+            if (zoneIndex !== -1) {
+                updatedZones[zoneIndex] = updatedZone;
+            }
+            return updatedZones;
+        });
+        setName(e.target.value);
+    };
+
     return (
         <div className='flex flex-col items-center'>
-            <input name='zoneName' value={name} placeholder='Zone not named' onChange={(e) => setName(e.target.value)} style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] w-[12svw] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl pt-[1svh] pb-[1svh]'/>
+            <input name='zoneName' value={name} placeholder='Zone not named' onChange={handleZoneNameChange} style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] w-[12svw] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl pt-[1svh] pb-[1svh]'/>
             <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
                 <div className='flex flex-col items-center'>
                     <div className='flex items-center'>

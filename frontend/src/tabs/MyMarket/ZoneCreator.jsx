@@ -7,14 +7,15 @@ import ZoneCellViewer from './ZoneCellViewer';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
-import { requestUpdateMarketZones } from '../../requests/myMarketRequests';
+import { requestDeleteMarketZones, requestUpdateMarketZones } from '../../requests/myMarketRequests';
+import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function ZoneCreator({ setAddZone }) {
-    const { mapLayout, setMapLayout, setZones, borderCells } = useContext(MyMarketContext);
+    const { mapLayout, setMapLayout, borderCells, zones, setZones } = useContext(MyMarketContext);
+    const { layout, setLayout, setEditedZones } = useContext(MapEditorContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
 
-    const layout = mapLayout.map_layout;
     const rows = layout.length;
     const columns = layout[0].length
     const scale = Math.min(width/ columns, height / rows);  
@@ -55,13 +56,24 @@ export default function ZoneCreator({ setAddZone }) {
             minCol = Math.min(minCol, col);
         });
         // add zone to mapLayout
-        newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol }, colorArray[newMapLayout.idCounter]); // color picker
+        const newZone = newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol });
+        newMapLayout.setZoneColor(newZone.zone_id, colorArray[newZone.zone_id]);
+
+        setLayout(newMapLayout.map_layout);
+        const newZones = Array.from(newMapLayout.zones.values());
+        setEditedZones(newZones);
+        setZones(newZones)
         setMapLayout(newMapLayout);
-        setZones(Array.from(newMapLayout.zones.values()));
-        const zone = newMapLayout.getZone(newMapLayout.idCounter-1);
+        
+        const zone = newMapLayout.getZone(newZone.zone_id);
         if (zone) {
             await requestUpdateMarketZones(localStorage.getItem('user_id'), [zone]);
             alert('Zone created');
+        }
+
+        const zonesToDelete = zones.filter(zone => !newZones.some(newZone => newZone.zone_id === zone.zone_id));
+        if (zonesToDelete && zonesToDelete.length > 0) {
+            await requestDeleteMarketZones(localStorage.getItem('user_id'), zonesToDelete);
         }
         setAddZone(false);
     };    
@@ -136,7 +148,7 @@ export default function ZoneCreator({ setAddZone }) {
                                             borderRadius: `${scale/5}px`,
                                             backgroundColor: isSelected 
                                                 ? window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color') 
-                                                : borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, 0.3)` : ''
+                                                : borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, ${cell.type === 'empty' ? '0.2' : '1'})` : ''
                                         }}
                                     />}
                                 </div>

@@ -63,5 +63,19 @@ async function getMarketZones(market_id, postgres_pool) {
     }
 }
 
+async function deleteMarketZones(user_id, zones, postgres_pool) {
+    try {
+        for (const zone of zones) {
+            const query = `
+                DELETE FROM market_map.market_zones
+                WHERE zone_id = $1 AND market_id = (SELECT market_id FROM market_map.users_markets WHERE user_id = $2);`;
 
-module.exports = { putMapLayout, putMarketZones, getMyMarket, getMarketZones }
+            await postgres_pool.query(query, [zone.zone_id, user_id]);
+        }
+        return { message: 'Zones deleted' };
+    } catch (error) {
+        console.error('Error deleting zones:', error);
+    }
+}
+
+module.exports = { putMapLayout, putMarketZones, getMyMarket, getMarketZones, deleteMarketZones }

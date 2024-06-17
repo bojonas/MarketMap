@@ -9,6 +9,7 @@ export class MapLayout {
   }
 
   build (map_layout, zones) {
+    this.idCounter = zones[0].zone_id;
     for (const zone of zones) {
       this.addZone(zone.zone_name, zone.zone_layout, zone.zone_position, zone.zone_color);
     }
@@ -40,11 +41,12 @@ export class MapLayout {
     }
     this.zones.set(zone_id, newZone);
     this.updateMapLayout(newZone);
+    return newZone;
   }
 
-
   removeZone(zone_id) {
-    if (!this.zones.get(zone_id)) return;
+    const zoneToRemove = this.zones.get(zone_id);
+    if (!zoneToRemove) return;
     this.zones.delete(zone_id);
     this.recreateMapLayout();
   }
@@ -53,8 +55,8 @@ export class MapLayout {
     const zone1 = this.zones.get(zone_id1);
     const zone2 = this.zones.get(zone_id2);
     if (!zone1 || !zone2) return;
-    const newZone1 = new Zone(zone2.zone_id, zone1.zone_name, zone1.zone_layout, zone1.zone_color);
-    const newZone2 = new Zone(zone1.zone_id, zone2.zone_name, zone2.zone_layout, zone2.zone_color);
+    const newZone1 = new Zone(zone2.zone_id, zone1.zone_name, zone1.zone_layout, zone1.zone_position, zone1.zone_color);
+    const newZone2 = new Zone(zone1.zone_id, zone2.zone_name, zone2.zone_layout,  zone1.zone_position, zone2.zone_color);
     this.zones.set(zone_id2, newZone1);
     this.zones.set(zone_id1, newZone2);
     this.recreateMapLayout();
@@ -75,5 +77,10 @@ export class MapLayout {
     for (let zone of this.zones.values()) {
       this.updateMapLayout(zone);
     }
+  }
+
+  setZoneColor(zone_id, color) {
+    const zone = this.zones.get(zone_id);
+    if (zone) this.zones.set(zone_id, new Zone(zone_id, zone.zone_name, zone.zone_layout, zone.zone_position, color));
   }
 }

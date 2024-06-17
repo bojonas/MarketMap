@@ -69,3 +69,20 @@ export async function requestGetMarketZones(market_id) {
     console.error('Error getting market zones:', error);
   }
 }
+
+// request to /delete_market_zones
+export async function requestDeleteMarketZones(user_id, zones) {
+  if (!user_id || !zones) return console.error('Invalid parameters');
+
+  const data = {
+    user_id: user_id,
+    zones: zones
+  };
+
+  try {
+    const response = await axiosInstance.post('/delete_market_zones', data);
+    return response.data.message
+  } catch (error) {
+    console.error('Error deleting market zones:', error);
+  }
+}

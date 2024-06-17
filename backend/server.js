@@ -502,7 +502,7 @@ app.post('/post_color', async (req, res)=>{
 /**** MyMarket Routes ****/
 
 // import map editor routes
-const { putMapLayout, getMyMarket, getMarketZones, putMarketZones } = require('./routes/myMarketRoutes')
+const { putMapLayout, getMyMarket, getMarketZones, putMarketZones, deleteMarketZones } = require('./routes/myMarketRoutes')
 
 // shemas to validate map editor jsons 
 const Map = Joi.object({
@@ -582,6 +582,23 @@ app.post('/get_market_zones', async (req, res) => {
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
 })
+
+app.post('/delete_market_zones', async (req, res) => {
+    const { error } = Map.validate(req.body);
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { user_id, zones } = req.body;
+    try {
+        const result = await deleteMarketZones(user_id, zones, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
 
 // pwd hashing
 const bcrypt = require('bcrypt');

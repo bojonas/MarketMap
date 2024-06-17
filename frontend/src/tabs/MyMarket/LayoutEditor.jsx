@@ -58,7 +58,7 @@ export default function LayoutEditor() {
               transform: `scale(${zoom})`,
               transformOrigin: '0 0'
             }}>
-            {layout.map((row, i) => (
+            { layout.map((row, i) => (
               row.map((cell, j) => (
                 <div key={cell.y} onClick={() => typeof cell.zone_id === 'number' ? setEditZone(cell.zone_id) : null}>
                   { cell && <Cell 

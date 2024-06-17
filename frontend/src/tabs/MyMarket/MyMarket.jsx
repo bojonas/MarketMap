@@ -6,7 +6,6 @@ import { FaEdit } from "react-icons/fa";
 import { MyMarketContext } from "../../context/MyMarketContext";
 import { MapLayout } from "./classes/MapLayout";
 import { getItemImages } from '../../helper/getItemImages';
-import ZoneCreator from "./ZoneCreator";
 import { findBorderCells } from "./findBorderCells";
 
 export default function MyMarket() {
@@ -16,7 +15,6 @@ export default function MyMarket() {
     const [mapLayout, setMapLayout] = useState(null);
     const [zones, setZones] = useState([]);
     const [editMode, setEditMode] = useState(false);
-    const [addZone, setAddZone] = useState(false);
 
     useEffect(() => {
         if (!user_id) return;
@@ -33,7 +31,7 @@ export default function MyMarket() {
 
             setZones(newZones);
             const newLayout = newMarket.map_layout;
-            const newMapLayout = new MapLayout(newLayout.length, newLayout[0].length)
+            const newMapLayout = new MapLayout(newLayout.length, newLayout[0].length);
             newMapLayout.build(newLayout, newZones);
             setMapLayout(newMapLayout);
         }
@@ -51,10 +49,10 @@ export default function MyMarket() {
     }, [mapLayout]);
 
     return (
-        <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, setZones, images, borderCells, addZone, setAddZone }}>
+        <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, setZones, images, borderCells }}>
             <div className='relative flex w-full h-full'>
                 { !market ? null
-                : editMode ? addZone ? <ZoneCreator setAddZone={setAddZone}/> : <MapEditor setEditMode={setEditMode}/>
+                : editMode ? <MapEditor setEditMode={setEditMode}/>
                     : <React.Fragment>
                         <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} borderCells={borderCells} images={images}/>
                         <div onClick={() => setEditMode(true)} className='absolute flex right-[6.5svw] top-[3svw] text-primary-hover cursor-pointer'>
