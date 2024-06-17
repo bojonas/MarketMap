@@ -2,11 +2,11 @@ import React from "react"
 import { useState } from "react";
 import { useEffect } from "react";
 import { ChromePicker } from 'react-color';
-import { requestGetPersonalColor, requestPostPersonalColor } from "../../../../requests/settingsRequests";
+import { requestGetColor, requestPostColor } from "../../../../requests/settingsRequests";
 
 
 
-export default function ColorElement({label}){
+export default function ColorElement({label, isVisible=true}){
     const user_id = localStorage.getItem("user_id")
     const [color, setColor] = useState('#000000');
     
@@ -24,7 +24,20 @@ export default function ColorElement({label}){
 
     const handleSave = async() => {
         setColor(editedColor)
-        await requestPostPersonalColor(user_id, color)
+        try{
+            if(label === "Personal"){
+                await requestPostColor(user_id, editedColor, "Personal");
+            }
+            else if(label === "Market Primary"){
+                await requestPostColor(user_id, editedColor, "Primary");
+            }
+            else if(label === "Market Secondary"){
+                await requestPostColor(user_id, editedColor, "Secondary");
+            }
+        }
+        catch(error){
+            console.log("Error posting Color: " + error)
+        }
         setEditable(false)
     };
 
@@ -35,10 +48,13 @@ export default function ColorElement({label}){
     useEffect(()=>{
         const initColor = async ()=>{
             if(label === "Personal"){
-                setColor(await requestGetPersonalColor(user_id))
+                setColor(await requestGetColor(user_id, "Personal"))
             }
-            else if(label === "Primary Market"){
-
+            else if(label === "Market Primary"){
+                setColor(await requestGetColor(user_id, "Primary"))
+            }
+            else if(label === "Market Secondary"){
+                setColor(await requestGetColor(user_id, "Secondary"))
             }
         }
         initColor()
@@ -46,7 +62,7 @@ export default function ColorElement({label}){
 
     return(
         <React.Fragment>
-                <p className="text-offwhite text-xl mt-2 w-30 h-5 ml-10">{label}</p>
+                <p className="text-offwhite text-xl mt-2 w-30 h-5 ml-10">{isVisible&&label}</p>
                 <div 
                     className="ml-4 w-10 h-10 rounded-full border-2 cursor-pointer hover:border-purple-custom" 
                     style={{ backgroundColor: color }}

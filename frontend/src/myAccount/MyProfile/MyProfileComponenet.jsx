@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { requestUpdateData, requestUser } from "../../requests/myProfileRequests";
 import ContentRow from "./ContentRow";
+import ColorElement from "../Settings/SettingOptions/Color/ColorElement";
 
 export default function MyProfileComponent(){
     
@@ -70,6 +71,13 @@ export default function MyProfileComponent(){
                     <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"First Name"} content = {firstName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/> 
+                    
+                    <ContentRow label = {"Color"} content={
+                        <div className="flex flex-row w-1/2 mx-auto">
+                            <ColorElement label={"Personal"} isVisible={false}/>
+                        </div>
+                        } createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
+                    
                 </div>
 
                 

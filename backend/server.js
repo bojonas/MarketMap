@@ -445,50 +445,56 @@ app.post('/get_user_colors', async (req, res) => {
 /**** Setting Routes ****/
 
 // import setting routes
-const {getColorPersonal, postColorPersonal} = require('./routes/settingRoutes')
+const {getColor, postColor} = require('./routes/settingRoutes')
 
 //schemas to validate setting routes
     //const user_id already implemented in Section Login
 const UserIdColor = Joi.object({
     user_id: Joi.number().required(),
     color: Joi.string().required(),
+    type: Joi.string().valid("Personal", "Primary", "Secondary").required()
 });
 
-app.post('/get_color_personal', async (req, res)=>{
-    const { error } = UserId.validate(req.body);
+const UserIdColorType = Joi.object({
+    user_id: Joi.number().required(),
+    type: Joi.string().valid("Personal", "Primary", "Secondary").required()
+});
+
+app.post('/get_color', async (req, res)=>{
+    const { error } = UserIdColorType.validate(req.body);
     if (error) {
         console.error(error.details[0].message);
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { user_id } = req.body;
+    const { user_id, type } = req.body;
 
     try {
-        const result = await getColorPersonal(user_id, postgres_pool);
+        const result = await getColor(user_id,type, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
-})
+});
 
-app.post('/post_color_personal', async (req, res)=>{
+app.post('/post_color', async (req, res)=>{
     const { error } = UserIdColor.validate(req.body);
     if (error) {
         console.error(error.details[0].message);
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { user_id, color } = req.body;
+    const { user_id, color, type } = req.body;
 
     try {
-        const result = await postColorPersonal(user_id, color, postgres_pool);
+        const result = await postColor(user_id, color,type, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
-})
+});
 
 
 

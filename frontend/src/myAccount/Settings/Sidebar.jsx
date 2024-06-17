@@ -9,7 +9,7 @@ export default function Sidebar({setContent}){
     const [myProfileActive, setMyProfileActive] = useState(false)
     const [myMarketActive, setMyMarketActive] = useState(false)
 
-    const permission = localStorage.getItem("permission") === ("market"||"admin")
+    const permission = localStorage.getItem("permission") === ("market"||"admin"||"market_owner")
 
     const change = (event)=>{
         switch(event){

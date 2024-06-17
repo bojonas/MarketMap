@@ -4,12 +4,13 @@ import { getTabs } from './helper/getTabs';
 import { sortObject } from './helper/sortObject';
 import Login from './myAccount/Login/Login';
 import Register from './myAccount/Register/Register';
-import MyProfile from './myAccount/MyProfile/MyProfile';
 import { tabPermission } from './tabPermission';
 import Navbar from './atoms/Navbar';
 import Settings from './myAccount/Settings/Settings';
 import Uploader from './uploader/Uploader';
 import { requestgetUserColor } from './requests/myProfileRequests';
+import MyMarketComponent from './myAccount/MyProfile/MyMarketComponent';
+import MyProfileComponent from './myAccount/MyProfile/MyProfileComponenet';
 
 // custom navigation order
 const order = [];
@@ -43,7 +44,8 @@ export default function App() {
           {!isLoggedIn&&<Route path={"/login"} element={<Login setIsLoggedIn={setIsLoggedIn}/>}/>}
           {!isLoggedIn&&<Route path={"/register"} element={<Register/>}/>}
           {isLoggedIn&&<Route path={"/settings"} element={<Settings/>}/>}
-          {isLoggedIn&&<Route path={"/my_profile"} element={<MyProfile/>}/>}
+          {isLoggedIn&&<Route path={"/my_profile"} element={<MyProfileComponent/>}/>}
+          {isLoggedIn&&<Route path={"/my_market"} element={<MyMarketComponent/>}/>}
           {isLoggedIn&&<Route path={'/uploader'} element={<Uploader/>}/>}
         </Routes>
       </Router>

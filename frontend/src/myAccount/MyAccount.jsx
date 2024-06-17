@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 
 export default function MyAccount({isLoggedIn, setIsLoggedIn}){
-  const navigate = useNavigate()
+    const navigate = useNavigate()
     const [isVisible, setIsVisible] = useState(false);
+    const isMarket = localStorage.getItem("permission") === ("market_owner"||"market")
 
     const toggleDropdown = () => {
       if(!isLoggedIn){
@@ -26,6 +27,12 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
       navigate("/my_profile")
       setIsVisible(false)
     }
+
+    const myMarket = ()=>{
+      navigate("/my_market")
+      setIsVisible(false)
+    }
+
     const logout = () =>{
       localStorage.removeItem("user_id")
       localStorage.removeItem("permission")
@@ -55,6 +62,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
       </button>}
       <DropdownMenu isVisible={isVisible}>
         {isLoggedIn?<div className="dropdown-content" onClick={myProfile}>My Profile</div>:null}
+        {isMarket?<div className="dropdown-content" onClick={myMarket}>My Market</div>:null}
         {isLoggedIn?<div className="dropdown-content" onClick={settings}>Settings</div>:null}
         {isLoggedIn?<div className="dropdown-content" onClick={logout}>Logout</div>:null}
       </DropdownMenu>
