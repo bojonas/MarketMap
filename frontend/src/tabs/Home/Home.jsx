@@ -102,27 +102,29 @@ export default function Home() {
     return (
         <React.Fragment>
             { market ? <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} removeMarket={removeMarket} borderCells={borderCells} images={images}/>
-            : <div className='relative flex flex-col items-center text-center w-full h-full'>
-                <div className='flex flex-col items-center text-center w-2/5 h-fit p-[2%] pb-0'>
-                    <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'}/>
+            : <div className='relative flex flex-col text-center w-full h-full'>
+                <div className='flex flex-col text-center w-1/3 h-fit p-[2%] ml-[2%] pb-0'>
+                    <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'} contrast='home'/>
                 </div>
-                { searchClicked && <div className='z-10 flex flex-col gap-[1%] p-[1svh] w-[24%] max-h-[50svh] overflow-scroll bg-darkoffwhite rounded-b-lg'>
-                    { filteredMarkets.map((market, i) => (
-                        <div key={i} onClick={() => selectMarket(market)} 
-                            className={`h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-black text-[2svh] bg-offwhite rounded-lg border-offwhite border-l-[0.6svh] border-l-custom-hover hover:bg-offwhite-hover hover:cursor-pointer`}>
-                            <div className='flex items-center w-[40%] h-full gap-[6%]'>
-                                { market.market_image_url && 
-                                    <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] bg-gray-custom border-darkgray-custom border-[0.5svh]'>
-                                        <img draggable='false' alt='' src={market.market_image_url}/>
-                                    </div>
-                                }
-                                <p className='font-bold text-[2.1svh]'>{market.market_name}</p>
+                { searchClicked && 
+                    <div className='z-10 flex flex-col gap-[2%] ml-[3.55%] p-[1svh] w-[26%] max-h-[50svh] overflow-scroll bg-gray-button rounded-b-lg'>
+                        { filteredMarkets.map((market, i) => (
+                            <div key={i} onClick={() => selectMarket(market)} 
+                                className={`h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-[2svh] bg-darkgray-custom rounded-lg border-darkgray-custom border-l-[0.6svh] border-l-custom-hover hover:bg-gray-custom hover:cursor-pointer`}>
+                                <div className='flex items-center w-[40%] h-full gap-[6%]'>
+                                    { market.market_image_url && 
+                                        <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] bg-gray-custom border-darkgray-custom border-[0.5svh]'>
+                                            <img draggable='false' alt='' src={market.market_image_url}/>
+                                        </div>
+                                    }
+                                    <p className='font-bold text-[2.1svh]'>{market.market_name}</p>
+                                </div>
+                                <p className='ml-[3%]'>{market.address},</p>
+                                <p>{market.postal_code}</p>
                             </div>
-                            <p className='ml-[3%]'>{market.address},</p>
-                            <p>{market.postal_code}</p>
-                        </div>
-                    ))}
-                </div>}
+                        ))}
+                    </div>
+                }
                 <SearchHistory user_id={user_id} markets={markets} selectMarket={selectMarket} images={images}/>
                 <ShoppingCarts user_id={user_id}/>
             </div>}

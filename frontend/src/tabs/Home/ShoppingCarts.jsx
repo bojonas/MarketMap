@@ -59,37 +59,39 @@ export default function ShoppingCarts({ user_id }) {
     }   
 
     return (
-        <div className='absolute z-0 bottom-[5%] right-[10%] flex flex-col w-1/3 h-2/3 text-black bg-darkoffwhite rounded-xl'>
-            <p className='p-[3svh] text-[2.5svh] font-bold'>My Carts:</p>
-            <div className='flex flex-col w-full h-full p-[4%] pl-[10%] pr-[5%] gap-[5%] bg-offwhite overflow-scroll'>
-                { isDataFetched && shoppingCarts.map((shoppingCart, i) => (
-                    <div key={i} className='flex justify-between items-center w-full'>
-                        <input 
-                            name={`cartName-${i}`}
-                            placeholder='not named'
-                            onBlur={(e) => updateCartName(i, cartNames[i], shoppingCart.cart_id, shoppingCart.cart_name)} 
-                            onChange={e => handleInputChange(e, i)} value={cartNames[i] || ''} 
-                            className='placeholder:italic placeholder-gray-700 font-bold text-center bg-offwhite rounded-lg border-[0.4svh] border-offwhite border-custom-hover outline-none'
-                        />
-                        <BsCart4 
-                            size={20} 
-                            className='text-custom-hover cursor-pointer outline-none' 
-                            data-tooltip-id={`info-${i}`} 
-                            data-tooltip-html={shoppingCart.products.length > 0 ? shoppingCart.products.map(product => product.product_name_en).join('<br/>') : 'empty'}
-                        />
-                        <Tooltip id={`info-${i}`}/>
-                        <FaTrashCan onClick={() => removeShoppingCart(shoppingCart.cart_id)} className='text-custom-hover cursor-pointer'/>
-                    </div>              
-                ))}
-            </div>
-            <div className='flex justify-center items-center w-full h-[20%] gap-[5%] bg-darkoffwhite rounded-b-xl'>
-                <div onClick={addShoppingCart} className='flex justify-center items-center gap-[5%] w-[20%] text-custom-hover cursor-pointer'>
-                    <FaCartPlus size={24}/>
-                    <p>Add Cart</p>
+        <div className='absolute z-0 bottom-[2%] right-0 p-[2%] px-[4%] flex flex-col w-2/3 h-5/6'>
+            <div className='flex flex-col bg-custom rounded-xl h-full'>
+                <p className='p-[3svh] text-[3svh] font-bold'>My Shopping Carts:</p>
+                <div className='flex flex-col w-full h-full p-[4%] pl-[10%] pr-[5%] gap-[6%] bg-gray-custom overflow-scroll'>
+                    { isDataFetched && shoppingCarts.map((shoppingCart, i) => (
+                        <div key={i} className='flex justify-between items-center w-full bg-darkgray-custom p-[2%] px-[5%] rounded-3xl'>
+                            <input 
+                                name={`cartName-${i}`}
+                                placeholder='not named'
+                                onBlur={(e) => updateCartName(i, cartNames[i], shoppingCart.cart_id, shoppingCart.cart_name)} 
+                                onChange={e => handleInputChange(e, i)} value={cartNames[i] || ''} 
+                                className='placeholder:italic placeholder-gray-100 font-bold text-center bg-darkgray-custom rounded-lg border-[0.4svh] border-darkgray-custom border-custom-hover outline-none'
+                            />
+                            <BsCart4 
+                                size={20} 
+                                className='text-custom-hover cursor-pointer outline-none'
+                                data-tooltip-id={`info-${i}`} 
+                                data-tooltip-html={shoppingCart.products.length > 0 ? shoppingCart.products.map(product => product.product_name_en).join('<br/>') : 'empty'}
+                            />
+                            <Tooltip id={`info-${i}`}/>
+                            <FaTrashCan onClick={() => removeShoppingCart(shoppingCart.cart_id)} className='text-custom-hover cursor-pointer'/>
+                        </div>              
+                    ))}
                 </div>
-                <div onClick={uploadShoppingCart} className='flex justify-center items-center gap-[5%] w-[25%] text-custom-hover cursor-pointer'>
-                    <FaCartArrowDown size={24}/>
-                    <p>Upload Cart</p>
+                <div className='flex justify-center items-center w-full h-[20%] gap-[5%] bg-gray-custom rounded-b-xl'>
+                    <div onClick={addShoppingCart} className='flex justify-center items-center w-fit text-custom-hover cursor-pointer'>
+                        <FaCartPlus size={24}/>
+                        <p className='ml-[0.5svw]'>Add Cart</p>
+                    </div>
+                    <div onClick={uploadShoppingCart} className='flex justify-center items-center w-fit text-custom-hover cursor-pointer'>
+                        <FaCartArrowDown size={24}/>
+                        <p className='ml-[0.5svw]'>Upload Cart</p>
+                    </div>
                 </div>
             </div>
         </div>

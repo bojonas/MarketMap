@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { requestGetHistory } from "../../requests/homeRequests";
 import MiniMap from "./MiniMap";
 import { FaTrashCan } from "react-icons/fa6";
@@ -24,31 +24,33 @@ export default function SearchHistory({ user_id, markets, selectMarket, images }
     }
 
     return (
-        <div className='absolute z-0 bottom-[5%] left-[10%] flex flex-col w-1/3 h-2/3 text-black bg-darkoffwhite rounded-xl'>
-            <p className='p-[3svh] text-[2.5svh] font-bold'>Search History:</p>
-            <div className='flex flex-col w-full h-full p-[4%] gap-[5%] bg-offwhite overflow-scroll rounded-b-xl'>
-                { history.map(hist => {
-                    const market = markets.find(market => market.market_id === hist.market_id);
-                    if (!market) return null;
-                    const [time, entity] = getTimePassed(hist.hist_timestamp)
-                    return (
-                        <div key={market.market_id} className='flex w-full items-center justify-between pl-[2%] pr-[2%]'>
-                            <MiniMap layout={market.map_layout} market={market} selectMarket={selectMarket} images={images}/>
-                            <div className='flex items-center justify-center gap-[10%] w-[35%]'>
-                                { market.market_image_url && 
-                                <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] border-[0.5svh] border-darkgray-custom bg-gray-custom'>
-                                    <img draggable='false' alt='' src={market.market_image_url}/>
+        <div className='absolute z-0 flex flex-col bottom-[2%] p-[2%] ml-[2%] w-1/3 h-5/6'>
+            <div className='flex flex-col w-full h-full bg-custom rounded-xl'>
+                <p className='p-[3svh] text-[3svh] font-bold'>Search History:</p>
+                <div className='flex flex-col w-full h-full p-[4%] gap-[4%] bg-gray-custom overflow-scroll rounded-b-xl'>
+                    { history.map(hist => {
+                        const market = markets.find(market => market.market_id === hist.market_id);
+                        if (!market) return null;
+                        const [time, entity] = getTimePassed(hist.hist_timestamp)
+                        return (
+                            <div key={market.market_id} className='flex w-full items-center justify-between pl-[5%] pr-[5%] bg-darkgray-custom rounded-3xl'>
+                                <MiniMap layout={market.map_layout} market={market} selectMarket={selectMarket} images={images}/>
+                                <div className='flex items-center justify-center gap-[10%] w-[35%]'>
+                                    { market.market_image_url && 
+                                    <div className='flex items-center justify-center rounded-sm w-[2svw] h-[4svh] border-[0.5svh] border-darkgray-custom bg-gray-custom'>
+                                        <img draggable='false' alt='' src={market.market_image_url}/>
+                                    </div>
+                                    }
+                                    <p className='font-bold'>{market.market_name}</p>
                                 </div>
-                                }
-                                <p className='font-bold'>{market.market_name}</p>
+                                <p className='w-[25%]'>{time}{entity} ago</p>
+                                <div className='flex items-center justify-center'>
+                                    <FaTrashCan onClick={() => removeHistory(market.market_id)} className='text-custom-hover cursor-pointer'/>
+                                </div>
                             </div>
-                            <p className='w-[20%]'>{time}{entity} ago</p>
-                            <div className='flex items-center justify-center'>
-                                <FaTrashCan onClick={() => removeHistory(market.market_id)} className='text-custom-hover cursor-pointer'/>
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

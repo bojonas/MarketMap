@@ -11,8 +11,8 @@ import { requestDeleteMarketZones, requestUpdateMarketZones } from '../../reques
 import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function ZoneCreator({ setAddZone }) {
-    const { mapLayout, setMapLayout, borderCells, zones, setZones } = useContext(MyMarketContext);
-    const { layout, setLayout, setEditedZones } = useContext(MapEditorContext);
+    const { setMapLayout, borderCells, zones, setZones } = useContext(MyMarketContext);
+    const { layout, setLayout, editedZones, setEditedZones } = useContext(MapEditorContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
 
@@ -25,9 +25,7 @@ export default function ZoneCreator({ setAddZone }) {
     const saveZone = async () => {
         // copy mapLayout
         const newMapLayout = new MapLayout(rows, columns);
-        newMapLayout.map_layout = mapLayout.map_layout;
-        newMapLayout.zones = new Map(mapLayout.zones);
-        newMapLayout.idCounter = mapLayout.idCounter;
+        newMapLayout.build(layout, editedZones);
 
         let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
         selectedCells.forEach(cell => {
@@ -58,12 +56,6 @@ export default function ZoneCreator({ setAddZone }) {
         // add zone to mapLayout
         const newZone = newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol });
         newMapLayout.setZoneColor(newZone.zone_id, colorArray[newZone.zone_id]);
-
-        setLayout(newMapLayout.map_layout);
-        const newZones = Array.from(newMapLayout.zones.values());
-        setEditedZones(newZones);
-        setZones(newZones)
-        setMapLayout(newMapLayout);
         
         const zone = newMapLayout.getZone(newZone.zone_id);
         if (zone) {
@@ -71,10 +63,16 @@ export default function ZoneCreator({ setAddZone }) {
             alert('Zone created');
         }
 
+        const newZones = Array.from(newMapLayout.zones.values());
         const zonesToDelete = zones.filter(zone => !newZones.some(newZone => newZone.zone_id === zone.zone_id));
         if (zonesToDelete && zonesToDelete.length > 0) {
             await requestDeleteMarketZones(localStorage.getItem('user_id'), zonesToDelete);
         }
+
+        setLayout(newMapLayout.map_layout);
+        setEditedZones(newZones);
+        setZones(newZones)
+        setMapLayout(newMapLayout);
         setAddZone(false);
     };    
 

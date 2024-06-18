@@ -17,7 +17,6 @@ export default function MyMarket() {
     const [zones, setZones] = useState([]);
     const [editMode, setEditMode] = useState(false);
 
-
     useEffect(() => {
         if (!user_id) return;
         const getMarket = async () => {
