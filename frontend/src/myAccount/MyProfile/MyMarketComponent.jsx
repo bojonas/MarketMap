@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { requestMarket } from "../../requests/myProfileRequests";
 import ContentRow from "./ContentRow";
 import ColorElement from "../Settings/SettingOptions/Color/ColorElement";
+import MarketLogo from "./MarketLogo";
 
 export default function MyMarketComponent(){
     
@@ -69,9 +70,10 @@ export default function MyMarketComponent(){
 
     return (
         <div className="flex items-center justify-center h-full w-full">
-          <div className=" rounded-md p-6 w-full items-center">
+          <div className="rounded-md p-6 w-full justify-center">
+                <MarketLogo src={"https://trendblog.euronics.de/wp-content/uploads/2017/01/Seitenverhaeltnis_16_9.jpg"}/>
                 
-                <div>
+                <div className="flex flex-col justify-center w-1/2 bg-offwhite m-auto p-[50svm]">
                     <ContentRow label = {"Name"} content = {market_name} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Street"} content = {address} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Zip"} content = {postal_code} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/> 
@@ -121,3 +123,7 @@ function Popup({ backPopup, closePopup, popupLabel, setPopupContent }) {
         </div>
     );
 }
+
+
+
+

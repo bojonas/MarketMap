@@ -72,4 +72,24 @@ async function getUserColor(user_id, postgres_pool){
     }
 }
 
-module.exports = { updateData, getUser, getMarket, getUserColor}
+async function getMarketLogo(user_id, postgres_pool){
+    try{
+        const query = `
+            SELECT m.market_image_url
+            FROM market_map.markets m
+            WHERE m.market_id = (
+                                SELECT market_id 
+                                FROM market_map.users_markets 
+                                WHERE user_id = $1  LIMIT 1);
+            `
+
+        const result = await postgres_pool.query(query,[user_id]);
+        console.log(result.rows[0])
+        return result.rows[0];
+    } catch(error){
+        console.error('Error getting user data:', error);
+    }
+
+}
+
+module.exports = { updateData, getUser, getMarket, getUserColor, getMarketLogo}

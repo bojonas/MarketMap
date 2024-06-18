@@ -1,8 +1,6 @@
 const {google} = require("googleapis")
 const fs = require("fs")
 
-
-console.log("Works")
 const CLIENT_ID = "228723591691-g142a9ud7hvaekuiap9ne29krrm0l37c.apps.googleusercontent.com"
 const CLIENT_SECRET = "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"
 
@@ -16,16 +14,15 @@ oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
 
 drive = google.drive({version: "v3", auth: oauth2Client})
 
-console.log("End")
 
-const filePath = "/Users/benrohrig/Desktop/HDBW/Semester 4/FDT/Map/backend/pictureCloud/apple_1.jpg"
+const filePath = "/Users/benrohrig/Desktop/HDBW/Semester 4/FDT/kaufland_logo.png"
 
 async function upload_file(){
     try{
         const response = await drive.files.create({
             requestBody: {
-                name: "oan_apfl3.jpg",
-                mimeType: "image/jpg"
+                name: "kaufland.png",
+                mimeType: "image/png"
             },
             media:{
                 mimeType: "image/jpg",

@@ -66,7 +66,7 @@ export default function MyProfileComponent(){
         <div className="flex items-center justify-center h-full w-full">
           <div className=" rounded-md p-6 w-full items-center">
                 
-                <div>
+                <div className="flex flex-col justify-center w-1/2 bg-offwhite m-auto p-[50svm]">
                     <ContentRow label = {"Username"} content = {username} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>

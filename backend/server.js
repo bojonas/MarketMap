@@ -360,7 +360,7 @@ app.post("/update_password", async (req, res)=>{
 /**** MyProfile Routes ****/
 
 //import My Profile Routes
-const {updateData, getUser, getMarket, getUserColor} = require('./routes/myProfileRoutes')
+const {updateData, getUser, getMarket, getUserColor, getMarketLogo} = require('./routes/myProfileRoutes')
 
 // schemas to validate My Profile jsons 
 const UpdateData = Joi.object({
@@ -435,6 +435,23 @@ app.post('/get_user_colors', async (req, res) => {
     const { user_id } = req.body;
     try {
         const result = await getUserColor(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+app.post('/get_market_logo', async (req, res) => {
+    const {error} = UserId.validate(req.body)
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { user_id } = req.body;
+    try {
+        const result = await getMarketLogo(user_id, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);

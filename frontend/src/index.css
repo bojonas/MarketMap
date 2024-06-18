@@ -83,6 +83,10 @@
     background-color: var(--custom-color);
 }
 
+.bg-custom-hover:hover {
+    background-color: var(--custom-color);
+}
+
 .text-custom-hover:hover {
     color: var(--custom-color) !important;
 }

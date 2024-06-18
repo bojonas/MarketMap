@@ -73,4 +73,22 @@ export async function requestgetUserColor(user_id) {
   } catch (error) {
     console.error('Error getting user:', error);
   }
-}
+};
+
+// request to /get_market_logo
+export async function requestgetMarketLogo(user_id) {
+  if (!user_id) {
+    return console.error('Invalid parameters');
+  }
+
+  const data = {
+    user_id: user_id
+  };
+
+  try {
+    const response = await axiosInstance.post('/get_market_logo', data);
+    return response.data
+  } catch (error) {
+    console.error('Error getting user:', error);
+  }
+};
