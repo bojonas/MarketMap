@@ -84,7 +84,6 @@ async function getMarketLogo(user_id, postgres_pool){
             `
 
         const result = await postgres_pool.query(query,[user_id]);
-        console.log(result.rows[0])
         return result.rows[0];
     } catch(error){
         console.error('Error getting user data:', error);

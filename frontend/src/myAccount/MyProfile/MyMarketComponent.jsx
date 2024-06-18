@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { requestMarket } from "../../requests/myProfileRequests";
+import { requestMarket, requestgetMarketLogo } from "../../requests/myProfileRequests";
 import ContentRow from "./ContentRow";
 import ColorElement from "../Settings/SettingOptions/Color/ColorElement";
 import MarketLogo from "./MarketLogo";
@@ -17,6 +17,7 @@ export default function MyMarketComponent(){
     const[postal_code, setPostalCode] = useState("no user logged in")
     const[city, setCity] = useState("no user logged in")
     const[country, setCountry] = useState("no user logged in")
+    const [marketLogo, setMarketLogo] = useState("")
 
     useEffect(() => {
         const loadData = async () => {
@@ -27,6 +28,7 @@ export default function MyMarketComponent(){
             setPostalCode(result.postal_code);
             setCity(result.city);
             setCountry(result.country);
+            setMarketLogo(await requestgetMarketLogo(user_id))
         }
         loadData();
     }, [user_id]);
@@ -71,7 +73,7 @@ export default function MyMarketComponent(){
     return (
         <div className="flex items-center justify-center h-full w-full">
           <div className="rounded-md p-6 w-full justify-center">
-                <MarketLogo src={"https://trendblog.euronics.de/wp-content/uploads/2017/01/Seitenverhaeltnis_16_9.jpg"}/>
+                <MarketLogo src={marketLogo}/>
                 
                 <div className="flex flex-col justify-center w-1/2 bg-offwhite m-auto p-[50svm]">
                     <ContentRow label = {"Name"} content = {market_name} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>

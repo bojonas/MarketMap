@@ -87,7 +87,7 @@ export async function requestgetMarketLogo(user_id) {
 
   try {
     const response = await axiosInstance.post('/get_market_logo', data);
-    return response.data
+    return response.data.market_image_url
   } catch (error) {
     console.error('Error getting user:', error);
   }
