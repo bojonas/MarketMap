@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { requestGetShoppingCarts, requestPostShoppingCart, requestRemoveShoppingCart, requestUpdateShoppingCart } from "../../requests/homeRequests";
 import { FaTrashCan } from "react-icons/fa6";
-import { FaCartPlus } from "react-icons/fa";
-import { FaCartArrowDown } from "react-icons/fa";
+import { IoIosAddCircle } from "react-icons/io";
+import { MdOutlineFileUpload } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 
 import { useNavigate } from 'react-router-dom';
@@ -59,10 +59,22 @@ export default function ShoppingCarts({ user_id }) {
     }   
 
     return (
-        <div className='absolute z-0 bottom-[2%] right-0 p-[2%] px-[4%] flex flex-col w-2/3 h-5/6'>
-            <div className='flex flex-col bg-custom rounded-xl h-full'>
-                <p className='p-[2.5svh] text-[3svh] font-bold'>My Shopping Carts:</p>
-                <div className='flex flex-col w-full h-full p-[4%] pl-[10%] pr-[5%] gap-[6%] bg-gray-custom overflow-scroll'>
+        <div className='absolute z-0 bottom-[2%] right-0 p-[2%] pt-[4%] px-[4%] flex flex-col w-2/3 h-full'>
+            <div className='flex flex-col bg-custom rounded-2xl h-full'>
+                <p className='p-[2svh] text-[2svh] font-bold flex justify-between'>
+                    My Shopping Carts:
+                    <div className='flex justify-between w-[8%]'>
+                        <div onClick={addShoppingCart} className='flex justify-center items-center w-fit hover:text-black cursor-pointer'>
+                            <IoIosAddCircle size={24}/>
+                            <p className='ml-[0.2svw]'/>
+                        </div>
+                        <div onClick={uploadShoppingCart} className='flex justify-center items-center w-fit hover:text-black cursor-pointer'>
+                            <MdOutlineFileUpload size={24}/>
+                            <p className='ml-[0.2svw]'/>
+                        </div>
+                    </div>
+                </p>
+                <div className='flex flex-col w-full h-full p-[4%] pl-[10%] pr-[5%] gap-[6%] bg-gray-custom overflow-scroll rounded-b-2xl'>
                     { isDataFetched && shoppingCarts.map((shoppingCart, i) => (
                         <div key={i} className='flex justify-between items-center w-full bg-darkgray-custom p-[2%] px-[5%] rounded-3xl'>
                             <input 
@@ -82,16 +94,6 @@ export default function ShoppingCarts({ user_id }) {
                             <FaTrashCan onClick={() => removeShoppingCart(shoppingCart.cart_id)} className='text-custom-hover cursor-pointer'/>
                         </div>              
                     ))}
-                </div>
-                <div className='flex justify-center items-center w-full h-[20%] gap-[5%] bg-gray-custom rounded-b-xl'>
-                    <div onClick={addShoppingCart} className='flex justify-center items-center w-fit text-custom-hover cursor-pointer'>
-                        <FaCartPlus size={24}/>
-                        <p className='ml-[0.5svw]'>Add Cart</p>
-                    </div>
-                    <div onClick={uploadShoppingCart} className='flex justify-center items-center w-fit text-custom-hover cursor-pointer'>
-                        <FaCartArrowDown size={24}/>
-                        <p className='ml-[0.5svw]'>Upload Cart</p>
-                    </div>
                 </div>
             </div>
         </div>

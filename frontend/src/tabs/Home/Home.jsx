@@ -104,7 +104,7 @@ export default function Home() {
     return (
         <React.Fragment>
             { market ? <MapViewer market_name={market.market_name} market_image_url={market.market_image_url} mapLayout={mapLayout} removeMarket={removeMarket} borderCells={borderCells} images={images}/>
-            : <div className='relative flex flex-col text-center w-full h-full'>
+            : <div className='relative flex flex-col w-full h-full'>
                 <div className='flex flex-col text-center w-1/3 h-fit p-[2%] ml-[2%] pb-0'>
                     <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'} contrast='home'/>
                 </div>

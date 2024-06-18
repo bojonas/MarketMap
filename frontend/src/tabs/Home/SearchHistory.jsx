@@ -25,9 +25,9 @@ export default function SearchHistory({ user_id, markets, selectMarket, images }
 
     return (
         <div className='absolute z-0 flex flex-col bottom-[2%] p-[2%] ml-[2%] w-1/3 h-5/6'>
-            <div className='flex flex-col w-full h-full bg-custom rounded-xl'>
-                <p className='p-[2.5svh] text-[3svh] font-bold'>Search History:</p>
-                <div className='flex flex-col w-full h-full p-[4%] gap-[4%] bg-gray-custom overflow-scroll rounded-b-xl'>
+            <div className='flex flex-col w-full h-full rounded-2xl bg-custom'>
+                <p className='p-[2svh] text-[2svh] font-bold'>Search History:</p>
+                <div className='flex flex-col w-full h-full items-center p-[4%] gap-[4%] bg-gray-custom overflow-scroll rounded-b-2xl'>
                     { history.map(hist => {
                         const market = markets.find(market => market.market_id === hist.market_id);
                         if (!market) return null;
