@@ -30,7 +30,7 @@ export default function ZoneCreator({ setAddZone }) {
         let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
         selectedCells.forEach(cell => {
             const [row, col] = cell.split(',').map(Number);
-            newLayout[row][col] = new Cell(newMapLayout.idCounter, newMapLayout.map_layout[row][col].type || 'empty', row, col, newMapLayout.map_layout[row][col].products || []);
+            newLayout[row][col] = new Cell(newMapLayout.idCounter, newMapLayout.map_layout[row][col].type || 'empty', row, col, newMapLayout.map_layout[row][col].products || [], newMapLayout.map_layout[row][col].rotation);
         });
         
         // remove not selected rows and columns
@@ -69,7 +69,7 @@ export default function ZoneCreator({ setAddZone }) {
             await requestDeleteMarketZones(localStorage.getItem('user_id'), zonesToDelete);
         }
 
-        setLayout(newMapLayout.map_layout);
+        setLayout(JSON.parse(JSON.stringify(newMapLayout.map_layout)));
         setEditedZones(newZones);
         setZones(newZones)
         setMapLayout(newMapLayout);
