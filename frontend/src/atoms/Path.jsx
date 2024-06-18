@@ -83,13 +83,11 @@ export default function Path({ path, currentRow, currentCol, waypoints, scale })
                 array.find((_, i) => i !== index && item[1] === array[i][1])
             );
             if (sameRowElements.length === 2) {
-                console.log(sameRowElements)
-                divWidth = scale;
-                horizontalStyle = 'translate(-50%, -50%)';
+                //divWidth = scale;
+                //horizontalStyle = 'translate(-50%, -50%)';
             } else if (sameColElements.length === 2) {
-                console.log(sameColElements)
-                divHeight = scale;
-                verticalStyle = 'translate(-50%, -50%)';
+                //divHeight = scale;
+                //verticalStyle = 'translate(-50%, -50%)';
             }
         }    
         if (adjacents.length === 4) {
