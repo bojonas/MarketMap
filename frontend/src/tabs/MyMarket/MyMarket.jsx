@@ -25,7 +25,9 @@ export default function MyMarket() {
 
             document.documentElement.style.setProperty('--profile-color', '#171717');
             if (newMarket.primary_market_color) document.documentElement.style.setProperty('--navbar-color', newMarket.primary_market_color);
+            else document.documentElement.style.setProperty('--navbar-color', '#715DF2');
             if (newMarket.primary_market_color) document.documentElement.style.setProperty('--navbar-border-color', newMarket.primary_market_color);
+            else document.documentElement.style.setProperty('--navbar-border-color', '#715DF2');
             if (newMarket.primary_market_color) document.documentElement.style.setProperty('--primary-color', newMarket.primary_market_color);
             if (newMarket.secondary_market_color) document.documentElement.style.setProperty('--secondary-color', newMarket.secondary_market_color);
             if (!user_id) return;
