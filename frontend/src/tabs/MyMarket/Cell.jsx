@@ -11,6 +11,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
   const { 
     layout,
     setLayout,
+    editedZones,
     setEditedZones,
     duplicateCells, 
     setDuplicateCells, 
@@ -74,8 +75,8 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
 
     setEditedZones(prev => {
       const newZones = [...prev];
+      const cell = layout[row][col];
       for (const zone of newZones) {
-        const cell = layout[row][col];
         if (typeof cell.zone_id !== 'number') continue;
 
         // add/remove items with modes
@@ -120,9 +121,22 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
     e.preventDefault();
     e.stopPropagation();
     if (type === 'empty') return;
+
     const newLayout = JSON.parse(JSON.stringify(layout));
     newLayout[row][col]['rotation'] = 'rotation' in newLayout[row][col] ? (newLayout[row][col]['rotation'] + 90) % 360 : 90;
     setLayout(newLayout);
+
+    const newZones = JSON.parse(JSON.stringify(editedZones));
+    const cell = layout[row][col];
+    for (const zone of newZones) {
+      if (typeof cell.zone_id !== 'number') continue;
+
+      const x = row - zone.zone_position.row;
+      const y = col - zone.zone_position.column;
+      if (cell.zone_id !== zone.zone_id || x < 0 || y < 0 || x >= zone.zone_layout.length || y >= zone.zone_layout[0].length) continue;
+      zone.zone_layout[x][y]['rotation'] = 'rotation' in zone.zone_layout[x][y] ? (zone.zone_layout[x][y]['rotation'] + 90) % 360 : 90;
+    }
+    setEditedZones(newZones);
   }
 
   return (

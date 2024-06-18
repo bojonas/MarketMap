@@ -9,7 +9,8 @@ export function checkChanges(a, b) {
                 a[i][j].x !== b[i][j].x || 
                 a[i][j].y !== b[i][j].y ||
                 a[i][j].zone_id !== b[i][j].zone_id ||
-                !arraysEqual(a[i][j].products, b[i][j].products)
+                !arraysEqual(a[i][j].products, b[i][j].products) ||
+                a[i][j].rotation !== b[i][j].rotation
             ) return false;
         }
     }

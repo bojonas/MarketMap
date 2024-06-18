@@ -39,7 +39,7 @@ export default function CustomModal({ openCell, closeCell, products }) {
             
             setEditedZones(prev => {
                 const newZones = [...prev];
-                const prevZoneLayout = newZones[zone.zone_id].zone_layout;
+                const prevZoneLayout = newZones.find(newZone => newZone.zone_id === zone.zone_id).zone_layout;
                 const x = openCell.x - zone.zone_position.row;
                 const y = openCell.y - zone.zone_position.column;
 
@@ -68,7 +68,7 @@ export default function CustomModal({ openCell, closeCell, products }) {
             if (typeof openCell.zone_id !== 'number' || zone.zone_id !== openCell.zone_id) continue;
             setEditedZones(prev => {
                 const newZones = [...prev];
-                const prevZone = newZones[zone.zone_id];
+                const prevZone = newZones.find(newZone => newZone.zone_id === zone.zone_id);
                 const x = openCell.x - zone.zone_position.row;
                 const y = openCell.y - zone.zone_position.column;
 

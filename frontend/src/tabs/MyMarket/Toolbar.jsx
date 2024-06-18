@@ -34,7 +34,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
         zone.zone_position.column === oldZone.zone_position.column && 
         zone.zone_color === oldZone.zone_color
       ) return alert('No Changes');
-      newMapLayout.build(layout, editedZones);
+      newMapLayout.build(JSON.parse(JSON.stringify(layout)), JSON.parse(JSON.stringify(editedZones)));
       await requestUpdateMapLayout(user_id, newMapLayout.map_layout)
       alert(await requestUpdateMarketZones(user_id, [zone]));
       return setMapLayout(newMapLayout);

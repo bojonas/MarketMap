@@ -25,7 +25,7 @@ export default function ZoneCreator({ setAddZone }) {
     const saveZone = async () => {
         // copy mapLayout
         const newMapLayout = new MapLayout(rows, columns);
-        newMapLayout.build(layout, editedZones);
+        newMapLayout.build(JSON.parse(JSON.stringify(layout)), JSON.parse(JSON.stringify(editedZones)));
 
         let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
         selectedCells.forEach(cell => {
@@ -54,7 +54,7 @@ export default function ZoneCreator({ setAddZone }) {
             minCol = Math.min(minCol, col);
         });
         // add zone to mapLayout
-        const newZone = newMapLayout.addZone(name, newLayout, { row: minRow, column: minCol });
+        const newZone = newMapLayout.addZone(null, name, newLayout, { row: minRow, column: minCol });
         newMapLayout.setZoneColor(newZone.zone_id, colorArray[newZone.zone_id]);
         
         const zone = newMapLayout.getZone(newZone.zone_id);
@@ -143,6 +143,7 @@ export default function ZoneCreator({ setAddZone }) {
                                             height: `${scale}px`, 
                                             width: `${scale}px`, 
                                             border: `${scale/10}px solid #171717`,
+                                            transform: `rotate(${cell.rotation}deg)`,
                                             borderRadius: `${scale/5}px`,
                                             backgroundColor: isSelected 
                                                 ? window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color') 

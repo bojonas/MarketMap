@@ -68,7 +68,7 @@ export default function LayoutEditor() {
                     cellStyle={{ 
                       height: `${scale}px`, 
                       width: `${scale}px`, 
-                      transform: `rotate(${layout[i][j]['rotation']}deg)`,
+                      transform: `rotate(${cell.rotation}deg)`,
                       border: `${scale/10}px solid #171717`,
                       borderRadius: `${scale/5}px`,
                       backgroundColor: borderCells.size && typeof cell.zone_id === 'number' ? `rgba(${borderCells.get(cell.zone_id).zone_color}, ${cell.type === 'empty' ? '0.2' : '1'})` : ''

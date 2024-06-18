@@ -19,7 +19,7 @@ export class Zone {
                 if (row < 0 || row >= this.rows || col < 0 || col >= this.columns) continue;
 
                 const cell = overlappingLayout[i][j];
-                if (typeof cell.zone_id === 'number') this.zone_layout[row][col] = new Cell(null, cell.type, cell.x, cell.y, cell.products || null);
+                if (typeof cell.zone_id === 'number') this.zone_layout[row][col] = new Cell(null, cell.type, cell.x, cell.y, cell.products || null, cell.rotation || null);
             }
         }
         this.rows = this.zone_layout.length;

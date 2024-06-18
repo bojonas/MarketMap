@@ -88,6 +88,7 @@ export default function ZoneViewer({ zone }) {
                                                         cellStyle={{ 
                                                             height: `${scale}px`, 
                                                             width: `${scale}px`, 
+                                                            transform: `rotate(${cell.rotation}deg)`,
                                                             ...borderStyle
                                                         }}
                                                     />

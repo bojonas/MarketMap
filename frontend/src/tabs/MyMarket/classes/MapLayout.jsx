@@ -3,7 +3,7 @@ import { Cell } from "./Cell";
 
 export class MapLayout {
   constructor(rows, columns) {
-    this.map_layout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, null)));
+    this.map_layout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, null, null)));
     this.zones = new Map(); 
     this.idCounter = 0;
   }
@@ -11,7 +11,7 @@ export class MapLayout {
   build (map_layout, zones) {
     this.idCounter = zones[0].zone_id;
     for (const zone of zones) {
-      this.addZone(zone.zone_name, zone.zone_layout, zone.zone_position, zone.zone_color);
+      this.addZone(zone.zone_id, zone.zone_name, zone.zone_layout, zone.zone_position, zone.zone_color);
     }
     // add cells that are not in zone
     for (let i = 0; i < map_layout.length; i++) {
@@ -24,16 +24,18 @@ export class MapLayout {
         }
         this.map_layout[i][j].type = cell.type;
         this.map_layout[i][j].products = cell.type !== 'empty' ? cell.products : null;
+        this.map_layout[i][j].rotation = cell.rotation || null;
       }
     }
+    this.idCounter = zones[zones.length-1].zone_id + 1;
   }
   
   getZone(zone_id) {
     return this.zones.get(zone_id);
   }
 
-  addZone(zone_name, zone_layout, zone_position, zone_color) {
-    const zone_id = this.idCounter++;
+  addZone(zone_id=null, zone_name, zone_layout, zone_position, zone_color) {
+    if (!zone_id) zone_id = this.idCounter++;
     const newZone = new Zone(zone_id, zone_name, zone_layout, zone_position, zone_color);
     for (const zone of this.zones.values()) {
       zone.updateLayout(zone_layout, zone_position);
@@ -67,13 +69,13 @@ export class MapLayout {
         for (let j = 0; j < zone.zone_layout[i].length; j++) {
           const cell = zone.zone_layout[i][j];
           if (typeof cell.zone_id !== 'number') continue;
-          this.map_layout[zone.zone_position.row + i][zone.zone_position.column + j] = new Cell(cell.zone_id, cell.type, cell.x, cell.y, cell.products);
+          this.map_layout[zone.zone_position.row + i][zone.zone_position.column + j] = new Cell(cell.zone_id, cell.type, cell.x, cell.y, cell.products, cell.rotation);
         }
     }
   }
 
   recreateMapLayout() {
-    this.map_layout = Array(this.map_layout.length).fill().map((_, i) => Array(this.map_layout[0].length).fill().map((_, j) => new Cell(null, 'empty', i, j, null)));
+    this.map_layout = Array(this.map_layout.length).fill().map((_, i) => Array(this.map_layout[0].length).fill().map((_, j) => new Cell(null, 'empty', i, j, null, null)));
     for (let zone of this.zones.values()) {
       this.updateMapLayout(zone);
     }
