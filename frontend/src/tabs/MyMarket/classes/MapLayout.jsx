@@ -9,7 +9,7 @@ export class MapLayout {
   }
 
   build (map_layout, zones) {
-    this.idCounter = zones[0].zone_id;
+    if (zones && zones.length) this.idCounter = zones[0].zone_id;
     for (const zone of zones) {
       this.addZone(zone.zone_id, zone.zone_name, zone.zone_layout, zone.zone_position, zone.zone_color);
     }
@@ -27,7 +27,7 @@ export class MapLayout {
         this.map_layout[i][j].rotation = cell.rotation || null;
       }
     }
-    this.idCounter = zones[zones.length-1].zone_id + 1;
+    if (zones && zones.length) this.idCounter = zones[zones.length-1].zone_id + 1;
   }
   
   getZone(zone_id) {
