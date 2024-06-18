@@ -89,7 +89,6 @@ async function postColor(user_id, color,type, postgres_pool){
     
     try{
         const result = await postgres_pool.query(query,[color, user_id])
-        console.log(result)
         if(result.rowCount === 1){
             return({status: true})
         }
