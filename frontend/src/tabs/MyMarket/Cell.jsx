@@ -69,7 +69,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
         newCell.type = 'empty';
         newCell.products = null;
       }
-
+      console.log(newLayout)
       return newLayout;
     });
 

@@ -61,7 +61,7 @@ export default function ShoppingCarts({ user_id }) {
     return (
         <div className='absolute z-0 bottom-[2%] right-0 p-[2%] px-[4%] flex flex-col w-2/3 h-5/6'>
             <div className='flex flex-col bg-custom rounded-xl h-full'>
-                <p className='p-[3svh] text-[3svh] font-bold'>My Shopping Carts:</p>
+                <p className='p-[2.5svh] text-[3svh] font-bold'>My Shopping Carts:</p>
                 <div className='flex flex-col w-full h-full p-[4%] pl-[10%] pr-[5%] gap-[6%] bg-gray-custom overflow-scroll'>
                     { isDataFetched && shoppingCarts.map((shoppingCart, i) => (
                         <div key={i} className='flex justify-between items-center w-full bg-darkgray-custom p-[2%] px-[5%] rounded-3xl'>

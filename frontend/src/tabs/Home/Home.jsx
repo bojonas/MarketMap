@@ -107,7 +107,7 @@ export default function Home() {
                     <SearchBar onSearch={debouncedSearch} onFocus={handleOnFocus} onBlur={handleOnBlur} placeholder={'Search markets...'} contrast='home'/>
                 </div>
                 { searchClicked && 
-                    <div className='z-10 flex flex-col gap-[2%] ml-[3.55%] p-[1svh] w-[26%] max-h-[50svh] overflow-scroll bg-gray-button rounded-b-lg'>
+                    <div className='z-10 flex flex-col gap-[2%] ml-[5.55%] p-[1svh] w-[26%] max-h-[50svh] overflow-scroll bg-gray-button rounded-b-lg'>
                         { filteredMarkets.map((market, i) => (
                             <div key={i} onClick={() => selectMarket(market)} 
                                 className={`h-[7svh] pt-[5%] pl-[3%] pb-[5%] gap-[1%] flex items-center text-[2svh] bg-darkgray-custom rounded-lg border-darkgray-custom border-l-[0.6svh] border-l-custom-hover hover:bg-gray-custom hover:cursor-pointer`}>
