@@ -211,7 +211,7 @@ function manhattan(a, b) {
 }
 
 // choose for every waypoint a missplace by 1 since waypoint itself is a wall
-function adjustWaypoint(waypoint, start, layout) {
+function adjustWaypoint(waypoint, before, layout) {
     let directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
     let validDirections = [];
 
@@ -224,11 +224,8 @@ function adjustWaypoint(waypoint, start, layout) {
         }
     }
 
-    if (validDirections.length === 1) {
-        return validDirections[0];
-    }
-
-    return validDirections.reduce((a, b) => manhattan(start, a) < manhattan(start, b) ? a : b);
+    if (validDirections.length === 1) return validDirections[0];
+    return validDirections.reduce((a, b) => manhattan(before, a) < manhattan(before, b) ? a : b);
 }
 
 
@@ -246,7 +243,7 @@ function findPath(layout, start, end, waypoints) {
         }
     }
 
-    waypoints = waypoints.map((waypoint, i) => adjustWaypoint(waypoint, start, layout));
+    waypoints = waypoints.map((waypoint, i) => adjustWaypoint(waypoint, i > 0 ? waypoints[i-1] : start, layout));
     waypoints = [start, ...waypoints];
     
     // convert to node
