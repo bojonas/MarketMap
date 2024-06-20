@@ -616,26 +616,3 @@ app.post('/delete_market_zones', async (req, res) => {
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
 });
-
-// pwd hashing
-const bcrypt = require('bcrypt');
-async function hashPassword(password) {
-    try {
-        const salt = await bcrypt.genSalt(10);
-        return await bcrypt.hash(password, salt);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-async function checkPassword(password, hashedPassword) {
-    try {
-        return await bcrypt.compare(password, hashedPassword);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-// usage
-//const hashedPassword = await hashPassword('test1234');
-//const result = await checkPassword('test1234', hashedPassword);

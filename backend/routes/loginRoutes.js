@@ -1,15 +1,19 @@
+const { hashPassword, checkPassword } = require('../helper/passwordHashing')
+
 // logic for endpoint /post_user
 async function postUser(username, email, password, firstName, lastName, permission, postgres_pool) {
   try {
     // get permission id 
     const permission_id = await getPermissionId(permission, postgres_pool);
 
+    const hashedPassword = await hashPassword(password);
+
     const query = `
       INSERT INTO market_map.users (username, email, password, firstname, lastname, permission_id)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING user_id;`;
 
-    const result = await postgres_pool.query(query, [username, email, password, firstName, lastName, permission_id]);
+    const result = await postgres_pool.query(query, [username, email, hashedPassword, firstName, lastName, permission_id]);
     if (!result){
       return console.error("result not found")
     }
@@ -64,13 +68,11 @@ async function checkUserLogin(username, password, postgres_pool){
     `
     const result = await postgres_pool.query(query,[username])
 
-    if(result.rows[0]){
-      if(result.rows[0].password === password){
-        return {message: "User Logged in", isLoggedIn: true, user_id: result.rows[0].user_id, permission: result.rows[0].permission}
-      }
-      return {message: 'Invalid Password', isLoggedIn: false}
-    }
-    return {message: 'User does not exist', isLoggedIn: false}
+    if (!result.rows[0]) return {message: 'User does not exist', isLoggedIn: false}
+
+    if (checkPassword(password, result.rows[0].password)) return { message: "User Logged in", isLoggedIn: true, user_id: result.rows[0].user_id, permission: result.rows[0].permission }
+
+    return {message: 'Invalid Password', isLoggedIn: false}
   }
   catch(error){
     console.error('Error checking credentials:', error);
@@ -100,19 +102,19 @@ async function checkUser(email, postgres_pool){
 //logic for endpoint /update_password
 async function updatePassword(email, password, postgres_pool){
   try{
+    const hashedPassword = await hashPassword(password);
+
     const query = `
       UPDATE market_map.users
       SET password = $1
       WHERE email = $2;
   `
-    const result = await postgres_pool.query(query,[password, email]);
+    await postgres_pool.query(query,[hashedPassword, email]);
     return {message: "password successfully changed"}
   }
   catch(error){
     console.error('Error checking email:', error);
   }
 }
-
-
 
 module.exports = { postUser, getPermission,checkUserLogin, checkUser, updatePassword };
