@@ -92,3 +92,22 @@ export async function requestgetMarketLogo(user_id) {
     console.error('Error getting user:', error);
   }
 };
+
+// request to /post_market_logo
+export async function requestpostMarketLogo(user_id, file) {
+  if (!user_id || !file) {
+    return console.error('Invalid parameters');
+  }
+
+  const data = {
+    user_id: user_id,
+    file: file //file as binary string
+  };
+
+  try {
+    const response = await axiosInstance.post('/post_market_logo', data);
+    return response
+  } catch (error) {
+    console.error('Error getting user:', error);
+  }
+};

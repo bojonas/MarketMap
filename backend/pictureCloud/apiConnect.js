@@ -6,7 +6,7 @@ const CLIENT_SECRET = "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"
 
 const REDIRECT_URI = "https://developers.google.com/oauthplayground"
 
-const REFRESH_TOKEN = "1//0fAmFACdfUxA9CgYIARAAGA8SNwF-L9IrcjNqPKqVvy8TjkVEymoqUeO94XwinnirX4TNtTFiXhN2GhAB42x2TvIzVKOW5rBzFkc"
+const REFRESH_TOKEN = "1//04LJULtMXeytRCgYIARAAGAQSNwF-L9Irw29Icy-lspMxnzF7i_Jo_MjXGiW7JiP82NHP97JOBgin4FJ20xs4elWOBF0YXlFQ5rw"
 
 const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
@@ -29,7 +29,7 @@ async function upload_file(){
                 body: fs.createReadStream(filePath)
             }
         })
-        console.log(response.data)
+        //console.log(response.data)
         //const link = await get_link(response.data.id)
         const link = `https://drive.google.com/uc?export=view&id=${response.data.id}`;
         return(link)

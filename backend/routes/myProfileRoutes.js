@@ -91,4 +91,46 @@ async function getMarketLogo(user_id, postgres_pool){
 
 }
 
-module.exports = { updateData, getUser, getMarket, getUserColor, getMarketLogo}
+async function postMarketLogo(user_id, file, postgres_pool){
+    const date = new Date()
+
+    const name = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}_${user_id}_logo`
+    const GoogleDriveUploader = require("../pictureCloud/googleDrive")
+    //console.log(file)
+    function binaryStringToArrayBuffer(file) {
+        let binaryLength = file.length;
+        let bytes = new Uint8Array(binaryLength);
+        for (let i = 0; i < binaryLength; i++) {
+            bytes[i] = file.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+    
+    // Create Base64 binary String from file
+    let arrayBuffer = binaryStringToArrayBuffer(file);
+    const uploader = new GoogleDriveUploader(arrayBuffer,"jpg",name)
+    const result_id = await uploader.upload_file() //-> url
+
+    console.log("Line 103: "+result_id)
+
+    try{
+        const query = `
+            UPDATE market_map.markets m
+            SET market_image_url = $1
+            WHERE m.market_id = (
+                                SELECT market_id 
+                                FROM market_map.users_markets 
+                                WHERE user_id = $2  LIMIT 1);
+            `
+
+        const result = await postgres_pool.query(query,[result_id, user_id]);
+        //console.log(result)
+        return result.rows[0];
+        //return null
+    } catch(error){
+        console.error('Error getting user data:', error);
+    }
+
+}
+
+module.exports = { updateData, getUser, getMarket, getUserColor, getMarketLogo, postMarketLogo}

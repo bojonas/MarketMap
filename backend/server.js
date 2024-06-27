@@ -16,6 +16,8 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 
 // server can be run with 'node server.js'
@@ -360,7 +362,7 @@ app.post("/update_password", async (req, res)=>{
 /**** MyProfile Routes ****/
 
 //import My Profile Routes
-const {updateData, getUser, getMarket, getUserColor, getMarketLogo} = require('./routes/myProfileRoutes')
+const {updateData, getUser, getMarket, getUserColor, getMarketLogo, postMarketLogo} = require('./routes/myProfileRoutes')
 
 // schemas to validate My Profile jsons 
 const UpdateData = Joi.object({
@@ -452,6 +454,18 @@ app.post('/get_market_logo', async (req, res) => {
     const { user_id } = req.body;
     try {
         const result = await getMarketLogo(user_id, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+});
+
+app.post('/post_market_logo', async (req, res) => {
+    console.log("hier: angekommen")
+    const { user_id, file } = req.body;
+    try {
+        const result = await postMarketLogo(user_id, file, postgres_pool);
         res.status(201).json(result);
     } catch (error) {
         console.error(error.message);
