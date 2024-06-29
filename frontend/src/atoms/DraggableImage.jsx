@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { MapEditorContext } from "../context/MapEditorContext";
 
-export default function DraggableImage({ alt, source, coordinates, setDroppedItem, duplicate }) {
+export default function DraggableImage({ alt, source, coordinates, setDroppedItem, duplicate, style }) {
   const [isDuplicating, setisDuplicating] = useState(true);
   const { setDuplicateCells, setDeleteCells, duplicateCells, deleteCells } = useContext(MapEditorContext);
 
@@ -24,6 +24,6 @@ export default function DraggableImage({ alt, source, coordinates, setDroppedIte
   };
 
   return !isDuplicating ? null : (
-    <img draggable onDragStart={handleDragStart} onDragEnter={handleDragEnter} onDragEnd={handleDragEnd} src={source} alt={alt}/>
+    <img draggable onDragStart={handleDragStart} onDragEnter={handleDragEnter} onDragEnd={handleDragEnd} src={source} alt={alt} style={style}/>
   );
 }

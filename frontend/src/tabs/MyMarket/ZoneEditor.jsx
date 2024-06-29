@@ -91,7 +91,6 @@ export default function ZoneEditor({ zone, setEditedZones }) {
                                                         cellStyle={{ 
                                                             height: `${scale}px`, 
                                                             width: `${scale}px`, 
-                                                            transform: `rotate(${cell.rotation}deg)`,
                                                             ...borderStyle
                                                         }}
                                                     />}

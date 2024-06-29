@@ -87,10 +87,10 @@ export default function ZoneViewer({ zone }) {
                                                         source={images[cell.type]}
                                                         cellStyle={{ 
                                                             height: `${scale}px`, 
-                                                            width: `${scale}px`, 
-                                                            transform: `rotate(${cell.rotation}deg)`,
+                                                            width: `${scale}px`,
                                                             ...borderStyle
                                                         }}
+                                                        imgStyle={{ transform: `rotate(${cell.rotation}deg)` }}
                                                     />
                                                     { productsInMarket.filter(product => product.row === cell.x && product.column === cell.y).flatMap(marketProduct => {
                                                         const shoppingCartProduct = shoppingCart.products.find(cartProduct => cartProduct.product_id === marketProduct.product_id);

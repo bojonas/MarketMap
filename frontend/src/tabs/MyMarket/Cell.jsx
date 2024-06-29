@@ -151,11 +151,13 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
           source={droppedItem.source} 
           alt={droppedItem.alt} 
           coordinates={[row, col]} 
-          setDroppedItem={setDroppedItem}/>
+          setDroppedItem={setDroppedItem}
+          style={{ transform: `rotate(${layout[row][col].rotation}deg)` }}/>
         : <LoadImage 
           type={type} 
           coordinates={[row, col]} 
-          setDroppedItem={setDroppedItem}/>
+          setDroppedItem={setDroppedItem}
+          style={{ transform: `rotate(${layout[row][col].rotation}deg)` }}/>
       }
     </div>
   );

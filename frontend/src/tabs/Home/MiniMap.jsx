@@ -32,8 +32,8 @@ export default function MiniMap({ layout, market, selectMarket, images }) {
                       width: `${scale}px`, 
                       border: `${scale/10}px solid #171717`,
                       borderRadius: `${scale/5}px`,
-                      transform: `rotate(${layout[i][j]['rotation']}deg)`,
                     }}
+                    imgStyle={{ transform: `rotate(${layout[i][j]['rotation']}deg)` }}
                   />
               ))
             ))}
