@@ -110,6 +110,7 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
         zone.zone_layout[rootX][rootY].type = 'empty';
         zone.zone_layout[rootX][rootY].products = null;
       }
+      console.log(newZones)
       return newZones;
     })
 

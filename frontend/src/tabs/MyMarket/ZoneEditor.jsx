@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext, useEffect, useMemo } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import Cell from './Cell';
 import ProductModal from './ProductModal';
@@ -10,6 +10,22 @@ import { MapEditorContext } from '../../context/MapEditorContext';
 export default function ZoneEditor({ zone, setEditedZones }) {
     const { borderCells } = useContext(MyMarketContext);
     const { openCell, setOpenCell, products } = useContext(MapEditorContext);
+
+    const zone_layout = useMemo(() => {        
+        // remove not selected rows and columns
+        let newLayout = JSON.parse(JSON.stringify(zone.zone_layout));
+        let rowsToKeep = new Set();
+        let colsToKeep = new Set();
+        for (let i = 0; i < newLayout.length; i++) {
+            for (let j = 0; j < newLayout[0].length; j++) {
+                if (typeof newLayout[i][j].zone_id !== 'number') continue;
+                rowsToKeep.add(i);
+                colsToKeep.add(j);
+            }
+        }
+        newLayout = newLayout.filter((_, i) => rowsToKeep.has(i));
+        return newLayout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
+    }, [zone.zone_layout])
 
     const ref = useRef(null);
     const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });

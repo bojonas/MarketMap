@@ -65,12 +65,12 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, re
           <div className='flex flex-col items-center justify-center gap-[1%]'>
             { typeof viewZone === 'number' ? <ZoneViewer zone={mapLayout.getZone(viewZone)}/> 
               : <React.Fragment>
-                <div className='flex justify-center items-center gap-[8%] w-1/4 h-[12%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
-                { market_image_url && 
-                <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
-                    <img draggable='false' alt='' src={market_image_url}/>
-                </div>}
-                  <p className='text-[4svh] font-bold'>{market_name}</p>
+                <div className='flex justify-center items-center max-w-[50vw] gap-[2%] p-[1.5%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
+                  { market_image_url && 
+                  <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
+                      <img draggable='false' alt='' src={market_image_url}/>
+                  </div>}
+                  <p className='w-full text-[4svh] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-full'>{market_name}</p>
                 </div>
                 <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
                   <LayoutViewer/>
