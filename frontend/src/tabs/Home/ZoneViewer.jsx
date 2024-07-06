@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect, useState, useMemo } from 'react';
+import React, { useRef, useContext, useEffect, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
@@ -6,32 +6,18 @@ import { MapViewerContext } from '../../context/MapViewerContext';
 import { getNonBorderStyle } from '../MyMarket/getNonBorderStyle';
 import { getBorderStyle } from '../MyMarket/getBorderStyle';
 import Path from '../../atoms/Path';
+import { generateColor } from './colors';
 
 export default function ZoneViewer({ zone }) {
-    const { shoppingCart, productsInMarket, colors, layoutIndex, images, borderCells, path, waypoints } = useContext(MapViewerContext);
-    const zone_layout = useMemo(() => {        
-        // remove not selected rows and columns
-        let newLayout = JSON.parse(JSON.stringify(zone.zone_layout));
-        let rowsToKeep = new Set();
-        let colsToKeep = new Set();
-        for (let i = 0; i < newLayout.length; i++) {
-            for (let j = 0; j < newLayout[0].length; j++) {
-                if (typeof newLayout[i][j].zone_id !== 'number') continue;
-                rowsToKeep.add(i);
-                colsToKeep.add(j);
-            }
-        }
-        newLayout = newLayout.filter((_, i) => rowsToKeep.has(i));
-        return newLayout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
-    }, [zone.zone_layout]);
+    const { shoppingCart, productsInMarket, layoutIndex, images, borderCells, path, waypoints } = useContext(MapViewerContext);
 
-    const zonePath = path.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (path[0] || (row >= 0 && col >= 0 && row < zone_layout.length && col < zone_layout[0].length)))
-    const zoneWaypoints = waypoints.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (row >= 0 && col >= 0 && row < zone_layout.length && col < zone_layout[0].length))
+    const zonePath = path.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (path[0] || (row >= 0 && col >= 0 && row < zone.rows && col < zone.columns)))
+    const zoneWaypoints = waypoints.map(([row, col]) => ([row - zone.zone_position.row, col - zone.zone_position.column])).filter(([row, col]) => (row >= 0 && col >= 0 && row < zone.rows && col < zone.columns))
 
     const ref = useRef(null);
     const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
     const { width, height } = useAdjustScale(ref);
-    const scale = Math.min(width / zone_layout[0].length, height / zone_layout.length);  
+    const scale = Math.min(width / zone.columns, height / zone.rows);  
     const [zoom, setZoom] = useState(1);
 
     // zoom effect on layout
@@ -86,12 +72,12 @@ export default function ZoneViewer({ zone }) {
                         <div ref={ref} id='viewZone' className='border-[4svh] border-darkgray-custom overflow-scroll' style={dimensions}>
                             <div  className='grid w-fit h-fit' 
                                 style={{ 
-                                    gridTemplateColumns: `repeat(${zone_layout[0].length}, ${scale}px)`, 
-                                    gridTemplateRows: `repeat(${zone_layout.length}, ${scale}px)`,
+                                    gridTemplateColumns: `repeat(${zone.columns}, ${scale}px)`, 
+                                    gridTemplateRows: `repeat(${zone.rows}, ${scale}px)`,
                                     transform: `scale(${zoom})`,
                                     transformOrigin: '0 0'
                                 }}>
-                                { zone_layout.map((row, i) => (
+                                { zone.zone_layout.map((row, i) => (
                                     row.map((cell, j) => {
                                         let borderStyle = getNonBorderStyle(scale);
                                         if (borderCells.size && cell.zone_id === zone.zone_id) borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), cell.x, cell.y)
@@ -115,7 +101,7 @@ export default function ZoneViewer({ zone }) {
                                                                 style={{ 
                                                                 width: `${scale/2}px`, 
                                                                 height: `${scale/2}px`,
-                                                                backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]],
+                                                                backgroundColor: generateColor(layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()], Object.values(layoutIndex)),
                                                                 transform: 'translate(-50%, -50%)',
                                                                 }}
                                                                 data-tooltip-id={`info-${i}-${j}`} 

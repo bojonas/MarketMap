@@ -4,7 +4,6 @@ import ShoppingCart from './ShoppingCart';
 import ZoneViewer from './ZoneViewer';
 import { findProducts } from '../../helper/findProducts';
 import { MapViewerContext } from '../../context/MapViewerContext';
-import { colors } from './colors';
 import { getLayoutIndex } from '../../helper/getLayoutIndex';
 import { getWaypoints } from '../../helper/getWaypoints';
 import { requestFindPath } from '../../requests/homeRequests';
@@ -47,7 +46,6 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, re
       shoppingCart, 
       layout, 
       productsInMarket, 
-      colors, 
       layoutIndex, 
       borderCells, 
       viewZone, 
@@ -57,7 +55,7 @@ export default function MapViewer({ market_name, market_image_url, mapLayout, re
       waypoints
     }
   ), [shoppingCart, layout, productsInMarket, layoutIndex, borderCells, viewZone, images, path, waypoints]);
-
+  
   return !layout ? null :(
     <MapViewerContext.Provider value={contextValue}>
       <div className='flex w-full h-full'>

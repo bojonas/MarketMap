@@ -61,7 +61,7 @@ export default function ShoppingCarts({ user_id }) {
     return (
         <div className='absolute z-0 bottom-[2%] right-0 p-[2%] pt-[4%] px-[4%] flex flex-col w-2/3 h-full'>
             <div className='flex flex-col bg-custom rounded-2xl h-full'>
-                <p className='p-[2svh] text-[2svh] font-bold flex justify-between'>
+                <div className='p-[2svh] text-[2svh] font-bold flex justify-between'>
                     My Shopping Carts:
                     <div className='flex justify-between w-[8%]'>
                         <div onClick={addShoppingCart} className='flex justify-center items-center w-fit hover:text-black cursor-pointer'>
@@ -73,7 +73,7 @@ export default function ShoppingCarts({ user_id }) {
                             <p className='ml-[0.2svw]'/>
                         </div>
                     </div>
-                </p>
+                </div>
                 <div className='flex flex-col w-full h-full p-[4%] pl-[10%] pr-[5%] gap-[6%] bg-gray-custom overflow-scroll rounded-b-2xl'>
                     { isDataFetched && shoppingCarts.map((shoppingCart, i) => (
                         <div key={i} className='flex justify-between items-center w-full bg-darkgray-custom p-[2%] px-[5%] rounded-3xl'>

@@ -3,8 +3,9 @@ import Modal from 'react-modal';
 import debounce from 'lodash.debounce';
 import { MapEditorContext } from '../../context/MapEditorContext';
 import SearchBar from '../../atoms/SearchBar';
+import { noProducts } from './noProducts';
 
-export default function CustomModal({ openCell, closeCell, products }) {
+export default function ProductModal({ openCell, closeCell, products }) {
     const { setLayout, editedZones, setEditedZones } = useContext(MapEditorContext);
     const [search, setSearch] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -82,7 +83,7 @@ export default function CustomModal({ openCell, closeCell, products }) {
         }
     }
 
-    return (
+    return openCell && noProducts.includes(openCell.type) ? null : (
         <Modal
             isOpen={openCell ? true : false}
             onRequestClose={closeCell}

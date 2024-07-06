@@ -37,14 +37,15 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
     e.preventDefault();
     setIsOver(false);
     
-    let imageData = e.dataTransfer.getData('application/json')
+    const imageData = e.dataTransfer.getData('application/json');
     if (!imageData) return;
 
     const item = JSON.parse(imageData);
-    setDroppedItem(deleteCells.length === 0 ? item : null);
-
     const { rootCoordinates } = item;
-    if (rootCoordinates && isEqualArray([row, col], rootCoordinates)) return;
+    if (rootCoordinates && isEqualArray([row, col], rootCoordinates)) {
+      if (deleteCells.length) setDroppedItem(item);
+      else return;
+    } else setDroppedItem(deleteCells.length === 0 ? item : null);
 
     // update layout
     setLayout(prev => {
@@ -110,7 +111,6 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
         zone.zone_layout[rootX][rootY].type = 'empty';
         zone.zone_layout[rootX][rootY].products = null;
       }
-      console.log(newZones)
       return newZones;
     })
 

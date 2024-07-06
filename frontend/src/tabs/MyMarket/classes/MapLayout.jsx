@@ -69,7 +69,12 @@ export class MapLayout {
         for (let j = 0; j < zone.zone_layout[i].length; j++) {
           const cell = zone.zone_layout[i][j];
           if (typeof cell.zone_id !== 'number') continue;
-          this.map_layout[zone.zone_position.row + i][zone.zone_position.column + j] = new Cell(cell.zone_id, cell.type, cell.x, cell.y, cell.products, cell.rotation);
+
+          const x = zone.zone_position.row + i;
+          const y = zone.zone_position.column + j;
+          if (this.map_layout.length <= x || this.map_layout[0].length <= y) continue;
+
+          this.map_layout[x][y] = new Cell(cell.zone_id, cell.type, cell.x, cell.y, cell.products, cell.rotation);
         }
     }
   }

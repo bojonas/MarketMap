@@ -7,14 +7,14 @@ import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 import { FaCartArrowDown } from "react-icons/fa";
 import { PiPath } from "react-icons/pi";
-import { FaPerson } from "react-icons/fa6";
 import { FaTrashCan } from "react-icons/fa6";
+import { generateColor } from './colors';
 
 export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath }) {
     const user_id = localStorage.getItem('user_id')
     const timeoutId = useRef();
     const [search, setSearch] = useState('');
-    const { shoppingCart, productsInMarket, colors, layoutIndex, viewZone, setViewZone } = useContext(MapViewerContext);
+    const { shoppingCart, productsInMarket, layoutIndex, viewZone, setViewZone } = useContext(MapViewerContext);
     const [products, setProducts] = useState([]);
     const [shoppingCarts, setShoppingCarts] = useState([]);
     const [openSelect, setOpenSelect] = useState(false);
@@ -178,7 +178,7 @@ export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath
                                                 <p style={{ color: marketProduct ? '' : 'red' }}>{product.product_count}x</p>
                                                 { marketProduct && 
                                                     <div className='rounded-full w-fit h-fit p-[12%] self-center'
-                                                    style={{ backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]], }}/>
+                                                    style={{ backgroundColor: generateColor(layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()], Object.values(layoutIndex)), }}/>
                                                 }
                                             </div>
                                             <FaTrashCan onClick={() => removeProduct(product)} className='text-custom-hover cursor-pointer self-center w-[6%]'/>
@@ -201,9 +201,6 @@ export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath
                     <div onClick={handlePath} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom border-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
                         <PiPath size={25}/>
                         <p>Path</p>
-                    </div>
-                    <div onClick={null} className='text-black text-secondary-hover cursor-pointer'>
-                        <FaPerson size={25}/>
                     </div>
                 </div>
                 { (removeMarket || typeof viewZone === 'number') &&

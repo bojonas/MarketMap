@@ -96,16 +96,16 @@
 }
 
 .border-l-custom-hover:hover {
-    border-left-color: var(--custom-color) !important;
+    border-left-color: var(--secondary-color) !important;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--custom-color) !important;
+    background: var(--secondary-color) !important;
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--custom-color) !important;
+    background: var(--secondary-color) !important;
     cursor: pointer;
 }
 

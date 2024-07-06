@@ -58,6 +58,7 @@ export default function MyMarket() {
         return newBorderCells;
     }, [mapLayout]);
 
+    
     return (
         <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, setZones, images, borderCells }}>
             <div className='relative flex w-full h-full'>

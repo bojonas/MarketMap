@@ -4,9 +4,10 @@ import { useAdjustScale } from '../../hooks/useAdjustScale';
 import CellViewer from './CellViewer';
 import { MapViewerContext } from '../../context/MapViewerContext';
 import Path from '../../atoms/Path';
+import { generateColor } from './colors';
 
 export default function LayoutViewer() {
-  const { shoppingCart, layout, productsInMarket, colors, layoutIndex, borderCells, setViewZone, images, path, waypoints } = useContext(MapViewerContext);
+  const { shoppingCart, layout, productsInMarket, layoutIndex, borderCells, setViewZone, images, path, waypoints } = useContext(MapViewerContext);
   const [dimensions, setDimensions] = useState({ width: '75svw', height: '75svh' });
   const ref = useRef(null);
   const { width, height } = useAdjustScale(ref);
@@ -79,7 +80,7 @@ export default function LayoutViewer() {
                           style={{ 
                             width: `${scale/2}px`, 
                             height: `${scale/2}px`,
-                            backgroundColor: colors[layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()]],
+                            backgroundColor: generateColor(layoutIndex[marketProduct.row.toString() + marketProduct.column.toString()], Object.values(layoutIndex)),
                             transform: 'translate(-50%, -50%)',
                           }}
                           data-tooltip-id={`info-${i}-${j}`} 

@@ -1,3 +1,7 @@
+/* 
+function to recalculate index in map layout without empty cells for
+color highlighting cells containing products 
+*/
 export function getLayoutIndex(layout) {
   const filteredLayout = layout.reduce((acc, curr) => {
       curr.forEach(cell => {

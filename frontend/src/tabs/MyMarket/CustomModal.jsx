@@ -9,11 +9,11 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
   const [inputColumns, setInputColumns] = useState(layout[0].length);
 
   useEffect(() => {
-    if (!inputRows || !inputColumns) return;
-  
+    if (!inputRows || !inputColumns || (inputRows === layout.length && inputColumns === layout[0].length)) return;
+    
     setLayout(prev => {
-      const newLayout = [...prev]
-  
+      let newLayout = [...prev];
+
       while (inputRows > newLayout.length) {
         addRow(newLayout);
       }
@@ -26,41 +26,65 @@ export default function CustomModal({ modalIsOpen, closeModal, changeDuplicateMo
       while (inputColumns < newLayout[0].length) {
         removeColumn(newLayout);
       }
+
       return newLayout;
     });
 
     setEditedZones(prev => {
       const newZones = [...prev];
-
+    
       for (const zone of newZones) {
         const zoneLayout = zone.zone_layout;
         const zonePosition = zone.zone_position;
-        let zoneAffected = false;
 
+        let rowsToRemove = [], colsToRemove = [];
         for (let i = 0; i < zoneLayout.length; i++) {
           for (let j = 0; j < zoneLayout[i].length; j++) {
             const row = zonePosition.row + i;
             const col = zonePosition.column + j;
             if (row >= inputRows || col >= inputColumns) {
-              zoneAffected = true;
-              break;
+              if (row >= inputRows && !rowsToRemove.includes(i)) {
+                rowsToRemove.push(i);
+              }
+              if (col >= inputColumns && !colsToRemove.includes(j)) {
+                colsToRemove.push(j);
+              }
             }
           }
-          if (zoneAffected) break;
+        }
+        
+        rowsToRemove.sort((a, b) => b - a);
+        colsToRemove.sort((a, b) => b - a);
+        for (let i = rowsToRemove.length - 1; i >= 0; i--) {
+          if (zoneLayout.length) removeRow(zoneLayout, zonePosition);
+        }
+    
+        for (let j = colsToRemove.length - 1; j >= 0; j--) {
+          if (zoneLayout[0].length) removeColumn(zoneLayout, zonePosition);
         }
 
-        if (!zoneAffected) continue;
-        while (zoneLayout.length > 0 && inputRows < zoneLayout.length) {
-          removeRow(zoneLayout);
+        // remove not selected rows and columns
+        let rowsToKeep = new Set();
+        let colsToKeep = new Set();
+        for (let i = 0; i < zoneLayout.length; i++) {
+          for (let j = 0; j < zoneLayout[0].length; j++) {
+            if (typeof zoneLayout[i][j].zone_id !== 'number') continue;
+            rowsToKeep.add(i);
+            colsToKeep.add(j);
+          }
         }
-        while (zoneLayout[0] && inputColumns < zoneLayout[0].length) {
-          removeColumn(zoneLayout);
-        }   
+        zone.zone_layout = zoneLayout.filter((_, i) => rowsToKeep.has(i));
+        zone.zone_layout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
+        zone.rows = zone.zone_layout.length;
+        zone.columns = zone.rows ? zone.zone_layout[0].length : 0;
+        const firstCell = zone.zone_layout[0][0];
+        zone.zone_position = { row: firstCell.x, column: firstCell.y }
       }
 
       return newZones;
-    })
-  }, [inputRows, inputColumns, setLayout, setEditedZones]);  
+    });    
+
+  }, [inputRows, inputColumns, layout, setLayout, setEditedZones]);  
 
   return (
     <Modal

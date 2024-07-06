@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import { MapLayout } from './classes/MapLayout';
 import { Cell } from './classes/Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
-import { colorArray } from '../Home/colors';
+import { generateRGBColor } from '../Home/colors';
 import ZoneCellViewer from './ZoneCellViewer';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { IoArrowBack } from "react-icons/io5";
@@ -55,7 +55,7 @@ export default function ZoneCreator({ setAddZone }) {
         });
         // add zone to mapLayout
         const newZone = newMapLayout.addZone(null, name, newLayout, { row: minRow, column: minCol });
-        newMapLayout.setZoneColor(newZone.zone_id, colorArray[newZone.zone_id]);
+        newMapLayout.setZoneColor(newZone.zone_id, generateRGBColor(newZone.zone_id, Array.from(newMapLayout.zones.values()).map(zone => zone.zone_id)));
         
         const zone = newMapLayout.getZone(newZone.zone_id);
         if (zone) {

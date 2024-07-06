@@ -1,46 +1,83 @@
-export const colors = [
-    'red', 'green', 'blue', 'yellow', 'aqua', 'fuchsia', 'lime', 'maroon', 'navy', 'olive', 'purple', 'teal',
-    'azure', 'beige', 'bisque', 'black', 'blanchedalmond', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 
-    'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'cyan', 'darkblue', 'darkcyan', 
-    'darkgoldenrod', 'darkgray', 'darkgreen', 'darkgrey', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 
-    'darkorchid', 'darkred', 'darksalmon', 'darkseagreen', 'darkslateblue', 'darkslategray', 'darkslategrey', 'darkturquoise', 
-    'darkviolet', 'deeppink', 'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 
-    'gainsboro', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'greenyellow', 'grey', 'honeydew', 'hotpink', 'indianred', 'indigo', 
-    'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen', 'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan', 
-    'lightgoldenrodyellow', 'lightgray', 'lightgreen', 'lightgrey', 'lightpink', 'lightsalmon', 'lightseagreen', 'lightskyblue', 
-    'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightyellow', 'limegreen', 'linen', 'magenta', 'mediumaquamarine', 
-    'mediumblue', 'mediumorchid', 'mediumpurple', 'mediumseagreen', 'mediumslateblue', 'mediumspringgreen', 'mediumturquoise', 
-    'mediumvioletred', 'midnightblue', 'mintcream', 'mistyrose', 'moccasin', 'navajowhite', 'oldlace', 'olivedrab', 'orange', 
-    'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred', 'papayawhip', 'peachpuff', 'peru', 
-    'pink', 'plum', 'powderblue', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen', 'seashell', 
-    'sienna', 'silver', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow', 'springgreen', 'steelblue', 'tan', 'thistle', 
-    'tomato', 'turquoise', 'violet', 'wheat', 'white', 'whitesmoke', 'yellowgreen', 'aliceblue', 'antiquewhite', 'aquamarine', 'blanchedalmond', 'blueviolet', 'brick', 'brightpink', 'bronze', 
-    'brown', 'buff', 'burgundy', 'burntsienna', 'camel', 'champagne', 'charcoal', 'chartreuse', 'cherry', 
-    'chestnut', 'chocolate', 'cobalt', 'copper', 'coral', 'cornflower', 'cream', 'crimson', 'cyan', 'darkblue', 
-    'darkgreen', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon', 
-    'darkseagreen', 'darkslateblue', 'darkslategray', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 
-    'dimgray', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite'
-]
+export function generateColor (num, validNumbers) {
+  const index = validNumbers.indexOf(num);
+  if (index === -1) return '#000000';
 
-export const colorArray = [
-    '255, 0, 102', // Neon Red
-    '0, 255, 0', // Neon Green
-    '0, 255, 255', // Neon Cyan
-    '255, 255, 0', // Neon Yellow
-    '204, 0, 204', // Neon Purple
-    '64, 0, 255', // Neon Electric Indigo
-    '255, 128, 0', // Neon Orange
-    '128, 255, 0', // Neon Chartreuse
-    '0, 255, 128', // Neon Spring Green
-    '255, 0, 255', // Neon Magenta
-    '0, 128, 255', // Neon Azure
-    '0, 255, 64', // Neon Harlequin
-    '255, 0, 128', // Neon Rose
-    '255, 64, 0', // Neon Tangerine
-    '0, 64, 255', // Neon Electric Blue
-    '255, 0, 64', // Neon Electric Crimson
-    '128, 0, 255', // Neon Violet
-    '64, 255, 0', // Neon Electric Lime
-    '0, 255, 192', // Neon Electric Mint
-    '255, 192, 0', // Neon Electric Gold
-];
+  const hue = (360 / validNumbers.length) * index;
+  const saturation = 70; // Percentage
+  const lightness = 50; // Percentage
+
+  return hslToHex(hue, saturation, lightness);
+};
+
+
+function hslToHex(h, s, l) {
+  s /= 100;
+  l /= 100;
+
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = l - c / 2;
+
+  let r = 0, g = 0, b = 0;
+  if (0 <= h && h < 60) {
+    r = c; g = x; b = 0;
+  } else if (60 <= h && h < 120) {
+    r = x; g = c; b = 0;
+  } else if (120 <= h && h < 180) {
+    r = 0; g = c; b = x;
+  } else if (180 <= h && h < 240) {
+    r = 0; g = x; b = c;
+  } else if (240 <= h && h < 300) {
+    r = x; g = 0; b = c;
+  } else if (300 <= h && h < 360) {
+    r = c; g = 0; b = x;
+  }
+
+  r = Math.round((r + m) * 255);
+  g = Math.round((g + m) * 255);
+  b = Math.round((b + m) * 255);
+
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+};
+
+
+export function generateRGBColor (num, validNumbers) {
+  const index = validNumbers.indexOf(num);
+  if (index === -1) return '0, 0, 0';
+
+  const hue = (360 / validNumbers.length) * index;
+  const saturation = 70; // Percentage
+  const lightness = 50; // Percentage
+
+  return hslToRgba(hue, saturation, lightness);
+};
+
+function hslToRgba(h, s, l) {
+  s /= 100;
+  l /= 100;
+
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = l - c / 2;
+
+  let r = 0, g = 0, b = 0;
+  if (0 <= h && h < 60) {
+    r = c; g = x; b = 0;
+  } else if (60 <= h && h < 120) {
+    r = x; g = c; b = 0;
+  } else if (120 <= h && h < 180) {
+    r = 0; g = c; b = x;
+  } else if (180 <= h && h < 240) {
+    r = 0; g = x; b = c;
+  } else if (240 <= h && h < 300) {
+    r = x; g = 0; b = c;
+  } else if (300 <= h && h < 360) {
+    r = c; g = 0; b = x;
+  }
+
+  r = Math.round((r + m) * 255);
+  g = Math.round((g + m) * 255);
+  b = Math.round((b + m) * 255);
+
+  return `${r}, ${g}, ${b}`;
+};
