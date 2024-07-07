@@ -81,7 +81,7 @@ export class MapLayout {
 
   recreateMapLayout() {
     this.map_layout = Array(this.map_layout.length).fill().map((_, i) => Array(this.map_layout[0].length).fill().map((_, j) => new Cell(null, 'empty', i, j, null, null)));
-    for (let zone of this.zones.values()) {
+    for (const zone of this.zones.values()) {
       this.updateMapLayout(zone);
     }
   }

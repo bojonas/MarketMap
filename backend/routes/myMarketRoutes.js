@@ -70,7 +70,7 @@ async function deleteMarketZones(user_id, zones, postgres_pool) {
                 DELETE FROM market_map.market_zones
                 WHERE zone_id = $1 AND market_id = (SELECT market_id FROM market_map.users_markets WHERE user_id = $2);`;
 
-            await postgres_pool.query(query, [zone.zone_id, user_id]);
+            await postgres_pool.query(query, [zone, user_id]);
         }
         return { message: 'Zones deleted' };
     } catch (error) {

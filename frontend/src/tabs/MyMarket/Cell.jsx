@@ -1,4 +1,4 @@
-import React, { useState, useContext, memo } from 'react';
+import React, { useState, useContext, memo, useEffect } from 'react';
 import DraggableImage from "../../atoms/DraggableImage";
 import LoadImage from "../../atoms/LoadImage"
 import { MapEditorContext } from '../../context/MapEditorContext';
@@ -6,6 +6,7 @@ import { isEqualArray } from '../../helper/isEqualArray';
 
 const Cell = memo(({ type, row, col, cellStyle }) => {
   const [droppedItem, setDroppedItem] = useState(null);
+  const [dropped, setDropped] = useState(false);
   const [isOver, setIsOver] = useState(false);
 
   const { 
@@ -112,9 +113,9 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
         zone.zone_layout[rootX][rootY].products = null;
       }
       return newZones;
-    })
+    });
 
-    return deleteCells.length === 0 ? { name: type } : null;
+    setDropped(true);
   }
 
   const rotateCell = (e) => {
@@ -139,12 +140,20 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
     setEditedZones(newZones);
   }
 
-  return (
+  useEffect(() => {
+    if (!dropped) return;
+
+    setDuplicateCells([]);
+    setDeleteCells([]);
+    setDropped(false);
+  }, [dropped, setDeleteCells, setDuplicateCells]);
+
+  return row >= layout.length || col >= layout[0].length ? null : (
     <div onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave} onContextMenu={rotateCell} onDoubleClick={() => { if (type !== 'empty') setOpenCell(layout[row][col]) }}
       className={`flex justify-center items-center p-[5%] ${type !== 'empty' ? 'bg-[#d9d9d9]' : 'bg-gray-custom'}`}
       style={{
         cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : typeof layout[row][col].zone_id === 'number' || type !== 'empty' ? 'pointer' : '',
-        ...(isOver ? { ...cellStyle, backgroundColor: window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color') } : cellStyle),
+        ...(isOver || duplicateCells.some(cell => cell[0] === row && cell[1] === col) || deleteCells.some(cell => cell[0] === row && cell[1] === col) ? { ...cellStyle, backgroundColor: window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color') } : cellStyle),
       }}>
       { type === 'empty' ? null
       : droppedItem

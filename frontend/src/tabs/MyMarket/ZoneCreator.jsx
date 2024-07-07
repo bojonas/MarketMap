@@ -1,18 +1,16 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { MapLayout } from './classes/MapLayout';
 import { Cell } from './classes/Cell';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import { generateRGBColor } from '../Home/colors';
 import ZoneCellViewer from './ZoneCellViewer';
 import { MyMarketContext } from '../../context/MyMarketContext';
-import { IoArrowBack } from "react-icons/io5";
-import { FaRegSave } from "react-icons/fa";
 import { requestDeleteMarketZones, requestUpdateMarketZones } from '../../requests/myMarketRequests';
 import { MapEditorContext } from '../../context/MapEditorContext';
 
-export default function ZoneCreator({ setAddZone }) {
-    const { setMapLayout, borderCells, zones, setZones } = useContext(MyMarketContext);
-    const { layout, setLayout, editedZones, setEditedZones } = useContext(MapEditorContext);
+export default function ZoneCreator() {
+    const { setMapLayout, borderCells, zones, setZones  } = useContext(MyMarketContext);
+    const { layout, setLayout, editedZones, setEditedZones, setAddZone, save } = useContext(MapEditorContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
 
@@ -22,59 +20,61 @@ export default function ZoneCreator({ setAddZone }) {
     const [selectedCells, setSelectedCells] = useState(new Set());
     const [name, setName] = useState('');
 
-    const saveZone = async () => {
-        // copy mapLayout
-        const newMapLayout = new MapLayout(rows, columns);
-        newMapLayout.build(JSON.parse(JSON.stringify(layout)), JSON.parse(JSON.stringify(editedZones)));
+    useEffect(() => {
+        if (!save) return;
+        const saveZone = async () => {
+            // copy mapLayout
+            const newMapLayout = new MapLayout(rows, columns);
+            newMapLayout.build(JSON.parse(JSON.stringify(layout)), JSON.parse(JSON.stringify(editedZones)));
 
-        let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
-        selectedCells.forEach(cell => {
-            const [row, col] = cell.split(',').map(Number);
-            newLayout[row][col] = new Cell(newMapLayout.idCounter, newMapLayout.map_layout[row][col].type || 'empty', row, col, newMapLayout.map_layout[row][col].products || [], newMapLayout.map_layout[row][col].rotation);
-        });
-        
-        // remove not selected rows and columns
-        let rowsToKeep = new Set();
-        let colsToKeep = new Set();
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < columns; j++) {
-                if (typeof newLayout[i][j].zone_id !== 'number') continue;
-                rowsToKeep.add(i);
-                colsToKeep.add(j);
+            let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
+            selectedCells.forEach(cell => {
+                const [row, col] = cell.split(',').map(Number);
+                newLayout[row][col] = new Cell(newMapLayout.idCounter, newMapLayout.map_layout[row][col].type || 'empty', row, col, newMapLayout.map_layout[row][col].products || [], newMapLayout.map_layout[row][col].rotation);
+            });
+            
+            // remove not selected rows and columns
+            let rowsToKeep = new Set();
+            let colsToKeep = new Set();
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                    if (typeof newLayout[i][j].zone_id !== 'number') continue;
+                    rowsToKeep.add(i);
+                    colsToKeep.add(j);
+                }
             }
-        }
-        newLayout = newLayout.filter((_, i) => rowsToKeep.has(i));
-        newLayout = newLayout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
+            newLayout = newLayout.filter((_, i) => rowsToKeep.has(i));
+            newLayout = newLayout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
 
-        // get top left position of zone
-        let minRow = rows, minCol = columns;
-        selectedCells.forEach(cell => {
-            const [row, col] = cell.split(',').map(Number);
-            minRow = Math.min(minRow, row);
-            minCol = Math.min(minCol, col);
-        });
-        // add zone to mapLayout
-        const newZone = newMapLayout.addZone(null, name, newLayout, { row: minRow, column: minCol });
-        newMapLayout.setZoneColor(newZone.zone_id, generateRGBColor(newZone.zone_id, Array.from(newMapLayout.zones.values()).map(zone => zone.zone_id)));
-        
-        const zone = newMapLayout.getZone(newZone.zone_id);
-        if (zone) {
-            await requestUpdateMarketZones(localStorage.getItem('user_id'), [zone]);
-            alert('Zone created');
-        }
+            // get top left position of zone
+            let minRow = rows, minCol = columns;
+            selectedCells.forEach(cell => {
+                const [row, col] = cell.split(',').map(Number);
+                minRow = Math.min(minRow, row);
+                minCol = Math.min(minCol, col);
+            });
+            // add zone to mapLayout
+            const newZone = newMapLayout.addZone(null, name, newLayout, { row: minRow, column: minCol });
+            newMapLayout.setZoneColor(newZone.zone_id, generateRGBColor(newZone.zone_id, Array.from(newMapLayout.zones.values()).map(zone => zone.zone_id)));
+            
+            const zone = newMapLayout.getZone(newZone.zone_id);
+            if (zone) {
+                await requestUpdateMarketZones(localStorage.getItem('user_id'), [zone]);
+                alert('Zone created');
+            }
 
-        const newZones = Array.from(newMapLayout.zones.values());
-        const zonesToDelete = zones.filter(zone => !newZones.some(newZone => newZone.zone_id === zone.zone_id));
-        if (zonesToDelete && zonesToDelete.length > 0) {
-            await requestDeleteMarketZones(localStorage.getItem('user_id'), zonesToDelete);
-        }
+            const newZones = JSON.parse(JSON.stringify(Array.from(newMapLayout.zones.values())));
+            const zonesToDelete = zones.filter(zone => !newZones.some(newZone => newZone.zone_id === zone.zone_id));
+            if (zonesToDelete && zonesToDelete.length > 0) await requestDeleteMarketZones(localStorage.getItem('user_id'), zonesToDelete);
 
-        setLayout(JSON.parse(JSON.stringify(newMapLayout.map_layout)));
-        setEditedZones(newZones);
-        setZones(newZones)
-        setMapLayout(newMapLayout);
-        setAddZone(false);
-    };    
+            setLayout(JSON.parse(JSON.stringify(newMapLayout.map_layout)));
+            setEditedZones(newZones);
+            setZones(newZones);
+            setMapLayout(newMapLayout);
+            setAddZone(false);
+        }   
+        saveZone();
+    }, [save, rows, columns, editedZones, layout, name, zones, selectedCells, setAddZone, setEditedZones, setLayout, setMapLayout, setZones]);    
 
     const toggleCell = (row, col) => {
         const cell = `${row},${col}`;
@@ -118,9 +118,10 @@ export default function ZoneCreator({ setAddZone }) {
         if (tempSelectedCells.size !== rows * columns) setSelectedCells(tempSelectedCells);
         setIsMouseDown(false);
     };
+
     return (
-        <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center p-[1%] gap-[4%] w-full h-full'>
-            <input name='zoneName' value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl p-[1%]'/>
+        <div onMouseUp={() => setIsMouseDown(false)} className='flex flex-col items-center justify-center p-[2%] gap-[2%] w-full h-full'>
+            <input name='zoneName' value={name} placeholder='Zone Name' onChange={(e) => setName(e.target.value)} className='text-center placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl px-[1.5%] py-[2%]'/>
             <div ref={ref} className='flex w-full h-full items-center justify-center'>
                 <div className='grid w-fit h-fit items-center justify-center'
                     style={{ 
@@ -154,16 +155,6 @@ export default function ZoneCreator({ setAddZone }) {
                             );
                         })
                     ))}
-                </div>
-            </div>
-            <div className='w-full flex gap-[5%] items-center justify-center content-center'>
-                <div onClick={() => setAddZone(false)} className='custom-button gap-[10%] bg-darkgray-custom border-darkgray-custom border-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
-                    <IoArrowBack size={25}/>
-                    <p>Back</p>
-                </div>
-                <div onClick={saveZone} className='custom-button gap-[10%] bg-offwhite border-offwhite border-primary-hover text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
-                    <FaRegSave size={25}/>
-                    <p>Create</p>
                 </div>
             </div>
         </div>

@@ -24,8 +24,6 @@ export class Zone {
                     if (typeof cell.zone_id === 'number') this.zone_layout[row][col] = new Cell(null, cell.type, cell.x, cell.y, cell.products || null, cell.rotation || null);
                 }
             }
-            this.rows = this.zone_layout.length;
-            this.columns = this.rows > 0 ? this.zone_layout[0].length : 0;
         }
 
         // remove not selected rows and columns
@@ -39,9 +37,13 @@ export class Zone {
             }
         }
         this.zone_layout = this.zone_layout.filter((_, i) => rowsToKeep.has(i));
-        this.zone_layout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
+        this.zone_layout = this.zone_layout.map(row => row.filter((_, j) => colsToKeep.has(j))); 
+
+        // recalculate values
         this.rows = this.zone_layout.length;
         this.columns = this.rows ? this.zone_layout[0].length : 0;
+        if (this.zone_layout.length === 0) return;
+
         const firstCell = this.zone_layout[0][0];
         this.zone_position = { row: firstCell.x, column: firstCell.y }
     }

@@ -2,23 +2,27 @@ import React, { useContext, useState } from 'react';
 import SearchBar from "../../atoms/SearchBar";
 import DraggableImage from '../../atoms/DraggableImage';
 import { MapLayout } from './classes/MapLayout';
-import { requestUpdateMapLayout, requestUpdateMarketZones } from '../../requests/myMarketRequests';
+import { requestDeleteMarketZones, requestUpdateMapLayout, requestUpdateMarketZones } from '../../requests/myMarketRequests';
 import { MyMarketContext } from '../../context/MyMarketContext';
 import { checkChanges } from './checkChanges';
 import { IoArrowBack } from "react-icons/io5";
 import { FaRegSave } from "react-icons/fa";
 import { SlFrame } from "react-icons/sl";
+import { FaTrashCan } from "react-icons/fa6";
 import { MapEditorContext } from '../../context/MapEditorContext';
 import { titleCase } from '../../helper/titleCase';
 
-export default function Toolbar({ setEditMode, setEditZone, editZone }) {
+export default function Toolbar({ setEditMode, editZone }) {
   const user_id = localStorage.getItem('user_id');
   const { mapLayout, setMapLayout, images } = useContext(MyMarketContext);
-  const { layout, editedZones, addZone, setAddZone } = useContext(MapEditorContext);
+  const { layout, setLayout, editedZones, setEditedZones, addZone, setAddZone, setSave, setEditZone } = useContext(MapEditorContext);
   const [search, setSearch] = useState('');
   const filteredImages = Object.entries(images).filter(([type]) => type.toLowerCase().includes(search));
 
   const handleSave = async () => {
+    setSave(true);
+    if (addZone) return;
+
     // copy mapLayout
     const newMapLayout = new MapLayout(layout.length, layout[0].length);
     const oldZones = Array.from(mapLayout.zones.values());
@@ -49,6 +53,7 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
     for (const zone of oldZones) {
       const editedZone = editedZones.find(z => z.zone_id === zone.zone_id);
       if (
+        editedZone &&
         checkChanges(zone.zone_layout, editedZone.zone_layout) && 
         zone.zone_name.trim() === editedZone.zone_name && 
         zone.zone_position.row === editedZone.zone_position.row &&
@@ -58,11 +63,30 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
       zonesToUpdate.push(editedZone)
     }
 
+    const zonesToDelete = [];
+    for (const zone of oldZones) {
+      if (!editedZones.find(z => z.zone_id === zone.zone_id)) zonesToDelete.push(zone);
+    }    
+
     newMapLayout.build(layout, editedZones);
-    if (zonesToUpdate.length > 0) await requestUpdateMarketZones(user_id, zonesToUpdate)
+    if (zonesToUpdate.length) await requestUpdateMarketZones(user_id, zonesToUpdate);
+    if (zonesToDelete.length) await requestDeleteMarketZones(user_id, zonesToDelete.map(zone => zone.zone_id));
+
     alert(await requestUpdateMapLayout(user_id, newMapLayout.map_layout));
     setEditMode(false);
     return setMapLayout(newMapLayout);
+  }
+
+  const deleteZone = async (zone) => {
+    if (!zone) return;
+
+    const newMapLayout = new MapLayout(layout.length, layout[0].length);
+    newMapLayout.build(layout, editedZones);
+    newMapLayout.removeZone(zone.zone_id);
+
+    setLayout(newMapLayout.map_layout);
+    setEditedZones(Array.from(newMapLayout.zones.values()));
+    setEditZone(null);
   }
 
   return (
@@ -83,9 +107,15 @@ export default function Toolbar({ setEditMode, setEditZone, editZone }) {
           </div>
         </div>
       </div>
-      { !addZone && <div onClick={() => setAddZone(true)} className='flex items-center justify-center rounded-full p-[4%] bg-darkgray-custom border-darkgray-custom border-[0.3svh] border-secondary-hover h-[6svh] text-[2.2svh] cursor-pointer'>
-          <SlFrame size={20}/>
-          <p className='ml-[0.5svw]'>Add Zone</p>
+      { !addZone && <div className='w-full h-full flex gap-[5%] items-center justify-center content-center'>
+          <div onClick={() => setAddZone(true)} className='custom-button p-[4%] bg-darkgray-custom border-darkgray-custom border-[0.3svh] border-secondary-hover h-[6svh] text-[2.2svh] cursor-pointer'>
+            <SlFrame size={20}/>
+            <p className='ml-[0.5svw]'>Add Zone</p>
+          </div>
+          { typeof editZone === 'number' && <div onClick={() => deleteZone(editedZones.find(zone => zone.zone_id === editZone))} className='custom-button gap-[10%] bg-offwhite border-offwhite border-secondary-hover text-black h-[5.5svh] text-[2.2svh] cursor-pointer'>
+            <FaTrashCan size={25}/>
+            <p>Delete</p>
+          </div>}
         </div>
       }
       <div className='w-full h-full flex gap-[5%] items-center justify-center content-center pb-[5%]'>

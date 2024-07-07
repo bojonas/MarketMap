@@ -21,6 +21,7 @@ export default function MapEditor({ setEditMode }) {
   const [products, setProducts] = useState([]);
   const [editZone, setEditZone] = useState(null);
   const [addZone, setAddZone] = useState(false);
+  const [save, setSave] = useState(false);
 
   // tracking for edit modes
   const [duplicateCells, setDuplicateCells] = useState([]);
@@ -55,8 +56,10 @@ export default function MapEditor({ setEditMode }) {
     setEditZone,
     products,
     addZone,
-    setAddZone
-  }), [duplicateCells, deleteCells, duplicateMode, deleteMode, openCell, editedZones, layout, products, addZone]);  
+    setAddZone,
+    save, 
+    setSave
+  }), [duplicateCells, deleteCells, duplicateMode, deleteMode, openCell, editedZones, layout, products, addZone, save]);  
 
   // change Mode
   const changeDuplicateMode = () => {
@@ -76,15 +79,15 @@ export default function MapEditor({ setEditMode }) {
   return !layout ? (<div className='w-full h-full'></div>) : (
     <MapEditorContext.Provider value={contextValue}>
       <div className='flex h-full w-full'>
-        <Toolbar setEditMode={setEditMode} setEditZone={setEditZone} editZone={editZone}/>
+        <Toolbar setEditMode={setEditMode} editZone={editZone}/>
         <div className='flex flex-col items-center justify-center gap-[1%]' style={{ cursor: duplicateMode ? 'cell' : deleteMode ? 'not-allowed' : 'auto' }}>
           { addZone 
             ? <div className='w-[75svw] h-full'>
-              <ZoneCreator setAddZone={setAddZone}/>
+              <ZoneCreator/>
             </div>
             : typeof editZone === 'number' ? <ZoneEditor zone={editedZones.find(zone => zone.zone_id === editZone)} setEditedZones={setEditedZones}/>
               : <React.Fragment>
-                <div className='flex justify-center items-center max-w-[50vw] gap-[2%] p-[1.5%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
+                <div className='flex justify-center items-center max-w-1/2 gap-[2%] p-[1.5%] bg-gray-custom rounded-xl border-[0.4svh] border-secondary shadow-md shadow-secondary'>
                   { market.market_image_url && 
                   <div className='flex items-center justify-center w-[3svw] h-[6svh]'>
                       <img draggable='false' alt='' src={market.market_image_url}/>

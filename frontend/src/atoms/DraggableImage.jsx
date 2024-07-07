@@ -3,11 +3,9 @@ import { MapEditorContext } from "../context/MapEditorContext";
 
 export default function DraggableImage({ alt, source, coordinates, setDroppedItem, duplicate, style }) {
   const [isDuplicating, setisDuplicating] = useState(true);
-  const { setDuplicateCells, setDeleteCells, duplicateCells, deleteCells } = useContext(MapEditorContext);
+  const { duplicateCells, deleteCells } = useContext(MapEditorContext);
 
   const handleDragStart = (e) => {
-    setDuplicateCells([]);
-    setDeleteCells([]);
     const rootCoordinates = duplicate ? null : coordinates;
     e.dataTransfer.setData('application/json', JSON.stringify({ alt, source, rootCoordinates }));
     e.dataTransfer.effectAllowed = "copyMove";

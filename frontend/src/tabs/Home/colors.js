@@ -45,7 +45,8 @@ export function generateRGBColor (num, validNumbers) {
   const index = validNumbers.indexOf(num);
   if (index === -1) return '0, 0, 0';
 
-  const hue = (360 / validNumbers.length) * index;
+  const golden_ratio_conjugate = 0.618033988749895;
+  const hue = ((index * golden_ratio_conjugate) % 1) * 360;
   const saturation = 70; // Percentage
   const lightness = 50; // Percentage
 

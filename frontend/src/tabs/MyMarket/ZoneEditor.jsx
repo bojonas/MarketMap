@@ -65,7 +65,7 @@ export default function ZoneEditor({ zone, setEditedZones }) {
 
     return (
         <div className='flex flex-col items-center'>
-            <input name='zoneName' value={name} placeholder='Zone not named' onChange={handleZoneNameChange} style={{ borderColor: `rgb(${zone.zone_color})` }} className='border-[0.5svh] w-[12svw] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl pt-[1svh] pb-[1svh]'/>
+            <input name='zoneName' value={name} placeholder='Zone not named' onChange={handleZoneNameChange} style={{ borderColor: `rgb(${zone.zone_color})` }} className='w-[12svw] max-w-1/2 border-[0.5svh] text-center text-[3svh] placeholder:italic placeholder-white outline-none bg-gray-custom rounded-xl pt-[1svh] pb-[1svh]'/>
             <div className='min-w-[75svw] max-w-[75svw] flex content-center justify-center items-center text-center'>
                 <div className='flex flex-col items-center'>
                     <div className='flex items-center'>
