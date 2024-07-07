@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "node server.js",
-    "postinstall": "npm install side-channel"
+    "build": "npm install && node server.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
