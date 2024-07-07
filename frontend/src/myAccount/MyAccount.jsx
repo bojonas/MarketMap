@@ -63,7 +63,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
       <DropdownMenu isVisible={isVisible}>
         {isLoggedIn?<div className="dropdown-content" onClick={myProfile}>My Profile</div>:null}
         {isMarket?<div className="dropdown-content" onClick={myMarket}>My Market</div>:null}
-        {isLoggedIn?<div className="dropdown-content" onClick={settings}>Settings</div>:null}
+        {false?<div className="dropdown-content" onClick={settings}>Settings</div>:null}
         {isLoggedIn?<div className="dropdown-content" onClick={logout}>Logout</div>:null}
       </DropdownMenu>
     </div>

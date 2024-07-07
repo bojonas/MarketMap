@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { requestMarket, requestgetMarketLogo } from "../../requests/myProfileRequests";
+import { requestMarket, requestgetMarketLogo, requestUpdateData } from "../../requests/myProfileRequests";
 import ContentRow from "./ContentRow";
 import ColorElement from "../Settings/SettingOptions/Color/ColorElement";
 import MarketLogo from "./MarketLogo";
@@ -45,7 +45,7 @@ export default function MyMarketComponent(){
 
     const updateData = async()=>{
         if(popupContent){
-            //await requestUpdateData(username, popupLabel, popupContent)
+            await requestUpdateData(user_id, popupLabel, popupContent, true)
             setPopupContent("");
             setPopupLabel("");
             loadData();
@@ -72,15 +72,15 @@ export default function MyMarketComponent(){
 
     return (
         <div className="flex items-center justify-center h-full w-full">
-          <div className="rounded-md p-6 w-full justify-center">
+          <div className="w-[75%] rounded-md items-center">
                 <MarketLogo src={marketLogo}/>
                 
-                <div className="flex flex-col justify-center w-1/2 bg-offwhite m-auto p-[50svm]">
-                    <ContentRow label = {"Name"} content = {market_name} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    <ContentRow label = {"Street"} content = {address} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
-                    <ContentRow label = {"Zip"} content = {postal_code} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/> 
-                    <ContentRow label = {"City"} content = {city} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/> 
-                    <ContentRow label = {"Country"} content = {country} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
+                <div className="flex flex-col justify-center bg-darkgray-custom w-full m-auto p-[50svm] space-y-2">
+                    <ContentRow label = {"Name"} content = {market_name} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
+                    <ContentRow label = {"Street"} content = {address} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
+                    <ContentRow label = {"Zip"} content = {postal_code} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/> 
+                    <ContentRow label = {"City"} content = {city} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/> 
+                    <ContentRow label = {"Country"} content = {country} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"Primary Color"} content={
                         <div className="flex flex-row w-1/2 mx-auto">
                             <ColorElement label={"Market Primary"} isVisible={false}/>

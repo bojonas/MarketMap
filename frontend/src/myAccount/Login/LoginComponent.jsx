@@ -83,7 +83,7 @@ export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />}
-          <button className="custom-button" onClick={login}>
+          <button className="bg-custom border-2 hover:border-black rounded-3xl w-1/3 h-10" onClick={login}>
             Login
           </button>
           <div className="text-black">

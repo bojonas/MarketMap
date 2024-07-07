@@ -4,7 +4,7 @@ const DropdownMenu = ({ isVisible, children }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="absolute top-[6.3svh] bg-white shadow-lg rounded-lg p-4 z-10">
+    <div className="absolute top-[6.5svh] left-[10%] w-[20svh] border-black-custom border-4 bg-darkgray-custom shadow-lg rounded-lg px-[8%] py-[10%] z-10">
       {children}
     </div>
   );

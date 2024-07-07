@@ -63,7 +63,7 @@ export default function Register({setLoginFlag}){
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <button className="custom-button" onClick={register}>
+              <button className="bg-custom border-2 hover:border-black rounded-3xl w-1/3 h-10" onClick={register}>
                 Register
               </button>
               <div className="text-black">

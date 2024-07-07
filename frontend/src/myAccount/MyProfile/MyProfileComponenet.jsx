@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { requestUpdateData, requestUser } from "../../requests/myProfileRequests";
 import ContentRow from "./ContentRow";
 import ColorElement from "../Settings/SettingOptions/Color/ColorElement";
+import Popup from "./Popup";
 
 export default function MyProfileComponent(){
     
@@ -39,7 +40,7 @@ export default function MyProfileComponent(){
 
     const updateData = async()=>{
         if(popupContent){
-            await requestUpdateData(username, popupLabel, popupContent)
+            await requestUpdateData(user_id, popupLabel, popupContent, false)
             setPopupContent("");
             setPopupLabel("");
             loadData();
@@ -64,9 +65,9 @@ export default function MyProfileComponent(){
 
     return (
         <div className="flex items-center justify-center h-full w-full">
-          <div className=" rounded-md p-6 w-full items-center">
+          <div className="w-[75%] rounded-md items-center">
                 
-                <div className="flex flex-col justify-center w-1/2 bg-offwhite m-auto p-[50svm]">
+                <div className="flex flex-col justify-center bg-darkgray-custom w-full m-auto p-[50svm] space-y-2">
                     <ContentRow label = {"Username"} content = {username} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={false}/>
                     <ContentRow label = {"Email"} content = {email} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
                     <ContentRow label = {"Last Name"} content = {lastName} createPopup={createPopup} setPopupLabel={setPopupLabel} editable={true}/>
@@ -96,17 +97,3 @@ export default function MyProfileComponent(){
 
 
 
-function Popup({ backPopup, closePopup, popupLabel, setPopupContent }) {
-    return (
-        <div className="fixed inset-1 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-md text-black">
-                <h2 className="text-xl font-semibold mb-4">Edit: {popupLabel}</h2>
-                <div className="mb-4">
-                    <input type="text" className="custom-input" placeholder={"New "+ popupLabel} onChange={(e)=>{setPopupContent(e.target.value)}} />
-                </div>
-                <button onClick={backPopup} className="bg-red-500 text-white px-4 py-2 rounded-md mr-3 hover:bg-red-400">Back</button>   
-                <button onClick={closePopup} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400 ">Save</button>
-            </div>
-        </div>
-    );
-}

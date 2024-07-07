@@ -21,10 +21,6 @@ export default function Uploader(){
        //console.log(mapping);
     };
 
-    
-   
-
-    
 
     const adjustItem = (index, item)=>{
         //listItem_id, listItem, product_id, product_name, isAssigned
@@ -32,17 +28,15 @@ export default function Uploader(){
         const handleChange = (event)=>{
             let newInput = selectedItem
             newInput[index] = event.target.value
-
-            //console.log(newInput)
             setSelectedItem(newInput);
         }
     
         return (
             <div className="flex flex-row">
-                <div className=" w-1/3">
+                <div className="rounded-xl p-2 w-1/2 border-2 border-black mb-[1%] mr-[0.5%]">
                     {item["listItem"]}
                 </div>
-                <select value={selectedItem[item["listItem"]]} onChange={handleChange}>
+                <select className="rounded-full border-2 border-black mb-[1%] ml-[0.5%] w-1/2 outline-none border-custom-hover cursor-pointer" value={selectedItem[item["listItem"]]} onChange={handleChange}>
                     {item["assignedItems"].map((item, index) => (
                     <option key={index} value={item}>
                         {item}
@@ -54,21 +48,15 @@ export default function Uploader(){
     }
    
     const handleUpload = async()=>{
-        let upload = [] //Wie sieht die liste aus?
-        //--> [{product_id, product_count, product_name_en}]
+        let upload = []
         for(let i = 0; i<displayMapping.length;i++){
             upload.push({product_id: mapping.find(item => item.product_name === selectedItem[i])["product_id"], product_count: displayMapping[i]["amount"], product_name_en: selectedItem[i]})
             
         }
-        /*console.log(upload)
-        console.log(mapping)
-        console.log(displayMapping)
-        console.log(selectedItem)*/
 
 
         await requestPostShoppingCart(cartName,localStorage.getItem("user_id"),upload)
         navigator("/")
-        //setShoppingCarts(prev => [...prev,upload])
     }
     
 
@@ -80,15 +68,15 @@ export default function Uploader(){
             
             :
             <div className="overflow-auto w-full h-full">
-                <input type="text" className=" h-[10%] w-full" value={cartName} onChange={(event)=>{setCartName(event.target.value)}}/>
+                <input type="text" className=" h-[10%] w-full bg-offwhite" value={cartName} onChange={(event)=>{setCartName(event.target.value)}}/>
 
-                <div className="h-[70%] w-full bg-blue-300">
+                <div className="h-[70%] w-full bg-white p-3">
                     {displayMapping.map((item, index) => (
                         <div key={displayMapping[index]["listItem"]}>{adjustItem(index, item)}</div>
                     ))}
                 </div>
-                <div className="flex h-[20%] w-full bg-green-300 ">
-                    <button className="bg-blue-700 w-1/2 h-1/2 m-auto hover:bg-green-100" onClick={handleUpload}>
+                <div className="flex h-[20%] w-full bg-offwhite ">
+                    <button className="bg-custom rounded-xl w-1/5 h-1/2 m-auto border-2 hover:border-darkgray-custom" onClick={handleUpload}>
                         Upload Cart
                     </button>
                 </div>

@@ -27,7 +27,7 @@
     } 
     
     .dropdown-content {
-        @apply py-2 px-4 text-black hover:bg-red-200 cursor-pointer
+        @apply py-2 px-4 text-offwhite bg-black border-2 rounded-3xl m-[5%] border-custom-hover cursor-pointer
     }
 }
 
@@ -92,6 +92,10 @@
 }
 
 .border-custom-hover:hover {
+    border-color: var(--custom-color) !important;
+}
+
+.border-custom{
     border-color: var(--custom-color) !important;
 }
 

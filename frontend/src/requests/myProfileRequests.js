@@ -1,19 +1,24 @@
 import { axiosInstance } from "./axiosInstance";
 
 //request to /update_data
-export async function requestUpdateData(username, label, content) {
-    if (!username || !label || !content) {
+  export async function requestUpdateData(user_id, label, content, marketFlag = false) {
+    if (!user_id || !label || !content) {
       return console.error('Invalid parameters');
     }
   
     const data = {
-      username: username,
+      user_id: user_id,
       label: label.toLowerCase().replace(" ", ""),
       data: content
     };
-  
+    var response;
     try {
-      const response = await axiosInstance.put('/update_data', data);
+      if(marketFlag){
+        response = await axiosInstance.put('/update_market_data', data);
+      }
+      else{
+        response = await axiosInstance.put('/update_data', data);
+      }
       return response.data.message
     } catch (error) {
       console.error('Error creating user:', error);

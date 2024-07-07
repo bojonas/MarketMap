@@ -78,4 +78,36 @@ async function deleteMarketZones(user_id, zones, postgres_pool) {
     }
 }
 
-module.exports = { putMapLayout, putMarketZones, getMyMarket, getMarketZones, deleteMarketZones }
+async function updateMarketData(user_id, label, data, postgres_pool){
+    const whiteList = ['street', 'zip', 'city', 'country', 'name']; //ALWAYS ADD YOUR ROWS
+    if (!whiteList.includes(label)) {
+        throw new Error('Invalid column name');
+    }
+    try{
+        if (label === "name"){
+            label = "market_name"
+        }
+        if (label === "zip"){
+            label = "postal_code"
+        }
+        if (label === "street"){
+            label = "address"
+        }
+        
+        const query = `
+        UPDATE market_map.markets
+        SET ${label} = $1
+        WHERE market_id = (SELECT market_id FROM market_map.users_markets WHERE user_id = $2) 
+        RETURNING market_id
+        `
+        
+        const result = await postgres_pool.query(query,[data, user_id])
+        return {message: "User Data updated!", market_id: result.rows[0].market_id}
+    }
+    catch(error){
+        console.error('Error updating data:', error);
+    }
+}
+
+
+module.exports = { putMapLayout, updateMarketData, putMarketZones, getMyMarket, getMarketZones, deleteMarketZones }

@@ -64,7 +64,7 @@ export default function UploaderComponent({setMapping, setUploaderComponentDone,
                 />
             </div>
             <div className="h-1/4 w-full flex bg-offwhite">
-                <button className="bg-custom w-1/2 h-1/2 m-auto rounded-2xl border-2 hover:border-black "
+                <button className="bg-custom w-1/5 h-1/2 m-auto rounded-2xl border-2 hover:border-black "
                     onClick={handleUpload}>
                     Upload
                 </button>
