@@ -55,7 +55,7 @@ export default function ShoppingCarts({ user_id }) {
     }
 
     const uploadShoppingCart = async () => {
-        navigator('/uploader')
+        if (user_id) navigator('/uploader');
     }   
 
     return (
