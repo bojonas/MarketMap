@@ -1,5 +1,8 @@
 export function getTimePassed(timestamp) {
-    const difference = new Date().getTime() - new Date(timestamp).getTime();
+    const now = new Date();
+    const nowUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+    const timestampUTC = new Date(timestamp).getTime();
+    const difference = nowUTC - timestampUTC;
     let time = Math.round(difference / (1000 * 60)); 
     let entity = 'min';
     if (time >= 60) {
