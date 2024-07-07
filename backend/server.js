@@ -12,7 +12,7 @@ const app = express();
 const PORT = 3001; 
 
 app.use(cors({
-    origin: ['*']
+    origin: ['https://market-map.vercel.app/']
 }));
 app.use(bodyParser.json());
 app.use(express.json());
