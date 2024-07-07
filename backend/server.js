@@ -467,7 +467,7 @@ app.post('/get_market_logo', async (req, res) => {
 });
 
 app.post('/post_market_logo', async (req, res) => {
-    console.log("hier: angekommen")
+    //console.log("hier: angekommen")
     const { user_id, file } = req.body;
     try {
         const result = await postMarketLogo(user_id, file, postgres_pool);
