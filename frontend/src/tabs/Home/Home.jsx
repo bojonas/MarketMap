@@ -91,8 +91,8 @@ export default function Home() {
     }
 
     useEffect(() => {
-        removeMarket();
-    }, [localStorage.getItem('user_id')]);
+        document.documentElement.style.removeProperty('--custom-color');
+    }, [user_id]);
 
     const borderCells = useMemo(() => {
         const newBorderCells = new Map();

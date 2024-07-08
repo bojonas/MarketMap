@@ -9,7 +9,7 @@ export default function SearchHistory({ user_id, markets, selectMarket, images }
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
-        if (!user_id) return;
+        if (!user_id) return setHistory([]);
         const getHistory = async () => {
             const data = await requestGetHistory(user_id);
             if (data) setHistory(data);

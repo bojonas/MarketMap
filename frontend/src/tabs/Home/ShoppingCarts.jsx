@@ -16,6 +16,7 @@ export default function ShoppingCarts({ user_id }) {
     const navigator = useNavigate()
 
     useEffect(() => {
+        if (!user_id) return setShoppingCarts([]);
         const getShoppingCarts = async () => {
             const data = await requestGetShoppingCarts(user_id);
             if (!data) return;
@@ -43,7 +44,7 @@ export default function ShoppingCarts({ user_id }) {
     }
 
     const removeShoppingCart = async (cart_id) => {
-        if (!cart_id) return;
+        if (cart_id) return;
         const rowCount = await requestRemoveShoppingCart(cart_id)
         if (rowCount > 0) setShoppingCarts(shoppingCarts.filter(shoppingCart => shoppingCart.cart_id !== cart_id));
     }

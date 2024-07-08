@@ -11,7 +11,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import { generateColor } from './colors';
 
 export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath }) {
-    const user_id = localStorage.getItem('user_id')
+    const user_id = localStorage.getItem('user_id');
     const timeoutId = useRef();
     const [search, setSearch] = useState('');
     const { shoppingCart, productsInMarket, layoutIndex, viewZone, setViewZone } = useContext(MapViewerContext);
@@ -30,13 +30,15 @@ export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath
             const data = await requestGetProducts();
             if (data) setProducts(data);
         }
+        getProducts();
+
+        if (!user_id) return removeMarket();
         const getShoppingCarts = async () => {
             const data = await requestGetShoppingCarts(user_id);
             if (data) setShoppingCarts(data);
         }
-        getProducts();
         getShoppingCarts();
-    }, [user_id]);
+    }, [user_id, removeMarket]);
 
     const filteredProducts = useMemo(() => (products.filter(({ product_name_en, brand_name, category_en, type_en }) => 
         product_name_en.toLowerCase().includes(search) ||
