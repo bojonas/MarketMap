@@ -41,7 +41,7 @@ export default function SearchHistory({ user_id, markets, selectMarket, images }
                                         <img draggable='false' alt='' src={market.market_image_url}/>
                                     </div>
                                     }
-                                    <p className='font-bold'>{market.market_name}</p>
+                                    <p className='font-bold overflow-hidden whitespace-nowrap text-ellipsis'>{market.market_name}</p>
                                 </div>
                                 <p className='w-[25%]'>{time}{entity} ago</p>
                                 <div className='flex items-center justify-center'>
