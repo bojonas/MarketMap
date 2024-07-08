@@ -60,7 +60,6 @@ export default function UploaderComponent({setMapping, setUploaderComponentDone,
                     className="w-1/2 h-full bg-white placeholder-black border-offwhite border-2 p-4" 
                     placeholder="Copy Shopping list here"
                     onChange={handleFileChange}
-
                 />
             </div>
             <div className="h-1/4 w-full flex bg-offwhite">

@@ -2,6 +2,7 @@ import { useState, React } from "react"
 import UploaderComponent from "./UploaderComponent";
 import { requestPostShoppingCart } from "../requests/homeRequests";
 import { useNavigate } from "react-router-dom";
+import ItemSelector from "./ItemSelector";
 
 
 export default function Uploader(){
@@ -65,22 +66,9 @@ export default function Uploader(){
         <div className="w-1/2 h-1/2 m-auto bg-white flex flex-col items-center justify-center text-black">
             {!uploaderComponentDone?
             <UploaderComponent setMapping={setMapping} setUploaderComponentDone={setUploaderComponentDone} setDisplayMapping={setDisplayMapping} setSelectedItem={setSelectedItem}/>
-            
             :
-            <div className="overflow-auto w-full h-full">
-                <input type="text" className=" h-[10%] w-full bg-offwhite" value={cartName} onChange={(event)=>{setCartName(event.target.value)}}/>
-
-                <div className="h-[70%] w-full bg-white p-3">
-                    {displayMapping.map((item, index) => (
-                        <div key={displayMapping[index]["listItem"]}>{adjustItem(index, item)}</div>
-                    ))}
-                </div>
-                <div className="flex h-[20%] w-full bg-offwhite ">
-                    <button className="bg-custom rounded-xl w-1/5 h-1/2 m-auto border-2 hover:border-darkgray-custom" onClick={handleUpload}>
-                        Upload Cart
-                    </button>
-                </div>
-            </div>}
+            <ItemSelector cartName={cartName} setCartName={setCartName} displayMapping={displayMapping} adjustItem={adjustItem} handleUpload={handleUpload}/>
+            }
             
         </div>
     )
