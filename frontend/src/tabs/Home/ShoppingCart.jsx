@@ -32,12 +32,16 @@ export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath
         }
         getProducts();
 
-        if (!user_id) return removeMarket();
+        if (!user_id) return;
         const getShoppingCarts = async () => {
             const data = await requestGetShoppingCarts(user_id);
             if (data) setShoppingCarts(data);
         }
         getShoppingCarts();
+    }, [user_id, removeMarket]);
+
+    useEffect(() => {
+        if (!user_id) removeMarket();
     }, [user_id, removeMarket]);
 
     const filteredProducts = useMemo(() => (products.filter(({ product_name_en, brand_name, category_en, type_en }) => 
