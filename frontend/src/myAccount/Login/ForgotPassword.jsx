@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { requestUpdatePassword, requestCheckUser } from "../../requests/loginRequests";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 var emailFinal = null;
 
@@ -94,7 +95,7 @@ function CheckEmail({setEmailChecked, setForgotPw}){
 
     const [email, setEmail] = useState("")
     return ( 
-        <div>
+        <div className="flex flex-col">
             <input
                 type="email"
                 placeholder="Email"
@@ -102,12 +103,15 @@ function CheckEmail({setEmailChecked, setForgotPw}){
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} 
             />
-            <div className="items-center">
-                <button className="custom-button" onClick={continuePage}>
-                    Continue
-                </button>
-                <button className="custom-button-forgotPw" onClick={backPage}>
+            <div className="flex items-center gap-[30%] w-[40%]">
+                
+                <button className="text-black flex flex-row items-center justify-start gap-[8%] w-2/3 text-custom-hover" onClick={backPage}>
+                    <FaArrowLeft size={15}/>
                     Back
+                </button>
+                <button className="text-black flex flex-row items-center justify-start gap-[8%] w-full border-custom-hover text-custom-hover border-2 border-black-custom p-[4%] rounded-md" onClick={continuePage}>
+                    <FaArrowRight size={20}/>
+                    Continue
                 </button>
             </div>
             

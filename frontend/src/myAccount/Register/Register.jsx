@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {requestCreateMarket, requestCreateUser} from '../../requests/loginRequests';
 import { useNavigate } from "react-router-dom";
+import { CiLogin } from "react-icons/ci";
+
 export default function Register({setLoginFlag}){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -126,7 +128,8 @@ export default function Register({setLoginFlag}){
                 <input type="checkbox" name="check" id="check" checked={isMarket} onChange={()=>{setIsMarket(!isMarket)}}/>
               </div>
               
-              <button className="bg-custom border-2 hover:border-black rounded-3xl w-[8svw] h-10" onClick={register}>
+              <button className="bg-custom border-2 hover:border-black rounded-3xl w-[7.5svw] h-10 flex flex-row justify-center items-center gap-[8%]" onClick={register}>
+                <CiLogin size={20}/>
                 Register
               </button>
               <div className="text-black">

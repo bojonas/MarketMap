@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {requestCheckCredentials} from '../../requests/loginRequests';
+import { CiLogin } from "react-icons/ci";
+
 
 export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag}) {
   const [username, setUsername] = useState("");
@@ -83,7 +85,8 @@ export default function LoginComponent({setForgotPw, setIsLoggedIn, setLoginFlag
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />}
-          <button className="bg-custom border-2 hover:border-black rounded-3xl w-1/3 h-10" onClick={login}>
+          <button className="bg-custom border-2 hover:border-black rounded-3xl w-[35%] h-10 flex flex-row justify-center items-center gap-[8%]" onClick={login}>
+            <CiLogin size={20}/>
             Login
           </button>
           <div className="text-black">

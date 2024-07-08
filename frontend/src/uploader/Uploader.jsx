@@ -12,7 +12,7 @@ export default function Uploader(){
 
     const [displayMapping, setDisplayMapping] = useState();
     const [selectedItem, setSelectedItem] = useState({})
-    const [isAlert, setIsAlert] = useState(true)
+    const [isAlert, setIsAlert] = useState(false)
 
     const [cartName, setCartName] = useState("New Shopping Cart");
 
