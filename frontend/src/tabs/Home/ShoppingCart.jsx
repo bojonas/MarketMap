@@ -12,6 +12,7 @@ import { generateColor } from './colors';
 
 export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath }) {
     const user_id = localStorage.getItem('user_id');
+    const prevUserId = useRef();
     const timeoutId = useRef();
     const [search, setSearch] = useState('');
     const { shoppingCart, productsInMarket, layoutIndex, viewZone, setViewZone } = useContext(MapViewerContext);
@@ -38,10 +39,11 @@ export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath
             if (data) setShoppingCarts(data);
         }
         getShoppingCarts();
-    }, [user_id, removeMarket]);
+    }, [user_id]);
 
     useEffect(() => {
-        if (!user_id) removeMarket();
+        if (prevUserId.current !== undefined && prevUserId.current !== null && user_id === null) removeMarket();
+        prevUserId.current = user_id;
     }, [user_id, removeMarket]);
 
     const filteredProducts = useMemo(() => (products.filter(({ product_name_en, brand_name, category_en, type_en }) => 

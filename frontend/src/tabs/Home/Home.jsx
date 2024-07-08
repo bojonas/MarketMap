@@ -35,6 +35,7 @@ export default function Home() {
 
         // clear timeout
         return () => {
+            removeCustomColors();
             clearTimeout(timeoutId.current);
         }
     }, []);
