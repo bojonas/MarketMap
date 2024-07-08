@@ -28,7 +28,7 @@ export default function AlertBox({ action, color, onClose })  {
     }, [onClose]);
 
     return !visible ? null :(
-        <div className={`flex items-center justify-center left-1/2 px-[2%] py-[1%] text-[2.5svh] border-2 rounded-lg absolute ${colors[color] || colors['green']}`}
+        <div className={`flex items-center justify-center left-1/2 px-[2%] py-[1%] text-[2.5svh] border-2 rounded-b-lg absolute ${colors[color] || colors['green']}`}
         role="alert"
         >
         <span>{action}</span>
