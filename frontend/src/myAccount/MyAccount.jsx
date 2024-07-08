@@ -1,8 +1,9 @@
 import DropdownMenu from "./DropdownMenu";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaRegMap} from "react-icons/fa";
+import { IoExitOutline } from "react-icons/io5";
+import { MdAccountCircle } from "react-icons/md";
 
 export default function MyAccount({isLoggedIn, setIsLoggedIn}){
     const navigate = useNavigate()
@@ -61,10 +62,10 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
         }
       </button>}
       <DropdownMenu isVisible={isVisible}>
-        {isLoggedIn?<div className="dropdown-content" onClick={myProfile}>My Profile</div>:null}
-        {isMarket?<div className="dropdown-content" onClick={myMarket}>My Market</div>:null}
+        {isLoggedIn?<div className="dropdown-content" onClick={myProfile}><MdAccountCircle size={20}/>My Profile</div>:null}
+        {isMarket?<div className="dropdown-content" onClick={myMarket}><FaRegMap size={15}/>My Market</div>:null}
         {false?<div className="dropdown-content" onClick={settings}>Settings</div>:null}
-        {isLoggedIn?<div className="dropdown-content" onClick={logout}>Logout</div>:null}
+        {isLoggedIn?<div className="dropdown-content" onClick={logout}><IoExitOutline size={20}/>Logout</div>:null}
       </DropdownMenu>
     </div>
   );
