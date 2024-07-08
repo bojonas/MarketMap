@@ -14,7 +14,7 @@ import { titleCase } from '../../helper/titleCase';
 
 export default function Toolbar({ setEditMode, editZone }) {
   const user_id = localStorage.getItem('user_id');
-  const { mapLayout, setMapLayout, images } = useContext(MyMarketContext);
+  const { mapLayout, setMapLayout, images, setSaveMessage} = useContext(MyMarketContext);
   const { layout, setLayout, editedZones, setEditedZones, addZone, setAddZone, setSave, setEditZone } = useContext(MapEditorContext);
   const [search, setSearch] = useState('');
   const filteredImages = Object.entries(images).filter(([type]) => type.toLowerCase().includes(search));
@@ -37,16 +37,17 @@ export default function Toolbar({ setEditMode, editZone }) {
         zone.zone_position.row === oldZone.zone_position.row &&
         zone.zone_position.column === oldZone.zone_position.column && 
         zone.zone_color === oldZone.zone_color
-      ) return alert('No Changes');
+      ) return setSaveMessage('No Changes');
+
       newMapLayout.build(JSON.parse(JSON.stringify(layout)), JSON.parse(JSON.stringify(editedZones)));
       await requestUpdateMapLayout(user_id, newMapLayout.map_layout)
-      alert(await requestUpdateMarketZones(user_id, [zone]));
+      setSaveMessage(await requestUpdateMarketZones(user_id, [zone]));
       return setMapLayout(newMapLayout);
     } 
 
     if (checkChanges(layout, mapLayout.map_layout)) {
       setEditMode(false);
-      return alert('No Changes');
+      return setSaveMessage('No Changes');
     }
 
     const zonesToUpdate = [];
@@ -72,7 +73,7 @@ export default function Toolbar({ setEditMode, editZone }) {
     if (zonesToUpdate.length) await requestUpdateMarketZones(user_id, zonesToUpdate);
     if (zonesToDelete.length) await requestDeleteMarketZones(user_id, zonesToDelete.map(zone => zone.zone_id));
 
-    alert(await requestUpdateMapLayout(user_id, newMapLayout.map_layout));
+    setSaveMessage(await requestUpdateMapLayout(user_id, newMapLayout.map_layout));
     setEditMode(false);
     return setMapLayout(newMapLayout);
   }

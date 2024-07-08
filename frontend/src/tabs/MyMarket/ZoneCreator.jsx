@@ -9,7 +9,7 @@ import { requestDeleteMarketZones, requestUpdateMapLayout, requestUpdateMarketZo
 import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function ZoneCreator() {
-    const { setMapLayout, borderCells, zones, setZones } = useContext(MyMarketContext);
+    const { setMapLayout, borderCells, zones, setZones, setSaveMessage } = useContext(MyMarketContext);
     const { layout, setLayout, editedZones, setEditedZones, setAddZone, save, setSave } = useContext(MapEditorContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
@@ -31,6 +31,11 @@ export default function ZoneCreator() {
             let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
             selectedCells.forEach(cell => {
                 const [row, col] = cell.split(',').map(Number);
+                if (!row || !col) {
+                    setAddZone(false);
+                    setSave(false);
+                    return setSaveMessage('No Changes');
+                }
                 newLayout[row][col] = new Cell(newMapLayout.idCounter, newMapLayout.map_layout[row][col].type || 'empty', row, col, newMapLayout.map_layout[row][col].products || [], newMapLayout.map_layout[row][col].rotation);
             });
             
@@ -59,10 +64,13 @@ export default function ZoneCreator() {
             newMapLayout.setZoneColor(newZone.zone_id, generateRGBColor(newZone.zone_id, Array.from(newMapLayout.zones.values()).map(zone => zone.zone_id)));
             
             const zone = newMapLayout.getZone(newZone.zone_id);
-            if (zone) {
-                await requestUpdateMarketZones(user_id, [zone]);
-                alert('Zone created');
+            if (!zone || zone.zone_layout.length === 0) {
+                setAddZone(false);
+                setSave(false);
+                return setSaveMessage('No Changes');
             }
+
+            await requestUpdateMarketZones(user_id, [zone]);
 
             const newZones = JSON.parse(JSON.stringify(Array.from(newMapLayout.zones.values())));
             const zonesToDelete = zones.filter(zone => !newZones.some(newZone => newZone.zone_id === zone.zone_id));
@@ -73,12 +81,13 @@ export default function ZoneCreator() {
             setLayout(JSON.parse(JSON.stringify(newMapLayout.map_layout)));
             setEditedZones(newZones);
             setZones(newZones);
-            setMapLayout(newMapLayout);
+            setMapLayout(newMapLayout);           
             setAddZone(false);
             setSave(false);
+            setSaveMessage('Zone created');
         }   
         saveZone();
-    }, [save, setSave, rows, columns, editedZones, layout, name, zones, selectedCells, setAddZone, setEditedZones, setLayout, setMapLayout, setZones]);    
+    }, [save, setSave, rows, columns, editedZones, layout, name, zones, selectedCells, setAddZone, setEditedZones, setLayout, setMapLayout, setZones, setSaveMessage]);    
 
     const toggleCell = (row, col) => {
         const cell = `${row},${col}`;

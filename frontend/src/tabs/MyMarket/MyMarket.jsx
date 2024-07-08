@@ -8,6 +8,7 @@ import { MapLayout } from "./classes/MapLayout";
 import { getItemImages } from '../../helper/getItemImages';
 import { findBorderCells } from "./findBorderCells";
 import { removeCustomColors } from '../../helper/removeCustomColors';
+import AlertBox from '../../atoms/AlertBox';
 
 export default function MyMarket() {
     const user_id = localStorage.getItem('user_id');
@@ -16,6 +17,7 @@ export default function MyMarket() {
     const [mapLayout, setMapLayout] = useState(null);
     const [zones, setZones] = useState([]);
     const [editMode, setEditMode] = useState(false);
+    const [saveMessage, setSaveMessage] = useState('');
 
     useEffect(() => {
         if (!user_id) return;
@@ -58,9 +60,8 @@ export default function MyMarket() {
         return newBorderCells;
     }, [mapLayout]);
 
-    
     return (
-        <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, setZones, images, borderCells }}>
+        <MyMarketContext.Provider value={{ market, mapLayout, setMapLayout, zones, setZones, images, borderCells, setSaveMessage }}>
             <div className='relative flex w-full h-full'>
                 { !market ? null
                 : editMode ? <MapEditor setEditMode={setEditMode}/>
@@ -72,6 +73,7 @@ export default function MyMarket() {
                         </div>
                     </React.Fragment>
                 }
+                { saveMessage && <AlertBox action={saveMessage} onClose={() => setSaveMessage('')}/> }
             </div>
         </MyMarketContext.Provider>
     );
