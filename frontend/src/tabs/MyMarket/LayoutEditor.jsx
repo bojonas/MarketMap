@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import Cell from './Cell';
+import CellEditor from './CellEditor';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
 import { useContext } from 'react';
 import { MyMarketContext } from '../../context/MyMarketContext';
@@ -61,7 +61,7 @@ export default function LayoutEditor() {
             { layout.map((row, i) => (
               row.map((cell, j) => (
                 <div key={cell.y} onClick={() => typeof cell.zone_id === 'number' ? setEditZone(cell.zone_id) : null}>
-                  { cell && <Cell 
+                  { cell && <CellEditor 
                     type={cell.type} 
                     row={cell.x}
                     col={cell.y}

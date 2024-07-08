@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import { useAdjustScale } from '../../hooks/useAdjustScale';
-import Cell from './Cell';
+import CellEditor from './CellEditor';
 import ProductModal from './ProductModal';
 import { getNonBorderStyle } from './getNonBorderStyle';
 import { getBorderStyle } from './getBorderStyle';
@@ -84,7 +84,7 @@ export default function ZoneEditor({ zone, setEditedZones }) {
                                             if (borderCells.size && cell.zone_id === zone.zone_id) borderStyle = getBorderStyle(borderStyle, borderCells.get(cell.zone_id), cell.x, cell.y)
                                             return (
                                                 <div key={j}>
-                                                    { cell.zone_id === zone.zone_id && <Cell
+                                                    { cell.zone_id === zone.zone_id && <CellEditor
                                                         type={cell.type}
                                                         row={cell.x}
                                                         col={cell.y}

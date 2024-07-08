@@ -4,7 +4,7 @@ import LoadImage from "../../atoms/LoadImage"
 import { MapEditorContext } from '../../context/MapEditorContext';
 import { isEqualArray } from '../../helper/isEqualArray';
 
-const Cell = memo(({ type, row, col, cellStyle }) => {
+const CellEditor = memo(({ type, row, col, cellStyle }) => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [dropped, setDropped] = useState(false);
   const [isOver, setIsOver] = useState(false);
@@ -173,4 +173,4 @@ const Cell = memo(({ type, row, col, cellStyle }) => {
   );
 });
 
-export default Cell;
+export default CellEditor;
