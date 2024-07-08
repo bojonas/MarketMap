@@ -111,7 +111,7 @@ async function postMarketLogo(user_id, file, postgres_pool){
     const uploader = new GoogleDriveUploader(arrayBuffer,"jpg",name)
     const result_id = await uploader.upload_file() //-> url
 
-    console.log("Line 103: "+result_id)
+    //console.log("Line 103: "+result_id)
 
     try{
         const query = `
