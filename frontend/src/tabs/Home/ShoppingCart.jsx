@@ -198,10 +198,10 @@ export default function ShoppingCart({ setShoppingCart, removeMarket, handlePath
                     </div>
                 </div>
                 <div className='flex flex-col w-full p-[5%] bg-offwhite overflow-y-scroll rounded-b-xl'>
-                    <div onClick={saveShoppingCart} className='flex items-center justify-center gap-[4%] bg-offwhite border-offwhite text-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
+                    { user_id && <div onClick={saveShoppingCart} className='flex items-center justify-center gap-[4%] bg-offwhite border-offwhite text-secondary-hover h-[5.5svh] text-[2.2svh] cursor-pointer'>
                         <FaRegSave size={25} />
                         <p>Save</p>
-                    </div>
+                    </div>}
                 </div>
             </div>
             <div className='absolute bottom-[2svh] flex flex-col items-center justify-center gap-[20%] w-full h-[15svh]'>
