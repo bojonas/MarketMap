@@ -10,7 +10,7 @@ import { MapEditorContext } from '../../context/MapEditorContext';
 
 export default function ZoneCreator() {
     const { setMapLayout, borderCells, zones, setZones  } = useContext(MyMarketContext);
-    const { layout, setLayout, editedZones, setEditedZones, setAddZone, save } = useContext(MapEditorContext);
+    const { layout, setLayout, editedZones, setEditedZones, setAddZone, save, setSave } = useContext(MapEditorContext);
     const ref = useRef(null);
     const { width, height } = useAdjustScale(ref);
 
@@ -72,6 +72,7 @@ export default function ZoneCreator() {
             setZones(newZones);
             setMapLayout(newMapLayout);
             setAddZone(false);
+            setSave(false);
         }   
         saveZone();
     }, [save, rows, columns, editedZones, layout, name, zones, selectedCells, setAddZone, setEditedZones, setLayout, setMapLayout, setZones]);    
