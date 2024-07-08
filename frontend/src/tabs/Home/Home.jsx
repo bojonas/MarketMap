@@ -88,9 +88,12 @@ export default function Home() {
     };
 
     const removeMarket = () => {
-        setMarket(null)
+        setMarket(null);
         removeCustomColors();
     }
+    useEffect(() => {
+        removeMarket();
+    }, [user_id]);
 
     const borderCells = useMemo(() => {
         const newBorderCells = new Map();
