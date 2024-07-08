@@ -2,8 +2,9 @@ import DropdownMenu from "./DropdownMenu";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaRegMap} from "react-icons/fa";
-import { IoExitOutline } from "react-icons/io5";
 import { MdAccountCircle } from "react-icons/md";
+import { CiLogout } from "react-icons/ci";
+import { CiLogin } from "react-icons/ci";
 
 export default function MyAccount({isLoggedIn, setIsLoggedIn}){
     const navigate = useNavigate()
@@ -56,7 +57,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
       <button 
         onClick={toggleDropdown}
         className="px-4 py-2 bg-gray-custom text-white rounded-full bg-custom-hover flex flex-row gap-[8%] justify-center items-center"
-      > <FaUserCircle size={20}/>
+      > <CiLogin size={20}/>
         {
          'Login'
         }
@@ -65,7 +66,7 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
         {isLoggedIn?<div className="dropdown-content" onClick={myProfile}><MdAccountCircle size={20}/>My Profile</div>:null}
         {isMarket?<div className="dropdown-content" onClick={myMarket}><FaRegMap size={15}/>My Market</div>:null}
         {false?<div className="dropdown-content" onClick={settings}>Settings</div>:null}
-        {isLoggedIn?<div className="dropdown-content" onClick={logout}><IoExitOutline size={20}/>Logout</div>:null}
+        {isLoggedIn?<div className="dropdown-content" onClick={logout}><CiLogout size={20}/>Logout</div>:null}
       </DropdownMenu>
     </div>
   );
