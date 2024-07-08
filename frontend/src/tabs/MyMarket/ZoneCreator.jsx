@@ -31,7 +31,7 @@ export default function ZoneCreator() {
             let newLayout = Array(rows).fill().map((_, i) => Array(columns).fill().map((_, j) => new Cell(null, 'empty', i, j, [])));
             selectedCells.forEach(cell => {
                 const [row, col] = cell.split(',').map(Number);
-                if (typeof row === 'number' || typeof row === 'number') {
+                if (typeof row !== 'number' || typeof row !== 'number') {
                     setAddZone(false);
                     setSave(false);
                     return setSaveMessage('No Changes');
