@@ -70,7 +70,7 @@ async function checkUserLogin(username, password, postgres_pool){
 
     if (!result.rows[0]) return {message: 'User does not exist', isLoggedIn: false}
 
-    if (checkPassword(password, result.rows[0].password)) return { message: "User Logged in", isLoggedIn: true, user_id: result.rows[0].user_id, permission: result.rows[0].permission }
+    if (await checkPassword(password, result.rows[0].password)) return { message: "User Logged in", isLoggedIn: true, user_id: result.rows[0].user_id, permission: result.rows[0].permission }
 
     return {message: 'Invalid Password', isLoggedIn: false}
   }

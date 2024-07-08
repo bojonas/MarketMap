@@ -21,6 +21,10 @@ export default function Home() {
     const [searchClicked, setSearchClicked] = useState(false); 
     const timeoutId = useRef();
     
+    const debouncedSearch = debounce(value => {
+        setSearch(value);
+    }, 200);
+
     useEffect(() => {
         const getMarkets = async () => {
             const data = await requestGetMarkets();
@@ -28,6 +32,11 @@ export default function Home() {
         }
         getMarkets();
         removeCustomColors();
+
+        // clear timeout
+        return () => {
+            clearTimeout(timeoutId.current);
+        }
     }, []);
     
     const filteredMarkets = useMemo(() => {
@@ -49,17 +58,6 @@ export default function Home() {
             setSearchClicked(prevsearchClicked => !prevsearchClicked);
         }, 200);
     }
-
-    const debouncedSearch = debounce(value => {
-        setSearch(value);
-    }, 200);
-
-    // clear timeout
-    useEffect(() => {
-        return () => {
-            clearTimeout(timeoutId.current);
-        }
-    }, []);
 
     const selectMarket = async (market) => {  
         const zones = await requestGetMarketZones(market.market_id);
@@ -91,9 +89,10 @@ export default function Home() {
         setMarket(null);
         removeCustomColors();
     }
+
     useEffect(() => {
         removeMarket();
-    }, [user_id]);
+    }, [localStorage.getItem('user_id')]);
 
     const borderCells = useMemo(() => {
         const newBorderCells = new Map();
