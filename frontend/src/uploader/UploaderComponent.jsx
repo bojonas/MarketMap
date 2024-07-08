@@ -5,13 +5,13 @@ import prepareList from "./prepareList";
 import { initializeFill } from "./initializeFill";
 
 
-export default function UploaderComponent({setMapping, setUploaderComponentDone, setDisplayMapping, setSelectedItem}){
+export default function UploaderComponent({setMapping, setUploaderComponentDone, setDisplayMapping, setSelectedItem, setIsAlert}){
 
     const [content, setContent] = useState();
     const [contentArray, setContentArray] = useState();
     
     const handleUpload = async()=>{
-        if(!content){alert("Insert Shoping List"); return}
+        if(!content){setIsAlert(true); return}
         const mappingVar = await assignProducts(contentArray);
         setMapping(mappingVar);
         setUploaderComponentDone(true);
@@ -49,6 +49,7 @@ export default function UploaderComponent({setMapping, setUploaderComponentDone,
     };
     return(
         <div className="w-full h-full">
+            
             <div className="flex flex-row h-3/4 w-full">
                 <textarea
                 className="w-1/2 h-full bg-white placeholder-black border-offwhite border-2 p-4" 

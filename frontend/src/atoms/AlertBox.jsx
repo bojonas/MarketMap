@@ -17,7 +17,7 @@ export default function AlertBox({ action, color, onClose })  {
         if (onClose) onClose();
     };
 
-    // auto-dismiss after 3 seconds
+    // auto-dismiss after 2 seconds
     useEffect(() => {
         const timeout = setTimeout(() => {
             setVisible(false);
@@ -28,7 +28,7 @@ export default function AlertBox({ action, color, onClose })  {
     }, [onClose]);
 
     return !visible ? null :(
-        <div className={`flex items-center justify-center left-1/2 px-[2%] py-[1%] text-[2.5svh] border-2 border-t-0 rounded-b-lg absolute ${colors[color] || colors['green']}`}
+        <div className={`flex flex-col text-center left-1/2 transform -translate-x-1/2 px-[2%] py-[1%] text-[2.5svh] border-2 border-t-0 rounded-b-lg absolute ${colors[color] || colors['green']}`}
         role="alert"
         >
         <span>{action}</span>

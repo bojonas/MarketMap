@@ -3,6 +3,7 @@ import UploaderComponent from "./UploaderComponent";
 import { requestPostShoppingCart } from "../requests/homeRequests";
 import { useNavigate } from "react-router-dom";
 import ItemSelector from "./ItemSelector";
+import AlertBox from "../atoms/AlertBox";
 
 
 export default function Uploader(){
@@ -11,6 +12,7 @@ export default function Uploader(){
 
     const [displayMapping, setDisplayMapping] = useState();
     const [selectedItem, setSelectedItem] = useState({})
+    const [isAlert, setIsAlert] = useState(true)
 
     const [cartName, setCartName] = useState("New Shopping Cart");
 
@@ -54,8 +56,6 @@ export default function Uploader(){
             upload.push({product_id: mapping.find(item => item.product_name === selectedItem[i])["product_id"], product_count: displayMapping[i]["amount"], product_name_en: selectedItem[i]})
             
         }
-
-
         await requestPostShoppingCart(cartName,localStorage.getItem("user_id"),upload)
         navigator("/")
     }
@@ -63,14 +63,15 @@ export default function Uploader(){
 
     
     return(
-        <div className="w-1/2 h-1/2 m-auto bg-white flex flex-col items-center justify-center text-black">
+       <div className="w-1/2 h-1/2 m-auto bg-red-500 flex flex-col text-black">
+            {isAlert&&<AlertBox action={"Insert Shopping List!"} color={"red"} onClose={()=>setIsAlert(false)}/>}
             {!uploaderComponentDone?
-            <UploaderComponent setMapping={setMapping} setUploaderComponentDone={setUploaderComponentDone} setDisplayMapping={setDisplayMapping} setSelectedItem={setSelectedItem}/>
+            <UploaderComponent setMapping={setMapping} setUploaderComponentDone={setUploaderComponentDone} setDisplayMapping={setDisplayMapping} setSelectedItem={setSelectedItem} setIsAlert={setIsAlert}/>
             :
             <ItemSelector cartName={cartName} setCartName={setCartName} displayMapping={displayMapping} adjustItem={adjustItem} handleUpload={handleUpload}/>
             }
-            
         </div>
+        
     )
 }
 
