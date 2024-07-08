@@ -81,7 +81,8 @@ export default function MarketLogo({src}){
                 for (let i = 0; i < byteArray.byteLength; i++) {
                     binaryString += String.fromCharCode(byteArray[i]);
                 }
-                console.log(binaryString)
+                setBinaryString(binaryString)
+                /*console.log(binaryString)
                 resizeImage(binaryString, 200, 200).then(
                   resizedBase64 => {
                   console.log(resizedBase64)
@@ -89,7 +90,7 @@ export default function MarketLogo({src}){
                 }
                 ).catch(error => {
                   console.error('Error resizing image:', error);
-              })
+              })*/
                 
 
             };
