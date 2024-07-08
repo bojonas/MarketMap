@@ -23,6 +23,35 @@ export async function requestCreateUser(username, email, password, firstName, la
   }
 }
 
+//requests to 
+export async function requestCreateMarket(username, email, password, firstName, lastName, permission, market_name, street, zip, city, country) {
+  if (!username || !email || !password || !permission) {
+    return console.error('Invalid parameters');
+  }
+
+  const data = {
+    username: username,
+    email: email,
+    password: password,
+    firstName: firstName,
+    lastName: lastName,
+    permission: permission,
+    market_name: market_name,
+    street: street,
+    zip: zip,
+    city: city,
+    country: country
+  };
+
+  try {
+    const response = await axiosInstance.post('/post_market', data)
+    return response.data.user_id
+
+  } catch (error) {
+    console.error('Error creating user:', error);
+  }
+}
+
 // request to /get_permissions
 export async function requestGetPermission(user_id) {
   if (!user_id) {

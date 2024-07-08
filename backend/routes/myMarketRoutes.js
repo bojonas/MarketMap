@@ -93,7 +93,7 @@ async function updateMarketData(user_id, label, data, postgres_pool){
         if (label === "street"){
             label = "address"
         }
-        
+
         const query = `
         UPDATE market_map.markets
         SET ${label} = $1
@@ -108,6 +108,8 @@ async function updateMarketData(user_id, label, data, postgres_pool){
         console.error('Error updating data:', error);
     }
 }
+
+
 
 
 module.exports = { putMapLayout, updateMarketData, putMarketZones, getMyMarket, getMarketZones, deleteMarketZones }

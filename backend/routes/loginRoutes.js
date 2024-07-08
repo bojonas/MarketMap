@@ -25,6 +25,44 @@ async function postUser(username, email, password, firstName, lastName, permissi
   }
 }
 
+async function postMarket(username, email, password, firstName, lastName, permission, market_name, street, zip, city, country, postgres_pool){
+  try{
+    const result = await postUser(username,email, password, firstName, lastName, permission, postgres_pool)
+    var user_id = result.user_id
+  }
+  catch(e){
+    console.error(e)
+    return
+  }
+
+  var query = `
+  INSERT INTO market_map.markets(market_name, address, postal_code, city, country, map_layout)
+  VALUES ($1,$2,$3,$4,$5,'[[{"x": 0, "y": 0, "type": "empty"}]]')
+  RETURNING market_id`
+  try{
+    const response = await postgres_pool.query(query, [market_name,street,zip,city,country])
+    var market_id = response.rows[0].market_id
+  }
+  catch(e){
+    console.error(e)
+    return
+  }
+
+  query = `
+    INSERT INTO market_map.users_markets(user_id, market_id) 
+    VALUES ($1, $2)
+  `
+  try{
+    const response = await postgres_pool.query(query, [user_id, market_id])
+    return response.data
+  }
+  catch(e){
+    console.error(e)
+    return
+  }
+
+}
+
 async function getPermissionId(permission, postgres_pool) {
   try {
     const query = `
@@ -117,4 +155,4 @@ async function updatePassword(email, password, postgres_pool){
   }
 }
 
-module.exports = { postUser, getPermission,checkUserLogin, checkUser, updatePassword };
+module.exports = { postUser, postMarket, getPermission,checkUserLogin, checkUser, updatePassword };

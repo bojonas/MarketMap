@@ -242,7 +242,7 @@ app.post('/get_paths', async (req, res) => {
 /**** Login Routes ****/
 
 // import login routes
-const { postUser, getPermission, checkUserLogin, checkUser, updatePassword } = require('./routes/loginRoutes');
+const { postUser,postMarket, getPermission, checkUserLogin, checkUser, updatePassword } = require('./routes/loginRoutes');
 
 // schemas to validate login jsons 
 const User = Joi.object({
@@ -372,7 +372,21 @@ const UpdateData = Joi.object({
     user_id: Joi.number().required(),
     label: Joi.string().required(),
     data: Joi.string().required()
-})
+});
+
+const MarketAndUser = Joi.object({
+    username: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    permission: Joi.string().valid('admin', 'market', 'user','market_owner').required(),
+    market_name: Joi.string().required(),
+    street: Joi.string().required(),
+    zip: Joi.number().required(),
+    city: Joi.string().required(),
+    country: Joi.string().required()
+  });
 
 //endpoints for My Profile
 app.put('/update_data', async (req, res) => {
@@ -449,6 +463,23 @@ app.post('/get_user_colors', async (req, res) => {
     }
 });
 
+app.post('/post_market', async (req, res) => {
+    const {error} = MarketAndUser.validate(req.body)
+    if (error) {
+        console.error(error.details[0].message);
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const { username, email, password, firstName, lastName, permission, market_name, street, zip, city, country } = req.body;
+    try {
+        const result = await postMarket(username, email, password, firstName, lastName, permission, market_name, street, zip, city, country, postgres_pool);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message || 'Internal server error'});
+    }
+});
+
 app.post('/get_market_logo', async (req, res) => {
     const {error} = UserId.validate(req.body)
     if (error) {
@@ -477,6 +508,8 @@ app.post('/post_market_logo', async (req, res) => {
         res.status(500).json({ error: error.message || 'Internal server error' });
     }
 });
+
+
 
 /**** Setting Routes ****/
 

@@ -4,7 +4,7 @@
 
 @layer components {
     .sourrounding-div{
-        @apply bg-offwhite px-40 py-10 rounded-xl 
+        @apply bg-offwhite px-28 py-10 rounded-xl 
     }
     .custom-button {
         @apply flex items-center content-center justify-center bg-purple-custom text-white rounded-full p-[1.5svh] text-xl font-bold
