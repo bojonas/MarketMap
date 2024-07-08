@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { requestpostMarketLogo } from "../../requests/myProfileRequests";
-import resizeImage from "./resizeImage";
+
 
 export default function MarketLogo({src}){
     const [isOpen, setIsOpen] = useState(false)
@@ -82,17 +82,6 @@ export default function MarketLogo({src}){
                     binaryString += String.fromCharCode(byteArray[i]);
                 }
                 setBinaryString(binaryString)
-                /*console.log(binaryString)
-                resizeImage(binaryString, 200, 200).then(
-                  resizedBase64 => {
-                  console.log(resizedBase64)
-                  setBinaryString(resizedBase64)
-                }
-                ).catch(error => {
-                  console.error('Error resizing image:', error);
-              })*/
-                
-
             };
             reader.readAsArrayBuffer(selectedFile);
         }
