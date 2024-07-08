@@ -55,10 +55,10 @@ export default function MyAccount({isLoggedIn, setIsLoggedIn}){
         size={35}/> :
       <button 
         onClick={toggleDropdown}
-        className="px-4 py-2 bg-gray-custom text-white rounded-full bg-custom-hover"
-      >
+        className="px-4 py-2 bg-gray-custom text-white rounded-full bg-custom-hover flex flex-row gap-[8%] justify-center items-center"
+      > <FaUserCircle size={20}/>
         {
-         'Login'//todo: get_initials function instead of 'B'
+         'Login'
         }
       </button>}
       <DropdownMenu isVisible={isVisible}>
