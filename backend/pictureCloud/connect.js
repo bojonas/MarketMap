@@ -1,12 +1,13 @@
 function connect(){
     const {google} = require("googleapis")
+    require('dotenv').config();
 
-    const CLIENT_ID = "228723591691-g142a9ud7hvaekuiap9ne29krrm0l37c.apps.googleusercontent.com"
-    const CLIENT_SECRET = "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"
+    const CLIENT_ID = process.env.CLIENT_ID
+    const CLIENT_SECRET = process.env.CLIENT_SECRET
 
-    const REDIRECT_URI = "https://developers.google.com/oauthplayground"
+    const REDIRECT_URI = process.env.REDIRECT_URI
 
-    const REFRESH_TOKEN = "1//04uQSHxj0qiSsCgYIARAAGAQSNwF-L9Ir4bIgc5ptNaH2zRbbVRaU4ec0aLE_aJURo0HOfyTiBr9mKkE7fjs6lCX_3jAYhlG1qIQ"
+    const REFRESH_TOKEN = process.env.REFRESH_TOKEN
 
     const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
