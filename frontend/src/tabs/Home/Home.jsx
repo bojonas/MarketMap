@@ -122,7 +122,7 @@ export default function Home() {
                                             <img draggable='false' alt='' src={market.market_image_url}/>
                                         </div>
                                     }
-                                    <p className='font-bold text-[2.1svh]'>{market.market_name}</p>
+                                    <p className='font-bold text-[2.1svh] overflow-hidden whitespace-nowrap text-ellipsis'>{market.market_name}</p>
                                 </div>
                                 <p className='ml-[3%]'>{market.address},</p>
                                 <p>{market.postal_code}</p>

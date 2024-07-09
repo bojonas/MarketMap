@@ -73,7 +73,7 @@ export default function MyMarket() {
                         </div>
                     </React.Fragment>
                 }
-                { saveMessage && <AlertBox action={saveMessage} onClose={() => setSaveMessage('')}/> }
+                { saveMessage && <div className='absolute w-full left-[62.5%] transform -translate-x-1/2'><AlertBox action={saveMessage} onClose={() => setSaveMessage('')}/></div> }
             </div>
         </MyMarketContext.Provider>
     );
